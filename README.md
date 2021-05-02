@@ -1,0 +1,1 @@
+# goldsmith.nvim
