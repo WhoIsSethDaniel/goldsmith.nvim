@@ -23,8 +23,17 @@ local function godoc(...)
     return content
 end
 
+function M.completeMembers(package, member)
+    return {}
+end
+
 function M.complete(workdir,arglead,cmdline,cursorPos)
     uv.chdir(workdir)
+
+    local words = vim.split(cmdline, '%s+')
+    if #words > 2 then
+        return M.completeMembers(words[2], words[3])
+    end
 
     local dirs = {}
     local goroot = goenv("goroot")
@@ -95,14 +104,21 @@ end
 function M.view(...)
     local doc = godoc(...)
 
+    local open_split = 'split'
+    local open_new = 'new'
+    if vim.g.goldsmith_open_split == 'vertical' then
+        open_new = 'vnew'
+        open_split = 'vsplit'
+    end
+
     -- Much of the below is taken from vim-go's code, and
     -- translated to Lua
     if (M.buf_nr == -1) then
-        vim.cmd('new')
+        vim.cmd(open_new)
         M.buf_nr = api.nvim_get_current_buf()
         api.nvim_buf_set_name(M.buf_nr, "[Go Documentation]")
     elseif vim.fn.bufwinnr(M.buf_nr) == -1 then
-        vim.cmd('split')
+        vim.cmd(open_split)
         api.nvim_win_set_buf(0,M.buf_nr)
     elseif vim.fn.bufwinnr(M.buf_nr) ~= vim.fn.bufwinnr('%') then
         vim.cmd(vim.fn.bufwinnr(M.buf_nr) .. 'wincmd w')
@@ -116,6 +132,8 @@ function M.view(...)
     api.nvim_win_set_option(0, 'cursorline', false)
     api.nvim_win_set_option(0, 'cursorcolumn', false)
     api.nvim_win_set_option(0, 'number', false)
+    api.nvim_win_set_option(0, 'relativenumber', false)
+    api.nvim_win_set_option(0, 'signcolumn', 'no')
 
     vim.cmd([[
         setlocal modifiable
