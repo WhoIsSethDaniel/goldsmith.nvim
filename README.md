@@ -43,3 +43,6 @@ VimScript, but have never made a dedicated package I wished to share.
     * retrieve documentation for individual functions/methods
     * vendor dir support for completion
     * LSP support
+* auto-run goimports
+    * make command(?)
+    * configurable
