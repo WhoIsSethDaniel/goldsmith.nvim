@@ -2,6 +2,9 @@
 
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
+## Features
+* :GoDoc command (see below)
+* auto-run goimports upon save
 
 ## Commands
 To view documentation in a window use GoDoc:
@@ -34,9 +37,9 @@ for working with Lua in NeoVim. This is the first thing I have ever written usin
 VimScript, but have never made a dedicated package I wished to share.
 
 ## TODO
-* floating window support
-* keyword support
-* retrieve documentation for individual functions/methods
-* vendor dir support for completion
-* LSP support
-
+* documentation
+    * floating window support
+    * keyword support
+    * retrieve documentation for individual functions/methods
+    * vendor dir support for completion
+    * LSP support

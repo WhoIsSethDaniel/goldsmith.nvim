@@ -6,3 +6,5 @@ function s:GoDocComplete(Arglead,CmdLine,CursorPos) abort
 endfunction
 
 command! -nargs=+ -complete=customlist,s:GoDocComplete GoDoc lua require('godoc').view(<f-args>)
+
+autocmd BufWritePre *.go lua require'imports'.goimports(1000)
