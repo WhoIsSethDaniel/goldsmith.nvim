@@ -5,6 +5,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 ## Features
 * :GoDoc command (see below)
 * auto-run goimports upon save
+* jump to next/previous function/method. Utilizes treesitter.
 
 ## Commands
 To view documentation in a window use GoDoc:
@@ -22,6 +23,14 @@ view all documentation for the 'fmt' package
 
 view the source code for the 'fmt' package
 :GoDoc -src fmt
+```
+
+## Mappings
+You can map jumping to the next/previous function/method. The following maps ]] to jump to the
+next function/method and [[ to jump to the previous function/method:
+```
+vim.api.nvim_set_keymap( 'n', ']]', '<Plug>(goldsmith-next-function)', { silent = true })
+vim.api.nvim_set_keymap( 'n', '[[', '<Plug>(goldsmith-prev-function)', { silent = true })
 ```
 
 ## Configuration
@@ -43,6 +52,4 @@ VimScript, but have never made a dedicated package I wished to share.
     * retrieve documentation for individual functions/methods
     * vendor dir support for completion
     * LSP support
-* auto-run goimports
-    * make command(?)
-    * configurable
+* many other things

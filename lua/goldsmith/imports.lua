@@ -2,8 +2,8 @@ local M = {}
 
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
 function M.goimports(timeout_ms)
-  local context = {source = {organizeImports = true}}
-  vim.validate {context = {context, "t", true}}
+  local context = { source = { organizeImports = true } }
+  vim.validate { context = { context, "t", true } }
 
   local params = vim.lsp.util.make_range_params()
   params.context = context
