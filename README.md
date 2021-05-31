@@ -5,7 +5,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 ## Features
 * :GoDoc command (see below)
 * auto-run goimports upon save
-* jump to next/previous function/method. Utilizes treesitter.
+* navigation
+    * jump to next/previous function/method. Utilizes treesitter.
+    * place all functions/method in the location list and use it for navigation. Utilizes treesitter.
 
 ## Commands
 To view documentation in a window use GoDoc:
@@ -32,6 +34,11 @@ next function/method and [[ to jump to the previous function/method:
 vim.api.nvim_set_keymap( 'n', ']]', '<Plug>(goldsmith-next-function)', { silent = true })
 vim.api.nvim_set_keymap( 'n', '[[', '<Plug>(goldsmith-prev-function)', { silent = true })
 ```
+You can also navigate from function to function (or method) using the location list:
+```
+vim.api.nvim_set_keymap( 'n', ']]', '<Plug>(goldsmith-func-loclist)', { silent = true })
+```
+You will need to open the location list afterward.
 
 ## Configuration
 By default help pages are open in a horizontal window. One way to change this is to set
