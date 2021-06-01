@@ -36,7 +36,7 @@ vim.api.nvim_set_keymap( 'n', '[[', '<Plug>(goldsmith-prev-function)', { silent 
 ```
 You can also navigate from function to function (or method) using the location list:
 ```
-vim.api.nvim_set_keymap( 'n', ']]', '<Plug>(goldsmith-func-loclist)', { silent = true })
+vim.api.nvim_set_keymap( 'n', '<leader>nf', '<Plug>(goldsmith-func-loclist)', { silent = true })
 ```
 You will need to open the location list afterward.
 
