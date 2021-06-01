@@ -55,7 +55,7 @@ function M.goto_prev_function()
   end
 end
 
-function M.put_functions_in_list()
+function M.put_functions_in_list(openlist)
   local funcs = M.cache_all_functions()
   local loc = {}
   for _, func in ipairs(funcs) do
@@ -69,6 +69,9 @@ function M.put_functions_in_list()
     })
   end
   vim.fn.setloclist(vim.api.nvim_get_current_win(), loc)
+  if openlist then
+    vim.cmd[[ lopen ]]
+  end
 end
 
 return M

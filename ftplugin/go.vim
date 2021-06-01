@@ -13,7 +13,8 @@ endfunction
 
 nnoremap <silent> <Plug>(goldsmith-next-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_next_function()<CR> 
 nnoremap <silent> <Plug>(goldsmith-prev-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_prev_function()<CR> 
-nnoremap <silent> <Plug>(goldsmith-function-loclist) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list()<CR> 
+nnoremap <silent> <Plug>(goldsmith-function-loclist) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(false)<CR> 
+nnoremap <silent> <Plug>(goldsmith-function-loclist-open) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(true)<CR> 
 
 command! -nargs=+ -complete=customlist,s:GoDocComplete GoDoc lua require('goldsmith.godoc').view(<f-args>)
 

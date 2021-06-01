@@ -36,9 +36,11 @@ vim.api.nvim_set_keymap( 'n', '[[', '<Plug>(goldsmith-prev-function)', { silent 
 ```
 You can also navigate from function to function (or method) using the location list:
 ```
-vim.api.nvim_set_keymap( 'n', '<leader>nf', '<Plug>(goldsmith-func-loclist)', { silent = true })
+vim.api.nvim_set_keymap( 'n', '<leader>fl', '<Plug>(goldsmith-func-loclist)', { silent = true })
+vim.api.nvim_set_keymap( 'n', '<leader>flo', '<Plug>(goldsmith-func-loclist-open)', { silent = true })
 ```
-You will need to open the location list afterward.
+For goldsmith-func-loclist you will need to open the location list aftwards.  For goldsmith-func-loclist-open
+the location list will automatically open.
 
 ## Configuration
 By default help pages are open in a horizontal window. One way to change this is to set
