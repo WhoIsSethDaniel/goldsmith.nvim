@@ -1,71 +1,75 @@
+local diagnostic = require 'vim.lsp.diagnostic'
+
+-- currently 'options' are unused by this module.
 local M = {
-  setting = {},
-  underline = { default = true, options = { severity_limit = 4 } },
-  virtual_text = { default = true, options = { severity_limit = 4 } },
-  signs = { default = true, options = { severity_limit = 4 } },
-  update_in_insert = { default = true, options = { severity_limit = 4 } },
-  severity_sort = true
+  settings = {
+    underline = { default = true, options = { severity_limit = 4 } },
+    virtual_text = { default = true, options = { severity_limit = 4 } },
+    signs = { default = true, options = { severity_limit = 4 } },
+    update_in_insert = { default = true, options = { severity_limit = 4 } }
+  }
 }
 
-function M.toggle_underline()
-  if M.setting.underline == nil then
-    M.setting.underline = M.underline.default
+function M.init()
+  for setting, _ in pairs(M.settings) do
+    M.settings[setting].value = M.settings[setting].default
   end
-  if M.setting.underline == true then
-    M.setting.underline = false
-    return false
-  elseif M.setting.underline == false then
-    M.setting.underline = true
-    return M.underline.options
-  end
+  M.configure_diagnostics()
 end
 
-function M.toggle_virtual_text()
-  if M.setting.virtual_text == nil then
-    M.setting.virtual_text = M.virtual_text.default
+function M.current_settings(new_settings)
+  local settings = {}
+  for setting, _ in pairs(M.settings) do
+    settings[setting] = M.settings[setting].value
   end
-  if M.setting.virtual_text == true then
-    M.setting.virtual_text = false
-    return false
-  elseif M.setting.virtual_text == false then
-    M.setting.virtual_text = true
-    return M.virtual_text.options
+  for setting, value in pairs(new_settings) do
+    settings[setting] = value
   end
+  return settings
 end
 
-function M.toggle_signs()
-  if M.setting.signs == nil then
-    M.setting.signs = M.signs.default
-  end
-  if M.setting.signs == true then
-    M.setting.signs = false
-    return false
-  elseif M.setting.signs == false then
-    M.setting.signs = true
-    return M.signs.options
-  end
-end
-
-function M.toggle_update_in_insert()
-  if M.setting.update_in_insert == nil then
-    M.setting.update_in_insert = M.update_in_insert.default
-  end
-  if M.setting.update_in_insert == true then
-    M.setting.update_in_insert = false
-    return false
-  elseif M.setting.update_in_insert == false then
-    M.setting.update_in_insert = true
-    return M.update_in_insert.options
-  end
-end
-
-function M.toggle_diagnostics()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = M.toggle_underline(),
-    virtual_text = M.toggle_virtual_text(),
-    signs = M.toggle_signs(),
-    update_in_insert = M.toggle_update_in_insert()
+function M.turn_off_diagnostics()
+  M.configure_diagnostics({
+    underline = false,
+    virtual_text = false,
+    signs = false,
+    update_in_insert = false
   })
+end
+
+function M.turn_on_diagnostics()
+  M.configure_diagnostics(M.current_settings({}))
+end
+
+function M.toggle_diagnostic(name)
+  M.settings[name].value = not M.settings[name].value
+  M.configure_diagnostics({ [name] = M.settings[name].value })
+  return M.settings[name].value
+end
+
+function M.toggle_underline()
+  M.toggle_diagnostic('underline')
+end
+function M.toggle_signs()
+  M.toggle_diagnostic('signs')
+end
+function M.toggle_virtual_text()
+  M.toggle_diagnostic('virtual_text')
+end
+function M.toggle_update_in_insert()
+  M.toggle_diagnostic('update_in_insert')
+end
+
+function M.configure_diagnostics(settings)
+  local conf = M.current_settings(settings or {})
+  vim.lsp.handlers["textDocument/publishDiagnostics"] =
+      vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, conf)
+  for client_id, _ in pairs(vim.lsp.buf_get_clients()) do
+    diagnostic.display(nil, 0, client_id, conf)
+  end
+end
+
+function M.dump()
   print(vim.inspect(M))
 end
 

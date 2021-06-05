@@ -69,7 +69,7 @@ function M.put_functions_in_list(openlist)
     })
   end
   vim.fn.setloclist(vim.api.nvim_get_current_win(), loc)
-  if openlist then
+  if openlist and #loc > 0 then
     vim.cmd[[ lopen ]]
   end
 end
