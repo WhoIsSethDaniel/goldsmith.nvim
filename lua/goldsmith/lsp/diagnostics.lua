@@ -64,8 +64,12 @@ function M.configure_diagnostics(settings)
   local conf = M.current_settings(settings or {})
   vim.lsp.handlers["textDocument/publishDiagnostics"] =
       vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, conf)
-  for client_id, _ in pairs(vim.lsp.buf_get_clients()) do
-    diagnostic.display(nil, 0, client_id, conf)
+  local buffers = vim.fn.getbufinfo()
+  for _, buffer in pairs(buffers) do
+    local buffer_id = buffer.bufnr
+    for client_id, _ in pairs(vim.lsp.buf_get_clients(buffer_id)) do
+      diagnostic.display(nil, buffer_id, client_id, conf)
+    end
   end
 end
 
