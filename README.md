@@ -50,16 +50,16 @@ the location list will automatically open if there are any entries in the list.
 ### Diagnostics
 You can turn ALL diagnostics on or off with a simple set of keymappings. e.g.:
 ```
-vim.api.nvim_set_keymap('n', '<leader>tdo', '<Plug>(goldsmith-diag-on)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdf', '<Plug>(goldsmith-diag-off)', {})
+vim.api.nvim_set_keymap('n', '<leader>do', '<Plug>(goldsmith-diag-on)', {})
+vim.api.nvim_set_keymap('n', '<leader>df', '<Plug>(goldsmith-diag-off)', {})
 ```
 Toggle various individual features of diagnostics on/off. Toggle undelining, symbols in the signs column,
 virtual text, and updating diagnostics while in insert mode.
 ```
-vim.api.nvim_set_keymap('n', '<leader>tdo', '<Plug>(goldsmith-toggle-diag-underline)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdf', '<Plug>(goldsmith-toggle-diag-signs)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdf', '<Plug>(goldsmith-toggle-diag-vtext)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdf', '<Plug>(goldsmith-toggle-diag-update_in_insert)', {})
+vim.api.nvim_set_keymap('n', '<leader>tdu', '<Plug>(goldsmith-toggle-diag-underline)', {})
+vim.api.nvim_set_keymap('n', '<leader>tds', '<Plug>(goldsmith-toggle-diag-signs)', {})
+vim.api.nvim_set_keymap('n', '<leader>tdv', '<Plug>(goldsmith-toggle-diag-vtext)', {})
+vim.api.nvim_set_keymap('n', '<leader>tdi', '<Plug>(goldsmith-toggle-diag-update_in_insert)', {})
 ```
 These mappings will turn on/off the various diagnostics for all buffers and all clients.
 
