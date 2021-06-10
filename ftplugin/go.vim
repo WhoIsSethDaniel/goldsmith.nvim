@@ -17,17 +17,12 @@ nnoremap <silent> <Plug>(goldsmith-prev-function) <cmd>lua require'goldsmith.tre
 nnoremap <silent> <Plug>(goldsmith-function-loclist) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(false)<CR> 
 nnoremap <silent> <Plug>(goldsmith-function-loclist-open) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(true)<CR> 
 
-" diagnostic toggling
-nnoremap <silent> <Plug>(goldsmith-toggle-diag-underline) <cmd>lua require'goldsmith.lsp.diagnostics'.toggle_underline()<CR>
-nnoremap <silent> <Plug>(goldsmith-toggle-diag-signs) <cmd>lua require'goldsmith.lsp.diagnostics'.toggle_signs()<CR>
-nnoremap <silent> <Plug>(goldsmith-toggle-diag-vtext) <cmd>lua require'goldsmith.lsp.diagnostics'.toggle_virtual_text()<CR>
-nnoremap <silent> <Plug>(goldsmith-toggle-diag-update_in_insert) <cmd>lua require'goldsmith.lsp.diagnostics'.toggle_update_in_insert()<CR>
-nnoremap <silent> <Plug>(goldsmith-diag-off) <cmd>lua require'goldsmith.lsp.diagnostics'.turn_off_diagnostics()<CR>
-nnoremap <silent> <Plug>(goldsmith-diag-on) <cmd>lua require'goldsmith.lsp.diagnostics'.turn_on_diagnostics()<CR>
-
 command! -nargs=+ -complete=customlist,s:GoDocComplete GoDoc lua require('goldsmith.godoc').view(<f-args>)
 
+augroup goldsmith-ft-go
+autocmd! * <buffer>
 autocmd BufWritePre <buffer> lua require'goldsmith.imports'.goimports(1000)
+augroup END
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

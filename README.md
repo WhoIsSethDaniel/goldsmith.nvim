@@ -8,9 +8,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 * navigation
     * jump to next/previous function/method. Utilizes treesitter.
     * place all functions/method in the location list and use it for navigation. Utilizes treesitter.
-* diagnostic toggling
-    * turn all diagnostics on/off
-    * toggle underline, signs, virtual text, update in insert on/off individually
 
 ## Commands
 To view documentation in a window use GoDoc:
@@ -47,22 +44,6 @@ vim.api.nvim_set_keymap('n', '<leader>flo', '<Plug>(goldsmith-func-loclist-open)
 For goldsmith-func-loclist you will need to open the location list afterwards.  For goldsmith-func-loclist-open
 the location list will automatically open if there are any entries in the list.
 
-### Diagnostics
-You can turn ALL diagnostics on or off with a simple set of keymappings. e.g.:
-```
-vim.api.nvim_set_keymap('n', '<leader>do', '<Plug>(goldsmith-diag-on)', {})
-vim.api.nvim_set_keymap('n', '<leader>df', '<Plug>(goldsmith-diag-off)', {})
-```
-Toggle various individual features of diagnostics on/off. Toggle undelining, symbols in the signs column,
-virtual text, and updating diagnostics while in insert mode.
-```
-vim.api.nvim_set_keymap('n', '<leader>tdu', '<Plug>(goldsmith-toggle-diag-underline)', {})
-vim.api.nvim_set_keymap('n', '<leader>tds', '<Plug>(goldsmith-toggle-diag-signs)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdv', '<Plug>(goldsmith-toggle-diag-vtext)', {})
-vim.api.nvim_set_keymap('n', '<leader>tdi', '<Plug>(goldsmith-toggle-diag-update_in_insert)', {})
-```
-These mappings will turn on/off the various diagnostics for all buffers and all clients.
-
 ## Configuration
 By default help pages are open in a horizontal window. One way to change this is to set
 ```
@@ -87,5 +68,10 @@ VimScript, but have never made a dedicated package I wished to share.
         * golines
         * revive
         * other linters / formatters not supported by gopls
+    * provide better / different gopls configuration/s w/ lspconfig
+* lsp command support?
+    * https://github.com/golang/tools/blob/master/gopls/doc/commands.md
+    * https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand 
+    * vim.lsp.buf.execute_command() maybe?
 * go.mod editing
 * many other things
