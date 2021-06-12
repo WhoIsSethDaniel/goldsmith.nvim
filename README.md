@@ -73,5 +73,6 @@ VimScript, but have never made a dedicated package I wished to share.
     * https://github.com/golang/tools/blob/master/gopls/doc/commands.md
     * https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand 
     * vim.lsp.buf.execute_command() maybe?
+* treesitter text objects?
 * go.mod editing
 * many other things

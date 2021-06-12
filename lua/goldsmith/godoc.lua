@@ -21,82 +21,11 @@ local function godoc(...)
   return content
 end
 
-function M.completeMembers(package, member)
-  return {}
-end
-
-function M.complete(workdir, arglead, cmdline, cursorPos)
-  uv.chdir(workdir)
-
-  local words = vim.split(cmdline, '%s+')
-  if #words > 2 then
-    return M.completeMembers(words[2], words[3])
-  end
-
-  local dirs = {}
-  local goroot = goenv("goroot")
-  dirs[#dirs + 1] = string.format("%s/src", goroot)
-  dirs[#dirs + 1] = goenv("gomodcache")
-  local gomod = goenv("gomod")
-  if gomod ~= '/dev/null' and gomod ~= 'NUL' and gomod ~= '' then
-    local path = string.match(gomod, '^(.+)/go%.mod$')
-    dirs[#dirs + 1] = path
-  end
-  local gopath = goenv("gopath")
-  for p in string.gmatch(gopath, "([%w" .. package.config:sub(1, 1) .. "]+)[;:]*") do
-    dirs[#dirs + 1] = p
-  end
-
-  local base, last = string.match(arglead, '(%g+)/(%g*)$')
-  if base == nil then
-    last = arglead
-  end
-
-  local alldirs = {}
-  for _, dir in ipairs(dirs) do
-    if base == nil then
-      alldirs[#alldirs + 1] = dir
-    else
-      alldirs[#alldirs + 1] = string.format("%s/%s", dir, base)
-    end
-  end
-
-  local possibles = {}
-  for _, dir in ipairs(alldirs) do
-    local handle = uv.fs_scandir(dir)
-    if handle == nil then
-      goto continue_out
-    end
-    while true do
-      local name, type = uv.fs_scandir_next(handle)
-      if name == nil then
-        break
-      end
-      if type == 'file' and string.find(name, '%.go$') == nil then
-        goto continue_in
-      end
-      -- cleanup name by removing
-      -- versions, and
-      -- .go extensions
-      name = (string.match(name, '^(.*)@') or name)
-      name = (string.match(name, '^(.*)%.go$') or name)
-      if last == nil then
-        possibles[#possibles + 1] = name
-      else
-        local ndx = string.find(name, "^" .. last)
-        if ndx == 1 then
-          if base == nil then
-            possibles[#possibles + 1] = name
-          else
-            possibles[#possibles + 1] = string.format("%s/%s", base, name)
-          end
-        end
-      end
-      ::continue_in::
-    end
-    ::continue_out::
-  end
-  return possibles
+function M.complete(arglead, cmdline, cursorPos)
+  local bnum = vim.fn.bufnr('%')
+  local resp = vim.lsp.buf_request_sync( 0, 'workspace/executeCommand', { command = "gopls.list_known_packages", arguments = { { URI = vim.uri_from_bufnr(bnum) } } })
+  local pkgs = resp[1].result.Packages
+  return table.concat(pkgs, "\n")
 end
 
 function M.view(...)
