@@ -11,11 +11,11 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 
 ## Commands
 To view documentation in a window use GoDoc:
-```
+```vim
 :GoDoc [opts] <doc> 
 ```
 e.g. 
-```
+```vim
 view documentation for the 'fmt' package
 :GoDoc fmt
 
@@ -32,12 +32,12 @@ view the source code for the 'fmt' package
 ### Navigation
 You can map jumping to the next/previous function/method. The following maps ]] to jump to the
 next function/method and [[ to jump to the previous function/method:
-```
+```lua
 vim.api.nvim_set_keymap('n', ']]', '<Plug>(goldsmith-next-function)', { silent = true })
 vim.api.nvim_set_keymap('n', '[[', '<Plug>(goldsmith-prev-function)', { silent = true })
 ```
 You can also navigate from function to function (or method) using the location list:
-```
+```lua
 vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>(goldsmith-func-loclist)', { silent = true })
 vim.api.nvim_set_keymap('n', '<leader>flo', '<Plug>(goldsmith-func-loclist-open)', { silent = true })
 ```
@@ -46,7 +46,7 @@ the location list will automatically open if there are any entries in the list.
 
 ## Configuration
 By default help pages are open in a horizontal window. One way to change this is to set
-```
+```vim
 let g:goldsmith_open_split = 'vertical'
 ```
 This will open help pages in a vertical window.
