@@ -1,7 +1,7 @@
 local uv = require 'luv'
 local api = vim.api
 
-local M = {buf_nr = -1}
+local M = { buf_nr = -1 }
 
 local function goenv(envname)
   local f = io.popen("go env " .. string.upper(envname))
@@ -12,7 +12,7 @@ end
 
 local function godoc(...)
   local args = ''
-  for _, a in ipairs {...} do
+  for _, a in ipairs { ... } do
     args = args .. ' ' .. a
   end
   local f = io.popen(string.format("go doc %s", args))
@@ -22,8 +22,11 @@ local function godoc(...)
 end
 
 function M.complete(arglead, cmdline, cursorPos)
-  local bnum = vim.fn.bufnr('%')
-  local resp = vim.lsp.buf_request_sync( 0, 'workspace/executeCommand', { command = "gopls.list_known_packages", arguments = { { URI = vim.uri_from_bufnr(bnum) } } })
+  local bnum = api.nvim_get_current_buf()
+  local resp = vim.lsp.buf_request_sync(0, 'workspace/executeCommand', {
+    command = "gopls.list_known_packages",
+    arguments = { { URI = vim.uri_from_bufnr(bnum) } }
+  })
   local pkgs = resp[1].result.Packages
   return table.concat(pkgs, "\n")
 end

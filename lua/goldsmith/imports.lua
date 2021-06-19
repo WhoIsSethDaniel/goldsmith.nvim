@@ -1,6 +1,10 @@
 local M = {}
 
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
+-- It is different in that this version supports multiple language servers (but only one will
+-- be able to fulfill the request -- presumedly gopls). e.g. if you are running EFM + gopls both
+-- servers will respond to the codeAction request, but only gopls will return a non-empty response.
+-- The code is similar to the codeAction handler defined lua/vim/lsp/handlers.lua.
 function M.goimports(timeout_ms)
   local context = { source = { organizeImports = true } }
   vim.validate { context = { context, "t", true } }
@@ -10,11 +14,23 @@ function M.goimports(timeout_ms)
 
   -- See the implementation of the textDocument/codeAction callback
   -- (lua/vim/lsp/handler.lua) for how to do this properly.
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-  if not result or next(result) == nil then
+  local results = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params,
+                                          timeout_ms)
+  if not results or next(results) == nil then
     return
   end
-  local actions = result[1].result
+
+  local actions = false
+  for _, result in pairs(results) do
+    if not vim.tbl_isempty(result) then
+      actions = result.result
+      if actions and not vim.tbl_isempty(actions) then
+        break
+      else
+        actions = false
+      end
+    end
+  end
   if not actions then
     return
   end

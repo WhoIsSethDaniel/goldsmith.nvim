@@ -18,9 +18,9 @@ nnoremap <silent> <Plug>(goldsmith-function-loclist-open) <cmd>lua require'golds
 
 command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require('goldsmith.godoc').view(<f-args>)
 
-augroup goldsmith-ft-go
-autocmd! * <buffer>
-autocmd BufWritePre <buffer> lua require'goldsmith.imports'.goimports(1000)
+augroup goldsmith_ft_go
+  autocmd! * <buffer>
+  autocmd BufWritePre <buffer> lua require'goldsmith.imports'.goimports(1000)
 augroup END
 
 let &cpo = s:cpo_save
