@@ -1,5 +1,6 @@
-local uv = require 'luv'
 local api = vim.api
+local buffer = require'goldsmith.buffer'
+local lsp_util = require'goldsmith.lsp.utils'
 
 local M = { buf_nr = -1 }
 
@@ -22,12 +23,18 @@ local function godoc(...)
 end
 
 function M.complete(arglead, cmdline, cursorPos)
-  local bnum = api.nvim_get_current_buf()
-  local resp = vim.lsp.buf_request_sync(0, 'workspace/executeCommand', {
+  local bnum = buffer.get_valid_buffer() or api.nvim_get_current_buf()
+  local resp = vim.lsp.buf_request_sync(bnum, 'workspace/executeCommand', {
     command = "gopls.list_known_packages",
     arguments = { { URI = vim.uri_from_bufnr(bnum) } }
   })
-  local pkgs = resp[1].result.Packages
+  local pkgs
+  for _, response in pairs(resp) do
+    if response.result ~= nil then
+      pkgs = response.result.Packages
+      break
+    end
+  end
   return table.concat(pkgs, "\n")
 end
 

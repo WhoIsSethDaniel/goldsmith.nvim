@@ -66,8 +66,7 @@ VimScript, but have never made a dedicated package I wished to share.
 * linting / formatting
     * provide efm configs for
         * golines
-        * revive
-        * other linters / formatters not supported by gopls
+        * other linters / formatters not supported by gopls?
     * provide better / different gopls configuration/s w/ lspconfig
 * lsp command support?
     * https://github.com/golang/tools/blob/master/gopls/doc/commands.md
@@ -75,4 +74,5 @@ VimScript, but have never made a dedicated package I wished to share.
     * vim.lsp.buf.execute_command() maybe?
 * treesitter text objects?
 * go.mod editing
+* perhaps go.work support (https://github.com/golang/go/issues/45713)
 * many other things

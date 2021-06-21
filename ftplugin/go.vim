@@ -10,6 +10,8 @@ function s:GoDocComplete(A,C,P) abort
 	return luaeval("require'goldsmith.godoc'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
+" lua require'goldsmith.buffer'.buffer_checkin()
+
 " treesitter-based navigation
 nnoremap <silent> <Plug>(goldsmith-next-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_next_function()<CR> 
 nnoremap <silent> <Plug>(goldsmith-prev-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_prev_function()<CR> 
@@ -21,6 +23,7 @@ command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require('goldsmith.
 augroup goldsmith_ft_go
   autocmd! * <buffer>
   autocmd BufWritePre <buffer> lua require'goldsmith.imports'.goimports(1000)
+  autocmd BufEnter <buffer> lua require'goldsmith.buffer'.buffer_checkin()
 augroup END
 
 let &cpo = s:cpo_save
