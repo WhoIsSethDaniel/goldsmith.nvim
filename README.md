@@ -4,6 +4,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 
 ## Features
 * :GoDoc command (see below)
+    * package name completion
 * auto-run goimports upon save via gopls
 * navigation
     * jump to next/previous function/method. Utilizes treesitter.
@@ -26,6 +27,15 @@ view all documentation for the 'fmt' package
 view the source code for the 'fmt' package
 :GoDoc -src fmt
 ```
+You can use tab completion when typing the name of the package to view documentation for. e.g.:
+```
+:GoDoc <tab>
+```
+will show all available packages, and
+```
+:GoDoc f<tab>
+```
+will show all available packages that begin with the letter 'f'.
 
 ## Mappings
 

@@ -1,6 +1,6 @@
 local api = vim.api
 
--- 'current' is simply the most recent 'go' buffer to be created
+-- 'current' is simply the most recent 'go' buffer to have been used
 local M = {
   all = {}
 }
