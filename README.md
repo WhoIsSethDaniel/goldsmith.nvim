@@ -2,7 +2,7 @@
 
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
-## Features
+## Features / TODO
 - [X] goimports
     - [X] run automatically upon save with gopls
     - [ ] GoImport - manually run goimports
