@@ -86,3 +86,7 @@ VimScript, but have never made a dedicated package I wished to share.
 * go.mod editing
 * perhaps go.work support (https://github.com/golang/go/issues/45713)
 * many other things
+
+## Similar Projects
+* [go.nvim](https://github.com/ray-x/go.nvim)
+* [nvim-go](https://github.com/crispgm/nvim-go)
