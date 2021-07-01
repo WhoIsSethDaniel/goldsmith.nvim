@@ -3,12 +3,46 @@
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
 ## Features
-* :GoDoc command (see below)
-    * package name completion
-* auto-run goimports upon save via gopls
-* navigation
-    * jump to next/previous function/method. Utilizes treesitter.
-    * place all functions/method in the location list and use it for navigation. Utilizes treesitter.
+- [X] goimports
+    - [X] run automatically upon save with gopls
+    - [ ] GoImport - manually run goimports
+    - [ ] provide efm as alternate to gopls
+- [X] navigation
+    - [X] jump to next/previous function/method. Utilizes treesitter.
+    - [X] place all functions/method in the location list and use it for navigation. Utilizes treesitter.
+- [X] GoDoc - for viewing installed documentation
+    - [X] package name completion
+    - [ ] floating window support
+    - [ ] keyword support (a better 'K')
+    - [ ] retrieve documentation for individual functions/methods
+- [ ] GoBuild / GoRun - build / run packages
+- [ ] GoGet - run go get
+- [ ] GoInstall - run go install
+- [ ] GoLint - for manually running linters (via efm)
+- [ ] GoInstallBinaries - install all needed 3rd-party tools
+- testing support
+    - [ ] GoTest - wrappers around vim-test? or vim-ultest?
+    - [ ] use `gotests` to generate skeleton testing file
+- [ ] build tag editing
+- [ ] structs
+    - [ ] field tag editing (gomodifytags)
+    - [ ] field filling
+- [ ] generate code documentation
+- [ ] vim doc
+- [ ] LSP config related
+    - [ ] auto config of efm and gopls
+    - [ ] linting / formatting
+        - [ ] provide efm configs for
+            - [ ] golines
+            * other linters / formatters not supported by gopls?
+        - [ ] provide better / different gopls configuration/s w/ lspconfig
+- [ ] treesitter text objects
+- [ ] go.mod 
+    - [ ] editing (such as replace etc...)
+    - [ ] tidy
+    - [ ] downloading
+- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
+...other stuff...?
 
 ## Commands
 To view documentation in a window use GoDoc:
@@ -65,27 +99,6 @@ This will open help pages in a vertical window.
 Written in Lua so it only works with NeoVim. This is meant to be both useful (to me, at least) and to work as a testbed
 for working with Lua in NeoVim. This is the first thing I have ever written using Lua. I have written a fair amount of
 VimScript, but have never made a dedicated package I wished to share.
-
-## TODO
-* documentation
-    * floating window support
-    * keyword support
-    * retrieve documentation for individual functions/methods
-    * vendor dir support for completion
-    * LSP support
-* linting / formatting
-    * provide efm configs for
-        * golines
-        * other linters / formatters not supported by gopls?
-    * provide better / different gopls configuration/s w/ lspconfig
-* lsp command support?
-    * https://github.com/golang/tools/blob/master/gopls/doc/commands.md
-    * https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand 
-    * vim.lsp.buf.execute_command() maybe?
-* treesitter text objects?
-* go.mod editing
-* perhaps go.work support (https://github.com/golang/go/issues/45713)
-* many other things
 
 ## Similar Projects
 * [go.nvim](https://github.com/ray-x/go.nvim)
