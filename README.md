@@ -42,7 +42,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] tidy
     - [ ] downloading
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
-...other stuff...?
 
 ## Commands
 To view documentation in a window use GoDoc:
