@@ -26,9 +26,14 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] build tag editing
 - [ ] structs
     - [ ] field tag editing (gomodifytags)
-    - [ ] field filling
+    - [ ] field filling (see fillstruct)
+    - [ ] other tools (maybe un-needed due to gopls?)
+        - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
+        - [ ] fillstruct (fills a struct with defaults (zero values))
 - [ ] generate code documentation
-- [ ] vim doc
+- [ ] documentation
+    - [ ] vim doc
+    - [ ] list of all needed/supported [n]vim plugins
 - [ ] LSP config related
     - [ ] auto config of efm and gopls
     - [ ] linting / formatting
