@@ -20,7 +20,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] GoInstall - run go install
 - [ ] GoLint - for manually running linters (via efm)
 - [ ] GoInstallBinaries - install all needed 3rd-party tools
-- testing support
+- [ ] testing support
     - [ ] GoTest - wrappers around vim-test? or vim-ultest?
     - [ ] use `gotests` to generate skeleton testing file
 - [ ] build tag editing
@@ -34,7 +34,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] linting / formatting
         - [ ] provide efm configs for
             - [ ] golines
-            * other linters / formatters not supported by gopls?
+            - [ ] other linters / formatters not supported by gopls?
         - [ ] provide better / different gopls configuration/s w/ lspconfig
 - [ ] treesitter text objects
 - [ ] go.mod 
