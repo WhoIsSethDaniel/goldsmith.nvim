@@ -3,19 +3,21 @@
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
 ## Features / TODO
-- [X] goimports
-    - [X] run automatically upon save with gopls
-    - [ ] GoImport - manually run goimports
-    - [ ] provide efm as alternate to gopls
-- [X] navigation
-    - [X] jump to next/previous function/method. Utilizes treesitter.
-    - [X] place all functions/method in the location list and use it for navigation. Utilizes treesitter.
-- [X] GoDoc - for viewing installed documentation
-    - [X] package name completion
+- [x] goimports
+    - [x] run automatically upon save with gopls
+- [x] treesitter navigation - uses nvim-treesitter-textobjects
+    - [x] jump to next/previous function/method.
+- [x] GoDoc - for viewing installed documentation
+    - [x] package name completion
     - [ ] floating window support
     - [ ] keyword support (a better 'K')
     - [ ] retrieve documentation for individual functions/methods
+- [x] treesitter text objects - uses nvim-treesitter-textobjects
+    - [x] function (af/if)
+    - [x] comment (ac)
+- [ ] GoImport - manually run goimports (via gopls)
 - [ ] GoBuild / GoRun - build / run packages
+- [ ] GoFormat - manually run formatter(s)
 - [ ] GoGet - run go get
 - [ ] GoInstall - run go install
 - [ ] GoLint - for manually running linters (via efm)
@@ -39,9 +41,11 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] linting / formatting
         - [ ] provide efm configs for
             - [ ] golines
+            - [ ] revive
             - [ ] other linters / formatters not supported by gopls?
         - [ ] provide better / different gopls configuration/s w/ lspconfig
-- [ ] treesitter text objects
+- [ ] workspaces / multiple workspaces
+- [ ] checkhealth
 - [ ] go.mod 
     - [ ] editing (such as replace etc...)
     - [ ] tidy
