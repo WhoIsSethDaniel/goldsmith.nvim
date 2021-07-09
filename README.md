@@ -15,9 +15,10 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] treesitter text objects - uses nvim-treesitter-textobjects
     - [x] function (af/if)
     - [x] comment (ac)
-- [ ] GoImport - manually run goimports (via gopls)
-- [ ] GoBuild / GoRun - build / run packages
-- [ ] GoFormat - manually run formatter(s)
+- [x] GoImports - manually run goimports (via gopls)
+- [ ] GoBuild  - go build
+- [ ] GoRun - go run
+- [x] GoFormat - manually run formatter(s)
 - [ ] GoGet - run go get
 - [ ] GoInstall - run go install
 - [ ] GoLint - for manually running linters (via efm)
@@ -32,7 +33,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] other tools (maybe un-needed due to gopls?)
         - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
         - [ ] fillstruct (fills a struct with defaults (zero values))
-- [ ] generate code documentation
+- [ ] generate skeleton code documentation
 - [ ] documentation
     - [ ] vim doc
     - [ ] list of all needed/supported [n]vim plugins

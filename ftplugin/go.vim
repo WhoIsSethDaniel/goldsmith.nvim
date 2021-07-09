@@ -17,10 +17,14 @@ nnoremap <silent> <Plug>(goldsmith-function-loclist) <cmd>lua require'goldsmith.
 nnoremap <silent> <Plug>(goldsmith-function-loclist-open) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(true)<CR> 
 
 command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require('goldsmith.godoc').view(<f-args>)
+command! -nargs=0 GoImports lua require'goldsmith.imports'.run_imports(1)
+command! -nargs=0 GoFormat lua vim.lsp.buf.formatting_seq_sync()
+
+lua require'goldsmith.config.treesitter-textobjects'.setup()
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
-  autocmd BufWritePre <buffer> lua require'goldsmith.imports'.goimports(1000)
+  autocmd BufWritePre <buffer> lua require'goldsmith.imports'.run_imports(0)
   autocmd BufEnter    <buffer> lua require'goldsmith.buffer'.buffer_checkin()
 augroup END
 

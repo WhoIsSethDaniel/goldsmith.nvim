@@ -1,5 +1,18 @@
 local M = {}
 
+function M.run_imports(uncond)
+  local import_to = vim.g.goldsmith_goimports_timeout or 1000
+  if uncond == 1 then
+    M.goimports(import_to)
+    return
+  end
+
+  local run_go_imports = vim.g.goldsmith_goimports_autorun
+  if run_go_imports then
+    M.goimports(import_to)
+  end
+end
+
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
 -- It is different in that this version supports multiple language servers (but only one will
 -- be able to fulfill the request -- presumedly gopls). i.e. if you are running EFM + gopls both
