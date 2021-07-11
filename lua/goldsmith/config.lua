@@ -8,6 +8,10 @@ local config = {
 		run_on_save = true,
 		timeout = 1000,
 	},
+	terminal = {
+		pos = "right",
+		focus = false,
+	},
 }
 
 function M.setup(user_config)

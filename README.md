@@ -27,7 +27,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] vim doc
     - [x] list of all needed/supported [n]vim plugins
 - [ ] testing support
-    - [ ] GoTest / GoTestFunc - wrappers around vim-test? or vim-ultest?
+    - [x] GoTest 
+    - [ ] GoTestFunc 
+    - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
 - [ ] build tag editing
 - [ ] structs
@@ -59,8 +61,7 @@ for working with Lua in NeoVim. This is the first thing I have ever written usin
 VimScript, but have never made a dedicated package I wished to share.
 
 ## Documentation
-Please see the documentation [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for
-much more information.
+Please see the documentation [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for much more information.
 
 ## Similar Projects
 * [go.nvim](https://github.com/ray-x/go.nvim)

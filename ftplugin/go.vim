@@ -17,6 +17,7 @@ command! -nargs=* GoBuild lua require'goldsmith.cmds.build'.run(<f-args>)
 command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run(<f-args>)
 command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run(<f-args>)
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run(<f-args>)
+command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
 
 lua require'goldsmith.configs.treesitter-textobjects'.setup()
 
