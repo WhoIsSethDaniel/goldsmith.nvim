@@ -53,61 +53,14 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] downloading
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
 
-## Commands
-To view documentation in a window use GoDoc:
-```vim
-:GoDoc [opts] <doc> 
-```
-e.g. 
-```vim
-view documentation for the 'fmt' package
-:GoDoc fmt
-
-use any option you can pass to 'go doc'
-view all documentation for the 'fmt' package
-:GoDoc -all fmt
-
-view the source code for the 'fmt' package
-:GoDoc -src fmt
-```
-You can use tab completion when typing the name of the package to view documentation for. e.g.:
-```
-:GoDoc <tab>
-```
-will show all available packages, and
-```
-:GoDoc f<tab>
-```
-will show all available packages that begin with the letter 'f'.
-
-## Mappings
-
-### Navigation
-You can map jumping to the next/previous function/method. The following maps ]] to jump to the
-next function/method and [[ to jump to the previous function/method:
-```lua
-vim.api.nvim_set_keymap('n', ']]', '<Plug>(goldsmith-next-function)', { silent = true })
-vim.api.nvim_set_keymap('n', '[[', '<Plug>(goldsmith-prev-function)', { silent = true })
-```
-You can also navigate from function to function (or method) using the location list:
-```lua
-vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>(goldsmith-func-loclist)', { silent = true })
-vim.api.nvim_set_keymap('n', '<leader>flo', '<Plug>(goldsmith-func-loclist-open)', { silent = true })
-```
-For goldsmith-func-loclist you will need to open the location list afterwards.  For goldsmith-func-loclist-open
-the location list will automatically open if there are any entries in the list.
-
-## Configuration
-By default help pages are open in a horizontal window. One way to change this is to set
-```vim
-let g:goldsmith_open_split = 'vertical'
-```
-This will open help pages in a vertical window.
-
 ## Details
 Written in Lua so it only works with NeoVim. This is meant to be both useful (to me, at least) and to work as a testbed
 for working with Lua in NeoVim. This is the first thing I have ever written using Lua. I have written a fair amount of
 VimScript, but have never made a dedicated package I wished to share.
+
+## Documentation
+Please see the documentation [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for
+much more information.
 
 ## Similar Projects
 * [go.nvim](https://github.com/ray-x/go.nvim)
