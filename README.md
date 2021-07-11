@@ -5,9 +5,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 ## Features / TODO
 - [x] goimports
     - [x] run automatically upon save with gopls
-- [x] treesitter navigation - uses nvim-treesitter-textobjects
+- [x] treesitter navigation - uses [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     - [x] jump to next/previous function/method
-- [x] treesitter text objects - uses nvim-treesitter-textobjects
+- [x] treesitter text objects - uses [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
     - [x] function (af/if)
     - [x] comment (ac)
 - [x] GoDoc - for viewing installed documentation
