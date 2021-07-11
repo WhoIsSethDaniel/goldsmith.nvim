@@ -1,0 +1,210 @@
+*goldsmith.txt* Go development plugin for Neovim
+*goldsmith*
+
+WARNING: Goldsmith is still in very early stages and may not work as intended
+>
+                    __    __               _ __  __  
+       ____ _____  / /___/ /________ ___  (_) /_/ /_ 
+      / __ `/ __ \/ / __  / ___/ __ `__ \/ / __/ __ \
+     / /_/ / /_/ / / /_/ (__  ) / / / / / / /_/ / / /
+     \__, /\____/_/\__,_/____/_/ /_/ /_/_/\__/_/ /_/ 
+    /____/
+
+CONTENTS                                                         *goldsmith-contents*
+
+  0. Intro........................................|goldsmith-intro|
+  1. Requirements.................................|goldsmith-requirements|
+  2. Features.....................................|goldsmith-features|
+  3. Supported Plugins............................|goldsmith-supported-plugins|
+  4. Commands.....................................|goldsmith-commands|
+  5. Mappings.....................................|goldsmith-mappings|
+  6. Text Objects.................................|goldsmith-text-objects|
+  7. Functions....................................|goldsmith-functions|
+  8. Configuration................................|goldsmith-configuration|
+  9. Resources....................................|goldsmith-resources|
+
+==============================================================================
+INTRO                                                            *goldsmith-intro*
+
+Goldsmith provides a Go development environment for Neovim using native Neovim 
+features and Neovim plugins, where possible.
+
+One goal is to support as many best-in-class plugins as possible. Support will 
+include optional auto-configuration of these plugins to provide reasonable 
+defaults for Go development.
+
+Another goal is to take advantage of the many new features of Neovim 0.5.0.
+Primarily this includes the built-in Language Server Protocol (LSP) client, 
+and the integration of Tree-sitter.
+
+==============================================================================
+REQUIREMENTS                                                     *goldsmith-requirements*
+
+Goldsmith requires at least Neovim 0.5.0. You can run `nvim --version` to see
+what version of Neovim you have.
+
+It also requires some plugins. See the |goldsmith-supported-plugins| section 
+for more information about that.
+
+==============================================================================
+FEATURES                                                         *goldsmith-features*
+
+Features currently included:
+* automatically run goimports on save
+* treesitter navigation utilizing the nvim-treesitter-textobjects plugin
+* treesitter text objects utilizing the nvim-treesitter-textobjects plugin
+* view Go documentation using the :GoDoc command
+* manually update imports using the :GoImport command
+* all the following commands are asynchronous thanks to the asyncrun plugin
+    * build your project using :GoBuild 
+    * run your main package using :GoRun
+    * fetch new Go libraries using :GoGet
+    * install new Go tools using :GoInstall
+    * format your code on demand using :GoFormat
+
+More features are coming. See the TODO list in the project README on github.
+
+==============================================================================
+SUPPORTED PLUGINS                                                *goldsmith-supported-plugins*
+
+A list of plugins that are either required or optional, but all are supported
+in some way by Goldsmith. See the |goldsmith-resources| section below for links
+to each plugin mentioned.
+
+Required
+* nvim-lspconfig
+  Configure gopls and efm-langserver
+* nvim-treesitter
+  For syntax highlighting, folding, and indentation
+* asyncrun
+  Most commands are asynchronous and that required asyncrun
+
+Optional
+* nvim-treesitter-textobjects
+  Needed if you want treesitter textobjects and treesitter navigation
+
+==============================================================================
+COMMANDS                                                         *goldsmith-commands*
+
+                                                        *:GoDoc*
+:GoDoc [package]
+
+View the documentation for the given package. Takes the same arguments as
+`go doc`. e.g.:
+:GoDoc -all fmt
+
+                                                        *:GoBuild*
+:GoBuild [args]
+
+Run `go build` in the current working directory. Takes the same arguments
+as `go build`. e.g.:
+:GoBuild -race
+  
+                                                        *:GoRun*
+:GoRun [args]
+
+Run `go run` in the current working directory. Takes the same arguments
+as `go run`. e.g., the following runs the main package in the current directory:
+:GoRun .
+ 
+                                                        *:GoGet*
+:GoGet [packages]
+
+Run `go get` to add new libraries to use. Takes the same arguments as
+`go get`.
+
+                                                        *:GoInstall*
+:GoInstall [tools]
+
+Run `go install` to add new tools to use. Takes the same arguments as
+`go install`.
+
+                                                        *:GoFormat*
+:GoFormat
+
+Tell gopls and efm-langserver to format the current Go buffer immediately.
+
+==============================================================================
+MAPPINGS                                                         *goldsmith-mappings*
+
+Currently no mappings are defined.
+
+==============================================================================
+TEXT OBJECTS                                                     *goldsmith-text-objects*
+
+Goldsmith defines a few text objects using the nvim-treesitter-textobjects plugin.
+
+                                               *goldsmith-v_af* *goldsmith-af*
+af            "a function", select contents from a function definition to the
+               closing bracket.
+
+                                               *goldsmith-v_if* *goldsmith-if*
+if            "inside a function", select contents of a function,
+              excluding the function definition and the closing bracket. This
+              text-object also supports literal functions
+
+                                               *goldsmith-v_ac* *goldsmith-ac*
+ac            "a comment", select contents of the current comment block.
+
+Goldsmith also defines the following text motion objects using the 
+nvim-treesitter-textobjects plugin.
+
+                                                         *goldsmith-]]*
+]]            Move forward to the next defined function.            
+
+                                                         *goldsmith-[[*
+[[            Move backward to the previously defined function.
+
+==============================================================================
+FUNCTIONS                                                       *goldsmith-functions*
+
+Currently no functions are defined.
+
+==============================================================================
+CONFIGURATION                                                   *goldsmith-configuration*
+
+You can use all the defaults by placing the following in your configuration:
+>
+    require("goldsmith.config").setup()
+<
+
+A configuration that sets all settings to the defaults:
+>
+    require("goldsmith.config").setup({
+        godoc = {
+            open_split = "vertical",
+        },
+        goimports = {
+            run_on_save = true,
+            timeout = 1000,
+        },
+    })
+<
+
+All Current Settings
+
+godoc.open_split                                         *goldsmith-godoc.open_split*
+
+Orientation of the documentation split when you run :GoDoc. Valid values are 
+"veritcal" and "horizontal".
+Default: vertical
+
+goimports.run_on_save                                    *goldsmith-goimports.run_on_save*
+
+When you save Go program source have gopls run 'goimports' to arrange and fix 
+the import section.
+Default: true
+
+goimports.timeout                                        *goldsmith-goimports.timeout*
+
+How long to wait for a response from gopls when requesting that goimports be 
+run. The units are milliseconds, so 1000 = 1 second.
+Default: 1000
+
+==============================================================================
+RESOURCES                                                        *goldsmith-resources*
+* supported plugins:
+  `asyncrun`                      https://github.com/skywind3000/asyncrun.vim
+  `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
+  `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
+  `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects

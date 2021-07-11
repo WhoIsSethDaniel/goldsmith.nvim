@@ -14,5 +14,3 @@ function M.get_client_named(name)
 end
 
 return M
-
-

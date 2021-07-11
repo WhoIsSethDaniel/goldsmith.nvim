@@ -1,13 +1,15 @@
+local config = require'goldsmith.config'
+
 local M = {}
 
-function M.run_imports(uncond)
-  local import_to = vim.g.goldsmith_goimports_timeout or 1000
+function M.run(uncond)
+  local import_to = config.get('goimports').timeout
   if uncond == 1 then
     M.goimports(import_to)
     return
   end
 
-  local run_go_imports = vim.g.goldsmith_goimports_autorun
+  local run_go_imports = config.get('goimports').run_on_save
   if run_go_imports then
     M.goimports(import_to)
   end

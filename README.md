@@ -6,25 +6,28 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] goimports
     - [x] run automatically upon save with gopls
 - [x] treesitter navigation - uses nvim-treesitter-textobjects
-    - [x] jump to next/previous function/method.
-- [x] GoDoc - for viewing installed documentation
-    - [x] package name completion
-    - [ ] floating window support
-    - [ ] keyword support (a better 'K')
-    - [ ] retrieve documentation for individual functions/methods
+    - [x] jump to next/previous function/method
 - [x] treesitter text objects - uses nvim-treesitter-textobjects
     - [x] function (af/if)
     - [x] comment (ac)
+- [x] GoDoc - for viewing installed documentation
+    - [x] package name completion
+    - [ ] floating window support
+    - [ ] keyword support (a better 'K'?)
+    - [ ] retrieve documentation for individual functions/methods
 - [x] GoImports - manually run goimports (via gopls)
-- [ ] GoBuild  - go build
-- [ ] GoRun - go run
+- [x] GoBuild  - go build - requires [asyncrun](https://github.com/skywind3000/asyncrun.vim)
+- [x] GoRun - go run - requires [asyncrun](https://github.com/skywind3000/asyncrun.vim)
 - [x] GoFormat - manually run formatter(s)
-- [ ] GoGet - run go get
-- [ ] GoInstall - run go install
+- [x] GoGet - run go get
+- [x] GoInstall - run go install
 - [ ] GoLint - for manually running linters (via efm)
 - [ ] GoInstallBinaries - install all needed 3rd-party tools
+- [x] plugin documentation
+    - [x] vim doc
+    - [x] list of all needed/supported [n]vim plugins
 - [ ] testing support
-    - [ ] GoTest - wrappers around vim-test? or vim-ultest?
+    - [ ] GoTest / GoTestFunc - wrappers around vim-test? or vim-ultest?
     - [ ] use `gotests` to generate skeleton testing file
 - [ ] build tag editing
 - [ ] structs
@@ -34,9 +37,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
         - [ ] fillstruct (fills a struct with defaults (zero values))
 - [ ] generate skeleton code documentation
-- [ ] documentation
-    - [ ] vim doc
-    - [ ] list of all needed/supported [n]vim plugins
 - [ ] LSP config related
     - [ ] auto config of efm and gopls
     - [ ] linting / formatting

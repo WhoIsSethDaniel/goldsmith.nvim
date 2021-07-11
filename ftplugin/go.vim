@@ -7,25 +7,23 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 function s:GoDocComplete(A,C,P) abort
-	return luaeval("require'goldsmith.godoc'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+	return luaeval("require'goldsmith.cmds.doc'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
-" treesitter-based navigation
-nnoremap <silent> <Plug>(goldsmith-next-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_next_function()<CR> 
-nnoremap <silent> <Plug>(goldsmith-prev-function) <cmd>lua require'goldsmith.treesitter.navigate'.goto_prev_function()<CR> 
-nnoremap <silent> <Plug>(goldsmith-function-loclist) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(false)<CR> 
-nnoremap <silent> <Plug>(goldsmith-function-loclist-open) <cmd>lua require'goldsmith.treesitter.navigate'.put_functions_in_list(true)<CR> 
+command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run(<f-args>)
+command! -nargs=0 GoImports lua require'goldsmith.cmds.imports'.run(1)
+command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run()
+command! -nargs=* GoBuild lua require'goldsmith.cmds.build'.run(<f-args>)
+command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run(<f-args>)
+command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run(<f-args>)
+command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run(<f-args>)
 
-command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require('goldsmith.godoc').view(<f-args>)
-command! -nargs=0 GoImports lua require'goldsmith.imports'.run_imports(1)
-command! -nargs=0 GoFormat lua vim.lsp.buf.formatting_seq_sync()
-
-lua require'goldsmith.config.treesitter-textobjects'.setup()
+lua require'goldsmith.configs.treesitter-textobjects'.setup()
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
-  autocmd BufWritePre <buffer> lua require'goldsmith.imports'.run_imports(0)
-  autocmd BufEnter    <buffer> lua require'goldsmith.buffer'.buffer_checkin()
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.imports'.run(0)
+  autocmd BufEnter    <buffer> lua require'goldsmith.buffer'.checkin()
 augroup END
 
 let &cpo = s:cpo_save

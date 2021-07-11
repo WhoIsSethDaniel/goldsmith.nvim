@@ -1,6 +1,7 @@
 local api = vim.api
 local buffer = require'goldsmith.buffer'
 local lsp_util = require'goldsmith.lsp.utils'
+local config = require'goldsmith.config'
 
 local M = { buf_nr = -1 }
 
@@ -38,12 +39,12 @@ function M.complete(arglead, cmdline, cursorPos)
   return table.concat(pkgs, "\n")
 end
 
-function M.view(...)
+function M.run(...)
   local doc = godoc(...)
 
   local open_split = 'split'
   local open_new = 'new'
-  if vim.g.goldsmith_open_split == 'vertical' then
+  if config.get('godoc').open_split == 'vertical' then
     open_new = 'vnew'
     open_split = 'vsplit'
   end

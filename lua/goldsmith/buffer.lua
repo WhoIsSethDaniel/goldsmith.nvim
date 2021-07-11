@@ -5,7 +5,7 @@ local M = {
   all = {}
 }
 
-function M.buffer_checkin()
+function M.checkin()
   M.current = api.nvim_get_current_buf()
   M.all[M.current] = M.current
 end
