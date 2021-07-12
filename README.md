@@ -33,7 +33,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] use `gotests` to generate skeleton testing file
 - [ ] build tag editing
 - [ ] structs
-    - [ ] field tag editing (gomodifytags)
+    - [x] field tag editing (gomodifytags)
     - [ ] other tools (maybe un-needed due to gopls?) (see lsp rewrite.refactor)
         - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
         - [ ] fillstruct (fills a struct with defaults (zero values))
