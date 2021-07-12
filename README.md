@@ -31,13 +31,10 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] GoTestFunc 
     - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
-- [ ] build tag editing
 - [ ] structs
     - [x] field tag editing (gomodifytags)
-    - [ ] other tools (maybe un-needed due to gopls?) (see lsp rewrite.refactor)
-        - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
-        - [ ] fillstruct (fills a struct with defaults (zero values))
-- [ ] generate skeleton code documentation
+    - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
+- [ ] checkhealth
 - [ ] LSP config related
     - [ ] auto config of efm and gopls
     - [ ] linting / formatting
@@ -46,12 +43,15 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
             - [ ] revive
             - [ ] other linters / formatters not supported by gopls?
         - [ ] provide better / different gopls configuration/s w/ lspconfig
-- [ ] workspaces / multiple workspaces
-- [ ] checkhealth
 - [ ] go.mod 
     - [ ] editing (such as replace etc...)
     - [ ] tidy
     - [ ] downloading
+- [ ] interesting tools
+    - [ ] fillswitch
+- [ ] generate skeleton code documentation
+- [ ] workspaces / multiple workspaces
+- [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
 
 ## Details
