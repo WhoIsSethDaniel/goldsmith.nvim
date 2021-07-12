@@ -12,6 +12,11 @@ local config = {
 		pos = "right",
 		focus = false,
 	},
+	tags = {
+		default_tag = "json",
+		transform = "snakecase",
+		skip_unexported = false
+	},
 }
 
 function M.setup(user_config)

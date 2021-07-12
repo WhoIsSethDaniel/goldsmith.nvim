@@ -108,6 +108,11 @@ A configuration that sets all settings to the defaults:
             pos = "right",
             focus = false,
         },
+		tags  = {
+			default_tag = "json",
+			transform = "snakecase",
+			skip_unexported = false
+		}
     })
 <
 
@@ -163,6 +168,23 @@ When using a pos that requires a horizontal split this value represents the
 height of the terminal.
 
 This sets this setting globally. You can also set it per-command.
+
+*tags.default_tag*                                    *goldsmith-tags.default_tag*
+
+Default: json
+When adding tags define what is the default tag if no tags are provided to 
+:GoAddTags.
+
+*tags.transform*                                        *goldsmith-tags.transform*
+
+Default: snakecase
+Apply the named transformation to the tag name. The available transformations are:
+'snakecase', 'camelcase', 'lispcase', 'pascalcase', and 'keep'.
+
+*tags.skip_unexported*                            *goldsmith-tags.skip_unexported*
+
+Default: false
+When applying tags skip any fields that are unexported. It is a boolean value.
 
 ===============================================================================
 PER-COMMAND SETTINGS                           *goldsmith-settings-per-command*
@@ -233,6 +255,47 @@ Tell gopls and efm-langserver to format the current Go buffer immediately.
 Run `go test` in the current working directory. Takes the same arguments as
 `go test`. 
 
+                                                                    *:GoAddTags*
+:[range]GoAddTags [key[,option]] [key[,option]] ...
+
+Add tags and options to structs. By default will be applied to the struct the
+cursor is in at the time the command is run. It will also work on a visually
+selected set of lines, or on a given range. e.g.
+>
+	:10,20GoAddTags 
+<
+will add the default tag (typically `json`, but see |goldsmith-tags.default_tag|)
+to all struct fields from line 10 to line 20.
+>
+	:GoAddTags json,omitempty
+< 
+will add the `json` tag along with the `omitempty` option to all fields in the
+current struct.
+
+Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
+for where this tool is located.
+                                                                 *:GoRemoveTags*
+:[range]GoRemoveTags [key[,option]] [key[,option]] ...
+
+Remove tags and options from structs. By default will be applied to the struct 
+the cursor is in at the time the command is run. It will also work on a visually
+selected set of lines, or on a given range. e.g.
+>
+	:10,20GoRemoveTags 
+<
+will remove all tags from all struct fields from line 10 to line 20.
+>
+	:GoRemoveTags json,omitempty
+<
+will remove the `omitempty` option from all `json` tagged fields.
+>
+	:GoRemoveTags json
+<
+will completely remove all `json` tags.
+
+Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
+for where this tool is located.
+
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
@@ -276,3 +339,5 @@ RESOURCES                                                  *goldsmith-resources*
   `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+* required 3rd-party tools
+  `gomodifytags`                  https://github.com/fatih/gomodifytags
