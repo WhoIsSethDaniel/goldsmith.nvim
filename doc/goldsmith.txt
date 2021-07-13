@@ -273,7 +273,7 @@ will add the `json` tag along with the `omitempty` option to all fields in the
 current struct.
 
 Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
-for where this tool is located.
+for where this tool can be found.
                                                                  *:GoRemoveTags*
 :[range]GoRemoveTags [key[,option]] [key[,option]] ...
 
@@ -294,7 +294,7 @@ will remove the `omitempty` option from all `json` tagged fields.
 will completely remove all `json` tags.
 
 Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
-for where this tool is located.
+for where this tool can be found.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*

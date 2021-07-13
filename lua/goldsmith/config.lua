@@ -1,6 +1,6 @@
 local M = {}
 
-local config = {
+local CONFIG = {
 	godoc = {
 		open_split = "vertical",
 	},
@@ -15,20 +15,39 @@ local config = {
 	tags = {
 		default_tag = "json",
 		transform = "snakecase",
-		skip_unexported = false
+		skip_unexported = false,
 	},
 }
 
+local TOOLS = {
+	gomodifytags = {
+		location = "github.com/fatih/gomodifytags",
+		tag = "latest",
+	}
+}
+
+function M.tool_info()
+	return TOOLS
+end
+
+function M.tool_names()
+	local names = {}
+	for k, _ in pairs(TOOLS) do
+		table.insert(names, k)
+	end
+	return names
+end
+
 function M.setup(user_config)
-	config = vim.tbl_deep_extend("force", config, user_config)
+	CONFIG = vim.tbl_deep_extend("force", CONFIG, user_config)
 end
 
 function M.get(key)
-	return config[key]
+	return CONFIG[key]
 end
 
 function M.dump()
-	print(vim.inspect(config))
+	print(vim.inspect(CONFIG))
 end
 
 return M

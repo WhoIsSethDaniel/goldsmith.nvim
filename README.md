@@ -31,10 +31,11 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] GoTestFunc 
     - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
-- [ ] structs
+- [x] structs
     - [x] field tag editing (gomodifytags)
-    - [ ] keyify (turns un-keyed struct literals to keyed struct literals)
 - [ ] checkhealth
+- [ ] LSP related
+    - [ ] code actions require prompt when only 1 action. add config to fix this.
 - [ ] LSP config related
     - [ ] auto config of efm and gopls
     - [ ] linting / formatting
