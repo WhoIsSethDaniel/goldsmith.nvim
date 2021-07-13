@@ -18,12 +18,11 @@ CONTENTS                                                    *goldsmith-contents*
   3. Supported Plugins............................|goldsmith-supported-plugins|
   4. Configuration................................|goldsmith-configuration|
   5. Settings.....................................|goldsmith-settings|
-  6. Per-Command Settings.........................|goldsmith-settings-per-command|
-  7. Commands.....................................|goldsmith-commands|
-  8. Mappings.....................................|goldsmith-mappings|
-  9. Text Objects.................................|goldsmith-text-objects|
- 10. Functions....................................|goldsmith-functions|
- 11. Resources....................................|goldsmith-resources|
+  6. Commands.....................................|goldsmith-commands|
+  7. Mappings.....................................|goldsmith-mappings|
+  8. Text Objects.................................|goldsmith-text-objects|
+  9. Functions....................................|goldsmith-functions|
+ 10. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -80,11 +79,12 @@ Required
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
 * asyncrun
-  Most commands are asynchronous and that required asyncrun
+  Many commands are asynchronous and they require asyncrun
 
 Optional
 * nvim-treesitter-textobjects
-  Needed if you want treesitter textobjects and treesitter navigation
+  Needed if you want treesitter textobjects and treesitter navigation. See
+  |goldsmith-text-objects|.
 
 ================================================================================
 CONFIGURATION                                          *goldsmith-configuration*
@@ -173,7 +173,7 @@ This sets this setting globally. You can also set it per-command.
 
 Default: json
 When adding tags define what is the default tag if no tags are provided to 
-:GoAddTags.
+|:GoAddTags|.
 
 *tags.transform*                                        *goldsmith-tags.transform*
 
@@ -186,7 +186,7 @@ Apply the named transformation to the tag name. The available transformations ar
 Default: false
 When applying tags skip any fields that are unexported. It is a boolean value.
 
-===============================================================================
+
 PER-COMMAND SETTINGS                           *goldsmith-settings-per-command*
 
 Some settings may be applied per-command. 
@@ -274,6 +274,7 @@ current struct.
 
 Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
 for where this tool can be found.
+
                                                                  *:GoRemoveTags*
 :[range]GoRemoveTags [key[,option]] [key[,option]] ...
 
@@ -287,14 +288,41 @@ will remove all tags from all struct fields from line 10 to line 20.
 >
 	:GoRemoveTags json,omitempty
 <
-will remove the `omitempty` option from all `json` tagged fields.
+will remove the `omitempty` option from all `json` tagged fields in the current 
+struct.
 >
 	:GoRemoveTags json
 <
-will completely remove all `json` tags.
+will completely remove all `json` tags in the current struct. This:
+>
+  	:GoRemoveTags
+<
+will remove all tags in the current struct or visual selection.
+
+To remove all tags in the entire document:
+>
+	:%GoRemoveTags
+<
+Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
+for where this tool can be found.
+
+                                                                  *:GoClearTags*
+:[range]GoClearTags
+
+Clear all tags in the current struct or the given range. 
+
+This is essentially an alias for |:GoRemoveTags| with no arguments.
 
 Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
 for where this tool can be found.
+
+                                                            *:GoInstallBinaries*
+:GoInstallBinaries [packages]
+
+Install many of the third-party tools that are needed by Goldsmith. By default 
+all required tools are installed. If you supply [packages] only those packages 
+that are specified will be installed. You can use tab-completion to select 
+which tools to install.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*

@@ -1,5 +1,5 @@
 local config = require("goldsmith.config")
-local async = require("goldsmith.async")
+local job = require("goldsmith.job")
 
 local M = {}
 
@@ -28,12 +28,11 @@ function M.run(...)
 		return
 	end
 	local tinfo = config.tool_info()
-	local cmds = ''
 	for _, name in ipairs(install) do
 		local info = tinfo[name]
-		cmds = string.format("go install %s@%s; %s", info.location, info.tag, cmds)
+		local cmd = string.format("go install %s@%s", info.location, info.tag)
+		job.run(name, cmd, {})
 	end
-	async.run(cmds, { focus = true, pos = 'right' }, { hidden = 1 })
 end
 
 return M

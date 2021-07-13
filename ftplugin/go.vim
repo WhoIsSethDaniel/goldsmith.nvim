@@ -28,6 +28,7 @@ command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run(<f-args>)
 command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
 command! -nargs=* -range GoAddTags call s:TagAction('add', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=* -range GoRemoveTags call s:TagAction('remove', <line1>, <line2>, <count>, <f-args>)
+command! -nargs=0 -range GoClearTags call s:TagAction('remove', <line1>, <line2>, <count>)
 
 lua require'goldsmith.configs.treesitter-textobjects'.setup()
 
