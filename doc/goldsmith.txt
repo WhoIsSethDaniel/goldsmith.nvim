@@ -22,7 +22,8 @@ CONTENTS                                                    *goldsmith-contents*
   7. Mappings.....................................|goldsmith-mappings|
   8. Text Objects.................................|goldsmith-text-objects|
   9. Functions....................................|goldsmith-functions|
- 10. Resources....................................|goldsmith-resources|
+ 10. Health Check.................................|goldsmith-healthcheck|
+ 11. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -46,6 +47,10 @@ what version of Neovim you have.
 
 It also requires some plugins. See the |goldsmith-supported-plugins| section 
 for more information about that.
+
+You can run `:checkhealth goldsmith` to see if you meet all the requirements and
+to see if you have anything missing. See |goldsmith-healthcheck| and 
+|goldsmith-supported-plugins| for more information.
 
 ================================================================================
 FEATURES                                                    *goldsmith-features*
@@ -85,6 +90,12 @@ Optional
 * nvim-treesitter-textobjects
   Needed if you want treesitter textobjects and treesitter navigation. See
   |goldsmith-text-objects|.
+* nvim-lspinstall
+  For installing language servers. i.e. gopls and efm-langserver
+* vim-test
+  For running tests
+* vim-ultest
+  For running tests, but fancier than vim-test
 
 ================================================================================
 CONFIGURATION                                          *goldsmith-configuration*
@@ -321,8 +332,11 @@ for where this tool can be found.
 
 Install many of the third-party tools that are needed by Goldsmith. By default 
 all required tools are installed. If you supply [packages] only those packages 
-that are specified will be installed. You can use tab-completion to select 
-which tools to install.
+that are specified will be installed. You can use tab-completion to select which
+tools to install.
+
+Running :GoInstallBinaries multiple times is fine. Each time it is run it will
+attempt to build and install each tool, updating the tool, if needed.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
@@ -361,11 +375,33 @@ FUNCTIONS                                                  *goldsmith-functions*
 Currently no functions are defined.
 
 ================================================================================
+HEALTHCHECK                                              *goldsmith-healthcheck*
+
+Goldsmith makes use of the Neovim |health| framework. You can run
+>
+	:checkhealth goldsmith
+<
+and get a best-effort attempt to find problems with your Go and Goldsmith setup.
+
+================================================================================
 RESOURCES                                                  *goldsmith-resources*
+
+This lists the locations for various plugins and tools required, or optionally 
+used, by Goldsmith. See |:GoInstallBinaries| for one way to install many of the 
+third-party tools. See |goldsmith-supported-plugins| for more information about
+the plugins that can be utilized by Goldsmith.
+
 * supported plugins:
   `asyncrun`                      https://github.com/skywind3000/asyncrun.vim
   `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
+  `nvim-lspinstall`               https://github.com/kabouzeid/nvim-lspinstall
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-* required 3rd-party tools
+  `vim-test`                      https://github.com/vim-test/vim-test
+  `vim-ultest`                    https://github.com/rcarriga/vim-ultest
+* 3rd-party tools
+  `gopls`                         golang.org/x/tools/gopls
+  `efm-langserver`                github.com/mattn/efm-langserver
   `gomodifytags`                  https://github.com/fatih/gomodifytags
+  `gotests`                       https://github.com/cweill/gotests/gotests",
+  `golines`                       https://github.com/segmentio/golines",

@@ -4,14 +4,14 @@ local job = require("goldsmith.job")
 local M = {}
 
 function M.complete(arglead, cmdline, cursorPos)
-	local names = config.tool_names()
+	local names = config.tool_names({ status = "install" })
 	return table.concat(names, "\n")
 end
 
 function M.run(...)
 	local install = {}
 	if ... ~= nil then
-		local possibles = config.tool_names()
+		local possibles = config.tool_names({ status = "install" })
 		for _, k in ipairs(possibles) do
 			for _, n in ipairs({ ... }) do
 				if k == n then
@@ -21,7 +21,7 @@ function M.run(...)
 			end
 		end
 	else
-		install = config.tool_names()
+		install = config.tool_names({ status = "install" })
 	end
 	if #install == 0 then
 		vim.api.nvim_err_writeln("Nothing to install!")

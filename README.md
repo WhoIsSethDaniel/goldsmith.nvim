@@ -22,7 +22,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] GoGet - run go get
 - [x] GoInstall - run go install
 - [ ] GoLint - for manually running linters (via efm)
-- [ ] GoInstallBinaries - install all needed 3rd-party tools
+- [x] GoInstallBinaries - install all needed 3rd-party tools
 - [x] plugin documentation
     - [x] vim doc
     - [x] list of all needed/supported [n]vim plugins
@@ -32,8 +32,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
 - [x] structs
-    - [x] field tag editing (gomodifytags)
-- [ ] checkhealth
+    - [x] field tag editing (gomodifytags
+- [x] checkhealth
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.
 - [ ] LSP config related
@@ -50,6 +50,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] downloading
 - [ ] interesting tools
     - [ ] fillswitch
+- [ ] go specific rules for nvim-autopairs?
 - [ ] generate skeleton code documentation
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
