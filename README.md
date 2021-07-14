@@ -32,8 +32,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
 - [x] structs
-    - [x] field tag editing (gomodifytags
+    - [x] field tag editing (gomodifytags)
 - [x] checkhealth
+- [ ] functions provided for many actions
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.
 - [ ] LSP config related
@@ -50,6 +51,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] downloading
 - [ ] interesting tools
     - [ ] fillswitch
+    - [ ] fixplurals
 - [ ] go specific rules for nvim-autopairs?
 - [ ] generate skeleton code documentation
 - [ ] workspaces / multiple workspaces

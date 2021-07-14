@@ -1,4 +1,4 @@
-local config = require("goldsmith.config")
+local tools = require("goldsmith.tools")
 
 local health_start = vim.fn["health#report_start"]
 local health_ok = vim.fn["health#report_ok"]
@@ -10,10 +10,10 @@ local M = {}
 function M.tool_check()
 	health_start("Tool Check")
 
-	local check = config.tool_check()
-	for _, tool in ipairs(config.tool_names()) do
+	local check = tools.check()
+	for _, tool in ipairs(tools.names()) do
 		if check[tool].exec == "" then
-			health_warn(string.format("%s: MISSING", tool), { check[tool].problem })
+			health_warn(string.format("%s: MISSING", tool), { check[tool].not_found })
 		else
 			health_ok(string.format("%s: FOUND at %s (%s)", tool, check[tool].exec, check[tool].version))
 		end

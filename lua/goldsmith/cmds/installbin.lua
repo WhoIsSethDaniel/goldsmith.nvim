@@ -1,17 +1,17 @@
-local config = require("goldsmith.config")
+local tools = require("goldsmith.tools")
 local job = require("goldsmith.job")
 
 local M = {}
 
 function M.complete(arglead, cmdline, cursorPos)
-	local names = config.tool_names({ status = "install" })
+	local names = tools.names({ status = "install" })
 	return table.concat(names, "\n")
 end
 
 function M.run(...)
 	local install = {}
 	if ... ~= nil then
-		local possibles = config.tool_names({ status = "install" })
+		local possibles = tools.names({ status = "install" })
 		for _, k in ipairs(possibles) do
 			for _, n in ipairs({ ... }) do
 				if k == n then
@@ -21,15 +21,14 @@ function M.run(...)
 			end
 		end
 	else
-		install = config.tool_names({ status = "install" })
+		install = tools.names({ status = "install" })
 	end
 	if #install == 0 then
 		vim.api.nvim_err_writeln("Nothing to install!")
 		return
 	end
-	local tinfo = config.tool_info()
 	for _, name in ipairs(install) do
-		local info = tinfo[name]
+		local info = tools.info(name)
 		local cmd = string.format("go install %s@%s", info.location, info.tag)
 		job.run(name, cmd, {})
 	end
