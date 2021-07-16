@@ -1,7 +1,7 @@
-if exists('g:go_loaded_install')
+if exists('g:goldsmith_loaded_install')
   finish
 endif
-let g:go_loaded_install = 1
+let g:goldsmith_loaded_install = 1
 
 let s:cpo_save = &cpo
 set cpo&vim

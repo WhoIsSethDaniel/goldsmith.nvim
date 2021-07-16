@@ -37,6 +37,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] functions provided for many actions
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.
+    - [ ] show source of warning in vtext
+    - [ ] statusline diags
 - [ ] LSP config related
     - [ ] auto config of efm and gopls
     - [ ] linting / formatting
@@ -52,8 +54,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] interesting tools
     - [ ] fillswitch
     - [ ] fixplurals
-- [ ] go specific rules for nvim-autopairs?
-- [ ] generate skeleton code documentation
+- [ ] go specific rules for nvim-autopairs? or similar
+- [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)

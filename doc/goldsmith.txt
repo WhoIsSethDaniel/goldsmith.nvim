@@ -52,6 +52,23 @@ You can run `:checkhealth goldsmith` to see if you meet all the requirements and
 to see if you have anything missing. See |goldsmith-healthcheck| and 
 |goldsmith-supported-plugins| for more information.
 
+
+MINIMAL VERSIONS                                    *goldsmith-minimal-versions*
+
+The following are the minmal versions known to work with Goldsmith. It does not
+mean that older versions will not work, but it is unknown if they will.
+
+Not every tool reports a version. If you install everything with 
+|:GoInstallBinaries| it is expected that Goldsmith will work fine as long as 
+your Go installation meets the minimum version requirement. You can check
+the version of all tools using |goldsmith-healthcheck|.
+
+Tool                      Version
+---------------------------------
+go                         1.14
+gopls                      0.6.0
+efm-langserver             0.0.34
+
 ================================================================================
 FEATURES                                                    *goldsmith-features*
 
@@ -70,6 +87,7 @@ Features currently included:
     * run tests using :GoTest
 
 More features are coming. See the TODO list in the project README on github.
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/README.md
 
 ================================================================================
 SUPPORTED PLUGINS                                  *goldsmith-supported-plugins*
@@ -130,25 +148,25 @@ A configuration that sets all settings to the defaults:
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
 
-*godoc.open_split*                                    *goldsmith-godoc.open_split*
+*godoc.open_split*                                  *goldsmith-godoc.open_split*
 
 Default: vertical
 Orientation of the documentation split when you run :GoDoc. Valid values are 
 "vertical" and "horizontal".
 
-*goimports.run_on_save*                          *goldsmith-goimports.run_on_save*
+*goimports.run_on_save*                        *goldsmith-goimports.run_on_save*
 
 Default: true
 When you save Go program source have gopls run 'goimports' to arrange and fix 
 the import section. It is a boolean value.
 
-*goimports.timeout*                                  *goldsmith-goimports.timeout*
+*goimports.timeout*                                *goldsmith-goimports.timeout*
 
 Default: 1000
 How long to wait for a response from gopls when requesting that goimports be 
 run. The units are milliseconds, so 1000 = 1 second.
 
-*terminal.pos*                                            *goldsmith-terminal.pos*
+*terminal.pos*                                          *goldsmith-terminal.pos*
 
 Default: right
 Position the terminal window will be placed at when a command with output is run.
@@ -158,7 +176,7 @@ An example of a command with output is :GoBuild. Valid values are "tab", "curwin
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.focus*                                        *goldsmith-terminal.focus*
+*terminal.focus*                                      *goldsmith-terminal.focus*
 
 Default: false
 Whether or not the terminal window will have focus when a command with output is
@@ -166,45 +184,45 @@ run. An example of a command with output is :GoBuild. It is a boolean value.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.cols*                                          *goldsmith-terminal.cols*
+*terminal.cols*                                        *goldsmith-terminal.cols*
 
 When using a pos that requires a vertical split this value represents the width 
 of the terminal.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.rows*                                          *goldsmith-terminal.rows*
+*terminal.rows*                                        *goldsmith-terminal.rows*
 
 When using a pos that requires a horizontal split this value represents the 
 height of the terminal.
 
 This sets this setting globally. You can also set it per-command.
 
-*tags.default_tag*                                    *goldsmith-tags.default_tag*
+*tags.default_tag*                                  *goldsmith-tags.default_tag*
 
 Default: json
 When adding tags define what is the default tag if no tags are provided to 
 |:GoAddTags|.
 
-*tags.transform*                                        *goldsmith-tags.transform*
+*tags.transform*                                      *goldsmith-tags.transform*
 
 Default: snakecase
 Apply the named transformation to the tag name. The available transformations are:
 'snakecase', 'camelcase', 'lispcase', 'pascalcase', and 'keep'.
 
-*tags.skip_unexported*                            *goldsmith-tags.skip_unexported*
+*tags.skip_unexported*                          *goldsmith-tags.skip_unexported*
 
 Default: false
 When applying tags skip any fields that are unexported. It is a boolean value.
 
 
-PER-COMMAND SETTINGS                           *goldsmith-settings-per-command*
+PER-COMMAND SETTINGS                            *goldsmith-settings-per-command*
 
 Some settings may be applied per-command. 
 
-For all commands that have output (e.g. :GoBuild, :GoRun, etc...) you can define
-terminal options that are specific to that command and override any global
-terminal options.
+For all commands that have terminal output (e.g. :GoBuild, :GoRun, etc...) you 
+can define terminal options that are specific to that command and override any
+global terminal options.
 
 For example, if you want :GoBuild's terminal window to have the focus as it runs, 
 but otherwise want all commands to run without focus:
