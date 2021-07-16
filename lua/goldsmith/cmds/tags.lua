@@ -1,12 +1,10 @@
-local config = require("goldsmith.config").get('tags')
+local config = require("goldsmith.config").get("tags")
+local job = require("goldsmith.job")
+local tools = require("goldsmith.tools")
 
 local M = {}
 
 local function run(action, location, ...)
-	if vim.o.modified then
-		vim.api.nvim_err_writeln("Current buffer is modified. You must save before running this command.")
-		return
-	end
 	local range
 	if location.count > -1 then
 		range = string.format("-line %d,%d", location.line1, location.line2)
@@ -28,7 +26,8 @@ local function run(action, location, ...)
 		i = i + 1
 	end
 	local cfile = vim.fn.shellescape(vim.fn.expand("%"))
-	local cmd = string.format("gomodifytags -file %s -w %s -transform %s", cfile, range, config.transform)
+	local bin = tools.info("gomodifytags").cmd
+	local cmd = string.format("%s -format json -file %s -w %s -transform %s", bin, cfile, range, config.transform)
 	if config.skip_unexported then
 		cmd = string.format("%s -skip-unexported", cmd)
 	end
@@ -46,13 +45,24 @@ local function run(action, location, ...)
 	elseif action == "add" then
 		cmd = string.format("%s --add-tags %s", cmd, config.default_tag)
 	end
-	local ret = vim.fn.system(cmd)
-	if vim.v.shell_error ~= 0 then
-		print(ret)
-		vim.api.nvim_err_writeln("Failed to execute the following command:\n" .. vim.inspect(cmd))
-	else
-		vim.api.nvim_command("edit!")
-	end
+	local ret = job.run(cmd, {
+		on_stderr = function(jobid, data)
+			if data[1] ~= "" then
+				vim.api.nvim_err_writeln(string.format("Tag operation failed with: %s", data[1]))
+			end
+		end,
+		on_stdout = function(jobid, data)
+			if data[1] ~= "" then
+				local changes = vim.fn.json_decode(data)
+				vim.api.nvim_buf_set_lines(0, changes.start - 1, changes["end"], true, changes.lines)
+			end
+		end,
+		on_exit = function(job, code, event)
+			if code > 0 then
+				vim.api.nvim_err_writeln("Failed to execute the following command:\n" .. vim.inspect(cmd))
+			end
+		end,
+	})
 end
 
 function M.add(line1, line2, count, ...)

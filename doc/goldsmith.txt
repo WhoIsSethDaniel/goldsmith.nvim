@@ -85,6 +85,9 @@ Features currently included:
     * fetch new Go libraries using :GoGet
     * install new Go tools using :GoInstall
     * run tests using :GoTest
+* struct tag editing: Add / Remove / Update struct tags and options. All tag
+  operations are performed asynchronously.
+* use :checkhealth to see if your Goldsmith setup should work correctly
 
 More features are coming. See the TODO list in the project README on github.
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/README.md
@@ -102,7 +105,9 @@ Required
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
 * asyncrun
-  Many commands are asynchronous and they require asyncrun
+  Many commands are asynchronous and some require asyncrun. Primarily it is 
+  required for any command that can have significant output. i.e. :GoBuild, 
+  :GoTest, etc....
 
 Optional
 * nvim-treesitter-textobjects

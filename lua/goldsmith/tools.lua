@@ -138,6 +138,7 @@ function M.check(names)
 end
 
 function M.info(name)
+	M.check({name})
 	return TOOLS[name]
 end
 

@@ -16,8 +16,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] keyword support (a better 'K'?)
     - [ ] retrieve documentation for individual functions/methods
 - [x] GoImports - manually run goimports (via gopls)
-- [x] GoBuild  - go build - requires [asyncrun](https://github.com/skywind3000/asyncrun.vim)
-- [x] GoRun - go run - requires [asyncrun](https://github.com/skywind3000/asyncrun.vim)
+- [x] GoBuild  - go build
+- [x] GoRun - go run
 - [x] GoFormat - manually run formatter(s)
 - [x] GoGet - run go get
 - [x] GoInstall - run go install
@@ -32,7 +32,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] make above wrappers around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
 - [x] structs
-    - [x] field tag editing (gomodifytags)
+    - [x] field tag editing (gomodifytags) - asynchronous
 - [x] checkhealth
 - [ ] functions provided for many actions
 - [ ] LSP related

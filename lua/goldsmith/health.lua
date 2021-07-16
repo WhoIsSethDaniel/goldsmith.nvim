@@ -10,7 +10,7 @@ local health_warn = vim.fn["health#report_warn"]
 local M = {}
 
 function M.lsp_plugin_check()
-	health_start("LSP Plugin Check")
+	health_start("Plugin Check")
 
 	plugins.check()
 	for _, plugin in ipairs(plugins.names()) do

@@ -30,7 +30,16 @@ function M.run(...)
 	for _, name in ipairs(install) do
 		local info = tools.info(name)
 		local cmd = string.format("go install %s@%s", info.location, info.tag)
-		job.run(name, cmd, {})
+		print(string.format("starting retrieval of %s", name))
+		job.run(cmd, {
+			on_exit = function(jobid, code, event)
+				if code > 0 then
+					vim.api.nvim_err_writeln(string.format("FAILED in retrieval of %s, code %d", name, code))
+				else
+					print(string.format("SUCCESS in retrieval of %s", name, code))
+				end
+			end,
+		})
 	end
 end
 
