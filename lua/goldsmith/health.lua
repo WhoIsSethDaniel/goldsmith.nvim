@@ -1,6 +1,6 @@
 local tools = require("goldsmith.tools")
 local servers = require("goldsmith.lsp.servers")
-local plugins = require("goldsmith.lsp.plugins")
+local plugins = require("goldsmith.plugins")
 
 local health_start = vim.fn["health#report_start"]
 local health_ok = vim.fn["health#report_ok"]
@@ -13,7 +13,7 @@ function M.lsp_plugin_check()
 	health_start("LSP Plugin Check")
 
 	plugins.check()
-	for _, plugin in ipairs(plugins.all_plugins()) do
+	for _, plugin in ipairs(plugins.names()) do
 		if plugins.is_installed(plugin) then
 			health_ok(string.format("%s: plugin is installed", plugin))
 		elseif plugins.is_required(plugin) then
@@ -28,12 +28,15 @@ function M.lsp_server_check()
 	health_start("LSP Server Check")
 
 	servers.check()
-	for _, server in ipairs(servers.all_servers()) do
-		local si = servers.server_info(server)
+	for _, server in ipairs(servers.names()) do
+		local si = servers.info(server)
 		if servers.is_installed(server) then
 			health_ok(string.format("%s: server is installed via %s at %s", si.name, si.via, si.cmd))
 		elseif servers.is_required(server) then
-			health_error(string.format("%s: NOT INSTALLED and is REQUIRED", si.name), { "This server should be installed." })
+			health_error(
+				string.format("%s: NOT INSTALLED and is REQUIRED", si.name),
+				{ "This server should be installed." }
+			)
 		else
 			health_warn(string.format("%s: NOT INSTALLED and is OPTIONAL", si.name), {})
 		end
@@ -43,12 +46,13 @@ end
 function M.tool_check()
 	health_start("Tool Check")
 
-	local check = tools.check()
+	tools.check()
 	for _, tool in ipairs(tools.names()) do
-		if check[tool].exec == "" then
-			health_warn(string.format("%s: MISSING", tool), check[tool].not_found)
+		local ti = tools.info(tool)
+		if ti.cmd == nil then
+			health_warn(string.format("%s: MISSING", tool), ti.not_found)
 		else
-			health_ok(string.format("%s: FOUND at %s (%s)", tool, check[tool].exec, check[tool].version))
+			health_ok(string.format("%s: FOUND at %s (%s)", tool, ti.cmd, ti.version))
 		end
 	end
 end
