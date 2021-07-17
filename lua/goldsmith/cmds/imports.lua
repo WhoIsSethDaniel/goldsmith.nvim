@@ -1,4 +1,4 @@
-local config = require'goldsmith.config'
+local config = require 'goldsmith.config'
 
 local M = {}
 
@@ -22,15 +22,14 @@ end
 -- response. This code is also similar to the codeAction handler defined at lua/vim/lsp/handlers.lua.
 function M.goimports(timeout_ms)
   local context = { source = { organizeImports = true } }
-  vim.validate { context = { context, "t", true } }
+  vim.validate { context = { context, 't', true } }
 
   local params = vim.lsp.util.make_range_params()
   params.context = context
 
   -- See the implementation of the textDocument/codeAction callback
   -- (lua/vim/lsp/handler.lua) for how to do this properly.
-  local results = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params,
-                                           timeout_ms)
+  local results = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
   if not results or next(results) == nil then
     return
   end
@@ -54,11 +53,11 @@ function M.goimports(timeout_ms)
   -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
   -- is a CodeAction, it can have either an edit, a command or both. Edits
   -- should be executed first.
-  if action.edit or type(action.command) == "table" then
+  if action.edit or type(action.command) == 'table' then
     if action.edit then
       vim.lsp.util.apply_workspace_edit(action.edit)
     end
-    if type(action.command) == "table" then
+    if type(action.command) == 'table' then
       vim.lsp.buf.execute_command(action.command)
     end
   else

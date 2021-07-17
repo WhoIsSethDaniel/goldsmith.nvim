@@ -1,12 +1,12 @@
 local api = vim.api
-local buffer = require'goldsmith.buffer'
-local lsp_util = require'goldsmith.lsp.utils'
-local config = require'goldsmith.config'
+local buffer = require 'goldsmith.buffer'
+local lsp_util = require 'goldsmith.lsp.utils'
+local config = require 'goldsmith.config'
 
 local M = { buf_nr = -1 }
 
 local function goenv(envname)
-  local f = io.popen("go env " .. string.upper(envname))
+  local f = io.popen('go env ' .. string.upper(envname))
   local val = f:lines()()
   f:close()
   return val
@@ -17,8 +17,8 @@ local function godoc(...)
   for _, a in ipairs { ... } do
     args = args .. ' ' .. a
   end
-  local f = io.popen(string.format("go doc %s", args))
-  local content = f:lines('a')()
+  local f = io.popen(string.format('go doc %s', args))
+  local content = f:lines 'a'()
   f:close()
   return content
 end
@@ -26,8 +26,8 @@ end
 function M.complete(arglead, cmdline, cursorPos)
   local bnum = buffer.get_valid_buffer() or api.nvim_get_current_buf()
   local resp = vim.lsp.buf_request_sync(bnum, 'workspace/executeCommand', {
-    command = "gopls.list_known_packages",
-    arguments = { { URI = vim.uri_from_bufnr(bnum) } }
+    command = 'gopls.list_known_packages',
+    arguments = { { URI = vim.uri_from_bufnr(bnum) } },
   })
   local pkgs
   for _, response in pairs(resp) do
@@ -36,7 +36,7 @@ function M.complete(arglead, cmdline, cursorPos)
       break
     end
   end
-  return table.concat(pkgs, "\n")
+  return table.concat(pkgs, '\n')
 end
 
 function M.run(...)
@@ -51,14 +51,14 @@ function M.run(...)
 
   -- Much of the below is taken from vim-go's code, and
   -- translated to Lua
-  if (M.buf_nr == -1) then
+  if M.buf_nr == -1 then
     vim.cmd(open_new)
     M.buf_nr = api.nvim_get_current_buf()
-    api.nvim_buf_set_name(M.buf_nr, "[Go Documentation]")
+    api.nvim_buf_set_name(M.buf_nr, '[Go Documentation]')
   elseif vim.fn.bufwinnr(M.buf_nr) == -1 then
     vim.cmd(open_split)
     api.nvim_win_set_buf(0, M.buf_nr)
-  elseif vim.fn.bufwinnr(M.buf_nr) ~= vim.fn.bufwinnr('%') then
+  elseif vim.fn.bufwinnr(M.buf_nr) ~= vim.fn.bufwinnr '%' then
     vim.cmd(vim.fn.bufwinnr(M.buf_nr) .. 'wincmd w')
   end
 
@@ -73,22 +73,22 @@ function M.run(...)
   api.nvim_win_set_option(0, 'relativenumber', false)
   api.nvim_win_set_option(0, 'signcolumn', 'no')
 
-  vim.cmd([[
+  vim.cmd [[
         setlocal modifiable
         %delete _
-    ]])
-  api.nvim_buf_set_lines(M.buf_nr, -1, -1, false, vim.split(doc, "\n"))
-  vim.cmd([[
+    ]]
+  api.nvim_buf_set_lines(M.buf_nr, -1, -1, false, vim.split(doc, '\n'))
+  vim.cmd [[
         silent $delete _
         setlocal nomodifiable
         silent normal! gg
-    ]])
-  vim.cmd([[
+    ]]
+  vim.cmd [[
         noremap <buffer> <silent> <CR> :<C-U>close<CR>
         noremap <buffer> <silent> q :<C-U>close<CR>
         noremap <buffer> <silent> <Esc> :<C-U>close<CR>
         nnoremap <buffer> <silent> <Esc>[ <Esc>[
-    ]])
+    ]]
 end
 
 return M

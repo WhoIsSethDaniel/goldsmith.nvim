@@ -1,5 +1,5 @@
-local buffer = require'goldsmith.buffer'
-local lsp = require'vim.lsp'
+local buffer = require 'goldsmith.buffer'
+local lsp = require 'vim.lsp'
 
 local M = {}
 

@@ -1,76 +1,76 @@
-local config = require("goldsmith.config").get("tags")
-local job = require("goldsmith.job")
-local tools = require("goldsmith.tools")
+local config = require('goldsmith.config').get 'tags'
+local job = require 'goldsmith.job'
+local tools = require 'goldsmith.tools'
 
 local M = {}
 
 local function run(action, location, ...)
-	local range
-	if location.count > -1 then
-		range = string.format("-line %d,%d", location.line1, location.line2)
-	else
-		range = string.format("-offset %d", vim.fn.line2byte(location.line1))
-	end
-	local tags = {}
-	local options = {}
-	local i = 1
-	for _, ko in ipairs(...) do
-		for w in string.gmatch(ko, "%w+") do
-			if tags[i] ~= nil then
-				table.insert(options, string.format("%s=%s", tags[i], w))
-				break
-			else
-				table.insert(tags, w)
-			end
-		end
-		i = i + 1
-	end
-	local cfile = vim.fn.shellescape(vim.fn.expand("%"))
-	local bin = tools.info("gomodifytags").cmd
-	local cmd = string.format("%s -format json -file %s -w %s -transform %s", bin, cfile, range, config.transform)
-	if config.skip_unexported then
-		cmd = string.format("%s -skip-unexported", cmd)
-	end
-	if #tags > 0 then
-		if #options > 0 then
-			cmd = string.format("%s -%s-options %s", cmd, action, table.concat(options, ","))
-			if action == "add" then
-				cmd = string.format("%s -%s-tags %s", cmd, action, table.concat(tags, ","))
-			end
-		else
-			cmd = string.format("%s -%s-tags %s", cmd, action, table.concat(tags, ","))
-		end
-	elseif action == "remove" then
-		cmd = string.format("%s --clear-tags", cmd)
-	elseif action == "add" then
-		cmd = string.format("%s --add-tags %s", cmd, config.default_tag)
-	end
-	local ret = job.run(cmd, {
-		on_stderr = function(jobid, data)
-			if data[1] ~= "" then
-				vim.api.nvim_err_writeln(string.format("Tag operation failed with: %s", data[1]))
-			end
-		end,
-		on_stdout = function(jobid, data)
-			if data[1] ~= "" then
-				local changes = vim.fn.json_decode(data)
-				vim.api.nvim_buf_set_lines(0, changes.start - 1, changes["end"], true, changes.lines)
-			end
-		end,
-		on_exit = function(job, code, event)
-			if code > 0 then
-				vim.api.nvim_err_writeln("Failed to execute the following command:\n" .. vim.inspect(cmd))
-			end
-		end,
-	})
+  local range
+  if location.count > -1 then
+    range = string.format('-line %d,%d', location.line1, location.line2)
+  else
+    range = string.format('-offset %d', vim.fn.line2byte(location.line1))
+  end
+  local tags = {}
+  local options = {}
+  local i = 1
+  for _, ko in ipairs(...) do
+    for w in string.gmatch(ko, '%w+') do
+      if tags[i] ~= nil then
+        table.insert(options, string.format('%s=%s', tags[i], w))
+        break
+      else
+        table.insert(tags, w)
+      end
+    end
+    i = i + 1
+  end
+  local cfile = vim.fn.shellescape(vim.fn.expand '%')
+  local bin = tools.info('gomodifytags').cmd
+  local cmd = string.format('%s -format json -file %s -w %s -transform %s', bin, cfile, range, config.transform)
+  if config.skip_unexported then
+    cmd = string.format('%s -skip-unexported', cmd)
+  end
+  if #tags > 0 then
+    if #options > 0 then
+      cmd = string.format('%s -%s-options %s', cmd, action, table.concat(options, ','))
+      if action == 'add' then
+        cmd = string.format('%s -%s-tags %s', cmd, action, table.concat(tags, ','))
+      end
+    else
+      cmd = string.format('%s -%s-tags %s', cmd, action, table.concat(tags, ','))
+    end
+  elseif action == 'remove' then
+    cmd = string.format('%s --clear-tags', cmd)
+  elseif action == 'add' then
+    cmd = string.format('%s --add-tags %s', cmd, config.default_tag)
+  end
+  local ret = job.run(cmd, {
+    on_stderr = function(jobid, data)
+      if data[1] ~= '' then
+        vim.api.nvim_err_writeln(string.format('Tag operation failed with: %s', data[1]))
+      end
+    end,
+    on_stdout = function(jobid, data)
+      if data[1] ~= '' then
+        local changes = vim.fn.json_decode(data)
+        vim.api.nvim_buf_set_lines(0, changes.start - 1, changes['end'], true, changes.lines)
+      end
+    end,
+    on_exit = function(job, code, event)
+      if code > 0 then
+        vim.api.nvim_err_writeln(string.format('Failed to execute the following command:\n%s', cmd))
+      end
+    end,
+  })
 end
 
 function M.add(line1, line2, count, ...)
-	run("add", { line1 = line1, line2 = line2, count = count }, ...)
+  run('add', { line1 = line1, line2 = line2, count = count }, ...)
 end
 
 function M.remove(line1, line2, count, ...)
-	run("remove", { line1 = line1, line2 = line2, count = count }, ...)
+  run('remove', { line1 = line1, line2 = line2, count = count }, ...)
 end
 
 return M

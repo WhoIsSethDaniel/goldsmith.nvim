@@ -2,7 +2,7 @@ local api = vim.api
 
 -- 'current' is simply the most recent 'go' buffer to have been used
 local M = {
-  all = {}
+  all = {},
 }
 
 function M.checkin()

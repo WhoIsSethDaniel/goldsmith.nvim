@@ -40,7 +40,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] show source of warning in vtext
     - [ ] statusline diags
 - [ ] LSP config related
-    - [ ] auto config of efm and gopls
+    - [ ] auto config of gopls
+    - [ ] auto config of efm
     - [ ] linting / formatting
         - [ ] provide efm configs for
             - [ ] golines
