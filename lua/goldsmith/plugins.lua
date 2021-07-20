@@ -2,6 +2,7 @@ local M = {}
 
 local PLUGINS = {
   lspconfig = {
+    name = 'nvim-lspconfig',
     required = true,
     installed = false,
     check_installed = function()
@@ -9,6 +10,7 @@ local PLUGINS = {
     end,
   },
   lspinstall = {
+    name = 'nvim-lspinstall',
     required = false,
     installed = false,
     check_installed = function()
@@ -16,20 +18,23 @@ local PLUGINS = {
     end,
   },
   asyncrun = {
+    name = 'asyncrun',
     required = true,
     installed = false,
     check_installed = function()
       return vim.fn.exists ':AsyncRun' == 2
     end,
   },
-  ['nvim-treesitter'] = {
+  treesitter = {
+    name = 'nvim-treesitter',
     required = false,
     installed = false,
     check_installed = function()
       return vim.fn.exists ':TSInstall' == 2
     end,
   },
-  ['nvim-treesitter-textobjects'] = {
+  ['treesitter-textobjects'] = {
+    name = 'nvim-treesitter-textobjects',
     required = false,
     installed = false,
     check_installed = function()
@@ -55,21 +60,24 @@ function M.names()
 end
 
 function M.check()
-  for _, pm in pairs(PLUGINS) do
-    pm.installed = pm.check_installed()
+  for p, pm in pairs(PLUGINS) do
+    PLUGINS[p].installed = pm.check_installed()
   end
   return M
 end
 
 function M.info(plugin)
+  M.check(plugin)
   return PLUGINS[plugin]
 end
 
 function M.is_required(plugin)
+  M.check(plugin)
   return PLUGINS[plugin].required
 end
 
 function M.is_installed(plugin)
+  M.check(plugin)
   return PLUGINS[plugin].installed
 end
 

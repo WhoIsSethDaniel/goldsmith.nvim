@@ -40,21 +40,23 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] show source of warning in vtext
     - [ ] statusline diags
 - [ ] LSP config related
-    - [ ] auto config of gopls
-    - [ ] auto config of efm
+    - [ ] help config gopls
+    - [ ] help config efm
     - [ ] linting / formatting
         - [ ] provide efm configs for
             - [ ] golines
             - [ ] revive
             - [ ] other linters / formatters not supported by gopls?
-        - [ ] provide better / different gopls configuration/s w/ lspconfig
 - [ ] go.mod 
     - [ ] editing (such as replace etc...)
     - [ ] tidy
     - [ ] downloading
+    - [ ] gopls has a 'check for available upgrade' when inspecting a go.mod file
+          https://github.com/golang/tools/releases/tag/gopls%2Fv0.6.5
 - [ ] interesting tools
     - [ ] fillswitch
     - [ ] fixplurals
+    - [ ] iferr
 - [ ] go specific rules for nvim-autopairs? or similar
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] workspaces / multiple workspaces

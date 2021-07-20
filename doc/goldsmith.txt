@@ -105,8 +105,8 @@ Required
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
 * asyncrun
-  Many commands are asynchronous and some require asyncrun. Primarily it is 
-  required for any command that can have significant output. i.e. :GoBuild, 
+  Many commands are asynchronous and some of those require asyncrun. Primarily 
+  it is required for any command that can have significant output. i.e. :GoBuild, 
   :GoTest, etc....
 
 Optional

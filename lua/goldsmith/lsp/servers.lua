@@ -1,10 +1,19 @@
 local tools = require 'goldsmith.tools'
+local plugins = require 'goldsmith.plugins'
 
 local M = {}
 
 function M.check()
   local names = M.names()
   return tools.check(names)
+end
+
+function M.lsp_plugin_name(server)
+  if plugins.is_installed('lspinstall') then
+    return M.info(server).lspinstall_name
+  elseif plugins.is_installed('lspconfig') then
+    return M.info(server).lspconfig_name
+  end
 end
 
 function M.names()

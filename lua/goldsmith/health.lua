@@ -14,12 +14,13 @@ function M.lsp_plugin_check()
 
   plugins.check()
   for _, plugin in ipairs(plugins.names()) do
+    local name = plugins.info(plugin).name
     if plugins.is_installed(plugin) then
-      health_ok(string.format('%s: plugin is installed', plugin))
+      health_ok(string.format('%s: plugin is installed', name))
     elseif plugins.is_required(plugin) then
-      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', plugin), { 'Please install this module.' })
+      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', name), { 'Please install this module.' })
     else
-      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', plugin), {})
+      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', name), {})
     end
   end
 end
