@@ -17,6 +17,15 @@ local PLUGINS = {
       return vim.fn.exists '*lspinstall#installed_servers' == 1
     end,
   },
+  lint = {
+    name = 'nvim-lint',
+    required = false,
+    installed = false,
+    check_installed = function()
+      local ok, _ = pcall(function() require'lint' end)
+      return ok
+    end,
+  },
   asyncrun = {
     name = 'asyncrun',
     required = true,

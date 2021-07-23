@@ -143,10 +143,12 @@ function M.info(name)
 end
 
 function M.is_installed(name)
+  M.check { name }
   return TOOLS[name].installed
 end
 
 function M.is_required(name)
+  M.check { name }
   return TOOLS[name].required
 end
 

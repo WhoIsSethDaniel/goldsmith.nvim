@@ -3,4 +3,4 @@ if !has('nvim-0.5')
     finish
 endif
 
-lua require'goldsmith.lsp.autoconfig'.config()
+lua require'goldsmith.autoconfig'.init()
