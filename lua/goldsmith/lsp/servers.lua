@@ -8,6 +8,18 @@ function M.check()
   return tools.check(names)
 end
 
+function M.is_server(name)
+    for _, sn in pairs(M.names()) do
+      local sni = M.info(sn)
+      for _, pn in ipairs({ sn, sni.name, sni.lspconfig_name, sni.lspinstall_name }) do
+        if name == pn then
+          return true, sn
+        end
+      end
+    end
+    return false
+end
+
 function M.lsp_plugin_name(server)
   if plugins.is_installed('lspinstall') then
     return M.info(server).lspinstall_name

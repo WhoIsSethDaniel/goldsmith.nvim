@@ -2,7 +2,7 @@ local plugins = require 'goldsmith.plugins'
 local servers = require 'goldsmith.lsp.servers'
 
 local M = {
-  _config = {}
+  _config = {},
 }
 
 local DEFAULTS = {
@@ -50,6 +50,7 @@ local set_settings = function(cf)
 end
 
 function M.setup(cf)
+  M._config = cf
   M._config['filetypes'] = set_filetypes(cf['filetypes'])
   M._config['init_options'] = set_init_options(cf['init_options'])
   M._config['settings'] = set_settings(cf['settings'])
