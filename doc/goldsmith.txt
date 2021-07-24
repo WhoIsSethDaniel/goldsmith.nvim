@@ -79,14 +79,14 @@ Features currently included:
 * view Go documentation using the :GoDoc command
 * manually update imports using the :GoImport command
 * format your code on demand using :GoFormat
-* all the following commands are asynchronous thanks to the asyncrun plugin
+* commands for common tasks (the following list is not complete):
     * build your project using :GoBuild 
     * run your main package using :GoRun
     * fetch new Go libraries using :GoGet
     * install new Go tools using :GoInstall
     * run tests using :GoTest
-* struct tag editing: Add / Remove / Update struct tags and options. All tag
-  operations are performed asynchronously.
+    * struct tag editing: add / remove / update struct tags and options.
+* most commands are completely asynchronous
 * use :checkhealth to see if your Goldsmith setup should work correctly
 
 More features are coming. See the TODO list in the project README on github.
@@ -104,10 +104,6 @@ Required
   Configure gopls and efm-langserver
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
-* asyncrun
-  Many commands are asynchronous and some of those require asyncrun. Primarily 
-  it is required for any command that can have significant output. i.e. :GoBuild, 
-  :GoTest, etc....
 
 Optional
 * nvim-treesitter-textobjects
@@ -175,9 +171,8 @@ run. The units are milliseconds, so 1000 = 1 second.
 
 Default: right
 Position the terminal window will be placed at when a command with output is run.
-An example of a command with output is :GoBuild. Valid values are "tab", "curwin",
-"top", "bottom", "left", "right", "external". See the documentation for 
-|asyncrun-internal-terminal| for an explanation for each value.
+An example of a command with output is :GoBuild. Valid values are "top", 
+"bottom", "left", "right".
 
 This sets this setting globally. You can also set it per-command.
 
@@ -189,14 +184,14 @@ run. An example of a command with output is :GoBuild. It is a boolean value.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.cols*                                        *goldsmith-terminal.cols*
+*terminal.width*                                      *goldsmith-terminal.width*
 
 When using a pos that requires a vertical split this value represents the width 
 of the terminal.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.rows*                                        *goldsmith-terminal.rows*
+*terminal.height*                                    *goldsmith-terminal.height*
 
 When using a pos that requires a horizontal split this value represents the 
 height of the terminal.
@@ -251,6 +246,8 @@ COMMANDS                                                    *goldsmith-commands*
 View the documentation for the given package. Takes the same arguments as
 `go doc`. e.g.:
 :GoDoc -all fmt
+
+Use tab-completion to see all available documentation.
 
                                                                       *:GoBuild*
 :GoBuild [args]
@@ -415,7 +412,6 @@ third-party tools. See |goldsmith-supported-plugins| for more information about
 the plugins that can be utilized by Goldsmith.
 
 * supported plugins:
-  `asyncrun`                      https://github.com/skywind3000/asyncrun.vim
   `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
   `nvim-lspinstall`               https://github.com/kabouzeid/nvim-lspinstall
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter

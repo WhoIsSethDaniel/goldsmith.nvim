@@ -26,14 +26,6 @@ local PLUGINS = {
       return ok
     end,
   },
-  asyncrun = {
-    name = 'asyncrun',
-    required = true,
-    installed = false,
-    check_installed = function()
-      return vim.fn.exists ':AsyncRun' == 2
-    end,
-  },
   treesitter = {
     name = 'nvim-treesitter',
     required = false,

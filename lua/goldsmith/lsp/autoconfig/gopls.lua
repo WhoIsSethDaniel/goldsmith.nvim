@@ -14,6 +14,15 @@ local CONFIG_DEFAULTS = {
 
 local FILETYPES = { 'go', 'gomod' }
 
+local DEFAULTS = {
+  flags = {
+    debounce_text_changes = 500,
+  },
+  settings = {
+    gopls = CONFIG_DEFAULTS,
+  },
+}
+
 local set_root_dir = function()
     return util.root_pattern('go.mod', '.git')
 end
@@ -24,19 +33,6 @@ local set_default_capabilities = function()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   return capabilities
 end
-
-local set_default_command = function()
-  return { servers.info('gopls').cmd, '-remote=auto' }
-end
-
-local DEFAULTS = {
-  flags = {
-    debounce_text_changes = 500,
-  },
-  settings = {
-    gopls = CONFIG_DEFAULTS,
-  },
-}
 
 -- debug options:
 -- '-logfile=auto',

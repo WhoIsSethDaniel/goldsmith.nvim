@@ -1,5 +1,5 @@
-local async = require 'goldsmith.async'
-local config = require 'goldsmith.confg'
+local job = require 'goldsmith.job'
+local config = require 'goldsmith.config'
 
 local M = {}
 
@@ -11,7 +11,7 @@ function M.run(...)
     args = string.format('%s %s', args, a)
   end
   local cmd = string.format('go build %s', args)
-  async.run(cmd, vim.tbl_deep_extend('force', terminal_cfg, cmd_cfg))
+  job.run(cmd, vim.tbl_deep_extend('force', terminal_cfg, cmd_cfg, { terminal = true }))
 end
 
 return M

@@ -26,7 +26,7 @@ function M.config()
   vim.cmd [[
     augroup Goldsmith_Auto_Lint
       au!
-      au CursorHold *.go lua require('lint').try_lint()
+      au BufWinEnter,TextChanged,TextChangedI *.go lua require('lint').try_lint()
     augroup END
   ]]
 end

@@ -21,7 +21,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] GoFormat - manually run formatter(s)
 - [x] GoGet - run go get
 - [x] GoInstall - run go install
-- [ ] GoLint - for manually running linters (via efm)
+- [x] GoLint - for manually running linter(s) (via nvim-lint)
 - [x] GoInstallBinaries - install all needed 3rd-party tools
 - [x] plugin documentation
     - [x] vim doc
@@ -34,19 +34,17 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] structs
     - [x] field tag editing (gomodifytags) - asynchronous
 - [x] checkhealth
-- [ ] functions provided for many actions
+- [ ] LSP config related
+    - [x] help config gopls
+    - [x] help config efm
+    - [x] help config nvim-lint
+    - [ ] configuration items to control above
+    - [ ] docs for all
+- [ ] lua functions provided for many actions / commands etc...
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.
     - [ ] show source of warning in vtext
     - [ ] statusline diags
-- [ ] LSP config related
-    - [ ] help config gopls
-    - [ ] help config efm
-    - [ ] linting / formatting
-        - [ ] provide efm configs for
-            - [ ] golines
-            - [ ] revive
-            - [ ] other linters / formatters not supported by gopls?
 - [ ] go.mod 
     - [ ] editing (such as replace etc...)
     - [ ] tidy

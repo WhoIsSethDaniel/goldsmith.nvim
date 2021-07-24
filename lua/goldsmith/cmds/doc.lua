@@ -1,6 +1,5 @@
 local api = vim.api
 local buffer = require 'goldsmith.buffer'
-local lsp_util = require 'goldsmith.lsp.utils'
 local config = require 'goldsmith.config'
 
 local M = { buf_nr = -1 }
