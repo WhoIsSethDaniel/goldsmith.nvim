@@ -6,6 +6,7 @@ local TOOLS = {
   go = {
     status = 'expected',
     required = true,
+    exe = 'go',
     not_found = { 'This is required' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
@@ -18,7 +19,7 @@ local TOOLS = {
     tag = 'latest',
     server = true,
     required = true,
-    name = 'gopls',
+    exe = 'gopls',
     lspconfig_name = 'gopls',
     lspinstall_name = 'go',
     not_found = {
@@ -30,18 +31,18 @@ local TOOLS = {
       return string.match(out, '@v([%d%.]+)')
     end,
   },
-  ['efm-langserver'] = {
+  efm = {
     status = 'install',
     location = 'github.com/mattn/efm-langserver',
     tag = 'latest',
     server = true,
     required = false,
-    name = 'efm-langserver',
+    exe = 'efm-langserver',
     lspconfig_name = 'efm',
     lspinstall_name = 'efm',
     not_found = {
       'If you are using lspinstall this is expected',
-      "If not, you can install with ':GoInstallBinaries efm-langserver'",
+      "If not, you can install with ':GoInstallBinaries efm'",
     },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' -v')
@@ -53,6 +54,7 @@ local TOOLS = {
     location = 'github.com/fatih/gomodifytags',
     tag = 'latest',
     required = true,
+    exe = 'gomodifytags',
     not_found = {
       'Struct tag manipulation will not work. i.e. :GoAddTags / :GoRemoveTags, etc...',
       "You can install with ':GoInstallBinaries gomodifytags'",
@@ -63,6 +65,7 @@ local TOOLS = {
     location = 'github.com/cweill/gotests/gotests',
     tag = 'latest',
     required = false,
+    exe = 'gotests',
     not_found = { 'This tool is not currently used' },
   },
   golines = {
@@ -70,17 +73,27 @@ local TOOLS = {
     location = 'github.com/segmentio/golines',
     required = false,
     tag = 'latest',
-    not_found = { 'This tool is not currently used' },
+    exe = 'golines',
+    not_found = { 'golines is used to restrict line length to a particular number of columns' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' --version')
       return string.match(out, 'v([%d%.]+)')
     end,
+  },
+  impl = {
+    status = 'install',
+    location = 'github.com/josharian/impl',
+    tag = 'latest',
+    required = false,
+    exe = 'impl',
+    not_found = { 'This tool is not currently used' },
   },
   staticcheck = {
     status = 'install',
     location = 'honnef.co/go/tools/cmd/staticcheck',
     tag = 'latest',
     required = false,
+    exe = 'staticcheck',
     not_found = { 'This tool is not currently used' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' -version')
@@ -91,8 +104,12 @@ local TOOLS = {
     status = 'install',
     location = 'github.com/mgechev/revive',
     tag = 'latest',
+    exe = 'revive',
     required = false,
-    not_found = { 'This tool is not currently used' },
+    not_found = {
+      'This is a linting tool. It can supplement the linting done by gopls.',
+      "It can be installed by running ':GoInstallBinaries revive'",
+    },
   },
 }
 
@@ -109,17 +126,17 @@ function M.find_bin(program, info)
     if li_installed then
       TOOLS[program].installed = true
       TOOLS[program].via = 'lspinstall'
-      local cmd = string.format('%s/%s', li_util.install_path(info.lspinstall_name), info.name)
+      local cmd = string.format('%s/%s', li_util.install_path(info.lspinstall_name), info.exe)
       if vim.fn.filereadable(cmd) ~= 0 then
         return cmd
       end
     else
       TOOLS[program].installed = true
       TOOLS[program].via = 'user installation'
-      return vim.fn.exepath(program)
+      return vim.fn.exepath(TOOLS[program].exe)
     end
   else
-    return vim.fn.exepath(program)
+    return vim.fn.exepath(TOOLS[program].exe)
   end
 end
 

@@ -22,7 +22,7 @@ local DEFAULTS = {
 }
 
 function M.has_config()
-  if plugins.is_installed 'lspconfig' and servers.is_installed 'efm-langserver' and M._config ~= nil then
+  if plugins.is_installed 'lspconfig' and servers.is_installed 'efm' and M._config ~= nil then
     return true
   end
   return false

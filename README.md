@@ -26,20 +26,32 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] plugin documentation
     - [x] vim doc
     - [x] list of all needed/supported [n]vim plugins
-- [ ] testing support
-    - [x] GoTest 
-    - [ ] GoTestFunc 
-    - [ ] make above wrappers around vim-test? or vim-ultest? both?
-    - [ ] use `gotests` to generate skeleton testing file
 - [x] structs
     - [x] field tag editing (gomodifytags) - asynchronous
 - [x] checkhealth
+- [ ] testing support
+    - [x] GoAddTests
+    - [x] GoAddTest
+    - [ ] make :GoTest\* wrappers around vim-test? or vim-ultest? both?
+    - [ ] use `gotests` to generate skeleton testing file
+        - [x] GoAddTests (-all support)
+        - [x] GoAddTest (-only support) - works on current function if no arg
+        - [x] completion for test names w/GoAddTest
+        - [ ] template support
+        - [ ] parallel option
+        - [ ] exported option
+    - [x] alternate file support
+        - [x] GoAlt - switch to test file and back to source
+- [ ] interface support
+    - [ ] impl (https://github.com/josharian/impl)
 - [ ] LSP config related
     - [x] help config gopls
     - [x] help config efm
     - [x] help config nvim-lint
     - [ ] configuration items to control above
     - [ ] docs for all
+- [ ] extra command work
+    - [ ] errorformats for some of them?
 - [ ] lua functions provided for many actions / commands etc...
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.

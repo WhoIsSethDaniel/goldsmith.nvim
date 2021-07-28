@@ -10,6 +10,10 @@ function s:GoDocComplete(A,C,P) abort
 	return luaeval("require'goldsmith.cmds.doc'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
+function s:GoAddTestComplete(A,C,P) abort
+	return luaeval("require'goldsmith.cmds.tests'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+endfunction
+
 function s:TagAction(act,line1,line2,count,...) abort
     if a:act ==? 'add'
         return luaeval("require'goldsmith.cmds.tags'.add(_A[1],_A[2],_A[3],_A[4])", [a:line1, a:line2, a:count, a:000])
@@ -27,6 +31,9 @@ command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run(<f-args>)
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run(<f-args>)
 command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
 command! -nargs=0 GoLint lua require'goldsmith.cmds.lint'.run()
+command! -nargs=0 GoAlt lua require'goldsmith.cmds.alt'.run()
+command! -nargs=0 GoAddTests lua require'goldsmith.cmds.tests'.generate()
+command! -nargs=? -complete=custom,s:GoAddTestComplete GoAddTest lua require'goldsmith.cmds.tests'.add(<f-args>)
 command! -nargs=* -range GoAddTags call s:TagAction('add', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=* -range GoRemoveTags call s:TagAction('remove', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=0 -range GoClearTags call s:TagAction('remove', <line1>, <line2>, <count>)

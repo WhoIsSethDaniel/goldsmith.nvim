@@ -22,7 +22,7 @@ local PLUGINS = {
     required = false,
     installed = false,
     check_installed = function()
-      local ok, _ = pcall(function() require'lint' end)
+      local ok, _ = pcall(require, 'lint')
       return ok
     end,
   },

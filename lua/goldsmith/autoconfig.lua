@@ -40,7 +40,7 @@ end
 local config_map = {
   gopls = require 'goldsmith.lsp.autoconfig.gopls',
   lint = require 'goldsmith.lsp.autoconfig.nvim-lint',
-  ['efm-langserver'] = require 'goldsmith.lsp.autoconfig.efm',
+  efm = require 'goldsmith.lsp.autoconfig.efm',
 }
 
 function M.init()

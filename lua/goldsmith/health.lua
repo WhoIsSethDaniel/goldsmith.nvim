@@ -32,11 +32,11 @@ function M.lsp_server_check()
   for _, server in ipairs(servers.names()) do
     local si = servers.info(server)
     if servers.is_installed(server) then
-      health_ok(string.format('%s: server is installed via %s at %s', si.name, si.via, si.cmd))
+      health_ok(string.format('%s: server is installed via %s at %s', si.exe, si.via, si.cmd))
     elseif servers.is_required(server) then
-      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', si.name), { 'This server should be installed.' })
+      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', si.exe), { 'This server should be installed.' })
     else
-      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', si.name), {})
+      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', si.exe), {})
     end
   end
 end
