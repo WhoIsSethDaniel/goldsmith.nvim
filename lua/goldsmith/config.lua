@@ -1,15 +1,20 @@
 local M = {}
 
 local CONFIG = {
-  godoc = {
-    open_split = 'vertical',
-  },
   goimports = {
     run_on_save = true,
     timeout = 1000,
   },
+  tests = {},
   terminal = {
     pos = 'right',
+    focus = false,
+  },
+  window = {
+    pos = 'right',
+    focus = true,
+  },
+  godoc = {
     focus = false,
   },
   tags = {

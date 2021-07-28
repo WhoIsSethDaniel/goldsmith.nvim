@@ -1,26 +1,10 @@
 local api = vim.api
 local buffer = require 'goldsmith.buffer'
 local config = require 'goldsmith.config'
+local wb = require 'goldsmith.winbuf'
+local job = require 'goldsmith.job'
 
 local M = { buf_nr = -1 }
-
-local function goenv(envname)
-  local f = io.popen('go env ' .. string.upper(envname))
-  local val = f:lines()()
-  f:close()
-  return val
-end
-
-local function godoc(...)
-  local args = ''
-  for _, a in ipairs { ... } do
-    args = args .. ' ' .. a
-  end
-  local f = io.popen(string.format('go doc %s', args))
-  local content = f:lines 'a'()
-  f:close()
-  return content
-end
 
 function M.complete(arglead, cmdline, cursorPos)
   local bnum = buffer.get_valid_buffer() or api.nvim_get_current_buf()
@@ -39,55 +23,59 @@ function M.complete(arglead, cmdline, cursorPos)
 end
 
 function M.run(...)
-  local doc = godoc(...)
+  local cmd_cfg = config.get 'godoc' or {}
+  local window_cfg = config.get 'window'
+  local cfg = vim.tbl_deep_extend(
+    'force',
+    window_cfg,
+    cmd_cfg,
+    { create = true, title = '[Go Documentation]', reuse = M.buf_nr }
+  )
 
-  local open_split = 'split'
-  local open_new = 'new'
-  if config.get('godoc').open_split == 'vertical' then
-    open_new = 'vnew'
-    open_split = 'vsplit'
+  local args = ''
+  for _, a in ipairs { ... } do
+    args = args .. ' ' .. a
   end
-
-  -- Much of the below is taken from vim-go's code, and
-  -- translated to Lua
-  if M.buf_nr == -1 then
-    vim.cmd(open_new)
-    M.buf_nr = api.nvim_get_current_buf()
-    api.nvim_buf_set_name(M.buf_nr, '[Go Documentation]')
-  elseif vim.fn.bufwinnr(M.buf_nr) == -1 then
-    vim.cmd(open_split)
-    api.nvim_win_set_buf(0, M.buf_nr)
-  elseif vim.fn.bufwinnr(M.buf_nr) ~= vim.fn.bufwinnr '%' then
-    vim.cmd(vim.fn.bufwinnr(M.buf_nr) .. 'wincmd w')
+  local out = ''
+  cfg['stderr_buffered'] = true
+  cfg['stdout_buffered'] = true
+  cfg['on_stdout'] = function(id,data,name)
+    out = data
   end
+  cfg['on_stderr'] = function(id,data,name)
+    local err = table.concat(data, "\n")
+    vim.api.nvim_err_writeln(err)
+  end
+  cfg['on_exit'] = function(id,code,event)
+    if code > 0 then
+      return
+    end
 
-  api.nvim_buf_set_option(0, 'filetype', 'godoc')
-  api.nvim_buf_set_option(0, 'bufhidden', 'delete')
-  api.nvim_buf_set_option(0, 'buftype', 'nofile')
-  api.nvim_buf_set_option(0, 'swapfile', false)
-  api.nvim_buf_set_option(0, 'buflisted', false)
-  api.nvim_win_set_option(0, 'cursorline', false)
-  api.nvim_win_set_option(0, 'cursorcolumn', false)
-  api.nvim_win_set_option(0, 'number', false)
-  api.nvim_win_set_option(0, 'relativenumber', false)
-  api.nvim_win_set_option(0, 'signcolumn', 'no')
+    local winbuf = wb.create_winbuf(cfg)
+    M.buf_nr = winbuf.buf
 
-  vim.cmd [[
-        setlocal modifiable
-        %delete _
-    ]]
-  api.nvim_buf_set_lines(M.buf_nr, -1, -1, false, vim.split(doc, '\n'))
-  vim.cmd [[
-        silent $delete _
-        setlocal nomodifiable
-        silent normal! gg
-    ]]
-  vim.cmd [[
-        noremap <buffer> <silent> <CR> :<C-U>close<CR>
-        noremap <buffer> <silent> q :<C-U>close<CR>
-        noremap <buffer> <silent> <Esc> :<C-U>close<CR>
-        nnoremap <buffer> <silent> <Esc>[ <Esc>[
-    ]]
+    api.nvim_buf_set_option(winbuf.buf, 'filetype', 'godoc')
+    api.nvim_buf_set_option(winbuf.buf, 'bufhidden', 'delete')
+    api.nvim_buf_set_option(winbuf.buf, 'buftype', 'nofile')
+    api.nvim_buf_set_option(winbuf.buf, 'swapfile', false)
+    api.nvim_buf_set_option(winbuf.buf, 'buflisted', false)
+    api.nvim_win_set_option(winbuf.win, 'cursorline', false)
+    api.nvim_win_set_option(winbuf.win, 'cursorcolumn', false)
+    api.nvim_win_set_option(winbuf.win, 'number', false)
+    api.nvim_win_set_option(winbuf.win, 'relativenumber', false)
+    api.nvim_win_set_option(winbuf.win, 'signcolumn', 'no')
+
+    api.nvim_buf_set_option(winbuf.buf, 'modifiable', true)
+    api.nvim_buf_set_lines(winbuf.buf, 0, -1, false, {})
+    api.nvim_buf_set_lines(winbuf.buf, -1, -1, false, out)
+    api.nvim_buf_set_option(winbuf.buf, 'modifiable', false)
+
+    api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close<CR>', { silent = true, noremap = true })
+    api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
+    api.nvim_buf_set_keymap(winbuf.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
+    api.nvim_buf_set_keymap(winbuf.buf, 'n', '<Esc>[', '<Esc>[', { silent = true, noremap = true })
+  end
+  job.run(string.format('go doc %s', args), cfg)
 end
 
 return M

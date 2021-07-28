@@ -138,22 +138,18 @@ A configuration that sets all settings to the defaults:
             pos = "right",
             focus = false,
         },
-		tags  = {
-			default_tag = "json",
-			transform = "snakecase",
-			skip_unexported = false
-		}
+        tags  = {
+            default_tag = "json",
+            transform = "snakecase",
+            skip_unexported = false
+        }
     })
 <
 
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
 
-*godoc.open_split*                                  *goldsmith-godoc.open_split*
-
-Default: vertical
-Orientation of the documentation split when you run :GoDoc. Valid values are 
-"vertical" and "horizontal".
+GENERAL SETTINGS                                    *goldsmith-general-settings*
 
 *goimports.run_on_save*                        *goldsmith-goimports.run_on_save*
 
@@ -166,6 +162,31 @@ the import section. It is a boolean value.
 Default: 1000
 How long to wait for a response from gopls when requesting that goimports be 
 run. The units are milliseconds, so 1000 = 1 second.
+
+TAG MANIPULATION                                    *goldsmith-tag-manipulation*
+
+*tags.default_tag*                                  *goldsmith-tags.default_tag*
+
+Default: json
+When adding tags define what is the default tag if no tags are provided to 
+|:GoAddTags|.
+
+*tags.transform*                                      *goldsmith-tags.transform*
+
+Default: snakecase
+Apply the named transformation to the tag name. The available transformations are:
+'snakecase', 'camelcase', 'lispcase', 'pascalcase', and 'keep'.
+
+*tags.skip_unexported*                          *goldsmith-tags.skip_unexported*
+
+Default: false
+When applying tags skip any fields that are unexported. It is a boolean value.
+
+TERMINAL SETTINGS                                  *goldsmith-terminal-settings*
+
+Terminal settings are used by commands that have output that is displayed in a
+terminal window.  Commands that have such output are |:GoBuild|, |:GoRun|, 
+|:GoGet|, |:GoInstall|, and |:GoTest| (and possibly others).
 
 *terminal.pos*                                          *goldsmith-terminal.pos*
 
@@ -198,23 +219,40 @@ height of the terminal.
 
 This sets this setting globally. You can also set it per-command.
 
-*tags.default_tag*                                  *goldsmith-tags.default_tag*
+WINDOW SETTINGS                                      *goldsmith-window-settings*
 
-Default: json
-When adding tags define what is the default tag if no tags are provided to 
-|:GoAddTags|.
+Window settings are used by commands that create a new non-terminal window. For 
+commands that create output to a terminal window see 
+|goldsmith-terminal-setttings|. Commands that have such output are |:GoAlt|,
+and |:GoDoc| (and possibly others).
 
-*tags.transform*                                      *goldsmith-tags.transform*
+*window.pos*                                          *goldsmith-window.pos*
 
-Default: snakecase
-Apply the named transformation to the tag name. The available transformations are:
-'snakecase', 'camelcase', 'lispcase', 'pascalcase', and 'keep'.
+Default: right
+Position the window will be placed at when a new window is created. 
 
-*tags.skip_unexported*                          *goldsmith-tags.skip_unexported*
+This sets this setting globally. You can also set it per-command.
+
+*window.focus*                                      *goldsmith-window.focus*
 
 Default: false
-When applying tags skip any fields that are unexported. It is a boolean value.
+Whether or not the window will have focus after it is created.
 
+This sets this setting globally. You can also set it per-command.
+
+*window.width*                                      *goldsmith-window.width*
+
+When using a pos that requires a vertical split this value represents the width 
+of the window.
+
+This sets this setting globally. You can also set it per-command.
+
+*window.height*                                    *goldsmith-window.height*
+
+When using a pos that requires a horizontal split this value represents the 
+height of the window.
+
+This sets this setting globally. You can also set it per-command.
 
 PER-COMMAND SETTINGS                            *goldsmith-settings-per-command*
 
@@ -228,6 +266,9 @@ For example, if you want :GoBuild's terminal window to have the focus as it runs
 but otherwise want all commands to run without focus:
 >
     {
+        window  = {
+            focus = true
+        },
         terminal = {
             focus = false
         },
@@ -374,7 +415,7 @@ where this tool can be found.
 To install `gotests` you can use |:GoInstallBinaries|.
 
                                                                     *:GoAddTest*
-:GoAddTest [function name]
+:GoAddTest [function_name]
 
 Generate a stub test for either the function/method passed to the command or 
 generate a stub test for the current function/method the cursor is currently
