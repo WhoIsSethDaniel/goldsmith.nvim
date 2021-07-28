@@ -67,7 +67,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] fillswitch
     - [ ] fixplurals
     - [ ] iferr
-- [ ] go specific rules for nvim-autopairs? or similar
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing

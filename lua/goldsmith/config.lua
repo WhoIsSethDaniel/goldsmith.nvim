@@ -9,13 +9,14 @@ local CONFIG = {
   terminal = {
     pos = 'right',
     focus = false,
+    height = 20,
+    width = 80,
   },
   window = {
     pos = 'right',
     focus = true,
-  },
-  godoc = {
-    focus = false,
+    height = 20,
+    width = 80,
   },
   tags = {
     default_tag = 'json',

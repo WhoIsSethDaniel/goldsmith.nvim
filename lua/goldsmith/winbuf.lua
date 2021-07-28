@@ -1,22 +1,9 @@
 local M = {}
 
-function M.blah()
-  if M.buf_nr == -1 then
-    vim.cmd(open_new)
-    M.buf_nr = api.nvim_get_current_buf()
-    api.nvim_buf_set_name(M.buf_nr, '[Go Documentation]')
-  elseif vim.fn.bufwinnr(M.buf_nr) == -1 then
-    vim.cmd(open_split)
-    api.nvim_win_set_buf(0, M.buf_nr)
-  elseif vim.fn.bufwinnr(M.buf_nr) ~= vim.fn.bufwinnr '%' then
-    vim.cmd(vim.fn.bufwinnr(M.buf_nr) .. 'wincmd w')
-  end
-end
-
 function M.determine_window(opts)
-  local pos = opts['pos'] or 'right'
-  local width = opts['width'] or 80
-  local height = opts['height'] or 20
+  local pos = opts['pos']
+  local width = opts['width']
+  local height = opts['height']
   local orient = ''
   local n = height
   local place
