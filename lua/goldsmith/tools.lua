@@ -100,6 +100,17 @@ local TOOLS = {
       return string.match(out, '%(v([%d%.]+)%)')
     end,
   },
+  fixplurals = {
+    status = 'install',
+    location = 'github.com/davidrjenni/reftools/cmd/fixplurals',
+    tag = 'latest',
+    exe = 'fixplurals',
+    required = false,
+    not_found = {
+      'This is used to remove redundancies parameter and result types from function signatures',
+      "It can be installed by running ':GoInstallBinaries fixplurals'",
+    },
+  },
   revive = {
     status = 'install',
     location = 'github.com/mgechev/revive',

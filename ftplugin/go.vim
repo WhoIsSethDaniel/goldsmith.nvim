@@ -44,13 +44,12 @@ command! -nargs=0 GoLint lua require'goldsmith.cmds.lint'.run()
 command! -nargs=? GoAddTests lua require'goldsmith.cmds.tests'.generate(<f-args>)
 command! -nargs=* -complete=custom,s:GoAddTestComplete GoAddTest lua require'goldsmith.cmds.tests'.add(<f-args>)
 
-" struct tags
+" code editing
 command! -nargs=* -range GoAddTags call s:TagAction('add', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=* -range GoRemoveTags call s:TagAction('remove', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=0 -range GoClearTags call s:TagAction('remove', <line1>, <line2>, <count>)
-
-" interface
 command! -nargs=* -complete=custom,s:GoImplComplete GoImpl lua require'goldsmith.cmds.impl'.run(<f-args>)
+command! -nargs=0 GoFixPlurals lua require'goldsmith.cmds.fixplurals'.run()
 
 lua require'goldsmith.configs.treesitter-textobjects'.setup()
 
