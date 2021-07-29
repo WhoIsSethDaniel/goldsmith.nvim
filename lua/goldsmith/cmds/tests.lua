@@ -1,7 +1,7 @@
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
 local ts = require 'goldsmith.treesitter'
-local fs = require'goldsmith.fs'
+local fs = require 'goldsmith.fs'
 
 local M = {}
 
@@ -44,23 +44,59 @@ function M.complete(arglead, cmdline, cursorPos)
   return table.concat(funcs, '\n')
 end
 
-function M.add(f)
+local function parse_args(...)
+  local f
+  local opt = ''
+  for i, a in ipairs { ... } do
+    if a == '-p' or a == '-e' then
+      if opt ~= '' then
+        vim.api.nvim_err_writeln '-p and -e may not be used together'
+        return
+      end
+      if a == '-p' then
+        opt = '-parallel'
+      else
+        opt = '-exported'
+      end
+    else
+      if i ~= #... then
+        vim.api.nvim_err_writeln 'too many arguments to :GoAddTest'
+        return
+      else
+        f = a
+        break
+      end
+    end
+  end
+  return opt, f
+end
+
+function M.add(...)
+  local opt, f = parse_args(...)
+  if opt == nil then
+    return
+  end
   if f == nil then
     local func = ts.get_current_function_name()
     if func == nil then
       vim.api.nvim_err_writeln 'Cannot determine test to add. Please provide a test name.'
     end
-    M.run('-only', func)
+    M.run(opt, '-only', func)
   else
-    M.run('-only', f)
+    M.run(opt, '-only', f)
   end
 end
 
-function M.generate()
-  M.run '-all'
+function M.generate(option)
+  local opt = parse_args(option)
+  if opt == nil then
+    return
+  end
+  M.run(opt or '', '-all')
 end
 
 function M.run(...)
+  print(vim.inspect { ... })
   local args = ''
   for _, a in ipairs { ... } do
     args = string.format('%s %s', args, a)
@@ -77,6 +113,7 @@ function M.run(...)
   local cmd = string.format('gotests -w %s %s', args, fp)
   local ok = false
   local out = ''
+  print(cmd)
   job.run(cmd, {
     stdout_buffered = true,
     on_stdout = function(jobid, data, name)

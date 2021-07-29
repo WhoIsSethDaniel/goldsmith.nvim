@@ -32,18 +32,21 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] testing support
     - [x] GoAddTests
     - [x] GoAddTest
-    - [ ] make :GoTest\* wrappers around vim-test? or vim-ultest? both?
+    - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both?
     - [ ] use `gotests` to generate skeleton testing file
         - [x] GoAddTests (-all support)
         - [x] GoAddTest (-only support) - works on current function if no arg
         - [x] completion for test names w/GoAddTest
         - [ ] template support
-        - [ ] parallel option
-        - [ ] exported option
+        - [x] parallel option
+        - [x] exported option
     - [x] alternate file support
         - [x] GoAlt - switch to test file and back to source
-- [ ] interface support
-    - [ ] impl (https://github.com/josharian/impl)
+- [x] interface support
+    - [x] impl (https://github.com/josharian/impl)
+- [ ] work
+    - [ ] config for all autocmds
+    - [ ] disable commands that don't have deps installed
 - [ ] LSP config related
     - [x] help config gopls
     - [x] help config efm

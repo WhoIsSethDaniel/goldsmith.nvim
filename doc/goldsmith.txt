@@ -425,10 +425,13 @@ Running :GoInstallBinaries multiple times is fine. Each time it is run it will
 attempt to build and install each tool, updating the tool, if needed.
 
                                                                    *:GoAddTests*
-:GoAddTests
+:GoAddTests [options]
 
 Generate tests for all functions/methods in the current Go file. This does not
 overwrite any tests that already exist, but it may make new stub tests. 
+
+The only options are -p and -e. -p means generate parallel subtests. -e means
+to only generate tests for exported functions/methods.
 
 Behind the scenes this uses the `gotests` tool. See |goldsmith-resources| for
 where this tool can be found.
@@ -436,11 +439,14 @@ where this tool can be found.
 To install `gotests` you can use |:GoInstallBinaries|.
 
                                                                     *:GoAddTest*
-:GoAddTest [function_name]
+:GoAddTest [options] [function_name]
 
 Generate a stub test for either the function/method passed to the command or 
 generate a stub test for the current function/method the cursor is currently
-in.
+in. If the given [fuction_name] does not exist no test is created.
+
+The only options are -p and -e. -p means generate parallel subtests. -e means
+to only generate tests for exported functions/methods.
 
 You can use command completion to see all available functions in the current
 file.
@@ -464,6 +470,32 @@ test file. If a code file does not exist one will be created.
 If a buffer for the 'alternate' file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
 or window will be created if they do not already exist.
+
+                                                                       *:GoImpl*
+:GoImpl <recv> <interface>
+
+Create a stub implementation for the given <interface> using <recv> as the 
+receiver. The stub implementation will be inserted on the lines directly
+below the cursor.
+
+To create a stub implementation for the io.Reader interface using 'f *File' 
+as the receiver:
+>
+    :GoImpl f *File io.Reader
+<
+To create a stub implementation for the hash.Hash interface using Murmur as
+the receiver:
+>
+    :GoImpl Murmur hash.Hash
+<
+You can use completion when attempting to specify the <interface>. The 
+completion can help to find the appropriate package and the interfaces
+within that package.
+
+Behind the scenes this uses the `impl` tool. See |goldsmith-resources| for
+where this tool can be found.
+
+To install `impl` you can use |:GoInstallBinaries|.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
@@ -525,9 +557,11 @@ the plugins that can be utilized by Goldsmith.
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   `vim-test`                      https://github.com/vim-test/vim-test
   `vim-ultest`                    https://github.com/rcarriga/vim-ultest
+
 * 3rd-party tools
-  `gopls`                         golang.org/x/tools/gopls
-  `efm-langserver`                github.com/mattn/efm-langserver
+  `gopls`                         https://golang.org/x/tools/gopls
+  `efm-langserver`                https://github.com/mattn/efm-langserver
   `gomodifytags`                  https://github.com/fatih/gomodifytags
-  `gotests`                       https://github.com/cweill/gotests/gotests",
-  `golines`                       https://github.com/segmentio/golines",
+  `gotests`                       https://github.com/cweill/gotests/gotests
+  `golines`                       https://github.com/segmentio/golines
+  `impl`                          https://github.com/josharian/impl

@@ -86,7 +86,7 @@ local TOOLS = {
     tag = 'latest',
     required = false,
     exe = 'impl',
-    not_found = { 'This tool is not currently used' },
+    not_found = { 'The command :GoImpl requires this tool' },
   },
   staticcheck = {
     status = 'install',

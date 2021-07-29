@@ -1,27 +1,25 @@
-local api = vim.api
-
 -- 'current' is simply the most recent 'go' buffer to have been used
 local M = {
   all = {},
 }
 
 function M.checkin()
-  M.current = api.nvim_get_current_buf()
+  M.current = vim.api.nvim_get_current_buf()
   M.all[M.current] = M.current
 end
 
 -- return the most recent buffer if it is valid, otherwise just return any of the registered buffers
 -- assuming it is valid
 function M.get_valid_buffer()
-  if M.current ~= nil and api.nvim_buf_is_valid(M.current) then
+  if M.current ~= nil and vim.api.nvim_buf_is_valid(M.current) then
     return M.current
   end
-  for buf, _ in ipairs(M.all) do
+  for _, buf in pairs(M.all) do
     -- maybe nvim_buf_is_loaded would be sufficient?
-    if api.nvim_buf_is_valid(buf) then
+    if vim.api.nvim_buf_is_valid(buf) then
       return buf
     else
-      M.current[buf] = nil
+      M.all[buf] = nil
     end
   end
 end
