@@ -53,11 +53,8 @@ function M.run()
       print 'GoFixPlurals: no files changed'
     end
   end
-  if vim.opt.modified:get() == true then
-    vim.api.nvim_err_writeln 'GoFixPlurals: cannot change a modified file. Save prior to running.'
-  else
-    job.run(string.format('fixplurals -dry %s', vim.fn.expand '%'), cfg)
-  end
+  vim.cmd[[ silent! wall ]]
+  job.run(string.format('fixplurals -dry %s', vim.fn.expand '%'), cfg)
 end
 
 return M

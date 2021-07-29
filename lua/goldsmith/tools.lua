@@ -22,10 +22,7 @@ local TOOLS = {
     exe = 'gopls',
     lspconfig_name = 'gopls',
     lspinstall_name = 'go',
-    not_found = {
-      'If you are using lspinstall this is expected',
-      "If not, you can install with ':GoInstallBinaries gopls'",
-    },
+    not_found = { 'This is required to do many things. It should be installed.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
       return string.match(out, '@v([%d%.]+)')
@@ -41,8 +38,7 @@ local TOOLS = {
     lspconfig_name = 'efm',
     lspinstall_name = 'efm',
     not_found = {
-      'If you are using lspinstall this is expected',
-      "If not, you can install with ':GoInstallBinaries efm'",
+      'This is required if you want to do extra linting or formatting. It can supplement gopls.',
     },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' -v')
@@ -53,11 +49,11 @@ local TOOLS = {
     status = 'install',
     location = 'github.com/fatih/gomodifytags',
     tag = 'latest',
-    required = true,
+    required = false,
     exe = 'gomodifytags',
     not_found = {
-      'Struct tag manipulation will not work. i.e. :GoAddTags / :GoRemoveTags, etc...',
-      "You can install with ':GoInstallBinaries gomodifytags'",
+      'This is used to manipulate struct tags',
+      'It is required if you want to use the :GoAddTags, :GoRemoveTags, ... commands.',
     },
   },
   gotests = {
@@ -66,7 +62,10 @@ local TOOLS = {
     tag = 'latest',
     required = false,
     exe = 'gotests',
-    not_found = { 'This tool is not currently used' },
+    not_found = {
+      'This is used to generate stub tests in your test file.',
+      'It is required if you want to use the :GoAddTests or :GoAddTest commands.',
+    },
   },
   golines = {
     status = 'install',
@@ -74,7 +73,7 @@ local TOOLS = {
     required = false,
     tag = 'latest',
     exe = 'golines',
-    not_found = { 'golines is used to restrict line length to a particular number of columns' },
+    not_found = { 'This is used to restrict line length to a particular number of columns.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' --version')
       return string.match(out, 'v([%d%.]+)')
@@ -86,7 +85,10 @@ local TOOLS = {
     tag = 'latest',
     required = false,
     exe = 'impl',
-    not_found = { 'The command :GoImpl requires this tool' },
+    not_found = {
+      'This is used to generate a stub implementation of an interface.',
+      'It is required if you want to use the :GoImpl command.',
+    },
   },
   staticcheck = {
     status = 'install',
@@ -107,8 +109,8 @@ local TOOLS = {
     exe = 'fixplurals',
     required = false,
     not_found = {
-      'This is used to remove redundancies parameter and result types from function signatures',
-      "It can be installed by running ':GoInstallBinaries fixplurals'",
+      'This is used to remove redundant parameter and result types from function signatures.',
+      'It is required if you want to use the :GoFixPlurals command.',
     },
   },
   revive = {
@@ -117,10 +119,7 @@ local TOOLS = {
     tag = 'latest',
     exe = 'revive',
     required = false,
-    not_found = {
-      'This is a linting tool. It can supplement the linting done by gopls.',
-      "It can be installed by running ':GoInstallBinaries revive'",
-    },
+    not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
   },
 }
 
@@ -144,11 +143,13 @@ function M.find_bin(program, info)
     else
       TOOLS[program].installed = true
       TOOLS[program].via = 'user installation'
-      return vim.fn.exepath(TOOLS[program].exe)
     end
-  else
-    return vim.fn.exepath(TOOLS[program].exe)
   end
+  local cmd = vim.fn.exepath(TOOLS[program].exe)
+  if cmd == '' then
+    return
+  end
+  return cmd
 end
 
 -- check that tool exists and executable, also get its version

@@ -45,6 +45,7 @@ local function run(action, location, ...)
   elseif action == 'add' then
     cmd = string.format('%s --add-tags %s', cmd, config.default_tag)
   end
+  local b = vim.api.nvim_get_current_buf()
   local ret = job.run(cmd, {
     on_stderr = function(jobid, data)
       if data[1] ~= '' then
@@ -54,7 +55,7 @@ local function run(action, location, ...)
     on_stdout = function(jobid, data)
       if data[1] ~= '' then
         local changes = vim.fn.json_decode(data)
-        vim.api.nvim_buf_set_lines(0, changes.start - 1, changes['end'], true, changes.lines)
+        vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
       end
     end,
     on_exit = function(job, code, event)

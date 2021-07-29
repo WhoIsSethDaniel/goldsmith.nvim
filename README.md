@@ -44,12 +44,12 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [x] GoAlt - switch to test file and back to source
 - [x] interface support
     - [x] impl (https://github.com/josharian/impl)
-- [ ] fixplurals (https://github.com/davidrjenni/reftools) 
+- [x] fixplurals (https://github.com/davidrjenni/reftools) 
     - [x] :GoFixPlurals
-    - [ ] option to run on save
-- [ ] work
+- [ ] general work
     - [ ] config for all autocmds
     - [ ] disable commands that don't have deps installed
+    - [x] make certain async commands operate on correct buffer
 - [ ] LSP config related
     - [x] help config gopls
     - [x] help config efm
@@ -58,11 +58,15 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] docs for all
 - [ ] extra command work
     - [ ] errorformats for some of them?
+    - [ ] need command to create basic revive config
 - [ ] lua functions provided for many actions / commands etc...
 - [ ] LSP related
     - [ ] code actions require prompt when only 1 action. add config to fix this.
     - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
     - [ ] statusline diags
+- [ ] debugging the plugin
+    - [ ] debug mode
+    - [ ] debug console
 - [ ] go.mod 
     - [ ] editing (such as replace etc...)
     - [ ] tidy

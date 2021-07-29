@@ -48,6 +48,9 @@ function M.tool_check()
   for _, tool in ipairs(tools.names()) do
     local ti = tools.info(tool)
     if ti.cmd == nil then
+      if ti.status == 'install' then
+        table.insert(ti.not_found, string.format("It may be installed by running ':GoInstallBinaries %s'", tool))
+      end
       health_warn(string.format('%s: MISSING', tool), ti.not_found)
     else
       health_ok(string.format('%s: FOUND at %s (%s)', tool, ti.cmd, ti.version))

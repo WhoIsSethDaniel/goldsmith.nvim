@@ -65,6 +65,7 @@ function M.run(...)
     return
   end
 
+  local b
   local out = ''
   cfg['stderr_buffered'] = true
   cfg['stdout_buffered'] = true
@@ -80,8 +81,9 @@ function M.run(...)
       return
     end
     local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
-    vim.api.nvim_buf_set_lines(0, r, r, false, out)
+    vim.api.nvim_buf_set_lines(b, r, r, false, out)
   end
+  b = vim.api.nvim_get_current_buf()
   job.run(string.format("impl '%s' %s", recv, iface), cfg)
 end
 
