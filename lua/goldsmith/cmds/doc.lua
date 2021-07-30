@@ -6,10 +6,39 @@ local cmds = require 'goldsmith.lsp.cmds'
 
 local M = { buf_nr = -1 }
 
+local function match_partial_item_name(pkg, part)
+  local cmd = string.format('go doc %s', pkg)
+  local doc = vim.fn.systemlist(cmd)
+  if vim.v.shell_error ~= 0 then
+    return
+  end
+
+  local items = {}
+  for _, lead in ipairs({ 'type', 'func', 'var', 'const'}) do
+    local pat = string.format('^%s (%s%%w+)', lead, part)
+    for _, line in ipairs(doc) do
+      local m = string.match(line, pat)
+      if m ~= nil then
+        table.insert(items, m)
+      end
+    end
+  end
+  table.sort(items)
+  return table.concat(items, '\n')
+end
+
 function M.complete(arglead, cmdline, cursorPos)
-  local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
-  local pkgs = cmds.list_known_packages(bnum)
-  return table.concat(pkgs, '\n')
+  local words = vim.split(cmdline, '%s+')
+  if #words > 2 and string.match(words[#words-1], '^-') == nil then
+    local pkg = words[#words-1]
+    local item = words[#words]
+    return match_partial_item_name(pkg, item)
+
+  elseif #words > 1 and string.match(words[#words], '^-') == nil then
+    local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
+    local pkgs = cmds.list_known_packages(bnum)
+    return table.concat(pkgs, '\n')
+  end
 end
 
 function M.run(...)

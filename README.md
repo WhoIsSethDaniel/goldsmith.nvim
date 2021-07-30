@@ -12,9 +12,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] comment (ac)
 - [x] GoDoc - for viewing installed documentation
     - [x] package name completion
+    - [x] retrieve documentation for individual functions/methods
     - [ ] floating window support
     - [ ] keyword support (a better 'K'?)
-    - [ ] retrieve documentation for individual functions/methods
 - [x] GoImports - manually run goimports (via gopls)
 - [x] GoBuild  - go build
 - [x] GoRun - go run

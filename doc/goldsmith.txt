@@ -293,14 +293,22 @@ but otherwise want all commands to run without focus:
 COMMANDS                                                    *goldsmith-commands*
 
                                                                         *:GoDoc*
-:GoDoc [package]
+:GoDoc [options] package [func|var|const|type]
 
 View the documentation for the given package. Takes the same arguments as
 `go doc`. e.g.:
 >
     :GoDoc -all fmt
 <
-Use tab-completion to see all available documentation.
+Use tab-completion to see all available packages.
+
+View the documentation for a particular function/constant/variable/type within
+a particular package:
+>
+    :GoDoc io Reader
+<
+Use tab-completion to see all available packages and then all available types/
+functions/variables/constants within that package.
 
                                                                     *:GoImports*
 :GoImports
