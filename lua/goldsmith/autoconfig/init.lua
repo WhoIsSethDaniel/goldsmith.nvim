@@ -38,9 +38,9 @@ local on_attach = function(client, bufnr)
 end
 
 local config_map = {
-  gopls = require 'goldsmith.lsp.autoconfig.gopls',
-  lint = require 'goldsmith.lsp.autoconfig.nvim-lint',
-  efm = require 'goldsmith.lsp.autoconfig.efm',
+  gopls = require 'goldsmith.autoconfig.lsp.gopls',
+  lint = require 'goldsmith.autoconfig.lsp.nvim-lint',
+  efm = require 'goldsmith.autoconfig.lsp.efm',
 }
 
 function M.init()

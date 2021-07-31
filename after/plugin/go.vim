@@ -4,3 +4,4 @@ if !has('nvim-0.5')
 endif
 
 lua require'goldsmith.autoconfig'.init()
+lua require'goldsmith.autoconfig.treesitter-textobjects'.setup()

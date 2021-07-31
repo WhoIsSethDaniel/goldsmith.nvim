@@ -518,6 +518,54 @@ where this tool can be found.
 
 To install `fixplurals` you can use |:GoInstallBinaries|.
 
+                                                                        *:GoDef*
+:GoDef
+
+Jump to the definition of the symbol under the cursor.
+
+                                                                       *:GoInfo*
+:GoInfo
+
+Display information about the symbol under the cursor in a floating window.
+
+                                                                    *:GoSigHelp*
+:GoSigHelp
+
+Display signature information about the symbol under the cursor in a floating 
+window.
+
+                                                                    *:GoDefType*
+                                                                    *:GoTypeDef*
+:GoDefType
+:GoTypeDef
+
+Jump to the definition of the type of the symbol under the cursor.
+
+                                                                 *:GoCodeAction*
+:GoCodeAction
+
+Perform the code action for any code actions available on the current line.
+
+                                                                        *:GoRef*
+:GoRef
+
+List all references to the symbol under the cursor in the quickfix window.
+
+                                                                   *:GoDiagShow*
+:GoDiagShow
+
+Show all diagnostics for the current line in a floating window.
+
+                                                                   *:GoDiagList*
+:GoDiagList
+
+Place all diagnostics for the current buffer in the location list.
+
+                                                                     *:GoRename*
+:GoRename name
+
+Rename the symbol under the cursor to the name passed as an argument.
+
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
 
