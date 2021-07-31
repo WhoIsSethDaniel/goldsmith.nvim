@@ -47,8 +47,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [ ] template support
         - [x] parallel option
         - [x] exported option
-    - [x] alternate file support
+    - [ ] alternate file support
         - [x] GoAlt - switch to test file and back to source
+        - [ ] should not require a new window
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] disable commands that don't have deps installed
@@ -64,9 +65,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [ ] need command to create basic revive config
 - [ ] lua functions provided for many actions / commands etc...
 - [ ] LSP related
-    - [ ] code actions require prompt when only 1 action. add config to fix this.
     - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
-    - [ ] statusline diags
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
