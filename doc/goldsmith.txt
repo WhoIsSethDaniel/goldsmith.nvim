@@ -521,6 +521,8 @@ To install `fixplurals` you can use |:GoInstallBinaries|.
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
 
+The following commands are only available if you are editing a go.mod file.
+
                                                                    *:GoModCheck*
 :GoModCheck
 

@@ -32,7 +32,7 @@ function M.complete(arglead, cmdline, cursorPos)
   end
 
   local last = words[#words]
-  if string.match(last, '^.+%..+') ~= nil then
+  if string.match(last, '^.+%..*') ~= nil then
     local part = match_partial_iface_name(last)
     if part ~= nil then
       return part
