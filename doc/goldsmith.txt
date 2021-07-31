@@ -518,6 +518,27 @@ where this tool can be found.
 
 To install `fixplurals` you can use |:GoInstallBinaries|.
 
+                                                     *goldsmith-module-commands*
+MODULE RELATED COMMANDS
+
+                                                                   *:GoModCheck*
+:GoModCheck
+
+Check all required modules and inform the user if any can be upgraded. Any
+modules that can be upgraded may be upgraded using a code action.
+
+                                                                     *:GoModFmt*
+:GoModFmt
+
+Format the current go.mod file.
+
+                                                                    *:GoModTidy*
+:GoModTidy
+
+Cleanup the go.mod file. See 'go help mod tidy' for more information on what
+this does.
+
+
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 

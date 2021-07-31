@@ -26,6 +26,23 @@ local PLUGINS = {
       return ok
     end,
   },
+  test = {
+    name = 'vim-test',
+    required = false,
+    installed = false,
+    check_installed = function()
+      return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
+    end,
+  },
+  ultest = {
+    name = 'vim-ultest',
+    required = false,
+    installed = false,
+    check_installed = function()
+      local ok, _ = pcall(require, 'ultest')
+      return ok
+    end,
+  },
   treesitter = {
     name = 'nvim-treesitter',
     required = false,

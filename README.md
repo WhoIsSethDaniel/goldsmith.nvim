@@ -13,8 +13,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] GoDoc - for viewing installed documentation
     - [x] package name completion
     - [x] retrieve documentation for individual functions/methods
-    - [ ] floating window support
-    - [ ] keyword support (a better 'K'?)
 - [x] GoImports - manually run goimports (via gopls)
 - [x] GoBuild  - go build
 - [x] GoRun - go run
@@ -32,7 +30,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] testing support
     - [x] GoAddTests
     - [x] GoAddTest
-    - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both?
+    - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
     - [ ] use `gotests` to generate skeleton testing file
         - [x] GoAddTests (-all support)
         - [x] GoAddTest (-only support) - works on current function if no arg
@@ -46,6 +44,11 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] impl (https://github.com/josharian/impl)
 - [x] fixplurals (https://github.com/davidrjenni/reftools) 
     - [x] :GoFixPlurals
+- [ ] go.mod 
+    - [ ] editing (such as replace etc...)
+    - [x] formatting :GoModFmt
+    - [x] tidy :GoModTidy
+    - [x] :GoModCheck - check for upgrades for all listed packages
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] disable commands that don't have deps installed
@@ -67,12 +70,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
-- [ ] go.mod 
-    - [ ] editing (such as replace etc...)
-    - [ ] tidy
-    - [ ] downloading
-    - [ ] gopls has a 'check for available upgrade' when inspecting a go.mod file
-          https://github.com/golang/tools/releases/tag/gopls%2Fv0.6.5
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing

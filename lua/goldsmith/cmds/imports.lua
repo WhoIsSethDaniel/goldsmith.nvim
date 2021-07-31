@@ -21,7 +21,8 @@ end
 -- servers will (likely) respond to the codeAction request, but only gopls will return a non-empty
 -- response. This code is also similar to the codeAction handler defined at lua/vim/lsp/handlers.lua.
 function M.goimports(timeout_ms)
-  local context = { source = { organizeImports = true } }
+  local context = { only = { "source.organizeImports" } }
+  -- local context = { source = { organizeImports = true } }
   vim.validate { context = { context, 't', true } }
 
   local params = vim.lsp.util.make_range_params()

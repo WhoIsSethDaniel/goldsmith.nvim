@@ -38,7 +38,7 @@ end
 -- '-logfile=auto',
 -- '-rpc.trace'
 local set_command = function()
-  return { servers.info('gopls').cmd, '-remote=auto' }
+  return { servers.info('gopls').cmd, '-remote=auto', '-logfile=auto', '-rpc.trace' }
 end
 
 local set_filetypes = function(ft)

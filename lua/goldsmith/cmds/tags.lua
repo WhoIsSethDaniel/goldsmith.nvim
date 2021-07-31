@@ -58,7 +58,7 @@ local function run(action, location, ...)
         vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
       end
     end,
-    on_exit = function(job, code, event)
+    on_exit = function(jobid, code, event)
       if code > 0 then
         vim.api.nvim_err_writeln(string.format('Failed to execute the following command:\n%s', cmd))
       end

@@ -23,6 +23,27 @@ function M.get_all_functions()
   return funcs
 end
 
+local function find_all_modules(root, mods)
+  if root:child_count() == 0 then
+    return
+  end
+  for node in root:iter_children() do
+    local ntype = node:type()
+    local ptype = node:parent():type()
+    if ntype == 'module_path' and ptype == 'require_spec' then
+      table.insert(mods, (ts_utils.get_node_text(node))[1])
+    end
+    find_all_modules(node, mods)
+  end
+end
+
+function M.get_all_modules()
+  local trees = parsers.get_parser():parse()
+  local mods = {}
+  find_all_modules(trees[1]:root(), mods)
+  return mods
+end
+
 function M.get_current_function_name()
   local current_node = ts_utils.get_node_at_cursor()
   if not current_node then

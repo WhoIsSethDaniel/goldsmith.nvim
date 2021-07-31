@@ -1,5 +1,8 @@
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
+-- local plugins = require 'goldsmith.plugins'
+-- local ts = require 'goldsmith.treesitter'
+-- local fs = require 'goldsmith.fs'
 
 local M = {}
 
