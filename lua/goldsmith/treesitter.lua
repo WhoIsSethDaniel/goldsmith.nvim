@@ -1,4 +1,4 @@
-local parsers = require'nvim-treesitter.parsers'
+local parsers = require 'nvim-treesitter.parsers'
 local ts_utils = require 'nvim-treesitter.ts_utils'
 
 local M = {}
@@ -42,6 +42,27 @@ function M.get_all_modules()
   local mods = {}
   find_all_modules(trees[1]:root(), mods)
   return mods
+end
+
+function M.get_module_at_cursor()
+  local cnode = ts_utils.get_node_at_cursor()
+  if not cnode then
+    return
+  end
+
+  local parent = cnode:parent()
+  if parent ~= nil and parent:type() == 'require_spec' then
+    local mod, v
+    for node in parent:iter_children() do
+      if node:type() == 'module_path' then
+        mod = (ts_utils.get_node_text(node))[1]
+      end
+      if node:type() == 'version' then
+        v = (ts_utils.get_node_text(node))[1]
+      end
+    end
+    return { name = mod, version = v }
+  end
 end
 
 function M.get_current_function_name()

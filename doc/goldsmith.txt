@@ -532,12 +532,24 @@ modules that can be upgraded may be upgraded using a code action.
 
 Format the current go.mod file.
 
+                                                                 *:GoModReplace*
+:GoModReplace [module] replacement
+
+Create a new 'replace' rule in the current go.mod file. 
+
+If only the 'replacement' is given the module to replace it will be determined 
+by the module that the cursor is currently sitting on. *NOTE* currently this
+will not work if the cursor is in space preceding, within, or after the 
+module or version on the current line.
+
+If [module] and 'replacement' are given then a 'replace' rule is created for
+the given [module] using the 'replacement'
+
                                                                     *:GoModTidy*
 :GoModTidy
 
 Cleanup the go.mod file. See 'go help mod tidy' for more information on what
 this does.
-
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*

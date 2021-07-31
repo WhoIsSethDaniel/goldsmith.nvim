@@ -27,6 +27,15 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] structs
     - [x] field tag editing (gomodifytags) - asynchronous
 - [x] checkhealth
+- [x] interface support
+    - [x] impl (https://github.com/josharian/impl)
+- [x] fixplurals (https://github.com/davidrjenni/reftools) 
+    - [x] :GoFixPlurals
+- [x] go.mod 
+    - [x] editing (such as replace etc...)
+    - [x] formatting :GoModFmt
+    - [x] tidy :GoModTidy
+    - [x] :GoModCheck - check for upgrades for all listed packages
 - [ ] testing support
     - [x] GoAddTests
     - [x] GoAddTest
@@ -40,15 +49,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [x] exported option
     - [x] alternate file support
         - [x] GoAlt - switch to test file and back to source
-- [x] interface support
-    - [x] impl (https://github.com/josharian/impl)
-- [x] fixplurals (https://github.com/davidrjenni/reftools) 
-    - [x] :GoFixPlurals
-- [ ] go.mod 
-    - [ ] editing (such as replace etc...)
-    - [x] formatting :GoModFmt
-    - [x] tidy :GoModTidy
-    - [x] :GoModCheck - check for upgrades for all listed packages
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] disable commands that don't have deps installed
