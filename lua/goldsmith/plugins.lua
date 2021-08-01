@@ -5,6 +5,9 @@ local PLUGINS = {
     name = 'nvim-lspconfig',
     required = true,
     installed = false,
+    not_found = {
+      "This plugin is used to configure the various LSP servers such as gopls."
+    },
     check_installed = function()
       return vim.g.lspconfig == 1
     end,
@@ -13,6 +16,9 @@ local PLUGINS = {
     name = 'nvim-lspinstall',
     required = false,
     installed = false,
+    not_found = {
+      "This plugin may be used to install the LSP servers such as gopls."
+    },
     check_installed = function()
       return vim.fn.exists '*lspinstall#installed_servers' == 1
     end,
@@ -21,6 +27,9 @@ local PLUGINS = {
     name = 'nvim-lint',
     required = false,
     installed = false,
+    not_found = {
+      "This plugin is used for running supplemental linters such as 'revive'.",
+    },
     check_installed = function()
       local ok, _ = pcall(require, 'lint')
       return ok
@@ -30,6 +39,9 @@ local PLUGINS = {
     name = 'vim-test',
     required = false,
     installed = false,
+    not_found = {
+      "This plugin is not currently used by Goldsmith."
+    },
     check_installed = function()
       return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
     end,
@@ -38,6 +50,9 @@ local PLUGINS = {
     name = 'vim-ultest',
     required = false,
     installed = false,
+    not_found = {
+      "This plugin is not currently used by Goldsmith."
+    },
     check_installed = function()
       local ok, _ = pcall(require, 'ultest')
       return ok
@@ -45,8 +60,11 @@ local PLUGINS = {
   },
   treesitter = {
     name = 'nvim-treesitter',
-    required = false,
+    required = true,
     installed = false,
+    not_found = {
+      "This plugin is used by Goldsmith in many places. Much of Goldsmith will fail to work without it."
+    },
     check_installed = function()
       return vim.fn.exists ':TSInstall' == 2
     end,
@@ -55,6 +73,10 @@ local PLUGINS = {
     name = 'nvim-treesitter-textobjects',
     required = false,
     installed = false,
+    not_found = {
+      "This plugin is used to configure a number of neovim textobjects and navigation shortcuts.",
+      "See |goldsmith-text-objects| for more information."
+    },
     check_installed = function()
       if vim.fn.exists ':TSInstall' == 2 then
         local modules = require('nvim-treesitter.configs').available_modules()

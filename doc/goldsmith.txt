@@ -68,6 +68,7 @@ Tool                      Version
 go                         1.14
 gopls                      0.6.0
 efm-langserver             0.0.34
+golines                    0.4.0
 
 ================================================================================
 FEATURES                                                    *goldsmith-features*
@@ -599,7 +600,7 @@ Create a new 'replace' rule in the current go.mod file.
 
 If only the 'replacement' is given the module to replace it will be determined 
 by the module that the cursor is currently sitting on. *NOTE* currently this
-will not work if the cursor is in space preceding, within, or after the 
+will not work if the cursor is on a space preceding, within, or after the 
 module or version on the current line.
 
 If [module] and 'replacement' are given then a 'replace' rule is created for
@@ -619,27 +620,28 @@ Currently no mappings are defined.
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*
 
-Goldsmith defines a few text objects using the nvim-treesitter-textobjects plugin.
+Goldsmith defines a few text objects using the nvim-treesitter-textobjects 
+plugin.
 
-                                               *goldsmith-v_af* *goldsmith-af*
+                                                 *goldsmith-v_af* *goldsmith-af*
 af            "a function", select contents from a function definition to the
                closing bracket.
 
-                                               *goldsmith-v_if* *goldsmith-if*
+                ;                                *goldsmith-v_if* *goldsmith-if*
 if            "inside a function", select contents of a function,
               excluding the function definition and the closing bracket. This
               text-object also supports literal functions
 
-                                               *goldsmith-v_ac* *goldsmith-ac*
+                                                 *goldsmith-v_ac* *goldsmith-ac*
 ac            "a comment", select contents of the current comment block.
 
 Goldsmith also defines the following text motion objects using the 
 nvim-treesitter-textobjects plugin.
 
-                                                         *goldsmith-]]*
+                                                                  *goldsmith-]]*
 ]]            Move forward to the next defined function.            
 
-                                                         *goldsmith-[[*
+                                                                  *goldsmith-[[*
 [[            Move backward to the previously defined function.
 
 ================================================================================

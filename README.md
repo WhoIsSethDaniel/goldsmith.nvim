@@ -50,22 +50,21 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] alternate file support
         - [x] GoAlt - switch to test file and back to source
         - [x] should not require a new window
-- [ ] general work
-    - [ ] config for all autocmds
-    - [ ] disable commands that don't have deps installed
-    - [x] make certain async commands operate on correct buffer
 - [ ] LSP config related
     - [x] help config gopls
     - [x] help config efm
     - [x] help config nvim-lint
     - [ ] configuration items to control above
     - [ ] docs for all
+    - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
+- [ ] general work
+    - [ ] config for all autocmds
+    - [ ] disable commands that don't have deps installed
+    - [x] make certain async commands operate on correct buffer
 - [ ] extra command work
     - [ ] errorformats for some of them?
     - [ ] need command to create basic revive config
 - [ ] lua functions provided for many actions / commands etc...
-- [ ] LSP related
-    - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console

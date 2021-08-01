@@ -90,18 +90,6 @@ local TOOLS = {
       'It is required if you want to use the :GoImpl command.',
     },
   },
-  staticcheck = {
-    status = 'install',
-    location = 'honnef.co/go/tools/cmd/staticcheck',
-    tag = 'latest',
-    required = false,
-    exe = 'staticcheck',
-    not_found = { 'This tool is not currently used' },
-    get_version = function(cmd)
-      local out = vim.fn.system(cmd .. ' -version')
-      return string.match(out, '%(v([%d%.]+)%)')
-    end,
-  },
   fixplurals = {
     status = 'install',
     location = 'github.com/davidrjenni/reftools/cmd/fixplurals',
