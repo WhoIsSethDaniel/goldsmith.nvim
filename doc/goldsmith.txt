@@ -124,12 +124,15 @@ You can use all the defaults by placing the following in your configuration:
     require("goldsmith.config").setup()
 <
 
-A configuration that sets all settings to the defaults:
+A configuration that sets settings to the defaults:
 >
     require("goldsmith.config").setup({
         goimports = {
             run_on_save = true,
             timeout = 1000,
+        },
+        goalt = {
+          use_current_window = false,
         },
         window = {
             pos = "right",
@@ -168,6 +171,13 @@ to arrange the imports in your code.
 Default: 1000
 How long to wait for a response from gopls when requesting that goimports be 
 run. The units are milliseconds, so 1000 = 1 second.
+
+*goalt.use_current_window*                  *goldsmith-goalt.use_current_window*
+
+Default: false
+Set to 'true' to use the current window when loading the alternate file. If 
+'false' Goldsmith will create a new window based on your
+|goldsmith-window-settings|.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
@@ -465,15 +475,15 @@ where this tool can be found.
 To install `gotests` you can use |:GoInstallBinaries|.
 
                                                                         *:GoAlt*
-:GoAlt
+:GoAlt[!]
 
 Switch to the 'alternate' file for the current file. 
 
 If you are editing a code file this will switch you to the test file for that 
-code file. If a test file does not exist one will be created.
+code file. If you use '!' and the test file does not exist one will be created.
 
 If you are editing a test file this will switch you to the code file for that
-test file. If a code file does not exist one will be created.
+test file. If you use '!' and the code file does not exist one will be created. 
 
 If a buffer for the 'alternate' file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer

@@ -5,6 +5,9 @@ local CONFIG = {
     run_on_save = true,
     timeout = 1000,
   },
+  goalt = {
+    use_current_window = false,
+  },
   tests = {},
   terminal = {
     pos = 'right',

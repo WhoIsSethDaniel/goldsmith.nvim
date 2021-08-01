@@ -37,7 +37,7 @@ command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
 " current file / file switching
 command! -nargs=0 GoImports lua require'goldsmith.cmds.imports'.run(1)
 command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run()
-command! -nargs=0 GoAlt lua require'goldsmith.cmds.alt'.run()
+command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
 command! -nargs=0 GoLint lua require'goldsmith.cmds.lint'.run()
 
 " creating/editing tests
