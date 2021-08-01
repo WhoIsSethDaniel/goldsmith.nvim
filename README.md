@@ -47,9 +47,9 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [ ] template support
         - [x] parallel option
         - [x] exported option
-    - [ ] alternate file support
+    - [x] alternate file support
         - [x] GoAlt - switch to test file and back to source
-        - [ ] should not require a new window
+        - [x] should not require a new window
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] disable commands that don't have deps installed
