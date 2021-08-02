@@ -135,6 +135,7 @@ A configuration that sets settings to the defaults:
         goalt = {
           use_current_window = false,
         },
+        tests = {},
         window = {
             pos = "right",
             focus = true,
@@ -179,6 +180,21 @@ Default: false
 Set to 'true' to use the current window when loading the alternate file. If 
 'false' Goldsmith will create a new window based on your
 |goldsmith-window-settings|.
+
+*tests.template*                                      *goldsmith-tests.template*
+
+Default: nil
+Specify custom test code templates.
+
+*tests.template_dir*                              *goldsmith-tests.template_dir*
+
+Default: nil
+Path to a directory containing custom test code templates.
+
+*tests.template_params_dir*                *goldsmith-tests.template_params_dir*
+
+Default: nil
+Read external parameters to template by json with file.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
@@ -678,7 +694,7 @@ the plugins that can be utilized by Goldsmith.
   `gopls`                         https://golang.org/x/tools/gopls
   `efm-langserver`                https://github.com/mattn/efm-langserver
   `gomodifytags`                  https://github.com/fatih/gomodifytags
-  `gotests`                       https://github.com/cweill/gotests/gotests
+  `gotests`                       https://github.com/cweill/gotests
   `golines`                       https://github.com/segmentio/golines
   `impl`                          https://github.com/josharian/impl
   `fixplurals`                    https://github.com/davidrjenni/reftools/cmd/fixplurals

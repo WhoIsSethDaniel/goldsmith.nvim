@@ -1,0 +1,12 @@
+- [ ] lua functions provided for many actions / commands etc...
+- [ ] debugging the plugin
+    - [ ] debug mode
+    - [ ] debug console
+- [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
+- [ ] wiki docs
+  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+  - [ ] different configuration items / configurations
+- [ ] workspaces / multiple workspaces
+- [ ] build tag editing
+- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
+

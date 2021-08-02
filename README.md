@@ -40,11 +40,11 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] GoAddTests
     - [x] GoAddTest
     - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
-    - [ ] use `gotests` to generate skeleton testing file
+    - [x] use `gotests` to generate skeleton testing file
         - [x] GoAddTests (-all support)
         - [x] GoAddTest (-only support) - works on current function if no arg
         - [x] completion for test names w/GoAddTest
-        - [ ] template support
+        - [x] template support
         - [x] parallel option
         - [x] exported option
     - [x] alternate file support
@@ -55,23 +55,16 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] help config efm
     - [x] help config nvim-lint
     - [ ] configuration items to control above
-    - [ ] docs for all
+    - [ ] vim docs for all
     - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
 - [ ] general work
     - [ ] config for all autocmds
+    - [ ] far better config validation; mechanism to warn of major config changes
     - [ ] disable commands that don't have deps installed
-    - [x] make certain async commands operate on correct buffer
-- [ ] extra command work
-    - [ ] errorformats for some of them?
+    - [ ] errorformats for at least some of the commands
     - [ ] need command to create basic revive config
-- [ ] lua functions provided for many actions / commands etc...
-- [ ] debugging the plugin
-    - [ ] debug mode
-    - [ ] debug console
-- [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
-- [ ] workspaces / multiple workspaces
-- [ ] build tag editing
-- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
+    - [x] make certain async commands operate on correct buffer
+- [ ] README should have basic install instructions once ready for release
 
 ## Details
 Written in Lua so it only works with NeoVim. This is meant to be both useful (to me, at least) and to work as a testbed

@@ -5,30 +5,6 @@ local fs = require 'goldsmith.fs'
 
 local M = {}
 
--- Usage of gotests:
---   -all
---     	generate tests for all functions and methods
---   -excl string
---     	regexp. generate tests for functions and methods that don't match. Takes precedence over -only, -exported, and -all
---   -exported
---     	generate tests for exported functions and methods. Takes precedence over -only and -all
---   -i	print test inputs in error messages
---   -nosubtests
---     	disable generating tests using the Go 1.7 subtests feature
---   -only string
---     	regexp. generate tests for functions and methods that match only. Takes precedence over -all
---   -parallel
---     	enable generating parallel subtests
---   -template string
---     	optional. Specify custom test code templates, e.g. testify. This can also be set via environment variable GOTESTS_TEMPLATE
---   -template_dir string
---     	optional. Path to a directory containing custom test code templates. Takes precedence over -template. This can also be set via environment variable GOTESTS_TEMPLATE_DIR
---   -template_params string
---     	read external parameters to template by json with stdin
---   -template_params_file string
---     	read external parameters to template by json with file
---   -w	write output to (test) files instead of stdout
-
 function M.complete(arglead, cmdline, cursorPos)
   local funcs = ts.get_all_functions()
   local current = ts.get_current_function_name()
@@ -96,7 +72,6 @@ function M.generate(option)
 end
 
 function M.run(...)
-  print(vim.inspect { ... })
   local args = ''
   for _, a in ipairs { ... } do
     args = string.format('%s %s', args, a)
@@ -109,6 +84,16 @@ function M.run(...)
   if fs.is_test_file(fp) then
     vim.api.nvim_err_writeln 'Current file is a test file'
     return
+  end
+  local extra = config.get('tests') or {}
+  if extra['template'] ~= nil and extra['template'] ~= '' then
+    args = string.format('%s -template %s', args, extra['template'])
+  end
+  if extra['template_dir'] ~= nil and extra['template_dir'] ~= '' then
+    args = string.format('%s -template_dir %s', args, extra['template_dir'])
+  end
+  if extra['template_params_file'] ~= nil and extra['template_params_file'] ~= '' then
+    args = string.format('%s -template_params_file %s', args, extra['template_params_file'])
   end
   local cmd = string.format('gotests -w %s %s', args, fp)
   local ok = false
