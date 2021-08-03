@@ -34,20 +34,21 @@ function M.code_action()
   vim.lsp.buf.code_action()
 end
 
--- :GoRef [<context>]
+-- :GoRef
 function M.references()
+  -- takes optional <context> arg
   vim.lsp.buf.references()
 end
 
 -- :GoDiagShow
 function M.show_diagnostics()
-  -- takes many args
+  -- takes many optional args
   vim.lsp.diagnostic.show_line_diagnostics()
 end
 
 -- :GoDiagList
 function M.diag_set_loclist()
-  -- takes args
+  -- takes optional args
   vim.lsp.diagnostic.set_loclist()
 end
 

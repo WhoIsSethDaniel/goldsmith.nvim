@@ -4,7 +4,7 @@ local plugins = require 'goldsmith.plugins'
 local M = {}
 
 -- currently this is mostly the lspconfig defaults;
--- should mutate over time to be better
+-- should mutate over time to be better / different
 local on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)

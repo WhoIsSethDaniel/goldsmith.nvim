@@ -59,8 +59,8 @@ command! -nargs=0 GoDefType lua require'goldsmith.cmds.lsp'.type_definition()
 cabbrev GoTypeDef GoDefType
 command! -nargs=0 GoCodeAction lua require'goldsmith.cmds.lsp'.code_action()
 command! -nargs=0 GoRef lua require'goldsmith.cmds.lsp'.references()
-command! -nargs=0 GoDiagShow lua require'goldsmith.cmds.lsp'.show_diagnostics()
-command! -nargs=0 GoDiagList lua require'goldsmith.cmds.lsp'.diag_set_loclist()
+command! -nargs=0 GoShowDiag lua require'goldsmith.cmds.lsp'.show_diagnostics()
+command! -nargs=0 GoListDiag lua require'goldsmith.cmds.lsp'.diag_set_loclist()
 command! -nargs=1 GoRename lua require'goldsmith.cmds.lsp'.rename(<f-args>)
 
 augroup goldsmith_ft_go

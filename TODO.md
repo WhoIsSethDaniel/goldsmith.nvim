@@ -2,10 +2,12 @@
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
+- [ ] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] wiki docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] different configuration items / configurations
+  - [ ] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)

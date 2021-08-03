@@ -3,13 +3,13 @@ local config = require 'goldsmith.config'
 local M = {}
 
 function M.run(uncond)
-  local import_to = config.get('goimports').timeout
+  local import_to = config.get('imports').timeout
   if uncond == 1 then
     M.goimports(import_to)
     return
   end
 
-  local run_go_imports = config.get('goimports').run_on_save
+  local run_go_imports = config.get('imports').run_on_save
   if run_go_imports then
     M.goimports(import_to)
   end

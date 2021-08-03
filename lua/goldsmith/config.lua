@@ -1,11 +1,11 @@
 local M = {}
 
 local CONFIG = {
-  goimports = {
+  imports = {
     run_on_save = true,
     timeout = 1000,
   },
-  goalt = {
+  alt = {
     use_current_window = false,
   },
   tests = {},
@@ -25,6 +25,12 @@ local CONFIG = {
     default_tag = 'json',
     transform = 'snakecase',
     skip_unexported = false,
+  },
+  revive = {
+    config_file = '.revive.toml',
+  },
+  format = {
+    max_line_length = 120,
   },
 }
 

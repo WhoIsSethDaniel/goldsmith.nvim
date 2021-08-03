@@ -1,24 +1,9 @@
 local plugins = require 'goldsmith.plugins'
 local servers = require 'goldsmith.lsp.servers'
+local config = require 'goldsmith.config'
 
 local M = {
   _config = {},
-}
-
-local DEFAULTS = {
-  filetypes = { 'go' },
-  init_options = {
-    documentFormatting = true,
-  },
-  settings = {
-    languages = {
-      go = {
-        {
-          formatCommand = 'golines --max-len=120',
-        },
-      },
-    },
-  },
 }
 
 function M.has_config()
@@ -36,24 +21,27 @@ local set_filetypes = function(cf)
   if vim.tbl_contains(cf, 'go') then
     return cf
   end
-  local types = vim.tbl_values(cf)
-  table.insert(types, 'go')
-  return types
+  table.insert(cf, 'go')
+  return cf
 end
 
 local set_init_options = function(cf)
-  return vim.tbl_deep_extend('keep', DEFAULTS.init_options, cf or {})
+  cf['documentFormatting'] = true
+  return cf
 end
 
-local set_settings = function(cf)
-  return vim.tbl_deep_extend('keep', DEFAULTS.settings, cf or {})
+local set_settings = function(conf, settings)
+  local new = vim.tbl_deep_extend('keep', settings, { languages = { go = {} } })
+  table.insert(new.languages.go, { formatCommand = string.format("golines --max-len=%d", conf['max_line_length']) })
+  return new
 end
 
 function M.setup(cf)
+  local formatcf = config.get('format')
   M._config = cf
-  M._config['filetypes'] = set_filetypes(cf['filetypes'])
-  M._config['init_options'] = set_init_options(cf['init_options'])
-  M._config['settings'] = set_settings(cf['settings'])
+  M._config['filetypes'] = set_filetypes(cf['filetypes'] or {})
+  M._config['init_options'] = set_init_options(cf['init_options'] or {})
+  M._config['settings'] = set_settings(formatcf, cf['settings'] or {})
 end
 
 return M

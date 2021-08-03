@@ -56,7 +56,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] help config nvim-lint
     - [ ] configuration items to control above
     - [ ] vim docs for all
-    - [ ] show source of warning in vtext (i.e. show that 'efm' is the source)
+    - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'efm' is the source)
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] far better config validation; mechanism to warn of major config changes

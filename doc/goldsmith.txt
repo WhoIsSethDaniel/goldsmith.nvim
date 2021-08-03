@@ -128,11 +128,11 @@ You can use all the defaults by placing the following in your configuration:
 A configuration that sets settings to the defaults:
 >
     require("goldsmith.config").setup({
-        goimports = {
+        imports = {
             run_on_save = true,
             timeout = 1000,
         },
-        goalt = {
+        alt = {
           use_current_window = false,
         },
         tests = {},
@@ -152,7 +152,13 @@ A configuration that sets settings to the defaults:
             default_tag = "json",
             transform = "snakecase",
             skip_unexported = false
-        }
+        },
+        revive = {
+            config_file = '.revive.toml',
+        },
+        format = {
+            max_line_length = 120,
+        },
     })
 <
 
@@ -161,20 +167,20 @@ SETTINGS                                                    *goldsmith-settings*
 
 GENERAL SETTINGS                                    *goldsmith-general-settings*
 
-*goimports.run_on_save*                        *goldsmith-goimports.run_on_save*
+*imports.run_on_save*                            *goldsmith-imports.run_on_save*
 
 Default: true
 When you save Go program source have gopls run 'goimports' to arrange and fix 
 the import section. If you set this to false you can run |:GoImports| manually
 to arrange the imports in your code.
 
-*goimports.timeout*                                *goldsmith-goimports.timeout*
+*imports.timeout*                                    *goldsmith-imports.timeout*
 
 Default: 1000
 How long to wait for a response from gopls when requesting that goimports be 
 run. The units are milliseconds, so 1000 = 1 second.
 
-*goalt.use_current_window*                  *goldsmith-goalt.use_current_window*
+*alt.use_current_window*                      *goldsmith-alt.use_current_window*
 
 Default: false
 Set to 'true' to use the current window when loading the alternate file. If 
@@ -195,6 +201,27 @@ Path to a directory containing custom test code templates.
 
 Default: nil
 Read external parameters to template by json with file.
+
+*revive.config_file*                              *goldsmith-revive.config_file*
+
+Default: .revive.toml
+The configuration file for `revive`. If revive has been configured to run this 
+file is required to exist and should exist in the project root directory. 
+
+See |goldsmith-resources| for where `revive` can be found.
+
+To install `revive` you can use |:GoInstallBinaries|.
+
+*format.max_line_length*                      *goldsmith-format.max_line_length*
+
+Default: 120
+The max number of columns to allow for code lines. 
+
+Behind the scenes this controls the configuration of `golines`.
+
+See |goldsmith-resources| for where `golines` can be found.
+
+To install `golines` you can use |:GoInstallBinaries|.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
@@ -320,7 +347,7 @@ but otherwise want all commands to run without focus:
 COMMANDS                                                    *goldsmith-commands*
 
                                                                         *:GoDoc*
-:GoDoc [options] package [func|var|const|type]
+:GoDoc [options] package [func | var | const | type]
 
 View the documentation for the given package. Takes the same arguments as
 `go doc`. e.g.:
@@ -350,7 +377,6 @@ as `go build`. e.g.:
 >
     :GoBuild -race
 <
-  
                                                                         *:GoRun*
 :GoRun [args]
 
@@ -359,7 +385,6 @@ as `go run`. e.g., the following runs the main package in the current directory:
 >
     :GoRun .
 <
- 
                                                                         *:GoGet*
 :GoGet [packages]
 
@@ -480,8 +505,7 @@ Generate a stub test for either the function/method passed to the command or
 generate a stub test for the current function/method the cursor is currently
 in. If the given [function_name] does not exist no test is created.
 
-The only options are -p and -e. -p means generate parallel subtests. -e means
-to only generate tests for exported functions/methods.
+The only option is -p. -p means generate parallel subtests.
 
 You can use command completion to see all available functions in the current
 file.
@@ -504,7 +528,8 @@ test file. If you use '!' and the code file does not exist one will be created.
 
 If a buffer for the 'alternate' file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
-or window will be created if they do not already exist.
+or window will be created if they do not already exist (contingent on the 
+value of |goalt.use_current_window|).
 
                                                                        *:GoImpl*
 :GoImpl <recv> <interface>
@@ -578,13 +603,13 @@ Perform the code action for any code actions available on the current line.
 
 List all references to the symbol under the cursor in the quickfix window.
 
-                                                                   *:GoDiagShow*
-:GoDiagShow
+                                                                   *:GoShowDiag*
+:GoShowDiag
 
 Show all diagnostics for the current line in a floating window.
 
-                                                                   *:GoDiagList*
-:GoDiagList
+                                                                   *:GoListDiag*
+:GoListDiag
 
 Place all diagnostics for the current buffer in the location list.
 
@@ -698,3 +723,4 @@ the plugins that can be utilized by Goldsmith.
   `golines`                       https://github.com/segmentio/golines
   `impl`                          https://github.com/josharian/impl
   `fixplurals`                    https://github.com/davidrjenni/reftools/cmd/fixplurals
+  `revive`                        https://github.com/mgechev/revive
