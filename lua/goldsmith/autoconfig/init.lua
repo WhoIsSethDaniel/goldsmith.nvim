@@ -43,15 +43,15 @@ local config_map = {
   efm = require 'goldsmith.autoconfig.lsp.efm',
 }
 
-function M.init()
-  for _, r in pairs(config_map) do
+function M.config_servers()
+  for n, r in pairs(config_map) do
     if r.has_config() then
       r.config()
     end
   end
 end
 
-function M.setup(item, cf)
+function M.setup_server(item,cf)
   local name
   local i = plugins.info(item)
   if i == nil then

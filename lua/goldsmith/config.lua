@@ -32,6 +32,8 @@ local CONFIG = {
   format = {
     max_line_length = 120,
   },
+  gopls = {},
+  efm = {},
 }
 
 function M.setup(user_config)
