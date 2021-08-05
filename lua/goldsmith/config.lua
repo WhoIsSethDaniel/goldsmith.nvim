@@ -27,13 +27,13 @@ local CONFIG = {
     skip_unexported = false,
   },
   revive = {
-    config_file = '.revive.toml',
+    config_file = 'revive.toml',
   },
   format = {
     max_line_length = 120,
   },
   gopls = {},
-  efm = {},
+  null = {},
 }
 
 function M.setup(user_config)

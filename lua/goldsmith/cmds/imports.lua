@@ -17,9 +17,8 @@ end
 
 -- taken from https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
 -- It is different in that this version supports multiple language servers (but only one will
--- be able to fulfill the request -- presumedly gopls). i.e. if you are running EFM + gopls both
--- servers will (likely) respond to the codeAction request, but only gopls will return a non-empty
--- response. This code is also similar to the codeAction handler defined at lua/vim/lsp/handlers.lua.
+-- be able to fulfill the request -- presumedly gopls).
+-- This code is also similar to the codeAction handler defined at lua/vim/lsp/handlers.lua.
 function M.goimports(timeout_ms)
   local context = { only = { "source.organizeImports" } }
   -- local context = { source = { organizeImports = true } }

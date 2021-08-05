@@ -11,7 +11,7 @@ end
 function M.is_server(name)
   for _, sn in pairs(M.names()) do
     local sni = M.info(sn)
-    for _, pn in ipairs { sn, sni.exe, sni.lspconfig_name, sni.lspinstall_name } do
+    for _, pn in ipairs { sn, sni.lspconfig_name, sni.lspinstall_name, sni.exe } do
       if name == pn then
         return true, sn
       end

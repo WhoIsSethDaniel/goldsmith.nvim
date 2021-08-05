@@ -19,7 +19,6 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [x] GoFormat - manually run formatter(s)
 - [x] GoGet - run go get
 - [x] GoInstall - run go install
-- [x] GoLint - for manually running linter(s) (via nvim-lint)
 - [x] GoInstallBinaries - install all needed 3rd-party tools
 - [x] plugin documentation
     - [x] vim doc
@@ -52,16 +51,15 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [x] should not require a new window
 - [ ] LSP config related
     - [x] help config gopls
-    - [x] help config efm
-    - [x] help config nvim-lint
+    - [x] help config null-ls
     - [ ] configuration items to control above
     - [ ] vim docs for all
     - [ ] var highlight -- document\_highlight() triggered on movement
-    - [ ] null-ls
 - [ ] general work
     - [ ] config for all autocmds
     - [ ] errorformats for at least some of the commands
     - [ ] need command to create basic revive config
+    - [ ] fix constant 'check'ing in certain modules
     - [x] make certain async commands operate on correct buffer
 - [ ] README should have basic install instructions once ready for release
 

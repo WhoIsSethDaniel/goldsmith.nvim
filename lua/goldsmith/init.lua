@@ -3,7 +3,7 @@ local ac = require'goldsmith.autoconfig'
 local conf = require'goldsmith.config'
 
 local M = {}
-local registered_servers = {} 
+local registered_servers = {}
 
 -- global goldsmith config
 function M.config(cf)

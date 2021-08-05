@@ -38,7 +38,7 @@ function M.lsp_server_check()
     elseif servers.is_required(server) then
       health_error(string.format('%s: NOT INSTALLED and is REQUIRED', si.exe), { 'This server should be installed.' })
     else
-      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', si.exe), {})
+        health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', si.exe), {})
     end
   end
 end
@@ -47,7 +47,7 @@ function M.tool_check()
   health_start 'Tool Check'
 
   tools.check()
-  for _, tool in ipairs(tools.names()) do
+  for _, tool in ipairs(tools.names({status = 'install'})) do
     local ti = tools.info(tool)
     if ti.cmd == nil then
       if ti.status == 'install' then

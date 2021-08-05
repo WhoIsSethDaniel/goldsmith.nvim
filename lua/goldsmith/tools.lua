@@ -1,10 +1,7 @@
-local plugins = require 'goldsmith.plugins'
-
 local M = {}
 
 local TOOLS = {
   go = {
-    status = 'expected',
     required = true,
     exe = 'go',
     not_found = { 'This is required' },
@@ -26,23 +23,6 @@ local TOOLS = {
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
       return string.match(out, '@v([%d%.]+)')
-    end,
-  },
-  efm = {
-    status = 'install',
-    location = 'github.com/mattn/efm-langserver',
-    tag = 'latest',
-    server = true,
-    required = false,
-    exe = 'efm-langserver',
-    lspconfig_name = 'efm',
-    lspinstall_name = 'efm',
-    not_found = {
-      'This is required if you want to do extra linting or formatting. It can supplement gopls.',
-    },
-    get_version = function(cmd)
-      local out = vim.fn.system(cmd .. ' -v')
-      return string.match(out, 'efm%-langserver ([%d%.]+)')
     end,
   },
   gomodifytags = {
@@ -109,10 +89,113 @@ local TOOLS = {
     required = false,
     not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
   },
+  lspconfig = {
+    name = 'nvim-lspconfig',
+    required = true,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin is used to configure the various LSP servers such as gopls.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'lspconfig')
+      return ok
+    end,
+  },
+  lspinstall = {
+    name = 'nvim-lspinstall',
+    required = false,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin may be used to install the LSP servers such as gopls.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'lspinstall')
+      return ok
+    end,
+  },
+  null = {
+    name = 'null-ls',
+    required = false,
+    installed = false,
+    plugin = true,
+    server = true,
+    lspconfig_name = 'null-ls',
+    lspinstall_name = 'null-ls',
+    not_found = {
+      "This plugin is used for running supplemental linters and formatters such as 'revive' and 'golines'.",
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'null-ls')
+      return ok
+    end,
+  },
+  test = {
+    name = 'vim-test',
+    required = false,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin is not currently used by Goldsmith.',
+    },
+    check_installed = function()
+      return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
+    end,
+  },
+  ultest = {
+    name = 'vim-ultest',
+    required = false,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin is not currently used by Goldsmith.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'ultest')
+      return ok
+    end,
+  },
+  treesitter = {
+    name = 'nvim-treesitter',
+    required = true,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin is used by Goldsmith in many places. Much of Goldsmith will fail to work without it.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'nvim-treesitter')
+      return ok
+    end,
+  },
+  ['treesitter-textobjects'] = {
+    name = 'nvim-treesitter-textobjects',
+    required = false,
+    installed = false,
+    plugin = true,
+    not_found = {
+      'This plugin is used to configure a number of neovim textobjects and navigation shortcuts.',
+      'See |goldsmith-text-objects| for more information.',
+    },
+    check_installed = function()
+      if vim.fn.exists ':TSInstall' == 2 then
+        local modules = require('nvim-treesitter.configs').available_modules()
+        for _, m in ipairs(modules) do
+          if m == 'textobjects.select' then
+            return true
+          end
+        end
+        return false
+      end
+    end,
+  },
 }
 
 function M.find_bin(program, info)
-  if info.server then
+  local plugins = require 'goldsmith.plugins'
+
+  if info.server and info['exe'] ~= nil then
     TOOLS[program].installed = false
     local li_installed = false
     local li_util
@@ -145,11 +228,16 @@ end
 function M.check(names)
   local tools = names or M.names()
   for _, tool in ipairs(tools) do
-    TOOLS[tool].cmd = M.find_bin(tool, TOOLS[tool])
-    if TOOLS[tool].cmd == nil or TOOLS[tool].get_version == nil then
+    if TOOLS[tool]['plugin'] == true then
+      TOOLS[tool].installed = TOOLS[tool].check_installed()
       TOOLS[tool].version = 'unknown'
     else
-      TOOLS[tool].version = TOOLS[tool].get_version(TOOLS[tool].cmd)
+      TOOLS[tool].cmd = M.find_bin(tool, TOOLS[tool])
+      if TOOLS[tool].cmd == nil or TOOLS[tool].get_version == nil then
+        TOOLS[tool].version = 'unknown'
+      else
+        TOOLS[tool].version = TOOLS[tool].get_version(TOOLS[tool].cmd)
+      end
     end
   end
 end

@@ -67,7 +67,6 @@ Tool                      Version
 ---------------------------------
 go                         1.14
 gopls                      0.6.0
-efm-langserver             0.0.34
 golines                    0.4.0
 
 ================================================================================
@@ -102,7 +101,7 @@ to each plugin mentioned.
 
 Required
 * nvim-lspconfig
-  Configure gopls and efm-langserver
+  Configure gopls and null-ls
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
 
@@ -111,7 +110,7 @@ Optional
   Needed if you want treesitter textobjects and treesitter navigation. See
   |goldsmith-text-objects|.
 * nvim-lspinstall
-  For installing language servers. i.e. gopls and efm-langserver
+  For installing language servers. i.e. gopls
 * vim-test
   For running tests
 * vim-ultest
@@ -400,7 +399,7 @@ Run `go install` to add new tools to use. Takes the same arguments as
                                                                      *:GoFormat*
 :GoFormat
 
-Tell gopls and efm-langserver to format the current Go buffer immediately.
+Tell gopls and null-ls to format the current Go buffer immediately.
 
                                                                        *:GoTest*
 :GoTest
@@ -712,12 +711,12 @@ the plugins that can be utilized by Goldsmith.
   `nvim-lspinstall`               https://github.com/kabouzeid/nvim-lspinstall
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  `null-ls`                       https://github.com/jose-elias-alvarez/null-ls.nvim
   `vim-test`                      https://github.com/vim-test/vim-test
   `vim-ultest`                    https://github.com/rcarriga/vim-ultest
 
 * 3rd-party tools
   `gopls`                         https://golang.org/x/tools/gopls
-  `efm-langserver`                https://github.com/mattn/efm-langserver
   `gomodifytags`                  https://github.com/fatih/gomodifytags
   `gotests`                       https://github.com/cweill/gotests
   `golines`                       https://github.com/segmentio/golines
