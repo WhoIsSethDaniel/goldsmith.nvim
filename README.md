@@ -56,11 +56,10 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] help config nvim-lint
     - [ ] configuration items to control above
     - [ ] vim docs for all
-    - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'efm' is the source)
+    - [ ] var highlight -- document\_highlight() triggered on movement
+    - [ ] null-ls
 - [ ] general work
     - [ ] config for all autocmds
-    - [ ] far better config validation; mechanism to warn of major config changes
-    - [ ] disable commands that don't have deps installed
     - [ ] errorformats for at least some of the commands
     - [ ] need command to create basic revive config
     - [x] make certain async commands operate on correct buffer

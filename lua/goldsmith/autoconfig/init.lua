@@ -51,7 +51,7 @@ function M.config_servers()
   end
 end
 
-function M.setup_server(item,cf)
+function M.setup_server(item, cf)
   local name
   local i = plugins.info(item)
   if i == nil then
