@@ -617,6 +617,33 @@ Place all diagnostics for the current buffer in the location list.
 
 Rename the symbol under the cursor to the name passed as an argument.
 
+                                                               *:GoSymHighlight*
+:GoSymHighlight
+
+Highlight all references to the symbol under the cursor.
+
+                                                            *:GoSymHighlightOff*
+:GoSymHighlightOff
+
+Turn any current symbol highlighting off.
+
+                                                               *:GoReviveConfig*
+:GoReviveConfig
+
+This is meant as a convenience command to be used when first starting a project.
+This command creates the recommended configuration file for the `revive` linter
+in the root directory of your project (Goldsmith assumes that the current working
+directory is the root of your project.)
+
+Without a configuration file `revive` will not work so a configuration file is 
+mandatory for its proper functioning.
+
+After you have created the file you can restart the server that is running 
+`revive` using the :LspRestart command. If you do not restart the server `revive`
+will never run.
+
+To install `revive` you can use |:GoInstallBinaries|.
+
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
 

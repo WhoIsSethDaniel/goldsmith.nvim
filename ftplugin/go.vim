@@ -33,12 +33,11 @@ command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run(<f-args>)
 command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run(<f-args>)
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run(<f-args>)
 command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
+command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
 
-" current file / file switching
+" formatting
 command! -nargs=0 GoImports lua require'goldsmith.cmds.imports'.run(1)
 command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run()
-command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
-command! -nargs=0 GoLint lua require'goldsmith.cmds.lint'.run()
 
 " creating/editing tests
 command! -nargs=? GoAddTests lua require'goldsmith.cmds.tests'.generate(<f-args>)
@@ -62,6 +61,13 @@ command! -nargs=0 GoRef lua require'goldsmith.cmds.lsp'.references()
 command! -nargs=0 GoShowDiag lua require'goldsmith.cmds.lsp'.show_diagnostics()
 command! -nargs=0 GoListDiag lua require'goldsmith.cmds.lsp'.diag_set_loclist()
 command! -nargs=1 GoRename lua require'goldsmith.cmds.lsp'.rename(<f-args>)
+
+" highlighting
+command! -nargs=0 GoSymHighlight lua require'goldsmith.cmds.lsp'.highlight_current_symbol()
+command! -nargs=0 GoSymHighlightOff lua require'goldsmith.cmds.lsp'.clear_symbol_highlighting()
+
+" linting
+command! -nargs=0 GoReviveConfig lua require'goldsmith.cmds.lint'.create_revive_config(<f-args>)
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>

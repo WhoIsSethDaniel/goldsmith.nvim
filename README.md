@@ -52,15 +52,17 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 - [ ] LSP config related
     - [x] help config gopls
     - [x] help config null-ls
+    - [x] var highlight -- document\_highlight() triggered on movement
     - [ ] configuration items to control above
     - [ ] vim docs for all
-    - [ ] var highlight -- document\_highlight() triggered on movement
 - [ ] general work
-    - [ ] config for all autocmds
-    - [ ] errorformats for at least some of the commands
-    - [ ] need command to create basic revive config
-    - [ ] fix constant 'check'ing in certain modules
+    - [x] need command to create basic revive config
     - [x] make certain async commands operate on correct buffer
+    - [ ] config for all autocmds
+        - [ ] auto-formatting
+        - [ ] auto-highlighting symbols
+    - [ ] errorformats for at least some of the commands
+    - [ ] fix constant 'check'ing in tools modules
 - [ ] README should have basic install instructions once ready for release
 
 ## Details

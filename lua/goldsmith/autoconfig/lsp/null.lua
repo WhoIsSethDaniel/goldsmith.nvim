@@ -41,7 +41,9 @@ local function setup_golines(conf)
   return {
     method = null.methods.FORMATTING,
     filetypes = { 'go' },
+    diagnostics_format = '#{s} #{m}',
     generator = help.formatter_factory {
+      diagnostics_format = '#{s} #{m}',
       command = 'golines',
       to_stdin = true,
       args = { string.format('--max-len=%d', conf['max_line_length']) },

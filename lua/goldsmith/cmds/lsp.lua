@@ -52,4 +52,15 @@ function M.diag_set_loclist()
   vim.lsp.diagnostic.set_loclist()
 end
 
+-- :GoSymHighlight
+function M.highlight_current_symbol()
+  vim.lsp.buf.document_highlight()
+end
+
+-- :GoSymHighlightOff
+function M.clear_symbol_highlighting()
+  vim.lsp.buf.clear_references()
+end
+
+
 return M
