@@ -1,3 +1,5 @@
+" vint: -ProhibitAutocmdWithNoGroup
+
 " apparently there are other filetypes that use *.mod, so get rid of them
 autocmd! BufRead,BufNewFile *.mod,*.MOD
 " for now assume any go.mod is the Go module file;

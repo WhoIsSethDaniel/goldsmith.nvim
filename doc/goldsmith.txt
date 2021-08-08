@@ -73,19 +73,27 @@ golines                    0.4.0
 FEATURES                                                    *goldsmith-features*
 
 Features currently included:
+* codelens support 
+* flag and update out-of-date dependencies in your current Go module
 * automatically run goimports on save
+* auto-highlight the current symbol under the cursor throughout the current 
+  buffer
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
 * view Go documentation using the :GoDoc command
 * manually update imports using the :GoImports command
-* format your code on demand using :GoFormat
+* format your code on demand using :GoFormat or have Goldsmith automatically 
+  format your code on save
+* run extra linters and/or formatters using null-ls
+* Goldsmith can completely configure everything for you, if you want. 
 * commands for common tasks (the following list is not complete):
     * build your project using :GoBuild 
     * run your main package using :GoRun
     * fetch new Go libraries using :GoGet
     * install new Go tools using :GoInstall
     * run tests using :GoTest
-    * struct tag editing: add / remove / update struct tags and options.
+    * struct tag editing: add / remove / update struct tags and options
+* all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 * use :checkhealth to see if your Goldsmith setup should work correctly
 
@@ -121,17 +129,17 @@ CONFIGURATION                                          *goldsmith-configuration*
 
 You can use all the defaults by placing the following in your configuration:
 >
-    require("goldsmith.config").setup()
+    require("goldsmith").config()
 <
 
 A configuration that sets settings to the defaults:
 >
-    require("goldsmith.config").setup({
-        imports = {
+    require("goldsmith").config({
+        goimports = {
             run_on_save = true,
             timeout = 1000,
         },
-        alt = {
+        goalt = {
           use_current_window = false,
         },
         tests = {},
@@ -153,10 +161,17 @@ A configuration that sets settings to the defaults:
             skip_unexported = false
         },
         revive = {
-            config_file = '.revive.toml',
+            config_file = 'revive.toml',
         },
         format = {
             max_line_length = 120,
+            run_on_save = true,
+        },
+        highlight = {
+            current_symbol = true
+        },
+        codelens = {
+            show = true
         },
     })
 <
@@ -164,52 +179,15 @@ A configuration that sets settings to the defaults:
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
 
-GENERAL SETTINGS                                    *goldsmith-general-settings*
+FORMATTING                                       *goldsmith-formatting-settings*
 
-*imports.run_on_save*                            *goldsmith-imports.run_on_save*
+*format.run_on_save*                              *goldsmith-format.run_on_save*
 
 Default: true
-When you save Go program source have gopls run 'goimports' to arrange and fix 
-the import section. If you set this to false you can run |:GoImports| manually
-to arrange the imports in your code.
+When you save your current document formatting should be applied. 
 
-*imports.timeout*                                    *goldsmith-imports.timeout*
-
-Default: 1000
-How long to wait for a response from gopls when requesting that goimports be 
-run. The units are milliseconds, so 1000 = 1 second.
-
-*alt.use_current_window*                      *goldsmith-alt.use_current_window*
-
-Default: false
-Set to 'true' to use the current window when loading the alternate file. If 
-'false' Goldsmith will create a new window based on your
-|goldsmith-window-settings|.
-
-*tests.template*                                      *goldsmith-tests.template*
-
-Default: nil
-Specify custom test code templates.
-
-*tests.template_dir*                              *goldsmith-tests.template_dir*
-
-Default: nil
-Path to a directory containing custom test code templates.
-
-*tests.template_params_dir*                *goldsmith-tests.template_params_dir*
-
-Default: nil
-Read external parameters to template by json with file.
-
-*revive.config_file*                              *goldsmith-revive.config_file*
-
-Default: .revive.toml
-The configuration file for `revive`. If revive has been configured to run this 
-file is required to exist and should exist in the project root directory. 
-
-See |goldsmith-resources| for where `revive` can be found.
-
-To install `revive` you can use |:GoInstallBinaries|.
+This will apply all formatting except for `goimports` formatting. `goimports` 
+formatting is conditional on the setting of |goimports.run_on_save|.
 
 *format.max_line_length*                      *goldsmith-format.max_line_length*
 
@@ -221,6 +199,80 @@ Behind the scenes this controls the configuration of `golines`.
 See |goldsmith-resources| for where `golines` can be found.
 
 To install `golines` you can use |:GoInstallBinaries|.
+
+*goimports.run_on_save*                        *goldsmith-goimports.run_on_save*
+
+Default: true
+When you save Go program source have gopls run 'goimports' to arrange and fix 
+the import section. If you set this to false you can run |:GoImports| manually
+to arrange the imports in your code.
+
+*goimports.timeout*                                *goldsmith-goimports.timeout*
+
+Default: 1000
+How long to wait for a response from gopls when requesting that goimports be 
+run. The units are milliseconds, so 1000 = 1 second.
+
+ALTERNATE FILE                               *goldsmith-alternate-file-settings*
+
+*goalt.use_current_window*                  *goldsmith-goalt.use_current_window*
+
+Default: false
+Set to 'true' to use the current window when loading the alternate file. If 
+'false' Goldsmith will create a new window based on your
+|goldsmith-window-settings|.
+
+TESTING                                             *goldsmith-testing-settings*
+
+*tests.template*                                      *goldsmith-tests.template*
+
+Default: nil
+Specify custom test code templates.
+
+*tests.template_dir*                              *goldsmith-tests.template_dir*
+
+Path to a directory containing custom test code templates.
+
+*tests.template_params_dir*                *goldsmith-tests.template_params_dir*
+
+Default: nil
+Read external parameters to template by json with file.
+
+LINTING                                             *goldsmith-linting-settings*
+
+*revive.config_file*                              *goldsmith-revive.config_file*
+
+Default: .revive.toml
+The configuration file for `revive`. If revive has been configured to run this 
+file is required to exist and should exist in the project root directory. 
+
+See |goldsmith-resources| for where `revive` can be found.
+
+To install `revive` you can use |:GoInstallBinaries|.
+
+HIGHLIGHTING AND CODE LENS           *goldsmith-highlighting-code-lens-settings*
+
+*highlight.current_symbol*                  *goldsmith-highlight.current_symbol*
+
+Default: true
+Highlight the current symbol the cursor is over throughout the current document.
+
+This setting can be changed from within Goldsmith by using |:GoSymHighlightOn|
+and |:GoSymHighlightOff|.
+
+*codelens.show*                                        *goldsmith-codelens.show*
+
+Default: true
+Show `codelens` items from `gopls`. When this is turned on *and* you have 
+configured `gopls` to show various codelenses you will see, in-line via virtual
+text, various code lenses. You can then use |:GoCodeLensRun| on the line
+where the codelens appears to see the results of that codelens.
+
+For details on what codelenses are available see the codelenses section of:
+https://github.com/golang/tools/blob/master/gopls/doc/settings.md#ui
+
+This setting can be changed from within Goldsmith by using |:GoCodeLensOn|
+and |:GoCodeLensOff|.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
@@ -416,7 +468,7 @@ selected set of lines, or on a given range. e.g.
 >
 	:10,20GoAddTags 
 <
-will add the default tag (typically `json`, but see |goldsmith-tags.default_tag|)
+will add the default tag (typically `json`, but see |tags.default_tag|)
 to all struct fields from line 10 to line 20.
 >
 	:GoAddTags json,omitempty
@@ -620,32 +672,66 @@ Rename the symbol under the cursor to the name passed as an argument.
                                                                *:GoSymHighlight*
 :GoSymHighlight
 
-Highlight all references to the symbol under the cursor.
+Highlight all references to the symbol under the cursor. This is a one-shot 
+command. It does not toggle |highlight.current_symbol|.
+
+                                                             *:GoSymHighlightOn*
+:GoSymHighlightOn
+
+This turns on symbol highlighting. It is the same as having the
+|highlight.current_symbol| setting turned on. 
 
                                                             *:GoSymHighlightOff*
 :GoSymHighlightOff
 
-Turn any current symbol highlighting off.
+This turns off symbol highlighting. It is the same as having the
+|highlight.current_symbol| setting turned off.
 
-                                                               *:GoReviveConfig*
-:GoReviveConfig
+                                                                 *:GoCodeLensOn*
+:GoCodeLensOn
+
+Turn codelens information on. This turns on codelens information as virtual text
+in your buffer(s). What is displayed is dependent on how `gopls` was configured.
+
+For details on what codelenses are available see the codelenses section of:
+https://github.com/golang/tools/blob/master/gopls/doc/settings.md#ui
+
+See also |codelens.show|
+
+                                                                 *:GoCodeLensOff*
+:GoCodeLensOff
+
+Turn codelens information off. This turns off codelens information for all 
+buffers.
+
+See also |codelens.show|
+
+                                                                 *:GoCodeLensRun*
+:GoCodeLensRun
+
+Run the current codelens that is displaying on the current line.
+
+                                                              *:GoCreateConfigs*
+:GoCreateConfigs
 
 This is meant as a convenience command to be used when first starting a project.
-This command creates the recommended configuration file for the `revive` linter
-in the root directory of your project (Goldsmith assumes that the current working
-directory is the root of your project.)
+This command creates the recommended configuration files for all linters, 
+formaatters, etc... that require a configuration file in the root directory of 
+your project (Goldsmith assumes that the current working directory is the root 
+of your project.)
 
-Without a configuration file `revive` will not work so a configuration file is 
-mandatory for its proper functioning.
+After you have created the file(s) you can restart the server that is running 
+the given services using the :LspRestart command. If you do not restart the 
+server these services will never run.
 
-After you have created the file you can restart the server that is running 
-`revive` using the :LspRestart command. If you do not restart the server `revive`
-will never run.
-
-To install `revive` you can use |:GoInstallBinaries|.
+Currently the only thing that requires a configuration file is `revive`. Without 
+a configuration file `revive` will not work so a configuration file is mandatory 
+for its proper functioning.
 
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
+
+CodeLens commands are also available when editing the go.mod file.
 
 The following commands are only available if you are editing a go.mod file.
 

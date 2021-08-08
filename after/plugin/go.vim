@@ -3,5 +3,5 @@ if !has('nvim-0.5')
     finish
 endif
 
+" do the actual configuring for LSP servers and other items that require a late setup/init
 lua require'goldsmith'.init()
-lua require'goldsmith.autoconfig.treesitter-textobjects'.setup()

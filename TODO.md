@@ -2,13 +2,16 @@
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
-- [ ] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
+- [ ] go.mod
+    - [ ] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
+    - [ ] run :GoModCheck automatically
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] far better config validation; mechanism to warn of major config changes
 - [ ] disable commands that don't have deps installed
 - [ ] LSP
     - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'efm' is the source)
-    - [ ] support for efm / nvim-lint / null-ls as options to each other
+- [ ] other linters
+    - [ ] golangci-lint
 - [ ] wiki docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] different configuration items / configurations

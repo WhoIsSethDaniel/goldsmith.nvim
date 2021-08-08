@@ -51,22 +51,19 @@ local function setup_golines(conf)
   }
 end
 
-function M.has_config()
+function M.has_requirements()
   if plugins.is_installed 'null' then
     return true
   end
   return false
 end
 
-function M.config()
-  null.register { M.revive, M.golines }
-  require('lspconfig')['null-ls'].setup(M.cf)
-end
-
 function M.setup(cf)
-  M.golines = setup_golines(config.get 'format')
-  M.revive = setup_revive(config.get 'revive')
-  M.cf = cf
+  local golines = setup_golines(config.get 'format')
+  local revive = setup_revive(config.get 'revive')
+  null.config(cf)
+  null.register { revive, golines }
+  require('lspconfig')['null-ls'].setup(cf)
 end
 
 return M

@@ -5,7 +5,7 @@ local wb = require 'goldsmith.winbuf'
 local M = {}
 
 function M.run(create)
-  local cmd_cfg = config.get 'alt' or {}
+  local cmd_cfg = config.get 'goalt' or {}
   local window_cfg = config.get 'window'
   local alt = vim.fn.fnamemodify(fs.alternate_file_name(vim.fn.expand '%'), ':p')
 

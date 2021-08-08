@@ -4,15 +4,22 @@
 local util = require 'lspconfig.util'
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
+local config = require 'goldsmith.config'
 
-local M = { _config = {} }
+local M = {}
 
 local SETTINGS = {
   gopls = {
     gofumpt = true,
     staticcheck = true,
-    experimentalPostfixCompletions = true
-  }
+    usePlaceholders = true,
+    diagnosticsDelay = '500ms',
+    experimentalPostfixCompletions = true,
+    experimentalUseInvalidMetadata = true,
+    codelenses = {
+      gc_details = true,
+    },
+  },
 }
 
 local FILETYPES = { 'go', 'gomod' }
@@ -60,32 +67,29 @@ local function correct_server_conf_key()
   return servers.lsp_plugin_name 'gopls'
 end
 
-function M.has_config()
+function M.has_requirements()
   if plugins.is_installed 'lspconfig' then
     return true
   end
   return false
 end
 
-function M.config()
-  M._config['filetypes'] = set_filetypes(M._config['filetypes'] or {})
-  M._config['flags'] = set_flags(M._config['flags'] or {})
-  M._config['settings'] = set_server_settings(M._config['settings'] or {})
-  if M._config['cmd'] == nil then
-    M._config['cmd'] = set_command()
+function M.setup(cf)
+  local conf = {}
+  conf['filetypes'] = set_filetypes(cf['filetypes'] or {})
+  conf['flags'] = set_flags(cf['flags'] or {})
+  conf['settings'] = set_server_settings(cf['settings'] or {})
+  if conf['cmd'] == nil then
+    conf['cmd'] = set_command()
   end
-  if M._config['root_dir'] == nil then
-    M._config['root_dir'] = set_root_dir()
+  if conf['root_dir'] == nil then
+    conf['root_dir'] = set_root_dir()
   end
-  if M._config['capabilities'] == nil then
-    M._config['capabilities'] = set_default_capabilities()
+  if conf['capabilities'] == nil then
+    conf['capabilities'] = set_default_capabilities()
   end
   local server = correct_server_conf_key()
-  require('lspconfig')[server].setup(M._config)
-end
-
-function M.setup(cf)
-  M._config = cf or {}
+  require('lspconfig')[server].setup(conf)
 end
 
 return M

@@ -36,8 +36,8 @@ command! -nargs=* GoTest lua require'goldsmith.cmds.test'.run(<f-args>)
 command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
 
 " formatting
-command! -nargs=0 GoImports lua require'goldsmith.cmds.imports'.run(1)
-command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run()
+command! -nargs=0 GoImports lua require'goldsmith.cmds.format'.run_goimports(1)
+command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(1)
 
 " creating/editing tests
 command! -nargs=? GoAddTests lua require'goldsmith.cmds.tests'.generate(<f-args>)
@@ -64,15 +64,23 @@ command! -nargs=1 GoRename lua require'goldsmith.cmds.lsp'.rename(<f-args>)
 
 " highlighting
 command! -nargs=0 GoSymHighlight lua require'goldsmith.cmds.lsp'.highlight_current_symbol()
-command! -nargs=0 GoSymHighlightOff lua require'goldsmith.cmds.lsp'.clear_symbol_highlighting()
+command! -nargs=0 GoSymHighlightOn lua require'goldsmith.cmds.lsp'.turn_on_symbol_highlighting()
+command! -nargs=0 GoSymHighlightOff lua require'goldsmith.cmds.lsp'.turn_off_symbol_highlighting()
 
-" linting
-command! -nargs=0 GoReviveConfig lua require'goldsmith.cmds.lint'.create_revive_config(<f-args>)
+" codelens
+command! -nargs=0 GoCodeLensRun lua require'goldsmith.cmds.lsp'.run_codelens()
+command! -nargs=0 GoCodeLensOn lua require'goldsmith.cmds.lsp'.turn_on_codelens()
+command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelens()
+
+" configs
+command! -nargs=0 GoCreateConfigs lua require'goldsmith.cmds.lint'.create_configs(<f-args>)
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
-  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.imports'.run(0)
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)
   autocmd BufEnter    <buffer> lua require'goldsmith.buffer'.checkin()
+  autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
+  autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END
 
 let &cpo = s:cpo_save

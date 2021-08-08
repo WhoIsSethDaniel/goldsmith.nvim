@@ -37,7 +37,7 @@ warningCode = 0
   ]]
 end
 
-function M.create_revive_config()
+function M.create_configs()
   local cf = config.get('revive')
   local filename = cf['config_file']
 
