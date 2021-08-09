@@ -8,14 +8,14 @@ function M.run(uncond)
 end
 
 function M.run_lsp_format(uncond)
-  if uncond == 1 or config.get('format')['run_on_save'] then
+  if uncond == 1 or config.get('format', 'run_on_save') then
     vim.lsp.buf.formatting_seq_sync()
   end
 end
 
 function M.run_goimports(uncond)
-  if uncond == 1 or config.get('goimports')['run_on_save'] then
-    M.goimports(config.get('goimports')['timeout'])
+  if uncond == 1 or config.get('goimports', 'run_on_save') then
+    M.goimports(config.get('goimports', 'timeout'))
   end
 end
 

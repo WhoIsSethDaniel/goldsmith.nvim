@@ -54,7 +54,7 @@ local function get_server_conf(server)
   if server_data[server] ~= nil then
     cf = server_data[server]
   else
-    cf = config.get(server)['config']
+    cf = config.get(server, 'config')
   end
   if cf == nil then
     return {}
@@ -69,8 +69,17 @@ local function get_server_conf(server)
   end
 end
 
+local function get_servers_to_configure()
+  if #registered_servers > 0 then
+    return registered_servers
+  elseif config.is_autoconfig() then
+    return servers.names()
+  end
+  return {}
+end
+
 function M.init()
-  for _, s in ipairs(registered_servers) do
+  for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
   end
   for _, p in ipairs(registered_plugins) do
@@ -113,6 +122,7 @@ function M.setup_server(server, cf)
 end
 
 function M.register_server(server, cf)
+  config.turn_off_autoconfig()
   local ok, sn = servers.is_server(server)
   if ok then
     if not vim.tbl_contains(registered_servers, sn) then

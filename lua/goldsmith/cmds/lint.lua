@@ -38,8 +38,7 @@ warningCode = 0
 end
 
 function M.create_configs()
-  local cf = config.get('revive')
-  local filename = cf['config_file']
+  local filename = config.get('revive', 'config_file')
 
   if vim.fn.filereadable(filename) > 0 then
     vim.api.nvim_err_writeln(string.format("File '%s' already exists", filename))

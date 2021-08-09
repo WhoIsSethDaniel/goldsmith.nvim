@@ -34,21 +34,41 @@ local CONFIG = {
     run_on_save = true,
   },
   highlight = {
-    current_symbol = true
+    current_symbol = true,
   },
   codelens = {
-    show = true
+    show = true,
   },
   gopls = {},
   null = {},
 }
 
-function M.setup(user_config)
-  CONFIG = vim.tbl_deep_extend('force', CONFIG, user_config or {})
+local autoconfig = true
+
+function M.turn_off_autoconfig()
+  autoconfig = false
 end
 
-function M.get(key)
-  return CONFIG[key]
+function M.is_autoconfig()
+  return autoconfig
+end
+
+function M.setup(user_config)
+  user_config = user_config or {}
+  local ac = user_config['autoconfig']
+  if ac ~= nil and type(ac) == 'boolean' and ac == false then
+    autoconfig = false
+  end
+  user_config['autoconfig'] = nil
+  CONFIG = vim.tbl_deep_extend('force', CONFIG, user_config)
+end
+
+function M.get(grp, key)
+  if key == nil then
+    return CONFIG[grp]
+  else
+    return CONFIG[grp][key]
+  end
 end
 
 function M.set(grp, key, val)

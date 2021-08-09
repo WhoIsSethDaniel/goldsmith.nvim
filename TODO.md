@@ -16,6 +16,7 @@
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] different configuration items / configurations
   - [ ] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
+- [ ] tests
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
