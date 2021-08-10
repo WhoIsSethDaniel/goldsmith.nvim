@@ -78,7 +78,24 @@ local function get_servers_to_configure()
   return {}
 end
 
+function M.all_servers_are_running()
+  local known_clients = {}
+  for _, c in pairs(vim.lsp.get_active_clients()) do
+    local ok, sn = servers.is_server(c.name)
+    if ok then
+      table.insert(known_clients, sn)
+    end
+  end
+  for _, ks in ipairs(get_servers_to_configure()) do
+    if not vim.tbl_contains(known_clients, ks) then
+      return false
+    end
+  end
+  return true
+end
+
 function M.init()
+  require('goldsmith.tools').check()
   for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
   end
@@ -88,7 +105,7 @@ function M.init()
 end
 
 function M.setup_plugin(name)
-  local ok, m = pcall(require, string.format('goldsmith.autoconfig.%s',  name))
+  local ok, m = pcall(require, string.format('goldsmith.autoconfig.%s', name))
   if ok and m.has_requirements() then
     m.setup()
   end
@@ -118,6 +135,10 @@ function M.setup_server(server, cf)
     vim.api.nvim_err_writeln(
       string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
     )
+  end
+  if not sm.is_minimum_version() then
+    local mv = servers.info(server).minimum_version
+    vim.api.nvim_err_writeln(string.format("Server '%s' is not at the minimum required version (%s); some things may not work correctly", server, mv))
   end
 end
 

@@ -6,6 +6,23 @@ local cmds = require 'goldsmith.lsp.cmds'
 
 local M = { buf_nr = -1 }
 
+function M.help_complete(arglead, cmdline, cursorPos)
+  local doc = vim.fn.systemlist 'go help'
+  if vim.v.shell_error ~= 0 then
+    return
+  end
+
+  local items = {}
+  for _, line in ipairs(doc) do
+    local m = string.match(line, '^%s+([%w%p]+)')
+    if m ~= nil and m ~= 'go' then
+      table.insert(items, m)
+    end
+  end
+  table.sort(items)
+  return table.concat(items, '\n')
+end
+
 local function match_partial_item_name(pkg, part)
   local cmd = string.format('go doc %s', pkg)
   local doc = vim.fn.systemlist(cmd)
@@ -14,7 +31,7 @@ local function match_partial_item_name(pkg, part)
   end
 
   local items = {}
-  for _, lead in ipairs({ 'type', 'func', 'var', 'const'}) do
+  for _, lead in ipairs { 'type', 'func', 'var', 'const' } do
     local pat = string.format('^%s (%s%%w+)', lead, part)
     for _, line in ipairs(doc) do
       local m = string.match(line, pat)
@@ -27,13 +44,12 @@ local function match_partial_item_name(pkg, part)
   return table.concat(items, '\n')
 end
 
-function M.complete(arglead, cmdline, cursorPos)
+function M.doc_complete(arglead, cmdline, cursorPos)
   local words = vim.split(cmdline, '%s+')
-  if #words > 2 and string.match(words[#words-1], '^-') == nil then
-    local pkg = words[#words-1]
+  if #words > 2 and string.match(words[#words - 1], '^-') == nil then
+    local pkg = words[#words - 1]
     local item = words[#words]
     return match_partial_item_name(pkg, item)
-
   elseif #words > 1 and string.match(words[#words], '^-') == nil then
     local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
     local pkgs = cmds.list_known_packages(bnum)
@@ -41,7 +57,7 @@ function M.complete(arglead, cmdline, cursorPos)
   end
 end
 
-function M.run(...)
+function M.run(type, ...)
   local cmd_cfg = config.get 'godoc' or {}
   local window_cfg = config.get 'window'
   local cfg = vim.tbl_deep_extend(
@@ -99,7 +115,7 @@ function M.run(...)
     vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
     vim.api.nvim_buf_set_keymap(winbuf.buf, 'n', '<Esc>[', '<Esc>[', { silent = true, noremap = true })
   end
-  job.run(string.format('go doc %s', args), cfg)
+  job.run(string.format('go %s %s', type, args), cfg)
 end
 
 return M

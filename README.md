@@ -55,8 +55,8 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
     - [x] configuration items to control above
     - [x] var highlight -- document\_highlight() triggered on movement
     - [x] code lense support
+    - [x] likely need to have gopls configs that are based on gopls version
     - [ ] vim docs for all
-    - [ ] likely need to have gopls configs that are based on gopls version
 - [ ] general work
     - [x] need command to create basic revive config
     - [x] make certain async commands operate on correct buffer
@@ -64,15 +64,15 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
         - [x] auto-formatting
         - [x] auto-highlighting symbols
         - [x] refresh code lenses
-    - [ ] errorformats for at least some of the commands
-    - [ ] fix constant 'check'ing in tools modules
-    - [ ] figure out why there is a periodic error on startup having to do with 
+    - [x] figure out why there is a periodic error on startup having to do with 
           CursorHold autocommands - seems like a race condition - it looks like
           gopls is taking longer than expected to start and some neovim lsp lua
           code expects there to be a client (line 461 of 
           /usr/share/nvim/runtime/lua/vim/lsp/handlers.lua -- client_id is nil).
           It's periodic because gopls doesn't exit right away. It hangs around
           waiting for more connections.
+    - [x] errorformats for at least some of the commands
+    - [ ] fix constant 'check'ing in tools modules
 - [ ] README should have basic install instructions once ready for release
     - [ ] screenshots
 

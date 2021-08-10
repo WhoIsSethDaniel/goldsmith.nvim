@@ -80,7 +80,7 @@ Features currently included:
   buffer
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
-* view Go documentation using the :GoDoc command
+* view Go documentation using the :GoDoc command and Go help with :GoHelp
 * manually update imports using the :GoImports command
 * format your code on demand using :GoFormat or have Goldsmith automatically 
   format your code on save
@@ -376,10 +376,11 @@ Some settings may be applied per-command.
 
 For all commands that have terminal output (e.g. :GoBuild, :GoRun, etc...) you 
 can define terminal options that are specific to that command and override any
-global terminal options.
+global terminal options. The same applies to commands that use a non-terminal
+window (e.g. :GoDoc, :GoHelp, etc...)
 
 For example, if you want :GoBuild's terminal window to have the focus as it runs, 
-but otherwise want all commands to run without focus:
+but otherwise want all terminal commands to run without focus:
 >
     {
         window  = {
@@ -415,6 +416,23 @@ a particular package:
 Use tab-completion to see all available packages and then all available types/
 functions/variables/constants within that package.
 
+:GoDoc and :GoHelp share the same window. Settings for that window are controlled
+via the godoc.* settings. See |goldsmith-settings-per-command| for more 
+information.
+
+                                                                        *:GoHelp*
+:GoHelp topic
+
+View the 'go help' documentation for the given topic, e.g.:
+>
+    :GoHelp test
+<
+Use tab-completion to see all available topics.
+
+:GoDoc and :GoHelp share the same window. Settings for that window are controlled
+via the godoc.* settings. See |goldsmith-settings-per-command| for more 
+information.
+
                                                                     *:GoImports*
 :GoImports
 
@@ -423,11 +441,15 @@ Manually request that `gopls` arrange and fix the import section of your code.
                                                                       *:GoBuild*
 :GoBuild [args]
 
-Run `go build` in the current working directory. Takes the same arguments
-as `go build`. e.g.:
+Run `go build` or `make` in the current working directory. 
+
+Will use `make` if the project root directory contains a Makefile (or makefile).
+
+When running `go build` it takes the same arguments as `go build`. e.g.:
 >
     :GoBuild -race
 <
+
                                                                         *:GoRun*
 :GoRun [args]
 
@@ -466,12 +488,12 @@ Add tags and options to structs. By default will be applied to the struct the
 cursor is in at the time the command is run. It will also work on a visually
 selected set of lines, or on a given range. e.g.
 >
-	:10,20GoAddTags 
+    :10,20GoAddTags 
 <
 will add the default tag (typically `json`, but see |tags.default_tag|)
 to all struct fields from line 10 to line 20.
 >
-	:GoAddTags json,omitempty
+    :GoAddTags json,omitempty
 < 
 will add the `json` tag along with the `omitempty` option to all fields in the
 current struct.
@@ -488,26 +510,26 @@ Remove tags and options from structs. By default will be applied to the struct
 the cursor is in at the time the command is run. It will also work on a visually
 selected set of lines, or on a given range. e.g.
 >
-	:10,20GoRemoveTags 
+    :10,20GoRemoveTags 
 <
 will remove all tags from all struct fields from line 10 to line 20.
 >
-	:GoRemoveTags json,omitempty
+    :GoRemoveTags json,omitempty
 <
 will remove the `omitempty` option from all `json` tagged fields in the current 
 struct.
 >
-	:GoRemoveTags json
+    :GoRemoveTags json
 <
 will completely remove all `json` tags in the current struct. This:
 >
-  	:GoRemoveTags
+    :GoRemoveTags
 <
 will remove all tags in the current struct or visual selection.
 
 To remove all tags in the entire document:
 >
-	:%GoRemoveTags
+    :%GoRemoveTags
 <
 Behind the scenes this uses the `gomodifytags` tool. See |goldsmith-resources|
 for where this tool can be found.

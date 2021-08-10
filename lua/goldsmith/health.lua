@@ -9,6 +9,19 @@ local health_warn = vim.fn['health#report_warn']
 
 local M = {}
 
+function M.go_check()
+  health_start 'Go Check'
+
+  tools.check()
+  local tool = 'go'
+  local ti = tools.info(tool)
+  if ti.cmd == nil then
+    health_warn(string.format('%s: MISSING', tool), ti.not_found)
+  else
+    health_ok(string.format('%s: FOUND at %s (%s)', tool, ti.cmd, ti.version))
+  end
+end
+
 function M.lsp_plugin_check()
   health_start 'Plugin Check'
 
@@ -16,13 +29,15 @@ function M.lsp_plugin_check()
   for _, plugin in ipairs(plugins.names()) do
     local pi = plugins.info(plugin)
     local name = pi.name
+    local advice = pi.not_found
+    table.insert(advice, string.format('The module is here: %s', pi.location))
     if plugins.is_installed(plugin) then
       health_ok(string.format('%s: plugin is installed', name))
     elseif plugins.is_required(plugin) then
-      table.insert(pi.not_found, 'Please install this module.')
-      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', name), pi.not_found)
+      table.insert(advice, 'Please install this module.')
+      health_error(string.format('%s: NOT INSTALLED and is REQUIRED', name), advice)
     else
-      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', name), pi.not_found)
+      health_warn(string.format('%s: NOT INSTALLED and is OPTIONAL', name), advice)
     end
   end
 end
@@ -63,6 +78,7 @@ function M.tool_check()
 end
 
 function M.check()
+  M.go_check()
   M.lsp_plugin_check()
   M.lsp_server_check()
   M.tool_check()

@@ -6,8 +6,14 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+compiler go
+
 function s:GoDocComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.doc'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+endfunction
+
+function s:GoHelpComplete(A,C,P) abort
+	return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoAddTestComplete(A,C,P) abort
@@ -27,7 +33,8 @@ function s:TagAction(act,line1,line2,count,...) abort
 endfunction
 
 " terminal/window commands
-command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run(<f-args>)
+command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run('doc', <f-args>)
+command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith.cmds.doc'.run('help', <f-args>)
 command! -nargs=* GoBuild lua require'goldsmith.cmds.build'.run(<f-args>)
 command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run(<f-args>)
 command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run(<f-args>)

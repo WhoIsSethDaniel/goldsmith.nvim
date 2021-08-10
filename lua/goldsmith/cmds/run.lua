@@ -10,6 +10,9 @@ function M.run(...)
   for _, a in ipairs { ... } do
     args = string.format('%s %s', args, a)
   end
+  if args == '' then
+    args = '.'
+  end
   local cmd = string.format('go run %s', args)
   job.run(cmd, vim.tbl_deep_extend('force', terminal_cfg, cmd_cfg, { terminal = true }))
 end

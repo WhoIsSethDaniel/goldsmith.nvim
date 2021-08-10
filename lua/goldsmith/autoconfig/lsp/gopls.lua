@@ -4,7 +4,7 @@
 local util = require 'lspconfig.util'
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
-local config = require 'goldsmith.config'
+local tools = require 'goldsmith.tools'
 
 local M = {}
 
@@ -13,13 +13,17 @@ local SETTINGS = {
     gofumpt = true,
     staticcheck = true,
     usePlaceholders = true,
-    diagnosticsDelay = '500ms',
-    experimentalPostfixCompletions = true,
-    experimentalUseInvalidMetadata = true,
     codelenses = {
       gc_details = true,
     },
   },
+}
+
+local SETTINGS_DIFF = {
+  experimentalDiagnosticsDelay = { '500ms', '0.6.0', '0.6.11' },
+  diagnosticsDelay = { '500ms', '0.7.0', nil },
+  experimentalPostfixCompletions = { true, '0.6.10', nil },
+  experimentalUseInvalidMetadata = { true, '0.7.1', nil },
 }
 
 local FILETYPES = { 'go', 'gomod' }
@@ -28,12 +32,55 @@ local FLAGS = {
   debounce_text_changes = 500,
 }
 
-local function set_flags(flags)
-  return vim.tbl_deep_extend('keep', flags, FLAGS)
+-- -1 lhs is more recent
+-- 0 same
+-- 1 rhs is more recent
+-- dunno (should never happen)
+local function version_cmp(lhs, rhs)
+  if rhs == nil then
+    return 1
+  end
+  if lhs == rhs then
+    return 0
+  end
+  local lmajor, lminor, lpatch = string.match(lhs, '^(%d+)%.(%d+)%.(%d+)')
+  local rmajor, rminor, rpatch = string.match(rhs, '^(%d+)%.(%d+)%.(%d+)')
+  if lmajor > rmajor then
+    return -1
+  elseif lmajor < rmajor then
+    return 1
+  elseif lminor > rminor then
+    return -1
+  elseif lminor < rminor then
+    return 1
+  elseif lpatch > rpatch then
+    return -1
+  elseif lpatch < rpatch then
+    return 1
+  end
+  return nil
+end
+
+local function get_versioned_server_settings()
+  local settings = {}
+  local v = tools.info('gopls').version
+  for var, m in pairs(SETTINGS_DIFF) do
+    local cmp1 = version_cmp(v, m[2])
+    local cmp2 = version_cmp(v, m[3])
+
+    if cmp1 <= 0 and cmp2 >= 0 then
+      settings[var] = m[1]
+    end
+  end
+  return settings
 end
 
 local function set_server_settings(settings)
-  return vim.tbl_deep_extend('keep', settings, SETTINGS)
+  return vim.tbl_deep_extend('keep', get_versioned_server_settings(), settings, SETTINGS)
+end
+
+local function set_flags(flags)
+  return vim.tbl_deep_extend('keep', flags, FLAGS)
 end
 
 local set_root_dir = function()
@@ -65,6 +112,15 @@ end
 
 local function correct_server_conf_key()
   return servers.lsp_plugin_name 'gopls'
+end
+
+function M.is_minimum_version()
+  local v = tools.info('gopls').version
+  local m = tools.info('gopls').minimum_version
+  if version_cmp(v, m) == 1 then
+    return false
+  end
+  return true
 end
 
 function M.has_requirements()

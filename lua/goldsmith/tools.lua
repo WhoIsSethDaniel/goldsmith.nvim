@@ -19,6 +19,7 @@ local TOOLS = {
     exe = 'gopls',
     lspconfig_name = 'gopls',
     lspinstall_name = 'go',
+    minimum_version = '0.6.0',
     not_found = { 'This is required to do many things. It should be installed.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
@@ -94,6 +95,7 @@ local TOOLS = {
     required = true,
     installed = false,
     plugin = true,
+    location = 'https://github.com/neovim/nvim-lspconfig',
     not_found = {
       'This plugin is used to configure the various LSP servers such as gopls.',
     },
@@ -107,6 +109,7 @@ local TOOLS = {
     required = false,
     installed = false,
     plugin = true,
+    location = 'https://github.com/kabouzeid/nvim-lspinstall',
     not_found = {
       'This plugin may be used to install the LSP servers such as gopls.',
     },
@@ -123,6 +126,7 @@ local TOOLS = {
     server = true,
     lspconfig_name = 'null-ls',
     lspinstall_name = 'null-ls',
+    location = 'https://github.com/jose-elias-alvarez/null-ls.nvim',
     not_found = {
       "This plugin is used for running supplemental linters and formatters such as 'revive' and 'golines'.",
     },
@@ -136,6 +140,7 @@ local TOOLS = {
     required = false,
     installed = false,
     plugin = true,
+    location = 'https://github.com/vim-test/vim-test',
     not_found = {
       'This plugin is not currently used by Goldsmith.',
     },
@@ -148,6 +153,7 @@ local TOOLS = {
     required = false,
     installed = false,
     plugin = true,
+    location = 'https://github.com/rcarriga/vim-ultest',
     not_found = {
       'This plugin is not currently used by Goldsmith.',
     },
@@ -161,6 +167,7 @@ local TOOLS = {
     required = true,
     installed = false,
     plugin = true,
+    location = 'https://github.com/nvim-treesitter/nvim-treesitter',
     not_found = {
       'This plugin is used by Goldsmith in many places. Much of Goldsmith will fail to work without it.',
     },
@@ -174,6 +181,7 @@ local TOOLS = {
     required = false,
     installed = false,
     plugin = true,
+    location = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
     not_found = {
       'This plugin is used to configure a number of neovim textobjects and navigation shortcuts.',
       'See |goldsmith-text-objects| for more information.',
@@ -188,6 +196,20 @@ local TOOLS = {
         end
         return false
       end
+    end,
+  },
+  FixCursorHold = {
+    name = 'FixCursorHold',
+    required = true,
+    installed = false,
+    plugin = true,
+    location = 'https://github.com/antoinemadec/FixCursorHold.nvim',
+    not_found = {
+      'This plugin is used by Goldsmith in many places. Much of Goldsmith will fail to work without it.',
+      'It is required to fix a bug with the CursorHold event in Neovim.',
+    },
+    check_installed = function()
+      return vim.fn.exists 'g:loaded_fix_cursorhold_nvim' > 0
     end,
   },
 }
@@ -243,17 +265,14 @@ function M.check(names)
 end
 
 function M.info(name)
-  M.check { name }
   return TOOLS[name]
 end
 
 function M.is_installed(name)
-  M.check { name }
   return TOOLS[name].installed
 end
 
 function M.is_required(name)
-  M.check { name }
   return TOOLS[name].required
 end
 

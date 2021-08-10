@@ -25,9 +25,11 @@ end
 
 local function setup_revive(conf)
   return {
+    name = 'revive',
     method = null.methods.DIAGNOSTICS,
     filetypes = { 'go' },
     generator = help.generator_factory {
+      diagnostics_format = 'revive: #{m}',
       command = 'revive',
       to_stdin = false,
       args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' },
@@ -39,16 +41,19 @@ end
 
 local function setup_golines(conf)
   return {
+    name = 'golines',
     method = null.methods.FORMATTING,
     filetypes = { 'go' },
-    diagnostics_format = '#{s} #{m}',
     generator = help.formatter_factory {
-      diagnostics_format = '#{s} #{m}',
       command = 'golines',
       to_stdin = true,
       args = { string.format('--max-len=%d', conf['max_line_length']) },
     },
   }
+end
+
+function M.is_minimum_version()
+  return true
 end
 
 function M.has_requirements()
