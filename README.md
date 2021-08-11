@@ -42,7 +42,7 @@ git clone https://github.com/WhoIsSethDaniel/goldsmith.nvim
 ```
 
 # Configuration
-See the [wiki](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) for examples demonstrating how
+See the [configuration page](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) on the wiki for examples demonstrating how
 to configure Goldsmith.
 
 Also see the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) or 
