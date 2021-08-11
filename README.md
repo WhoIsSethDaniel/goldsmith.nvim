@@ -8,7 +8,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 * auto-highlight the current symbol under the cursor throughout the current buffer [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#symbol-highlighting)
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
-* view Go documentation using the :GoDoc command and Go help with :GoHelp
+* view Go documentation using the :GoDoc command and Go help with :GoHelp [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#documentation-and-help)
 * manually update imports using the :GoImports command
 * format your code on demand using :GoFormat or have Goldsmith automatically 
   format your code on save
