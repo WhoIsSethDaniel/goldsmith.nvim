@@ -2,6 +2,8 @@
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
 # Features
+view all animations [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features)
+
 * codelens support [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#codelens-support)
 * flag and update out-of-date dependencies in your current Go module [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#go-module-check-for-updates)
 * automatically run goimports on save [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#run-goimports-on-save)
