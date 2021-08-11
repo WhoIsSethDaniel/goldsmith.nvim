@@ -15,15 +15,16 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#use-checkhealth-to-check-goldsmith-setup)
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-formatting-using-goformat)
 * run extra linters and/or formatters using null-ls
-* Goldsmith can completely configure everything for you, if you want. 
+* Goldsmith can completely configure everything for you, if you want (see the [Configurations](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) wiki for more)
+* generate test stubs automatically using `gotests` [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#switch-to-alternate-file--generate-stub-tests)
 * commands for common tasks (the following list is not complete):
+    * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#switch-to-alternate-file--generate-stub-tests)
+    * struct tag editing: add / remove / update struct tags and options
     * build your project using :GoBuild 
     * run your main package using :GoRun
     * fetch new Go libraries using :GoGet
     * install new Go tools using :GoInstall
     * run tests using :GoTest
-    * switch to the 'alternate' file quickly
-    * struct tag editing: add / remove / update struct tags and options
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 

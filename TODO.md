@@ -18,6 +18,7 @@
     - [ ] code action not working (at least in go.mod)
 - [ ] other linters
     - [ ] golangci-lint
+- [ ] linters / formatters should not be setup if linter does not exist
 - [ ] wiki docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] different configuration items / configurations
