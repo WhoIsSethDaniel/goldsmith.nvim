@@ -65,6 +65,12 @@ the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith
 * gopls >= 0.6.0
 * [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
+These 'minimal' requirements are not hard-and-fast. They are simply the minimal versions that the author has been able
+to test with. Goldsmith may work just fine with older versions of Go, gopls, etc.... Neovim, however, must be at least
+0.5.0 and nvim-lspconfig is also a hard requirement.
+
+*Goldsmith will not work with Vim or versions of Neovim prior to 0.5.0.*
+
 Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
 requirements.
 
