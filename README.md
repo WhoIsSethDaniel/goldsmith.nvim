@@ -60,9 +60,10 @@ There are many other options. See the [wiki](https://github.com/WhoIsSethDaniel/
 the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for much more information.
 
 # Minimal Requirements
-Neovim >= 0.5.0
-go >= 1.14
-gopls >= 0.6.0
+* Neovim >= 0.5.0
+* go >= 1.14
+* gopls >= 0.6.0
+* [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
 Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
 requirements.
