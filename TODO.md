@@ -30,5 +30,4 @@
     - [ ] fix constant 'check'ing in tools modules
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
-- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)
-
+- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)

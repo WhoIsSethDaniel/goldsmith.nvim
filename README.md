@@ -2,24 +2,24 @@
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
 # Features
-view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features)
+view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1)
 
-* codelens support [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#codelens-support)
-* flag and update out-of-date dependencies in your current Go module [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#go-module-check-for-updates)
-* automatically run goimports on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#run-goimports-on-save)
-* auto-highlight the current symbol under the cursor throughout the current buffer [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#symbol-highlighting)
+* codelens support [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#codelens-support)
+* flag and update out-of-date dependencies in your current Go module [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#go-module-check-for-updates)
+* automatically run goimports on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#run-goimports-on-save)
+* auto-highlight the current symbol under the cursor throughout the current buffer [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#symbol-highlighting)
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
-* view Go documentation using the :GoDoc command and Go help with :GoHelp [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#documentation-and-help)
+* view Go documentation using the :GoDoc command and Go help with :GoHelp [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#documentation-and-help)
 * manually update imports using the :GoImports command [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-goimports-support)
-* use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#use-checkhealth-to-check-goldsmith-setup)
-* format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-formatting-using-goformat)
+* use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#use-checkhealth-to-check-goldsmith-setup)
+* format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#manual-formatting-using-goformat)
 * run extra linters and/or formatters using null-ls
 * Goldsmith can completely configure everything for you, if you want (see the [Configurations](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) wiki for more)
-* generate test stubs automatically using `gotests` [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#switch-to-alternate-file--generate-stub-tests)
+* generate test stubs automatically using `gotests` [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
 * commands for common tasks (the following list is not complete):
-    * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#switch-to-alternate-file--generate-stub-tests)
-    * struct tag editing: add / remove / update struct tags and options
+    * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
+    * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
     * build your project using :GoBuild 
     * run your main package using :GoRun
     * fetch new Go libraries using :GoGet

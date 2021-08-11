@@ -47,6 +47,8 @@ local function run(action, location, ...)
   end
   local b = vim.api.nvim_get_current_buf()
   local ret = job.run(cmd, {
+    stdout_buffered = true,
+    stderr_buffered = true,
     on_stderr = function(jobid, data)
       if data[1] ~= '' then
         vim.api.nvim_err_writeln(string.format('Tag operation failed with: %s', data[1]))
@@ -56,6 +58,7 @@ local function run(action, location, ...)
       if data[1] ~= '' then
         local changes = vim.fn.json_decode(data)
         vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
+        vim.cmd("w!")
       end
     end,
     on_exit = function(jobid, code, event)
