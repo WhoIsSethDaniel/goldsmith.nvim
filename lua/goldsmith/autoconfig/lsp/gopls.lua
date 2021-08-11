@@ -131,21 +131,20 @@ function M.has_requirements()
 end
 
 function M.setup(cf)
-  local conf = {}
-  conf['filetypes'] = set_filetypes(cf['filetypes'] or {})
-  conf['flags'] = set_flags(cf['flags'] or {})
-  conf['settings'] = set_server_settings(cf['settings'] or {})
-  if conf['cmd'] == nil then
-    conf['cmd'] = set_command()
+  cf['filetypes'] = set_filetypes(cf['filetypes'] or {})
+  cf['flags'] = set_flags(cf['flags'] or {})
+  cf['settings'] = set_server_settings(cf['settings'] or {})
+  if cf['cmd'] == nil then
+    cf['cmd'] = set_command()
   end
-  if conf['root_dir'] == nil then
-    conf['root_dir'] = set_root_dir()
+  if cf['root_dir'] == nil then
+    cf['root_dir'] = set_root_dir()
   end
-  if conf['capabilities'] == nil then
-    conf['capabilities'] = set_default_capabilities()
+  if cf['capabilities'] == nil then
+    cf['capabilities'] = set_default_capabilities()
   end
   local server = correct_server_conf_key()
-  require('lspconfig')[server].setup(conf)
+  require('lspconfig')[server].setup(cf)
 end
 
 return M

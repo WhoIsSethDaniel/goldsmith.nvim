@@ -15,7 +15,7 @@
 - [ ] LSP
     - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
     - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
-    - [ ] code action not working (at least in go.mod)
+    - [x] code action not working (at least in go.mod)
 - [ ] other linters
     - [ ] golangci-lint
 - [ ] linters / formatters should not be setup if linter does not exist
