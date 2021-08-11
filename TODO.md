@@ -1,3 +1,7 @@
+- [ ] mappings
+- [ ] functions
+- [ ] autoconfig
+    - [ ] default treesitter config
 - [ ] lua functions provided for many actions / commands etc...
 - [ ] debugging the plugin
     - [ ] debug mode
@@ -9,7 +13,7 @@
 - [ ] far better config validation; mechanism to warn of major config changes
 - [ ] disable commands that don't have deps installed
 - [ ] LSP
-    - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'efm' is the source)
+    - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
 - [ ] other linters
     - [ ] golangci-lint
 - [ ] wiki docs
@@ -17,6 +21,10 @@
   - [ ] different configuration items / configurations
   - [ ] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
 - [ ] tests
+- [ ] testing
+    - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
+- [ ] general work
+    - [ ] fix constant 'check'ing in tools modules
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713)

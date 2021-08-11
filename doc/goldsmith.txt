@@ -119,19 +119,126 @@ Optional
   |goldsmith-text-objects|.
 * nvim-lspinstall
   For installing language servers. i.e. gopls
-* vim-test
-  For running tests
-* vim-ultest
-  For running tests, but fancier than vim-test
+* null-ls
+  For running extra linters and formatters
 
 ================================================================================
 CONFIGURATION                                          *goldsmith-configuration*
 
+The following section explains how Goldsmith can be used to help configure your 
+Go-related LSP servers. For more complete examples please see the wiki page on 
+configuration:
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
+
+*goldsmith-configuration-default*
 You can use all the defaults by placing the following in your configuration:
 >
     require("goldsmith").config()
 <
+Assuming you do nothing else the above will cause Goldsmith to attempt to
+configure null-ls and gopls for you. This means that null-ls will attempt
+to run `golines` and `revive`, and gopls will have a minimal configuration
+that looks something like the following (this example is with gopls 0.7.1):
+>
+    capabilities = { ... }
+    cmd = { "<discovered gopls executable>", "-remote=auto" },
+    filetypes = { "go", "gomod" },
+    flags = {
+        debounce_text_changes = 500
+    },
+    root_dir = <function 1>,
+    settings = {
+        diagnosticsDelay = "500ms",
+        experimentalPostfixCompletions = true,
+        experimentalUseInvalidMetadata = true,
+        gopls = {
+            codelenses = {
+                gc_details = true
+            },
+            gofumpt = true,
+            staticcheck = true,
+            usePlaceholders = true
+        }
+    }
 
+*goldsmith-configuration-no-autoconfig*
+You can turn off the auto-configuration of servers, e.g.:
+>
+    require("goldsmith").config({ autoconfig = false })
+<
+If you do not allow Goldsmith to help configure your servers there are 
+certain features that will not work. 
+
+*goldsmith-configuration-explicit*
+You can explicitly configure servers in two different ways. The first way
+is by passing the configuration for each server to goldsmith.config():
+>
+    require("goldsmith").config({
+        gopls = {
+            config = function()
+                return {
+                    cmd = { 'gopls' },
+                    settings = {
+                        gopls = {
+                            gofumpt = false,
+                        },
+                    },
+                },
+            end,
+        },
+        null = {
+            config = {
+                sources = { fmt.stylua, fmt.shfmt },
+            },
+        },
+    })
+
+    ...
+
+    require("goldsmith").server('gopls')
+    require("goldsmith").server('null')
+<
+The example above configures `gopls` using a combination of the provided 
+configuration plus configuration that Goldsmith provides. Any conflicts
+between the provided configuration and Goldsmith's configuration are
+decided in favor of the user's configuration.
+
+You can pass the configuration either as a table or as a function. The 
+example above shows one of each. Using a function is a good way to 
+delay the generation of the configuration until as late as possible. If
+you have a very dynamic configuration you should use a function.
+
+If you are using Goldsmith to configure servers you should not use
+lspconfig to configure those servers. Goldsmith will configure the
+servers and call lspconfig.
+
+If you want null-ls to do non-Go things (such as in the example above 
+where null-ls will run stylua and shfmt), and you want Goldsmith to
+configure null-ls for Go-related things, you will need to pass the
+non-Go portion of your null-ls configuration to Goldsmith.
+
+A second way to pass configuration for your servers to Goldsmith is 
+using the second argument to goldsmith.server():
+>
+    require("goldsmith").server('gopls', function()
+        return {
+            cmd = { 'gopls' },
+            settings = {
+                gopls = {
+                    gofumpt = false,
+                },
+            },
+        },
+    end)
+    require("goldsmith").server('null', { 
+        sources = { fmt.stylua, fmt.shfmt } 
+    })
+<
+The above configuration is equivalent to the previous example. Again,
+you can use either a function or a table for providing the 
+configuration.
+
+*goldsmith-configuration-all-defaults*
 A configuration that sets settings to the defaults:
 >
     require("goldsmith").config({
@@ -158,7 +265,7 @@ A configuration that sets settings to the defaults:
         tags  = {
             default_tag = "json",
             transform = "snakecase",
-            skip_unexported = false
+            skip_unexported = false,
         },
         revive = {
             config_file = 'revive.toml',
@@ -168,11 +275,13 @@ A configuration that sets settings to the defaults:
             run_on_save = true,
         },
         highlight = {
-            current_symbol = true
+            current_symbol = true,
         },
         codelens = {
-            show = true
+            show = true,
         },
+        gopls = {},
+        null = {},
     })
 <
 
@@ -231,6 +340,7 @@ Specify custom test code templates.
 
 *tests.template_dir*                              *goldsmith-tests.template_dir*
 
+Default: nil
 Path to a directory containing custom test code templates.
 
 *tests.template_params_dir*                *goldsmith-tests.template_params_dir*
@@ -242,7 +352,7 @@ LINTING                                             *goldsmith-linting-settings*
 
 *revive.config_file*                              *goldsmith-revive.config_file*
 
-Default: .revive.toml
+Default: revive.toml
 The configuration file for `revive`. If revive has been configured to run this 
 file is required to exist and should exist in the project root directory. 
 
