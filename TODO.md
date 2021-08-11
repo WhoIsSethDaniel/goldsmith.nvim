@@ -8,12 +8,14 @@
     - [ ] debug console
 - [ ] go.mod
     - [ ] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
-    - [ ] run :GoModCheck automatically
+    - [ ] turn on codelens if codelens is enabled
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] far better config validation; mechanism to warn of major config changes
 - [ ] disable commands that don't have deps installed
 - [ ] LSP
     - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
+    - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
+    - [ ] code action not working (at least in go.mod)
 - [ ] other linters
     - [ ] golangci-lint
 - [ ] wiki docs
