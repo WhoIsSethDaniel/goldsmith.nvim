@@ -5,7 +5,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 * codelens support [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#codelens-support)
 * flag and update out-of-date dependencies in your current Go module [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#go-module-check-for-updates)
 * automatically run goimports on save [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#run-goimports-on-save)
-* auto-highlight the current symbol under the cursor throughout the current buffer [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features/_edit#symbol-highlighting)
+* auto-highlight the current symbol under the cursor throughout the current buffer [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#symbol-highlighting)
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
 * view Go documentation using the :GoDoc command and Go help with :GoHelp
