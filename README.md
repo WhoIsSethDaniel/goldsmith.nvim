@@ -56,7 +56,7 @@ However, if you already have lspconfig configured you may want to do this:
 ```lua
 require("goldsmith").config({ autoconfig = false })
 ```
-There are many other options. See the [wiki](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) and
+There are many other options. See the [configuration page](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) on the wiki and
 the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for much more information.
 
 # Minimal Requirements
