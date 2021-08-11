@@ -882,9 +882,7 @@ Format the current go.mod file.
 Create a new 'replace' rule in the current go.mod file. 
 
 If only the 'replacement' is given the module to replace it will be determined 
-by the module that the cursor is currently sitting on. *NOTE* currently this
-will not work if the cursor is on a space preceding, within, or after the 
-module or version on the current line.
+by the module that the cursor is currently sitting on. 
 
 If [module] and 'replacement' are given then a 'replace' rule is created for
 the given [module] using the 'replacement'

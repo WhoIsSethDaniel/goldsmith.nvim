@@ -1,14 +1,17 @@
+- [x] go.mod
+    - [x] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
+    - [x] turn on codelens if codelens is enabled
+- [x] general work
+    - [x] fix constant 'check'ing in tools modules
 - [ ] mappings
 - [ ] functions
 - [ ] autoconfig
     - [ ] default treesitter config
+    - [ ] more metadata discoverable via ac (c.f. filetypes)
 - [ ] lua functions provided for many actions / commands etc...
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
-- [ ] go.mod
-    - [ ] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
-    - [ ] turn on codelens if codelens is enabled
 - [ ] generate skeleton code documentation / comments (gocmt - https://github.com/cuonglm/gocmt)
 - [ ] far better config validation; mechanism to warn of major config changes
 - [ ] disable commands that don't have deps installed
@@ -26,8 +29,6 @@
 - [ ] tests
 - [ ] testing
     - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
-- [ ] general work
-    - [ ] fix constant 'check'ing in tools modules
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing
 - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)

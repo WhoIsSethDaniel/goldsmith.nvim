@@ -45,24 +45,40 @@ function M.get_all_modules()
 end
 
 function M.get_module_at_cursor()
+  local function find_node(cnode)
+    local parent = cnode:parent()
+    if parent ~= nil and parent:type() == 'require_spec' then
+      return parent
+    elseif cnode ~= nil and cnode:type() == 'require_directive' then
+      local l = unpack(vim.api.nvim_win_get_cursor(0))
+      for node in cnode:iter_children() do
+        local nl = ts_utils.get_node_range(node)
+        if node:type() == 'require_spec' and l == nl + 1 then
+          return node
+        end
+      end
+    end
+  end
+
   local cnode = ts_utils.get_node_at_cursor()
   if not cnode then
     return
   end
 
-  local parent = cnode:parent()
-  if parent ~= nil and parent:type() == 'require_spec' then
-    local mod, v
-    for node in parent:iter_children() do
-      if node:type() == 'module_path' then
-        mod = (ts_utils.get_node_text(node))[1]
-      end
-      if node:type() == 'version' then
-        v = (ts_utils.get_node_text(node))[1]
-      end
-    end
-    return { name = mod, version = v }
+  local mod, v
+  local mnode = find_node(cnode)
+  if mnode == nil then
+    return
   end
+  for node in mnode:iter_children() do
+    if node:type() == 'module_path' then
+      mod = (ts_utils.get_node_text(node))[1]
+    end
+    if node:type() == 'version' then
+      v = (ts_utils.get_node_text(node))[1]
+    end
+  end
+  return { name = mod, version = v }
 end
 
 function M.get_current_function_name()

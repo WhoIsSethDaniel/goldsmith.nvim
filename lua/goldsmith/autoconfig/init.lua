@@ -39,8 +39,8 @@ local on_attach = function(client, bufnr)
 end
 
 local config_map = {
-  gopls = require 'goldsmith.autoconfig.lsp.gopls',
-  null = require 'goldsmith.autoconfig.lsp.null',
+  gopls = { m = require 'goldsmith.autoconfig.lsp.gopls', ft = { 'go', 'gomod' } },
+  null = { m = require 'goldsmith.autoconfig.lsp.null', ft = { 'go' } },
 }
 
 local function get_server_conf(server)
@@ -80,7 +80,12 @@ function M.all_servers_are_running()
       table.insert(known_clients, sn)
     end
   end
-  for _, ks in ipairs(get_servers_to_configure()) do
+  -- hack
+  local names = get_servers_to_configure()
+  if vim.opt.filetype:get() == 'gomod' then
+    names = { 'gopls' }
+  end
+  for _, ks in ipairs(names) do
     if not vim.tbl_contains(known_clients, ks) then
       return false
     end
@@ -122,7 +127,7 @@ function M.setup_server(server, cf)
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
   end
-  local sm = config_map[name]
+  local sm = config_map[name].m
   if sm.has_requirements() then
     sm.setup(cf)
   else
@@ -132,7 +137,13 @@ function M.setup_server(server, cf)
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version
-    vim.api.nvim_err_writeln(string.format("Server '%s' is not at the minimum required version (%s); some things may not work correctly", server, mv))
+    vim.api.nvim_err_writeln(
+      string.format(
+        "Server '%s' is not at the minimum required version (%s); some things may not work correctly",
+        server,
+        mv
+      )
+    )
   end
 end
 
