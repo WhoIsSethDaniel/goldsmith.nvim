@@ -73,33 +73,30 @@ golines                    0.4.0
 FEATURES                                                    *goldsmith-features*
 
 Features currently included:
-* codelens support 
+* codelens support
 * flag and update out-of-date dependencies in your current Go module
 * automatically run goimports on save
-* auto-highlight the current symbol under the cursor throughout the current 
-  buffer
+* auto-highlight the current symbol under the cursor throughout the current buffer
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
 * view Go documentation using the :GoDoc command and Go help with :GoHelp
 * manually update imports using the :GoImports command
 * use :checkhealth to see if your Goldsmith setup should work correctly
-* format your code on demand using :GoFormat or have Goldsmith automatically 
-  format your code on save
+* format your code on demand using :GoFormat or have Goldsmith automatically format your code on save
 * run extra linters and/or formatters using null-ls
-* Goldsmith can completely configure everything for you, if you want. 
+* Goldsmith can completely configure everything for you, if you want
 * generate test stubs automatically using `gotests`
+* create implementation stubs for your interfaces using :GoImpl
 * commands for common tasks (the following list is not complete):
+    * switch to the 'alternate' file quickly
+    * struct tag editing: add / remove / update struct tags and options
     * build your project using :GoBuild 
     * run your main package using :GoRun
     * fetch new Go libraries using :GoGet
     * install new Go tools using :GoInstall
     * run tests using :GoTest
-    * struct tag editing: add / remove / update struct tags and options
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
-
-More features are coming. See the TODO list in the project README on github.
-https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/README.md
 
 ================================================================================
 SUPPORTED PLUGINS                                  *goldsmith-supported-plugins*
