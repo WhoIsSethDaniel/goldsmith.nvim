@@ -2,18 +2,18 @@
 Go development environment for Neovim utilizing the builtin LSP and other features and plugins specific to Neovim.
 
 # Features
-view all animations [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features)
+view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features)
 
-* codelens support [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#codelens-support)
-* flag and update out-of-date dependencies in your current Go module [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#go-module-check-for-updates)
-* automatically run goimports on save [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#run-goimports-on-save)
-* auto-highlight the current symbol under the cursor throughout the current buffer [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#symbol-highlighting)
+* codelens support [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#codelens-support)
+* flag and update out-of-date dependencies in your current Go module [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#go-module-check-for-updates)
+* automatically run goimports on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#run-goimports-on-save)
+* auto-highlight the current symbol under the cursor throughout the current buffer [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#symbol-highlighting)
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
-* view Go documentation using the :GoDoc command and Go help with :GoHelp [animation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#documentation-and-help)
-* manually update imports using the :GoImports command
-* format your code on demand using :GoFormat or have Goldsmith automatically 
-  format your code on save
+* view Go documentation using the :GoDoc command and Go help with :GoHelp [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features#documentation-and-help)
+* manually update imports using the :GoImports command [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-goimports-support)
+* use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#use-checkhealth-to-check-goldsmith-setup)
+* format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-formatting-using-goformat)
 * run extra linters and/or formatters using null-ls
 * Goldsmith can completely configure everything for you, if you want. 
 * commands for common tasks (the following list is not complete):
@@ -26,7 +26,6 @@ view all animations [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wik
     * struct tag editing: add / remove / update struct tags and options
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
-* use :checkhealth to see if your Goldsmith setup should work correctly
 
 # Installation
 Install using your favorite plugin manager. 
