@@ -1,6 +1,7 @@
 local config = require 'goldsmith.config'
 local fs = require 'goldsmith.fs'
 local wb = require 'goldsmith.winbuf'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -10,7 +11,7 @@ function M.run(create)
   local alt = vim.fn.fnamemodify(fs.alternate_file_name(vim.fn.expand '%'), ':p')
 
   if vim.fn.getftype(alt) == '' and create == '' then
-    vim.api.nvim_err_writeln(string.format('GoAlt: %s: file does not exist', alt))
+    log.error(nil, 'Alt', string.format('%s: file does not exist', alt))
     return
   end
 

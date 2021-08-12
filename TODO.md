@@ -3,13 +3,17 @@
     - [x] turn on codelens if codelens is enabled
 - [x] general work
     - [x] fix constant 'check'ing in tools modules
+- [x] errors
+    - [x] audit all error messages
+    - [x] generalized error reporting
+- [x] disable commands that don't have deps installed
 - [ ] mappings
 - [ ] functions
 - [ ] autoconfig
     - [ ] default treesitter config
     - [ ] treesitter-textobjects should not be configured if ac is off
     - [ ] more metadata discoverable via ac (c.f. filetypes)
-    - [ ] linters / formatters should not be setup if linter does not exist
+    - [x] linters / formatters should not be setup if linter does not exist
 - [ ] debugging the plugin
     - [ ] debug mode
     - [ ] debug console
@@ -17,7 +21,6 @@
     - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] far better config validation; mechanism to warn of major config changes
-- [x] disable commands that don't have deps installed
 - [ ] LSP
     - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
     - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
@@ -26,11 +29,8 @@
     - [ ] golangci-lint
 - [ ] wiki docs
   - [x] different configuration items / configurations
+  - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-  - [ ] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
-- [ ] errors
-    - [ ] audit all error messages
-    - [ ] generalized error reporting
 - [ ] tests (w/plenary?)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing

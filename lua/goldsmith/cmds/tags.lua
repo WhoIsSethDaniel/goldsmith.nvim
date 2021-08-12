@@ -1,6 +1,7 @@
 local config = require('goldsmith.config').get 'tags'
 local job = require 'goldsmith.job'
 local tools = require 'goldsmith.tools'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -51,19 +52,19 @@ local function run(action, location, ...)
     stderr_buffered = true,
     on_stderr = function(jobid, data)
       if data[1] ~= '' then
-        vim.api.nvim_err_writeln(string.format('Tag operation failed with: %s', data[1]))
+        log.error(nil, 'Tag', string.format('operation failed with: %s', data[1]))
       end
     end,
     on_stdout = function(jobid, data)
       if data[1] ~= '' then
         local changes = vim.fn.json_decode(data)
         vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
-        vim.cmd("w!")
+        vim.cmd 'w!'
       end
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then
-        vim.api.nvim_err_writeln(string.format('Failed to execute the following command:\n%s', cmd))
+        return
       end
     end,
   })

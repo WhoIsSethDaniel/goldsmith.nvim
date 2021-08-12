@@ -2,6 +2,7 @@ local buffer = require 'goldsmith.buffer'
 local cmds = require 'goldsmith.lsp.cmds'
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -52,7 +53,7 @@ function M.run(...)
   local args = { ... }
   local n = #args
   if n > 3 then
-    vim.api.nvim_err_writeln 'Too many arguments. :GoImpl <recv> <iface>'
+    log.error(nil, nil, 'Too many arguments. :GoImpl <recv> <iface>')
     return
   elseif n == 3 then
     iface = args[3]
@@ -61,7 +62,7 @@ function M.run(...)
     iface = args[2]
     recv = args[1]
   else
-    vim.api.nvim_err_writeln 'Too few arguments. :GoImpl <recv> <iface>'
+    log.error(nil, nil, 'Too few arguments. :GoImpl <recv> <iface>')
     return
   end
 
@@ -77,7 +78,7 @@ function M.run(...)
       end,
       on_stderr = function(id, data, name)
         local err = table.concat(data, '\n')
-        vim.api.nvim_err_write(err)
+        log.error(nil, nil, err)
       end,
       on_exit = function(id, code, event)
         if code > 0 then

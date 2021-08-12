@@ -1,6 +1,7 @@
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -58,7 +59,7 @@ local function get_server_conf(server)
   elseif type(cf) == 'table' then
     return cf
   else
-    vim.api.nvim_err_writeln(string.format("Server configuration for server '%s' must be a table or function", server))
+    log.error(nil, nil, string.format("Server configuration for server '%s' must be a table or function", server))
     return {}
   end
 end
@@ -122,7 +123,7 @@ function M.setup_server(server, cf)
     name = server
   end
   if name == nil then
-    vim.api.nvim_err_writeln(string.format("Cannot determine how to configure '%s'", server))
+    log.error(nil, nil, string.format("Cannot determine how to configure '%s'", server))
   end
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
@@ -131,13 +132,17 @@ function M.setup_server(server, cf)
   if sm.has_requirements() then
     sm.setup(cf)
   else
-    vim.api.nvim_err_writeln(
+    log.error(
+      nil,
+      nil,
       string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
     )
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version
-    vim.api.nvim_err_writeln(
+    log.error(
+      nil,
+      nil,
       string.format(
         "Server '%s' is not at the minimum required version (%s); some things may not work correctly",
         server,

@@ -1,4 +1,5 @@
 local config = require'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -41,12 +42,12 @@ function M.create_configs()
   local filename = config.get('revive', 'config_file')
 
   if vim.fn.filereadable(filename) > 0 then
-    vim.api.nvim_err_writeln(string.format("File '%s' already exists", filename))
+    log.error(nil, 'Lint', string.format("File '%s' already exists", filename))
     return
   end
   local f, err = io.open(filename, 'a')
   if f == nil then
-    vim.api.nvim_err_writeln(string.format("Cannot create file '%s': %s", filename, err))
+    log.error(nil, 'Lint', string.format("Cannot create file '%s': %s", filename, err))
     return
   end
 

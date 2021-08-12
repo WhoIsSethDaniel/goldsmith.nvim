@@ -3,6 +3,7 @@ local config = require 'goldsmith.config'
 local wb = require 'goldsmith.winbuf'
 local job = require 'goldsmith.job'
 local cmds = require 'goldsmith.lsp.cmds'
+local log = require 'goldsmith.log'
 
 local M = { buf_nr = -1 }
 
@@ -87,7 +88,7 @@ function M.run(type, ...)
             err = err .. e
           end
         end
-        vim.api.nvim_err_writeln(err)
+        log.error(nil, string.format("go%s", type), err)
       end,
       on_exit = function(id, code, event)
         if code > 0 then

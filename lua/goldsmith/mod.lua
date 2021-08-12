@@ -1,6 +1,7 @@
 local cmds = require 'goldsmith.lsp.cmds'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -18,7 +19,7 @@ function M.replace(...)
   local args = { ... }
   local replace, mod
   if #args < 1 then
-    vim.api.nvim_err_writeln 'Too few arguments to :GoModReplace'
+    log.error(nil, nil, 'Too few arguments to :GoModReplace')
     return
   end
   if #args == 1 then
@@ -27,13 +28,13 @@ function M.replace(...)
     mod = args[1]
     replace = args[2]
   else
-    vim.api.nvim_err_writeln 'Too many arguments to :GoModReplace'
+    log.error(nil, nil, 'Too many arguments to :GoModReplace')
     return
   end
   if mod == nil then
     mod = ts.get_module_at_cursor()
     if mod == nil then
-      vim.api.nvim_err_writeln 'There is no module at the current position'
+      log.error(nil, nil, 'There is no module at the current position')
       return
     end
   end
@@ -49,7 +50,7 @@ function M.replace(...)
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      vim.api.nvim_err_writeln(data[1])
+      log.error(nil, nil, data[1])
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then
@@ -70,7 +71,7 @@ function M.format()
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      vim.api.nvim_err_writeln(data[1])
+      log.error(nil, nil, data[1])
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then

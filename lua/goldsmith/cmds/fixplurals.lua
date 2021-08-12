@@ -1,5 +1,6 @@
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -29,7 +30,7 @@ function M.run()
   end
   cfg['on_exit'] = function(id, code, event)
     if #err ~= 0 then
-      vim.api.nvim_err_writeln(table.concat(err, '\n'))
+      log.error(nil, 'FixPlurals', table.concat(err, '\n'))
       return
     end
     if code > 0 then

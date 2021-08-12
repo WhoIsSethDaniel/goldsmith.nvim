@@ -1,3 +1,5 @@
+local log = require 'goldsmith.log'
+
 local M = {}
 
 function M.list_known_packages(buf)
@@ -19,7 +21,7 @@ local function check_for_error(msg)
   if msg ~= nil and type(msg[1]) == 'table' then
     for k, v in pairs(msg[1]) do
       if k == 'error' then
-        vim.api.nvim_err_writeln(v.message)
+        log.error(nil, nil, v.message)
         break
       end
     end
