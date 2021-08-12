@@ -83,8 +83,8 @@ local function set_flags(flags)
   return vim.tbl_deep_extend('keep', flags, FLAGS)
 end
 
-local set_root_dir = function()
-  return util.root_pattern('go.mod', '.git')
+local set_root_dir = function(fname)
+  return util.root_pattern 'go.work'(fname) or util.root_pattern('go.mod', '.git')(fname)
 end
 
 local function set_default_capabilities()
@@ -124,7 +124,7 @@ function M.is_minimum_version()
 end
 
 function M.has_requirements()
-  if plugins.is_installed 'lspconfig' then
+  if plugins.is_installed 'lspconfig' and tools.is_installed 'gopls' then
     return true
   end
   return false
@@ -138,7 +138,7 @@ function M.setup(cf)
     cf['cmd'] = set_command()
   end
   if cf['root_dir'] == nil then
-    cf['root_dir'] = set_root_dir()
+    cf['root_dir'] = set_root_dir
   end
   if cf['capabilities'] == nil then
     cf['capabilities'] = set_default_capabilities()

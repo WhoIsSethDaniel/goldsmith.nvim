@@ -1,5 +1,6 @@
 local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
+local tools = require 'goldsmith.tools'
 
 local null = require 'null-ls'
 local help = require 'null-ls.helpers'
@@ -63,11 +64,23 @@ function M.has_requirements()
   return false
 end
 
+-- this needs to be cleaned up
 function M.setup(cf)
-  local golines = setup_golines(config.get 'format')
-  local revive = setup_revive(config.get 'revive')
+  local choose = function(service)
+    if service == 'golines' then
+      return setup_golines(config.get 'format')
+    else
+      return setup_revive(config.get 'revive')
+    end
+  end
+  local services = {}
+  for _, service in ipairs { 'golines', 'revive' } do
+    if tools.is_installed(service) then
+      table.insert(services, choose(service))
+    end
+  end
   null.config(cf)
-  null.register { revive, golines }
+  null.register(services)
   require('lspconfig')['null-ls'].setup(cf)
 end
 

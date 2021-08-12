@@ -98,7 +98,6 @@ function M.run(...)
   local cmd = string.format('gotests -w %s %s', args, fp)
   local ok = false
   local out = ''
-  print(cmd)
   job.run(cmd, {
     stdout_buffered = true,
     on_stdout = function(jobid, data, name)

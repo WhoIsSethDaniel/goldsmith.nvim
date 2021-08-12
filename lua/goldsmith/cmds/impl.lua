@@ -19,7 +19,7 @@ local function match_partial_iface_name(part)
   for _, line in ipairs(doc) do
     local m = string.match(line, pat)
     if m ~= nil then
-      table.insert(ifaces, string.format("%s.%s", pkg, m))
+      table.insert(ifaces, string.format('%s.%s', pkg, m))
     end
   end
   return table.concat(ifaces, '\n')
@@ -65,26 +65,29 @@ function M.run(...)
     return
   end
 
-  local b
   local out = ''
-  cfg['stderr_buffered'] = true
-  cfg['stdout_buffered'] = true
-  cfg['on_stdout'] = function(id, data, name)
-    out = data
-  end
-  cfg['on_stderr'] = function(id, data, name)
-    local err = table.concat(data, '\n')
-    vim.api.nvim_err_write(err)
-  end
-  cfg['on_exit'] = function(id, code, event)
-    if code > 0 then
-      return
-    end
-    local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
-    vim.api.nvim_buf_set_lines(b, r, r, false, out)
-  end
-  b = vim.api.nvim_get_current_buf()
-  job.run(string.format("impl '%s' %s", recv, iface), cfg)
+  local b = vim.api.nvim_get_current_buf()
+  job.run(
+    string.format("impl '%s' %s", recv, iface),
+    vim.tbl_deep_extend('force', cfg, {
+      stderr_buffered = true,
+      stdout_buffered = true,
+      on_stdout = function(id, data, name)
+        out = data
+      end,
+      on_stderr = function(id, data, name)
+        local err = table.concat(data, '\n')
+        vim.api.nvim_err_write(err)
+      end,
+      on_exit = function(id, code, event)
+        if code > 0 then
+          return
+        end
+        local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+        vim.api.nvim_buf_set_lines(b, r, r, false, out)
+      end,
+    })
+  )
 end
 
 return M

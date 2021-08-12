@@ -269,7 +269,7 @@ function M.info(name)
 end
 
 function M.is_installed(name)
-  return TOOLS[name].installed
+  return TOOLS[name].installed or TOOLS[name].cmd ~= nil
 end
 
 function M.is_required(name)
