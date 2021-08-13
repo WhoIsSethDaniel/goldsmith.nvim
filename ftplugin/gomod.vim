@@ -6,6 +6,12 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+setlocal textwidth=0
+setlocal noexpandtab
+setlocal formatoptions-=t
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+
 command! -nargs=0 GoModCheck lua require'goldsmith.mod'.check_for_upgrades()
 command! -nargs=0 GoModTidy lua require'goldsmith.mod'.tidy()
 command! -nargs=0 GoModFmt lua require'goldsmith.mod'.format()

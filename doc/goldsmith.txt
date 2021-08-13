@@ -358,8 +358,30 @@ To install `revive` you can use |:GoInstallBinaries|.
 
 LSP SERVER                                                *goldsmith-lsp-server*
 
+*null.diabled*                                         *goldsmith-null.disabled*
+
+Default: false
+If this setting is set to either 'true' or an empty table it means that null-ls
+will not be configured by Goldsmith.
+>
+    null = {
+        disabled = true
+    }
+<
+If this setting is a non-empty table each entry should be the name of a service
+that Goldsmith should *not* configure. Current values for these services are 
+'golines' and 'revive'.
+>
+    null = {
+        disabled = { 'golines' }
+    }
+<
+The above instructs Goldsmith to not configure the 'golines' service when
+configuring null-ls.
+
 *null.config*                                            *goldsmith-null.config*
 
+Default: {}
 Pass settings on to Goldsmith for null-ls. These settings would be just like what 
 you'd pass to lspconfig. The value may be either a table or a function.
 
@@ -370,6 +392,7 @@ See |goldsmith-resources| for where `null-ls` can be found.
 
 *gopls.config*                                          *goldsmith-gopls.config*
 
+Default: {}
 Pass settings on to Goldsmith for gopls. These settings would be just like what 
 you'd pass to lspconfig. The value may be either a table or a function.
 

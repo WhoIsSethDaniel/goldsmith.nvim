@@ -11,20 +11,9 @@ function M.check()
   return tools.check(names)
 end
 
-function M.is_required(plugin)
-  return tools.is_required(plugin)
-end
-
-function M.is_installed(plugin)
-  return tools.is_installed(plugin)
-end
-
-function M.info(plugin)
-  return tools.info(plugin)
-end
-
-function M.dump()
-  tools.dump()
-end
+M.is_required = tools.is_required
+M.is_installed = tools.is_installed
+M.info = tools.info
+M.dump = tools.dump
 
 return M

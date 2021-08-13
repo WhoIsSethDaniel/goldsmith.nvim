@@ -32,20 +32,9 @@ function M.names()
   return tools.names { server = true }
 end
 
-function M.is_required(server)
-  return tools.is_required(server)
-end
-
-function M.is_installed(server)
-  return tools.is_installed(server)
-end
-
-function M.info(server)
-  return tools.info(server)
-end
-
-function M.dump()
-  tools.dump()
-end
+M.is_required = tools.is_required
+M.is_installed = tools.is_installed
+M.info = tools.info
+M.dump = tools.dump
 
 return M

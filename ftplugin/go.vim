@@ -8,6 +8,12 @@ set cpo&vim
 
 compiler go
 
+setlocal textwidth=0
+setlocal noexpandtab
+setlocal formatoptions-=t
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+
 function s:GoDocComplete(A,C,P) abort
 	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction

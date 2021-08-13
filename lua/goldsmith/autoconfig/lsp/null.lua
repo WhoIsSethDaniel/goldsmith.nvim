@@ -64,6 +64,21 @@ function M.has_requirements()
   return false
 end
 
+local function is_disabled(service)
+  local disabled = config.get('null', 'disabled')
+  if type(disabled) == 'boolean' and disabled == true then
+    return true
+  elseif type(disabled) == 'table' then
+    if vim.tbl_isempty(disabled) then
+      return true
+    end
+    if vim.tbl_contains(disabled, service) then
+      return true
+    end
+  end
+  return false
+end
+
 -- this needs to be cleaned up
 function M.setup(cf)
   local choose = function(service)
@@ -75,7 +90,7 @@ function M.setup(cf)
   end
   local services = {}
   for _, service in ipairs { 'golines', 'revive' } do
-    if tools.is_installed(service) then
+    if tools.is_installed(service) and not is_disabled(service) then
       table.insert(services, choose(service))
     end
   end

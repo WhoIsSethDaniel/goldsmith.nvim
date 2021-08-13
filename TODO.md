@@ -28,7 +28,7 @@
   - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
 - [ ] other linters
   - [ ] golangci-lint
-  - [ ] turn on / off linters / formatters
+  - [x] turn on / off linters / formatters
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
