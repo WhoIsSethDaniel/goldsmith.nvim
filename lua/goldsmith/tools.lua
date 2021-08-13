@@ -20,6 +20,8 @@ local TOOLS = {
     lspconfig_name = 'gopls',
     lspinstall_name = 'go',
     minimum_version = '0.6.0',
+    filetypes = { 'go', 'gomod' },
+    module_name = 'gopls',
     not_found = { 'This is required to do many things. It should be installed.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
@@ -126,6 +128,8 @@ local TOOLS = {
     server = true,
     lspconfig_name = 'null-ls',
     lspinstall_name = 'null-ls',
+    filetypes = { 'go' },
+    module_name = 'null',
     location = 'https://github.com/jose-elias-alvarez/null-ls.nvim',
     not_found = {
       "This plugin is used for running supplemental linters and formatters such as 'revive' and 'golines'.",

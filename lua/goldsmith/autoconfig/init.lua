@@ -39,10 +39,9 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>', opts)
 end
 
-local config_map = {
-  gopls = { m = require 'goldsmith.autoconfig.lsp.gopls', ft = { 'go', 'gomod' } },
-  null = { m = require 'goldsmith.autoconfig.lsp.null', ft = { 'go' } },
-}
+local function server_module(server)
+  return require(string.format('goldsmith.autoconfig.lsp.%s', servers.info(server).module_name))
+end
 
 local function get_server_conf(server)
   local cf
@@ -65,12 +64,42 @@ local function get_server_conf(server)
 end
 
 local function get_servers_to_configure()
+  local potential = {}
   if #registered_servers > 0 then
-    return registered_servers
+    potential = registered_servers
   elseif config.is_autoconfig() then
-    return servers.names()
+    potential = servers.names()
   end
-  return {}
+  local s = {}
+  for _, server in ipairs(potential) do
+    if not server_module(server).is_disabled() then
+      table.insert(s, server)
+    end
+  end
+  return s
+end
+
+local function all_servers_for_filetype(type)
+  local s = {}
+  for _, server in ipairs(servers.names()) do
+    local fts = server_module(server).supported_filetypes()
+    if vim.tbl_contains(fts, type) then
+      table.insert(s, server)
+    end
+  end
+  return s
+end
+
+local function all_configured_servers_for_filetype(type)
+  local s = {}
+  local sft = all_servers_for_filetype(type)
+  local configured = get_servers_to_configure()
+  for _, server in ipairs(configured) do
+    if vim.tbl_contains(sft, server) then
+      table.insert(s, server)
+    end
+  end
+  return s
 end
 
 function M.all_servers_are_running()
@@ -81,11 +110,7 @@ function M.all_servers_are_running()
       table.insert(known_clients, sn)
     end
   end
-  -- hack
-  local names = get_servers_to_configure()
-  if vim.opt.filetype:get() == 'gomod' then
-    names = { 'gopls' }
-  end
+  local names = all_configured_servers_for_filetype(vim.opt.filetype:get())
   for _, ks in ipairs(names) do
     if not vim.tbl_contains(known_clients, ks) then
       return false
@@ -128,7 +153,7 @@ function M.setup_server(server, cf)
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
   end
-  local sm = config_map[name].m
+  local sm = server_module(name)
   if sm.has_requirements() then
     sm.setup(cf)
   else

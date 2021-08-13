@@ -1,6 +1,7 @@
 local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
 local tools = require 'goldsmith.tools'
+local servers = require 'goldsmith.lsp.servers'
 
 local null = require 'null-ls'
 local help = require 'null-ls.helpers'
@@ -53,6 +54,10 @@ local function setup_golines(conf)
   }
 end
 
+function M.supported_filetypes()
+  return servers.info('null').filetypes
+end
+
 function M.is_minimum_version()
   return true
 end
@@ -64,7 +69,7 @@ function M.has_requirements()
   return false
 end
 
-local function is_disabled(service)
+function M.is_disabled(service)
   local disabled = config.get('null', 'disabled')
   if type(disabled) == 'boolean' and disabled == true then
     return true
@@ -90,7 +95,7 @@ function M.setup(cf)
   end
   local services = {}
   for _, service in ipairs { 'golines', 'revive' } do
-    if tools.is_installed(service) and not is_disabled(service) then
+    if tools.is_installed(service) and not M.is_disabled(service) then
       table.insert(services, choose(service))
     end
   end

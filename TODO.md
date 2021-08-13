@@ -15,6 +15,7 @@
   - [ ] treesitter-textobjects should not be configured if ac is off
   - [ ] more metadata discoverable via ac (c.f. filetypes)
   - [ ] finer tuning of server options
+  - [ ] refactor
 - [ ] debugging the plugin
   - [ ] debug mode
   - [ ] debug console
@@ -26,6 +27,7 @@
   - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
   - [x] code action not working (at least in go.mod)
   - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
+  - [ ] configuration for keymappings in on_attach
 - [ ] other linters
   - [ ] golangci-lint
   - [x] turn on / off linters / formatters

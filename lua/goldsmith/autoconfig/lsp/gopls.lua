@@ -26,11 +26,11 @@ local SETTINGS_DIFF = {
   experimentalUseInvalidMetadata = { true, '0.7.1', nil },
 }
 
-local FILETYPES = { 'go', 'gomod' }
-
 local FLAGS = {
   debounce_text_changes = 500,
 }
+
+local FILETYPES = { 'go', 'gomod' }
 
 -- -1 lhs is more recent
 -- 0 same
@@ -112,6 +112,14 @@ end
 
 local function correct_server_conf_key()
   return servers.lsp_plugin_name 'gopls'
+end
+
+function M.supported_filetypes()
+  return servers.info('gopls').filetypes
+end
+
+function M.is_disabled()
+  return false
 end
 
 function M.is_minimum_version()
