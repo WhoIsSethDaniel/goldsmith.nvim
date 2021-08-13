@@ -1,32 +1,34 @@
+
 - [x] go.mod
-    - [x] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
-    - [x] turn on codelens if codelens is enabled
-- [x] general work
-    - [x] fix constant 'check'ing in tools modules
+  - [x] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
+  - [x] turn on codelens if codelens is enabled
 - [x] errors
-    - [x] audit all error messages
-    - [x] generalized error reporting
+  - [x] audit all error messages
+  - [x] generalized error reporting
+- [x] general work
+  - [x] fix constant 'check'ing in tools modules
 - [x] disable commands that don't have deps installed
 - [ ] mappings
 - [ ] functions
 - [ ] autoconfig
-    - [ ] default treesitter config
-    - [ ] treesitter-textobjects should not be configured if ac is off
-    - [ ] more metadata discoverable via ac (c.f. filetypes)
-    - [x] linters / formatters should not be setup if linter does not exist
+  - [x] linters / formatters should not be setup if linter does not exist
+  - [ ] treesitter-textobjects should not be configured if ac is off
+  - [ ] more metadata discoverable via ac (c.f. filetypes)
+  - [ ] finer tuning of server options
 - [ ] debugging the plugin
-    - [ ] debug mode
-    - [ ] debug console
+  - [ ] debug mode
+  - [ ] debug console
 - [ ] testing
-    - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
+  - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] far better config validation; mechanism to warn of major config changes
 - [ ] LSP
-    - [ ] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
-    - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
-    - [x] code action not working (at least in go.mod)
+  - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
+  - [x] code action not working (at least in go.mod)
+  - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
 - [ ] other linters
-    - [ ] golangci-lint
+  - [ ] golangci-lint
+  - [ ] turn on / off linters / formatters
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...

@@ -1,7 +1,5 @@
 *goldsmith.txt* Go development plugin for Neovim
 *goldsmith*
-
-WARNING: Goldsmith is still in very early stages and may not work as intended
 >
                     __    __               _ __  __  
        ____ _____  / /___/ /________ ___  (_) /_/ /_ 
@@ -23,7 +21,8 @@ CONTENTS                                                    *goldsmith-contents*
   8. Text Objects.................................|goldsmith-text-objects|
   9. Functions....................................|goldsmith-functions|
  10. Health Check.................................|goldsmith-healthcheck|
- 11. Resources....................................|goldsmith-resources|
+ 11. Help.........................................|goldsmith-help|
+ 12. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -51,7 +50,6 @@ for more information about that.
 You can run `:checkhealth goldsmith` to see if you meet all the requirements and
 to see if you have anything missing. See |goldsmith-healthcheck| and 
 |goldsmith-supported-plugins| for more information.
-
 
 MINIMAL VERSIONS                                    *goldsmith-minimal-versions*
 
@@ -357,6 +355,30 @@ file is required to exist and should exist in the project root directory.
 See |goldsmith-resources| for where `revive` can be found.
 
 To install `revive` you can use |:GoInstallBinaries|.
+
+LSP SERVER                                                *goldsmith-lsp-server*
+
+*null.config*                                            *goldsmith-null.config*
+
+Pass settings on to Goldsmith for null-ls. These settings would be just like what 
+you'd pass to lspconfig. The value may be either a table or a function.
+
+Much more on this setting is in |goldsmith-configuration| and at the wiki page:
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
+
+See |goldsmith-resources| for where `null-ls` can be found.
+
+*gopls.config*                                          *goldsmith-gopls.config*
+
+Pass settings on to Goldsmith for gopls. These settings would be just like what 
+you'd pass to lspconfig. The value may be either a table or a function.
+
+Much more on this setting is in |goldsmith-configuration| and at the wiki page:
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
+
+See |goldsmith-resources| for where `gopls` can be found.
+
+To install `gopls` you can use |:GoInstallBinaries|.
 
 HIGHLIGHTING AND CODE LENS           *goldsmith-highlighting-code-lens-settings*
 
@@ -938,6 +960,19 @@ Goldsmith makes use of the Neovim |health| framework. You can run
 	:checkhealth goldsmith
 <
 and get a best-effort attempt to find problems with your Go and Goldsmith setup.
+
+================================================================================
+HELP                                                            *goldsmith-help*       
+
+There is a FAQ:
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/FAQ
+
+If you have a question or think you have discovered a bug please feel to ask a 
+question in the Github discussions area: 
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/discussions
+
+If you have discovered a bug please report it:
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/issues
 
 ================================================================================
 RESOURCES                                                  *goldsmith-resources*

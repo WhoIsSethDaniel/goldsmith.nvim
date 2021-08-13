@@ -84,7 +84,7 @@ local function set_flags(flags)
 end
 
 local set_root_dir = function(fname)
-  return util.root_pattern 'go.work'(fname) or util.root_pattern('go.mod', '.git')(fname)
+  return util.root_pattern('go.work', 'go.mod', '.git')(fname)
 end
 
 local function set_default_capabilities()
