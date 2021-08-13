@@ -83,15 +83,15 @@ local function set_flags(flags)
   return vim.tbl_deep_extend('keep', flags, FLAGS)
 end
 
-local set_root_dir = function(fname)
-  return util.root_pattern('go.work', 'go.mod', '.git')(fname)
-end
-
 local function set_default_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   -- if the user wants to use postfixCompletions this is REQUIRED
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   return capabilities
+end
+
+function M.supported_filetypes()
+  return servers.info('gopls').filetypes
 end
 
 -- debug options:
@@ -112,10 +112,6 @@ end
 
 local function correct_server_conf_key()
   return servers.lsp_plugin_name 'gopls'
-end
-
-function M.supported_filetypes()
-  return servers.info('gopls').filetypes
 end
 
 function M.is_disabled()
@@ -144,9 +140,6 @@ function M.setup(cf)
   cf['settings'] = set_server_settings(cf['settings'] or {})
   if cf['cmd'] == nil then
     cf['cmd'] = set_command()
-  end
-  if cf['root_dir'] == nil then
-    cf['root_dir'] = set_root_dir
   end
   if cf['capabilities'] == nil then
     cf['capabilities'] = set_default_capabilities()

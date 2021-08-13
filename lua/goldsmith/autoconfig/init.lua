@@ -43,6 +43,10 @@ local function server_module(server)
   return require(string.format('goldsmith.autoconfig.lsp.%s', servers.info(server).module_name))
 end
 
+local function plugin_module(plugin)
+  return require(string.format('goldsmith.autoconfig.%s', plugin))
+end
+
 local function get_server_conf(server)
   local cf
   if server_data[server] ~= nil then
@@ -102,6 +106,10 @@ local function all_configured_servers_for_filetype(type)
   return s
 end
 
+local set_root_dir = function(fname)
+  return require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git')(fname)
+end
+
 function M.all_servers_are_running()
   local known_clients = {}
   for _, c in pairs(vim.lsp.get_active_clients()) do
@@ -130,8 +138,8 @@ function M.init()
 end
 
 function M.setup_plugin(name)
-  local ok, m = pcall(require, string.format('goldsmith.autoconfig.%s', name))
-  if ok and m.has_requirements() then
+  local m = plugin_module(name)
+  if m.has_requirements() then
     m.setup()
   end
 end
@@ -152,6 +160,9 @@ function M.setup_server(server, cf)
   end
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
+  end
+  if cf['root_dir'] == nil then
+    cf['root_dir'] = set_root_dir
   end
   local sm = server_module(name)
   if sm.has_requirements() then
