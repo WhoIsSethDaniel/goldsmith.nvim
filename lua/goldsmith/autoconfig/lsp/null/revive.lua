@@ -23,20 +23,16 @@ local function parse_messages()
   end
 end
 
-local function get_config()
-  return config.get('revive')
-end
-
-local function name()
+function M.service_name()
   return 'revive'
 end
 
 local function cmd()
-  return tools.info(name())['cmd']
+  return tools.info(M.service_name())['cmd']
 end
 
 function M.has_requirements()
-  local conf = get_config()
+  local conf = M.get_config()
   return tools.is_installed 'revive' and vim.fn.filereadable(conf['config_file']) == 0
 end
 
@@ -45,7 +41,7 @@ function M.check_and_warn_about_requirements()
     log.error(nil, 'Format', "'revive' is not installed and will not be run by null-ls. Use ':GoInstallBinaries revive' to install it")
     return false
   end
-  local conf = get_config()
+  local conf = M.get_config()
   if vim.fn.filereadable(conf['config_file']) == 0 then
     log.error(nil, 'Format', "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one.")
     return false
@@ -54,9 +50,9 @@ function M.check_and_warn_about_requirements()
 end
 
 function M.setup()
-  local conf = get_config()
+  local conf = M.get_config()
   return {
-    name = name(),
+    name = M.service_name(),
     method = null.methods.DIAGNOSTICS,
     filetypes = { 'go' },
     generator = help.generator_factory {
@@ -68,6 +64,45 @@ function M.setup()
       on_output = parse_messages(),
     },
   }
+end
+
+function M.get_config()
+  return config.get('revive')
+end
+
+function M.config_file_contents()
+  return [[
+ignoreGeneratedHeader = false
+severity = "warning"
+confidence = 0.8
+errorCode = 0
+warningCode = 0
+
+[rule.blank-imports]
+[rule.context-as-argument]
+[rule.context-keys-type]
+[rule.dot-imports]
+[rule.error-return]
+[rule.error-strings]
+[rule.error-naming]
+[rule.exported]
+[rule.if-return]
+[rule.increment-decrement]
+[rule.var-naming]
+[rule.var-declaration]
+[rule.package-comments]
+[rule.range]
+[rule.receiver-naming]
+[rule.time-naming]
+[rule.unexported-return]
+[rule.indent-error-flow]
+[rule.errorf]
+[rule.empty-block]
+[rule.superfluous-else]
+[rule.unused-parameter]
+[rule.unreachable-code]
+[rule.redefines-builtin-id]
+]]
 end
 
 return M

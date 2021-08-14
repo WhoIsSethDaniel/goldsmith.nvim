@@ -28,6 +28,13 @@ function M.has_requirements()
   return false
 end
 
+function M.map(f)
+  for _, s in ipairs(M.services()) do
+    local m = service_module(s)
+    f(m)
+  end
+end
+
 function M.services()
   return tools.names({ null = true })
 end

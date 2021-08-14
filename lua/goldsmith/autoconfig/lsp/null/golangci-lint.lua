@@ -27,16 +27,12 @@ local parse_messages = function()
   end
 end
 
-local function get_config()
-  return config.get 'golangci-lint'
-end
-
-local function name()
+function M.service_name()
   return 'golangci-lint'
 end
 
 local function cmd()
-  return tools.info(name())['cmd']
+  return tools.info(M.service_name())['cmd']
 end
 
 function M.has_requirements()
@@ -56,9 +52,9 @@ function M.check_and_warn_about_requirements()
 end
 
 function M.setup()
-  local conf = get_config()
+  local conf = M.get_config()
   return {
-    name = name(),
+    name = M.service_name(),
     method = null.methods.DIAGNOSTICS,
     filetypes = { 'go' },
     generator = help.generator_factory {
@@ -83,6 +79,72 @@ function M.setup()
       on_output = parse_messages(),
     },
   }
+end
+
+function M.get_config()
+  return config.get 'golangci-lint'
+end
+
+function M.config_file_contents()
+  return [[
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+  goconst:
+    min-len: 2
+    min-occurrences: 3
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+  govet:
+    check-shadowing: true
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - exhaustive
+    - goconst
+    - gofmt
+    - goimports
+    - gocyclo
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nolintlint
+    - nakedret
+    - prealloc
+    - predeclared
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - varcheck
+    - whitespace
+    - gocritic
+
+run:
+  issues-exit-code: 1
+]]
 end
 
 return M

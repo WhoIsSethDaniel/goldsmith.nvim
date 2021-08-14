@@ -110,6 +110,21 @@ local set_root_dir = function(fname)
   return require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git')(fname)
 end
 
+function M.map(f)
+  for _, s in ipairs(servers.names()) do
+    local m = server_module(s)
+    if m['map'] == nil then
+      f(m)
+    else
+      m.map(f)
+    end
+  end
+  for _, p in ipairs(registered_plugins) do
+    local m = plugin_module(p)
+    f(m)
+  end
+end
+
 function M.all_servers_are_running()
   local known_clients = {}
   for _, c in pairs(vim.lsp.get_active_clients()) do

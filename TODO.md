@@ -36,7 +36,7 @@
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] GoCreateConfigs
-  - [ ] completion (ability to choose just one file)
+  - [x] completion (ability to choose just one file)
   - [ ] ability to have templates? or other files instead of the builtin ones
 - [ ] snippets
 - [ ] tests (w/plenary?)

@@ -11,12 +11,12 @@ local function get_config()
   return config.get 'format'
 end
 
-local function name()
+function M.service_name()
   return 'golines'
 end
 
 local function cmd()
-  return tools.info(name())['cmd']
+  return tools.info(M.service_name())['cmd']
 end
 
 function M.has_requirements()
@@ -34,7 +34,7 @@ end
 function M.setup()
   local conf = get_config()
   return {
-    name = name(),
+    name = M.service_name(),
     method = null.methods.FORMATTING,
     filetypes = { 'go' },
     generator = help.formatter_factory {

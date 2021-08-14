@@ -30,12 +30,20 @@ function s:GoImplComplete(A,C,P) abort
 	return luaeval("require'goldsmith.cmds.impl'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
+function s:GoCreateConfigsComplete(A,C,P) abort
+	return luaeval("require'goldsmith.cmds.lint'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+endfunction
+
 function s:TagAction(act,line1,line2,count,...) abort
     if a:act ==? 'add'
         return luaeval("require'goldsmith.cmds.tags'.add(_A[1],_A[2],_A[3],_A[4])", [a:line1, a:line2, a:count, a:000])
     elseif a:act ==? 'remove'
         return luaeval("require'goldsmith.cmds.tags'.remove(_A[1],_A[2],_A[3],_A[4])", [a:line1, a:line2, a:count, a:000])
     endif
+endfunction
+
+function s:CreateConfigs(bang,...) abort
+    return luaeval("require'goldsmith.cmds.lint'.create_configs(_A[1],_A[2])", [a:bang, a:000])
 endfunction
 
 " terminal/window commands
@@ -86,7 +94,7 @@ command! -nargs=0 GoCodeLensOn lua require'goldsmith.cmds.lsp'.turn_on_codelens(
 command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelens()
 
 " configs
-command! -nargs=0 -bang GoCreateConfigs lua require'goldsmith.cmds.lint'.create_configs('<bang>')
+command! -nargs=* -bang -complete=custom,s:GoCreateConfigsComplete GoCreateConfigs call s:CreateConfigs('<bang>',<f-args>)
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
