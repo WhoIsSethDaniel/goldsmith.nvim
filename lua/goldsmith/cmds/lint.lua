@@ -1,10 +1,72 @@
-local config = require'goldsmith.config'
+local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 
 local M = {}
 
-local function write_revive_config(f)
-  f:write[[
+local function golangci_lint_config()
+  return [[
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+  goconst:
+    min-len: 2
+    min-occurrences: 3
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+  govet:
+    check-shadowing: true
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - exhaustive
+    - goconst
+    - gofmt
+    - goimports
+    - gocyclo
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nolintlint
+    - nakedret
+    - prealloc
+    - predeclared
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - varcheck
+    - whitespace
+    - gocritic
+
+run:
+  issues-exit-code: 1
+]]
+end
+
+local function revive_config()
+  return [[
 ignoreGeneratedHeader = false
 severity = "warning"
 confidence = 0.8
@@ -35,24 +97,28 @@ warningCode = 0
 [rule.unused-parameter]
 [rule.unreachable-code]
 [rule.redefines-builtin-id]
-  ]]
+]]
 end
 
-function M.create_configs()
-  local filename = config.get('revive', 'config_file')
+local configs = { golangci_lint = { k = 'golangci-lint', c = golangci_lint_config }, revive = { k = 'revive', c = revive_config } }
 
-  if vim.fn.filereadable(filename) > 0 then
-    log.error(nil, 'Lint', string.format("File '%s' already exists", filename))
-    return
-  end
-  local f, err = io.open(filename, 'a')
-  if f == nil then
-    log.error(nil, 'Lint', string.format("Cannot create file '%s': %s", filename, err))
-    return
-  end
+function M.create_configs(overwrite)
+  for name, v in pairs(configs) do
+    local filename = config.get(v.k, 'config_file')
 
-  write_revive_config(f)
-  print(string.format("Created configuration file '%s'", filename))
+    if overwrite ~= '!' and vim.fn.filereadable(filename) > 0 then
+      goto continue
+    end
+    local f, err = io.open(filename, 'w')
+    if f == nil then
+      log.error(nil, 'Lint', string.format("Cannot create file '%s': %s", filename, err))
+      goto continue
+    end
+
+    f:write(v.c())
+    print(string.format("Created configuration file '%s'", filename))
+    ::continue::
+  end
 end
 
 return M

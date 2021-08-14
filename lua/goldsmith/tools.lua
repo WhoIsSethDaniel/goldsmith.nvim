@@ -92,6 +92,18 @@ local TOOLS = {
     required = false,
     not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
   },
+  ['golangci-lint'] = {
+    status = 'install',
+    location = 'github.com/golangci/golangci-lint/cmd/golangci-lint',
+    tag = 'latest',
+    exe = 'golangci-lint',
+    required = false,
+    not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
+    get_version = function(cmd)
+      local out = vim.fn.system(cmd .. ' --version')
+      return string.match(out, 'v([%d%.]+)')
+    end,
+  },
   lspconfig = {
     name = 'nvim-lspconfig',
     required = true,

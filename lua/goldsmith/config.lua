@@ -29,6 +29,9 @@ local CONFIG = {
   revive = {
     config_file = 'revive.toml',
   },
+  ['golangci-lint'] = {
+    config_file = '.golangci.yml'
+  },
   format = {
     max_line_length = 120,
     run_on_save = true,
@@ -40,7 +43,9 @@ local CONFIG = {
     show = true,
   },
   gopls = {},
-  null = {},
+  null = {
+    disabled = { 'revive' },
+  },
 }
 
 local autoconfig = true

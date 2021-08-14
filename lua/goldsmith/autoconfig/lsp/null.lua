@@ -2,13 +2,34 @@ local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
 local tools = require 'goldsmith.tools'
 local servers = require 'goldsmith.lsp.servers'
+local log = require 'goldsmith.log'
 
 local null = require 'null-ls'
 local help = require 'null-ls.helpers'
 
 local M = {}
 
-local parse_diag_messages = function()
+local parse_glcil_messages = function()
+  local severities = { error = 1, warning = 2, information = 3, hint = 4 }
+  return function(msgs)
+    local diags = {}
+    local fname = vim.fn.fnamemodify(msgs.bufname, ':p:.')
+    for _, d in ipairs(msgs.output.Issues) do
+      if fname == d.Pos.Filename then
+        table.insert(diags, {
+          message = d.Text,
+          col = d.Pos.Column,
+          row = d.Pos.Line,
+          source = d.Pos.Filename,
+          severity = severities[d.Severity] or severities['warning'],
+        })
+      end
+    end
+    return diags
+  end
+end
+
+local parse_revive_messages = function(fname)
   local severities = { error = 1, warning = 2, information = 3, hint = 4 }
   return function(msgs)
     local diags = {}
@@ -36,7 +57,31 @@ local function setup_revive(conf)
       to_stdin = false,
       args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' },
       format = 'json',
-      on_output = parse_diag_messages(),
+      on_output = parse_revive_messages(),
+    },
+  }
+end
+
+local function setup_golangci_lint(conf)
+  return {
+    name = 'golangci-lint',
+    method = null.methods.DIAGNOSTICS,
+    filetypes = { 'go' },
+    generator = help.generator_factory {
+      diagnostics_format = 'golangci-lint: #{m}',
+      command = 'golangci-lint',
+      to_stdin = false,
+      args = function()
+        local cf = conf['config_file']
+        if vim.fn.filereadable(cf) > 0 then
+          return { 'run', '--out-format=json', string.format("--config=%s", cf), vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
+        else
+          return { 'run', '--out-format=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
+        end
+      end,
+      to_stderr = true,
+      format = 'json',
+      on_output = parse_glcil_messages(),
     },
   }
 end
@@ -89,12 +134,14 @@ function M.setup(cf)
   local choose = function(service)
     if service == 'golines' then
       return setup_golines(config.get 'format')
+    elseif service == 'golangci-lint' then
+      return setup_golangci_lint(config.get 'golangci-lint')
     else
       return setup_revive(config.get 'revive')
     end
   end
   local services = {}
-  for _, service in ipairs { 'golines', 'revive' } do
+  for _, service in ipairs { 'golines', 'revive', 'golangci-lint' } do
     if tools.is_installed(service) and not M.is_disabled(service) then
       table.insert(services, choose(service))
     end

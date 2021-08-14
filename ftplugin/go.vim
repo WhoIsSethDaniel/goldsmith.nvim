@@ -86,7 +86,7 @@ command! -nargs=0 GoCodeLensOn lua require'goldsmith.cmds.lsp'.turn_on_codelens(
 command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelens()
 
 " configs
-command! -nargs=0 GoCreateConfigs lua require'goldsmith.cmds.lint'.create_configs(<f-args>)
+command! -nargs=0 -bang GoCreateConfigs lua require'goldsmith.cmds.lint'.create_configs('<bang>')
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>

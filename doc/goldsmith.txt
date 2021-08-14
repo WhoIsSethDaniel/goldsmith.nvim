@@ -263,6 +263,9 @@ A configuration that sets settings to the defaults:
             transform = "snakecase",
             skip_unexported = false,
         },
+        ['golangci-lint'] = {
+            config_file = '.golangci.yml',
+        },
         revive = {
             config_file = 'revive.toml',
         },
@@ -277,7 +280,9 @@ A configuration that sets settings to the defaults:
             show = true,
         },
         gopls = {},
-        null = {},
+        null = {
+          disabled = { 'revive' }
+        },
     })
 <
 
@@ -346,6 +351,16 @@ Read external parameters to template by json with file.
 
 LINTING                                             *goldsmith-linting-settings*
 
+*golangci-lint.config_file*                *goldsmith-golangci-lint.config_file*
+
+Default: .golangci.yml
+The configuration file for `goalangci-lint`. If golangci-lint has been configured 
+to run this file is not required to exist, but is recommended.
+
+See |goldsmith-resources| for where `golangci-lint` can be found.
+
+To install `golangci-lint` you can use |:GoInstallBinaries|.
+
 *revive.config_file*                              *goldsmith-revive.config_file*
 
 Default: revive.toml
@@ -358,9 +373,9 @@ To install `revive` you can use |:GoInstallBinaries|.
 
 LSP SERVER                                                *goldsmith-lsp-server*
 
-*null.diabled*                                         *goldsmith-null.disabled*
+*null.disabled*                                        *goldsmith-null.disabled*
 
-Default: false
+Default: { 'revive' }
 If this setting is set to either 'true' or an empty table it means that null-ls
 will not be configured by Goldsmith.
 >
@@ -369,8 +384,8 @@ will not be configured by Goldsmith.
     }
 <
 If this setting is a non-empty table each entry should be the name of a service
-that Goldsmith should *not* configure. Current values for these services are 
-'golines' and 'revive'.
+that Goldsmith should not configure. Current values for these services are 
+'golines', 'golangci-lint', and 'revive'.
 >
     null = {
         disabled = { 'golines' }
@@ -378,6 +393,10 @@ that Goldsmith should *not* configure. Current values for these services are
 <
 The above instructs Goldsmith to not configure the 'golines' service when
 configuring null-ls.
+
+By default `revive` does not run. This is because it requires a configuration
+file to run correctly. See |:GoCreateConfigs| for a way to create an initial
+configuration file.
 
 *null.config*                                            *goldsmith-null.config*
 
@@ -887,21 +906,26 @@ See also |codelens.show|
 Run the current codelens that is displaying on the current line.
 
                                                               *:GoCreateConfigs*
-:GoCreateConfigs
+:GoCreateConfigs[!]
 
 This is meant as a convenience command to be used when first starting a project.
 This command creates the recommended configuration files for all linters, 
-formaatters, etc... that require a configuration file in the root directory of 
-your project (Goldsmith assumes that the current working directory is the root 
+formatters, etc... that require a configuration file, in the root directory of 
+your project. (Goldsmith assumes that the current working directory is the root 
 of your project.)
+
+This command will not overwrite any file in the current working directory that
+already exists unless you provide the '!'. 
 
 After you have created the file(s) you can restart the server that is running 
 the given services using the :LspRestart command. If you do not restart the 
-server these services will never run.
+server these services will not run with the created configuration file. NOTE:
+:LspRestart does not always work. You may need to restart Neovim.
 
-Currently the only thing that requires a configuration file is `revive`. Without 
-a configuration file `revive` will not work so a configuration file is mandatory 
-for its proper functioning.
+Currently there are two configuration files that are created, one for `revive` 
+and one for `golangci-lint`. Without a configuration file `revive` will not work 
+so a configuration file is mandatory for its proper functioning. `golangci-lint`
+will work without a configuration file.
 
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
@@ -990,8 +1014,8 @@ HELP                                                            *goldsmith-help*
 There is a FAQ:
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/FAQ
 
-If you have a question or think you have discovered a bug please feel to ask a 
-question in the Github discussions area: 
+If you have a question or think you have discovered a bug please feel free to 
+ask a question in the Github discussions area: 
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/discussions
 
 If you have discovered a bug please report it:
@@ -1022,3 +1046,4 @@ the plugins that can be utilized by Goldsmith.
   `impl`                          https://github.com/josharian/impl
   `fixplurals`                    https://github.com/davidrjenni/reftools/cmd/fixplurals
   `revive`                        https://github.com/mgechev/revive
+  `golangci-lint`                 https://github.com/golangci/golangci-lint/cmd/golangci-lint

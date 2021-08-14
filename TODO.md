@@ -29,7 +29,8 @@
   - [x] code action not working (at least in go.mod)
   - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
 - [ ] other linters
-  - [ ] golangci-lint
+  - [ ] catch revive running w/o config file
+  - [x] golangci-lint
   - [x] turn on / off linters / formatters
 - [ ] wiki docs
   - [x] different configuration items / configurations
