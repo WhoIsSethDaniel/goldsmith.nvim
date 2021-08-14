@@ -7,15 +7,18 @@
   - [x] generalized error reporting
 - [x] general work
   - [x] fix constant 'check'ing in tools modules
+- [x] other linters
+  - [x] catch revive running w/o config file
+  - [x] golangci-lint
+  - [x] turn on / off linters / formatters
 - [x] disable commands that don't have deps installed
 - [ ] mappings
 - [ ] functions
 - [ ] autoconfig
   - [x] linters / formatters should not be setup if linter does not exist
-  - [ ] treesitter-textobjects should not be configured if ac is off
   - [x] more metadata discoverable via ac (c.f. filetypes)
-  - [ ] finer tuning of server options
-  - [ ] refactor
+  - [x] refactor
+  - [ ] treesitter-textobjects should not be configured if ac is off
   - [ ] configuration for keymappings in on_attach
 - [ ] debugging the plugin
   - [ ] debug mode
@@ -28,14 +31,14 @@
   - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
   - [x] code action not working (at least in go.mod)
   - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
-- [ ] other linters
-  - [ ] catch revive running w/o config file
-  - [x] golangci-lint
-  - [x] turn on / off linters / formatters
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+- [ ] GoCreateConfigs
+  - [ ] completion (ability to choose just one file)
+  - [ ] ability to have templates? or other files instead of the builtin ones
+- [ ] snippets
 - [ ] tests (w/plenary?)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing

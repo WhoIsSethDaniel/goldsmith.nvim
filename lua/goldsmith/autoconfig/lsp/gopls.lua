@@ -134,6 +134,10 @@ function M.has_requirements()
   return false
 end
 
+function M.loadtime_check()
+  return
+end
+
 function M.setup(cf)
   cf['filetypes'] = set_filetypes(cf['filetypes'] or {})
   cf['flags'] = set_flags(cf['flags'] or {})

@@ -127,6 +127,12 @@ function M.all_servers_are_running()
   return true
 end
 
+function M.loadtime_check()
+  for _, s in ipairs(get_servers_to_configure()) do
+    server_module(s).loadtime_check()
+  end
+end
+
 function M.init()
   require('goldsmith.tools').check()
   for _, s in ipairs(get_servers_to_configure()) do
