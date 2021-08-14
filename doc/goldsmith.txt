@@ -51,6 +51,12 @@ You can run `:checkhealth goldsmith` to see if you meet all the requirements and
 to see if you have anything missing. See |goldsmith-healthcheck| and 
 |goldsmith-supported-plugins| for more information.
 
+Many of the automated features of Goldsmith utilize the |CursorHold| and 
+|CursorHoldI| events. Neovim currently has a bug relating to these events. See: 
+https://github.com/neovim/neovim/issues/12587
+To work around this issue you may need to install the FixCursorHold plugin.
+This plugin can be found at https://github.com/antoinemadec/FixCursorHold.nvim
+
 MINIMAL VERSIONS                                    *goldsmith-minimal-versions*
 
 The following are the minmal versions known to work with Goldsmith. It does not
@@ -907,7 +913,7 @@ See also |codelens.show|
 Run the current codelens that is displaying on the current line.
 
                                                               *:GoCreateConfigs*
-:GoCreateConfigs[!]
+:GoCreateConfigs[!] [file] ...
 
 This is meant as a convenience command to be used when first starting a project.
 This command creates the recommended configuration files for all linters, 
@@ -917,6 +923,11 @@ of your project.)
 
 This command will not overwrite any file in the current working directory that
 already exists unless you provide the '!'. 
+
+You can optionally provide the name of the config file to generate, or a list 
+of names of config files to generate. Tab-completion may be used to discover 
+the name(s) of configuration files that can be written. Names of configuration 
+files that are not recognized will be ignored.
 
 After you have created the file(s) you can restart the server that is running 
 the given services using the :LspRestart command. If you do not restart the 

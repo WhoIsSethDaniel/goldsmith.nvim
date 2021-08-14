@@ -72,6 +72,9 @@ end
 
 function M.config_file_contents()
   return [[
+# for more information about revive and its
+# configuration please see here:
+# https://github.com/mgechev/revive#configuration
 ignoreGeneratedHeader = false
 severity = "warning"
 confidence = 0.8

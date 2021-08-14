@@ -87,6 +87,8 @@ end
 
 function M.config_file_contents()
   return [[
+# for information on each linter see:
+# https://golangci-lint.run/usage/linters/
 linters-settings:
   errcheck:
     check-type-assertions: true
@@ -117,9 +119,8 @@ linters:
     - errcheck
     - exportloopref
     - exhaustive
+    - gocritic
     - goconst
-    - gofmt
-    - goimports
     - gocyclo
     - gosec
     - gosimple
@@ -130,7 +131,6 @@ linters:
     - nakedret
     - prealloc
     - predeclared
-    - staticcheck
     - structcheck
     - stylecheck
     - thelper
@@ -138,9 +138,9 @@ linters:
     - typecheck
     - unconvert
     - unparam
+    - unused
     - varcheck
     - whitespace
-    - gocritic
 
 run:
   issues-exit-code: 1

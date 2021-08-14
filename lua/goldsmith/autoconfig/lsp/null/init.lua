@@ -31,7 +31,7 @@ end
 function M.map(f)
   for _, s in ipairs(M.services()) do
     local m = service_module(s)
-    f(m)
+    f(s,m)
   end
 end
 

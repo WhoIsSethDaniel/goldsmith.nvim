@@ -1,4 +1,3 @@
-
 - [x] go.mod
   - [x] fix :GoModReplace to work when cursor is on the line for a module, but not on the module text
   - [x] turn on codelens if codelens is enabled
@@ -26,7 +25,9 @@
 - [ ] testing
   - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
-- [ ] far better config validation; mechanism to warn of major config changes
+- [ ] config
+  - [ ] far better config validation
+  - [ ] mechanism to warn of major config changes
 - [ ] LSP
   - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
   - [x] code action not working (at least in go.mod)
@@ -37,6 +38,7 @@
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] GoCreateConfigs
   - [x] completion (ability to choose just one file)
+  - [ ] move from lint
   - [ ] ability to have templates? or other files instead of the builtin ones
 - [ ] snippets
 - [ ] tests (w/plenary?)

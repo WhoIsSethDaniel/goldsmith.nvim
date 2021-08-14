@@ -224,7 +224,7 @@ local TOOLS = {
     plugin = true,
     location = 'https://github.com/antoinemadec/FixCursorHold.nvim',
     not_found = {
-      'This plugin is used by Goldsmith in many places. Much of Goldsmith will fail to work without it.',
+      'Much of Goldsmith will fail to work without this plugin.',
       'It is required to fix a bug with the CursorHold event in Neovim.',
     },
     check_installed = function()

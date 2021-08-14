@@ -71,7 +71,7 @@ local function get_servers_to_configure()
   local potential = {}
   if #registered_servers > 0 then
     potential = registered_servers
-  elseif config.is_autoconfig() then
+  elseif M.is_autoconfig() then
     potential = servers.names()
   end
   local s = {}
@@ -110,12 +110,19 @@ local set_root_dir = function(fname)
   return require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git')(fname)
 end
 
+M.is_autoconfig = config.is_autoconfig
+
+function M.get_configured_servers()
+  return get_servers_to_configure()
+end
+
 function M.map(f)
   for _, s in ipairs(servers.names()) do
     local m = server_module(s)
     if m['map'] == nil then
-      f(m)
+      f(s,m)
     else
+      f(s,m)
       m.map(f)
     end
   end

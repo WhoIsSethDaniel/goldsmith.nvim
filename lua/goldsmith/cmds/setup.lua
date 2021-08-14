@@ -26,7 +26,7 @@ function M.create_configs(overwrite, ...)
       table.insert(files, f)
     end
   end
-  ac.map(function(m)
+  ac.map(function(name,m)
     if m['get_config'] == nil or m['config_file_contents'] == nil then
       return
     end

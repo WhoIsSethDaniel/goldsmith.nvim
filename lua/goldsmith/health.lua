@@ -1,6 +1,7 @@
 local tools = require 'goldsmith.tools'
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
+local ac = require 'goldsmith.autoconfig'
 
 local health_start = vim.fn['health#report_start']
 local health_ok = vim.fn['health#report_ok']
@@ -16,13 +17,13 @@ function M.go_check()
   local tool = 'go'
   local ti = tools.info(tool)
   if ti.cmd == nil then
-    health_warn(string.format('%s: MISSING', tool), ti.not_found)
+    health_error(string.format('%s: MISSING', tool), ti.not_found)
   else
     health_ok(string.format('%s: FOUND at %s (%s)', tool, ti.cmd, ti.version))
   end
 end
 
-function M.lsp_plugin_check()
+function M.plugin_check()
   health_start 'Plugin Check'
 
   plugins.check()
@@ -60,6 +61,29 @@ function M.lsp_server_check()
   end
 end
 
+function M.lsp_server_config_check()
+  health_start 'LSP Server Config Check'
+
+  if ac.is_autoconfig() then
+    health_ok('Goldsmith autoconfig is turned on')
+  else
+    health_ok('Goldsmith autoconfig is turned off')
+  end
+  local running = {}
+  local s = ac.get_configured_servers()
+  ac.map(function(name, m)
+    if not vim.tbl_contains(s, name) then
+      return
+    end
+    table.insert(running, name)
+    if m['running_services'] ~= nil then
+      table.insert(s, m.running_services())
+      s = vim.tbl_flatten(s)
+    end
+  end)
+  health_ok(string.format('Servers/Services Goldsmith has configured: %s', table.concat(running, ", ")))
+end
+
 function M.tool_check()
   health_start 'Tool Check'
 
@@ -79,8 +103,9 @@ end
 
 function M.check()
   M.go_check()
-  M.lsp_plugin_check()
+  M.plugin_check()
   M.lsp_server_check()
+  M.lsp_server_config_check()
   M.tool_check()
 end
 

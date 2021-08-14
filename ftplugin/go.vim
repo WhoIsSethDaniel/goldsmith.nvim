@@ -31,7 +31,7 @@ function s:GoImplComplete(A,C,P) abort
 endfunction
 
 function s:GoCreateConfigsComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.lint'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+	return luaeval("require'goldsmith.cmds.setup'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:TagAction(act,line1,line2,count,...) abort
@@ -43,7 +43,7 @@ function s:TagAction(act,line1,line2,count,...) abort
 endfunction
 
 function s:CreateConfigs(bang,...) abort
-    return luaeval("require'goldsmith.cmds.lint'.create_configs(_A[1],_A[2])", [a:bang, a:000])
+    return luaeval("require'goldsmith.cmds.setup'.create_configs(_A[1],_A[2])", [a:bang, a:000])
 endfunction
 
 " terminal/window commands
