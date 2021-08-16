@@ -54,7 +54,7 @@ function M.turn_off_autoconfig()
   autoconfig = false
 end
 
-function M.is_autoconfig()
+function M.autoconfig_is_on()
   return autoconfig
 end
 

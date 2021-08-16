@@ -5,7 +5,7 @@ local M = {}
 
 function M.complete()
   local names = {}
-  ac.map(function(m)
+  ac.map(function(name, m)
     if m['get_config'] == nil then
       return
     end
@@ -21,12 +21,12 @@ end
 
 function M.create_configs(overwrite, ...)
   local files = {}
-  for _, f in ipairs(... or {...}) do
+  for _, f in ipairs(... or { ... }) do
     if not vim.tbl_contains(files, f) then
       table.insert(files, f)
     end
   end
-  ac.map(function(name,m)
+  ac.map(function(name, m)
     if m['get_config'] == nil or m['config_file_contents'] == nil then
       return
     end
@@ -36,18 +36,16 @@ function M.create_configs(overwrite, ...)
       return
     end
     if filename == nil or (overwrite ~= '!' and vim.fn.filereadable(filename) > 0) then
-      goto continue
+      return
     end
     local f, err = io.open(filename, 'w')
     if f == nil then
-      log.error(nil, 'Config', string.format("Cannot create file '%s': %s", filename, err))
-      goto continue
+      log.error(nil, 'Setup', string.format("Cannot create file '%s': %s", filename, err))
+      return
     end
 
     f:write(m.config_file_contents())
     print(string.format("Created configuration file '%s'", filename))
-
-    ::continue::
   end)
 end
 

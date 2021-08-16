@@ -11,35 +11,37 @@
   - [x] golangci-lint
   - [x] turn on / off linters / formatters
 - [x] disable commands that don't have deps installed
-- [ ] mappings
-- [ ] functions
+- [x] LSP
+  - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
+  - [x] code action not working (at least in go.mod)
+  - [x] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
 - [ ] autoconfig
   - [x] linters / formatters should not be setup if linter does not exist
   - [x] more metadata discoverable via ac (c.f. filetypes)
   - [x] refactor
-  - [ ] treesitter-textobjects should not be configured if ac is off
   - [ ] configuration for keymappings in on_attach
+  - [ ] omnifunc option
 - [ ] debugging the plugin
   - [ ] debug mode
   - [ ] debug console
 - [ ] testing
   - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
-- [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] config
-  - [ ] far better config validation
+  - [ ] far better config validation using validate()
   - [ ] mechanism to warn of major config changes
-- [ ] LSP
-  - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
-  - [x] code action not working (at least in go.mod)
-  - [ ] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] GoCreateConfigs
-  - [x] completion (ability to choose just one file)
-  - [ ] move from lint
+  - [x] completion (ability to choose subset of files)
+  - [x] move from lint
   - [ ] ability to have templates? or other files instead of the builtin ones
+- [ ] godef
+  - [ ] option for opening in window: https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#go-to-definition-in-a-split-window
+- [ ] mappings
+- [ ] functions
+- [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets
 - [ ] tests (w/plenary?)
 - [ ] workspaces / multiple workspaces

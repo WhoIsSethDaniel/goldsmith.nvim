@@ -67,12 +67,16 @@ local function get_server_conf(server)
   end
 end
 
+local function get_plugins_to_configure()
+  return registered_plugins
+end
+
 local function get_servers_to_configure()
   local potential = {}
   if #registered_servers > 0 then
     potential = registered_servers
-  elseif M.is_autoconfig() then
-    potential = servers.names()
+  elseif M.autoconfig_is_on() then
+    potential = M.get_all_servers()
   end
   local s = {}
   for _, server in ipairs(potential) do
@@ -85,7 +89,7 @@ end
 
 local function all_servers_for_filetype(type)
   local s = {}
-  for _, server in ipairs(servers.names()) do
+  for _, server in ipairs(M.get_all_servers()) do
     local fts = server_module(server).supported_filetypes()
     if vim.tbl_contains(fts, type) then
       table.insert(s, server)
@@ -97,7 +101,7 @@ end
 local function all_configured_servers_for_filetype(type)
   local s = {}
   local sft = all_servers_for_filetype(type)
-  local configured = get_servers_to_configure()
+  local configured = M.get_configured_servers()
   for _, server in ipairs(configured) do
     if vim.tbl_contains(sft, server) then
       table.insert(s, server)
@@ -110,14 +114,22 @@ local set_root_dir = function(fname)
   return require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git')(fname)
 end
 
-M.is_autoconfig = config.is_autoconfig
+M.autoconfig_is_on = config.autoconfig_is_on
+
+M.get_all_plugins = get_plugins_to_configure
+
+M.get_all_servers = servers.names
+
+function M.get_configured_plugins()
+  return get_plugins_to_configure()
+end
 
 function M.get_configured_servers()
   return get_servers_to_configure()
 end
 
 function M.map(f)
-  for _, s in ipairs(servers.names()) do
+  for _, s in ipairs(M.get_all_servers()) do
     local m = server_module(s)
     if m['map'] == nil then
       f(s,m)
@@ -126,9 +138,9 @@ function M.map(f)
       m.map(f)
     end
   end
-  for _, p in ipairs(registered_plugins) do
+  for _, p in ipairs(M.get_all_plugins()) do
     local m = plugin_module(p)
-    f(m)
+    f(p,m)
   end
 end
 
@@ -150,7 +162,7 @@ function M.all_servers_are_running()
 end
 
 function M.loadtime_check()
-  for _, s in ipairs(get_servers_to_configure()) do
+  for _, s in ipairs(M.get_configured_servers()) do
     server_module(s).loadtime_check()
   end
 end
@@ -160,7 +172,7 @@ function M.init()
   for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
   end
-  for _, p in ipairs(registered_plugins) do
+  for _, p in ipairs(get_plugins_to_configure()) do
     M.setup_plugin(p)
   end
 end

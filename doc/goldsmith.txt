@@ -59,7 +59,7 @@ This plugin can be found at https://github.com/antoinemadec/FixCursorHold.nvim
 
 MINIMAL VERSIONS                                    *goldsmith-minimal-versions*
 
-The following are the minmal versions known to work with Goldsmith. It does not
+The following are the minimal versions known to work with Goldsmith. It does not
 mean that older versions will not work, but it is unknown if they will.
 
 Not every tool reports a version. If you install everything with 
@@ -70,7 +70,7 @@ the version of all tools using |goldsmith-healthcheck|.
 Tool                      Version
 ---------------------------------
 go                         1.14
-gopls                      0.6.0
+gopls                      0.6.6
 golines                    0.4.0
 
 ================================================================================
@@ -88,9 +88,11 @@ Features currently included:
 * use :checkhealth to see if your Goldsmith setup should work correctly
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save
 * run extra linters and/or formatters using null-ls
+* see the source of the diagnostic when running extra linters
 * Goldsmith can completely configure everything for you, if you want
 * generate test stubs automatically using `gotests`
 * create implementation stubs for your interfaces using :GoImpl
+* :GoFillStruct utilizes LSP to fill the current struct
 * commands for common tasks (the following list is not complete):
     * switch to the 'alternate' file quickly
     * struct tag editing: add / remove / update struct tags and options
@@ -782,6 +784,15 @@ If a buffer for the 'alternate' file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
 or window will be created if they do not already exist (contingent on the 
 value of |goalt.use_current_window|).
+
+                                                                 *:GoFillStruct*
+:GoFillStruct
+
+Will fill the struct the cursor is over. This utilizes `gopls` and is simply a
+frontend for performing the 'fill_struct' code action. The main difference 
+between this and using |:GoCodeAction| is that |:GoCodeAction| will prompt you
+to select from a list of actions (even if the list has only one entry). 
+:GoFillStruct will never prompt.
 
                                                                        *:GoImpl*
 :GoImpl <recv> <interface>

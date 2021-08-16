@@ -15,9 +15,11 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#use-checkhealth-to-check-goldsmith-setup)
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#manual-formatting-using-goformat)
 * run extra linters and/or formatters using null-ls
+* see the source of the diagnostic when running extra linters
 * Goldsmith can completely configure everything for you, if you want (see the [Configurations](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) wiki for more)
 * generate test stubs automatically using `gotests` [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
 * create implementation stubs for your interfaces using :GoImpl [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#create-interface-implementation-stubs)
+* :GoFillStruct utilizes LSP to fill the current struct
 * commands for common tasks (the following list is not complete):
     * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
     * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
@@ -63,7 +65,7 @@ the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith
 # Minimal Requirements
 * Neovim >= 0.5.0
 * go >= 1.14
-* gopls >= 0.6.0
+* gopls >= 0.6.6[\*] 
 * [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
 These 'minimal' requirements are not hard-and-fast. They are simply the minimal versions that the author has been able
@@ -74,6 +76,9 @@ to test with. Goldsmith may work just fine with older versions of Go, gopls, etc
 
 Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
 requirements.
+
+[\*] *Goldsmith depends on package completion provided by gopls. Prior to 0.6.6 this did not exist. If you use a gopls
+earlier than 0.6.6 it means package completion will not work for those commands that require it.
 
 # Reporting Problems / Asking Questions
 Goldsmith is very new. It works for the author, but does it work for you? If not, please consider [asking a 

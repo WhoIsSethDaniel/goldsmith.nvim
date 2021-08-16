@@ -64,7 +64,7 @@ end
 function M.lsp_server_config_check()
   health_start 'LSP Server Config Check'
 
-  if ac.is_autoconfig() then
+  if ac.autoconfig_is_on() then
     health_ok('Goldsmith autoconfig is turned on')
   else
     health_ok('Goldsmith autoconfig is turned off')
