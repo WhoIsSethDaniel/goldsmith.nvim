@@ -42,7 +42,6 @@ end
 function M.check_and_warn_about_requirements()
   if not tools.is_installed 'golangci-lint' then
     log.error(
-      nil,
       'Format',
       "'golangci-lint' is not installed and will not be run by null-ls. Use ':GoInstallBinaries golangci-lint' to install it"
     )

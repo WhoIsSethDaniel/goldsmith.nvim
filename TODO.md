@@ -21,14 +21,6 @@
   - [x] refactor
   - [ ] configuration for keymappings in on_attach
   - [ ] omnifunc option
-- [ ] debugging the plugin
-  - [ ] debug mode
-  - [ ] debug console
-- [ ] testing
-  - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
-- [ ] config
-  - [ ] far better config validation using validate()
-  - [ ] mechanism to warn of major config changes
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -37,6 +29,14 @@
   - [x] completion (ability to choose subset of files)
   - [x] move from lint
   - [ ] ability to have templates? or other files instead of the builtin ones
+- [ ] debugging the plugin
+  - [ ] debug mode
+  - [ ] debug console
+- [ ] testing
+  - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
+- [ ] config
+  - [ ] far better config validation using validate()
+  - [ ] mechanism to warn of major config changes
 - [ ] godef
   - [ ] option for opening in window: https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#go-to-definition-in-a-split-window
 - [ ] mappings

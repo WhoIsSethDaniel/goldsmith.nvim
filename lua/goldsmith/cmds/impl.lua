@@ -53,7 +53,7 @@ function M.run(...)
   local args = { ... }
   local n = #args
   if n > 3 then
-    log.error(nil, nil, 'Too many arguments. :GoImpl <recv> <iface>')
+    log.error(nil, 'Too many arguments. :GoImpl <recv> <iface>')
     return
   elseif n == 3 then
     iface = args[3]
@@ -62,7 +62,7 @@ function M.run(...)
     iface = args[2]
     recv = args[1]
   else
-    log.error(nil, nil, 'Too few arguments. :GoImpl <recv> <iface>')
+    log.error(nil, 'Too few arguments. :GoImpl <recv> <iface>')
     return
   end
 
@@ -78,7 +78,7 @@ function M.run(...)
       end,
       on_stderr = function(id, data, name)
         local err = table.concat(data, '\n')
-        log.error(nil, nil, err)
+        log.error(nil, err)
       end,
       on_exit = function(id, code, event)
         if code > 0 then

@@ -62,7 +62,7 @@ local function get_server_conf(server)
   elseif type(cf) == 'table' then
     return cf
   else
-    log.error(nil, nil, string.format("Server configuration for server '%s' must be a table or function", server))
+    log.error(nil, string.format("Server configuration for server '%s' must be a table or function", server))
     return {}
   end
 end
@@ -111,7 +111,8 @@ local function all_configured_servers_for_filetype(type)
 end
 
 local set_root_dir = function(fname)
-  return require('lspconfig.util').root_pattern('go.work', 'go.mod', '.git')(fname)
+  local util = require('lspconfig.util')
+  return util.root_pattern('go.work', 'go.mod', '.git')(fname) or util.path.dirname(fname)
 end
 
 M.autoconfig_is_on = config.autoconfig_is_on
@@ -196,7 +197,7 @@ function M.setup_server(server, cf)
     name = server
   end
   if name == nil then
-    log.error(nil, nil, string.format("Cannot determine how to configure '%s'", server))
+    log.error(nil, string.format("Cannot determine how to configure '%s'", server))
   end
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
@@ -210,14 +211,12 @@ function M.setup_server(server, cf)
   else
     log.error(
       nil,
-      nil,
       string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
     )
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version
     log.error(
-      nil,
       nil,
       string.format(
         "Server '%s' is not at the minimum required version (%s); some things may not work correctly",

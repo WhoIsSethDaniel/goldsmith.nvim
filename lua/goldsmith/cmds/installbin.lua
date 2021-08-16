@@ -25,7 +25,7 @@ function M.run(...)
     install = tools.names { status = 'install' }
   end
   if #install == 0 then
-    log.error(nil, 'GoInstallBinaries', 'Nothing to install')
+    log.error('GoInstallBinaries', 'Nothing to install')
     return
   end
   for _, name in ipairs(install) do
@@ -35,7 +35,7 @@ function M.run(...)
     job.run(cmd, {
       on_exit = function(jobid, code, event)
         if code > 0 then
-          log.error(nil, 'GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', name, code))
+          log.error('GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', name, code))
         else
           print(string.format('SUCCESS in retrieval of %s', name, code))
         end

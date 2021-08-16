@@ -27,7 +27,7 @@ local function parse_args(...)
   for i, a in ipairs { ... } do
     if a == '-p' or a == '-e' then
       if opt ~= '' then
-        log.error(nil, 'Tests', '-p and -e may not be used together')
+        log.error('Tests', '-p and -e may not be used together')
         return
       end
       if a == '-p' then
@@ -37,7 +37,7 @@ local function parse_args(...)
       end
     else
       if i ~= #... then
-        log.error(nil, 'Tests', 'too many arguments to :GoAddTest')
+        log.error('Tests', 'too many arguments to :GoAddTest')
         return
       else
         f = a
@@ -56,7 +56,7 @@ function M.add(...)
   if f == nil then
     local func = ts.get_current_function_name()
     if func == nil then
-      log.error(nil, 'Tests', 'Cannot determine test to add. Please provide a test name.')
+      log.error('Tests', 'Cannot determine test to add. Please provide a test name.')
     end
     M.run(opt, '-only', func)
   else
@@ -79,11 +79,11 @@ function M.run(...)
   end
   local fp = vim.fn.expand '%'
   if vim.fn.isdirectory(fp) > 0 then
-    log.error(nil, 'Tests', 'Current file is a directory')
+    log.error('Tests', 'Current file is a directory')
     return
   end
   if fs.is_test_file(fp) then
-    log.error(nil, 'Tests', 'Current file is a test file')
+    log.error('Tests', 'Current file is a test file')
     return
   end
   local extra = config.get 'tests' or {}
@@ -115,7 +115,7 @@ function M.run(...)
       if ok then
         print 'Test(s) generated.'
       else
-        log.error(nil, 'Tests', 'Failed to generate tests. %s (code %d)', vim.inspect(out), code)
+        log.error('Tests', 'Failed to generate tests. %s (code %d)', vim.inspect(out), code)
       end
     end,
   })

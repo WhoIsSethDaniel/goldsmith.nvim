@@ -52,7 +52,7 @@ local function run(action, location, ...)
     stderr_buffered = true,
     on_stderr = function(jobid, data)
       if data[1] ~= '' then
-        log.error(nil, 'Tag', string.format('operation failed with: %s', data[1]))
+        log.error('Tag', string.format('operation failed with: %s', data[1]))
       end
     end,
     on_stdout = function(jobid, data)

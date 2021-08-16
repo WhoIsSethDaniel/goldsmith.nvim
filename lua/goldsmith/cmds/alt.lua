@@ -11,7 +11,7 @@ function M.run(create)
   local alt = vim.fn.fnamemodify(fs.alternate_file_name(vim.fn.expand '%'), ':p')
 
   if vim.fn.getftype(alt) == '' and create == '' then
-    log.error(nil, 'Alt', string.format('%s: file does not exist', alt))
+    log.error('Alt', string.format('%s: file does not exist', alt))
     return
   end
 

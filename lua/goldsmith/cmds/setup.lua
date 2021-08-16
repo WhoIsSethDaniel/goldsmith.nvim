@@ -40,7 +40,7 @@ function M.create_configs(overwrite, ...)
     end
     local f, err = io.open(filename, 'w')
     if f == nil then
-      log.error(nil, 'Setup', string.format("Cannot create file '%s': %s", filename, err))
+      log.error('Setup', string.format("Cannot create file '%s': %s", filename, err))
       return
     end
 

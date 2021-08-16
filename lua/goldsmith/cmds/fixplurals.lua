@@ -30,7 +30,7 @@ function M.run()
   end
   cfg['on_exit'] = function(id, code, event)
     if #err ~= 0 then
-      log.error(nil, 'FixPlurals', table.concat(err, '\n'))
+      log.error('FixPlurals', table.concat(err, '\n'))
       return
     end
     if code > 0 then
