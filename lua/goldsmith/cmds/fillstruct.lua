@@ -25,11 +25,11 @@ local M = {}
 --         title = "Fill GoVersions"
 --       } }
 --   } }
-function M.run()
+function M.run(timeout_ms)
   local context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
   local params = vim.lsp.util.make_range_params()
   params.context = context
-  local results = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 1000)
+  local results = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
   if not results or next(results) == nil then
     return
   end

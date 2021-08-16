@@ -69,7 +69,7 @@ command! -nargs=* -range GoAddTags call s:TagAction('add', <line1>, <line2>, <co
 command! -nargs=* -range GoRemoveTags call s:TagAction('remove', <line1>, <line2>, <count>, <f-args>)
 command! -nargs=0 -range GoClearTags call s:TagAction('remove', <line1>, <line2>, <count>)
 command! -nargs=* -complete=custom,s:GoImplComplete GoImpl lua require'goldsmith.cmds.impl'.run(<f-args>)
-command! -nargs=0 GoFillStruct lua require'goldsmith.cmds.fillstruct'.run()
+command! -nargs=0 GoFillStruct lua require'goldsmith.cmds.fillstruct'.run(1000)
 command! -nargs=0 GoFixPlurals lua require'goldsmith.cmds.fixplurals'.run()
 
 " navigation
