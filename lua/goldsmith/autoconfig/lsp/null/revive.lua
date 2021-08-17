@@ -9,9 +9,28 @@ local M = {}
 
 local function parse_messages()
   local severities = { error = 1, warning = 2, information = 3, hint = 4 }
-  return function(msgs)
+  local config_warning = false
+  return function(params, done)
+    if string.match(params.err or '', 'cannot read') ~= nil then
+      done()
+      if config_warning then
+        return
+      end
+      config_warning = true
+      log.error(
+        'Lint',
+        "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
+      )
+      return
+    end
+    config_warning = false
+    local ok, msgs = pcall(vim.fn.json_decode, params.output)
+    if not ok or type(msgs) ~= 'table' then
+      done()
+      return
+    end
     local diags = {}
-    for _, d in ipairs(msgs.output) do
+    for _, d in ipairs(msgs) do
       table.insert(diags, {
         message = d.Failure,
         col = d.Position.Start.Column,
@@ -19,7 +38,7 @@ local function parse_messages()
         severity = severities[d.Severity],
       })
     end
-    return diags
+    done(diags)
   end
 end
 
@@ -32,18 +51,23 @@ local function cmd()
 end
 
 function M.has_requirements()
-  local conf = M.get_config()
-  return tools.is_installed 'revive' and vim.fn.filereadable(conf['config_file']) == 0
+  return tools.is_installed 'revive'
 end
 
 function M.check_and_warn_about_requirements()
   if not tools.is_installed 'revive' then
-    log.error('Format', "'revive' is not installed and will not be run by null-ls. Use ':GoInstallBinaries revive' to install it")
+    log.error(
+      'Lint',
+      "'revive' is not installed and will not be run by null-ls. Use ':GoInstallBinaries revive' to install it"
+    )
     return false
   end
   local conf = M.get_config()
   if vim.fn.filereadable(conf['config_file']) == 0 then
-    log.error('Format', "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one.")
+    log.error(
+      'Lint',
+      "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
+    )
     return false
   end
   return true
@@ -60,14 +84,14 @@ function M.setup()
       command = cmd(),
       to_stdin = false,
       args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' },
-      format = 'json',
+      format = 'raw',
       on_output = parse_messages(),
     },
   }
 end
 
 function M.get_config()
-  return config.get('revive')
+  return config.get 'revive' or {}
 end
 
 function M.config_file_contents()

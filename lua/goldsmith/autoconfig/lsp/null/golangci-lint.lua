@@ -81,7 +81,7 @@ function M.setup()
 end
 
 function M.get_config()
-  return config.get 'golangci-lint'
+  return config.get 'golangci-lint' or {}
 end
 
 function M.config_file_contents()

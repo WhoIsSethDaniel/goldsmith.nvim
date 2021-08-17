@@ -44,7 +44,7 @@ local CONFIG = {
   },
   gopls = {},
   null = {
-    disabled = { 'revive' },
+    disabled = { 'revive', 'staticcheck' },
   },
 }
 

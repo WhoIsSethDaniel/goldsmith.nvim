@@ -87,7 +87,8 @@ Features currently included:
 * manually update imports using the :GoImports command
 * use :checkhealth to see if your Goldsmith setup should work correctly
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save
-* run extra linters and/or formatters using null-ls
+* run extra linters and/or formatters using null-ls: currently has support for golines, revive, 
+  golangci-lint, and staticcheck
 * see the source of the diagnostic when running extra linters
 * Goldsmith can completely configure everything for you, if you want
 * generate test stubs automatically using `gotests`
@@ -384,7 +385,7 @@ LSP SERVER                                                *goldsmith-lsp-server*
 
 *null.disabled*                                        *goldsmith-null.disabled*
 
-Default: { 'revive' }
+Default: { 'revive', 'staticcheck' }
 If this setting is set to either 'true' or an empty table it means that null-ls
 will not be configured by Goldsmith.
 >
@@ -394,7 +395,7 @@ will not be configured by Goldsmith.
 <
 If this setting is a non-empty table each entry should be the name of a service
 that Goldsmith should not configure. Current values for these services are 
-'golines', 'golangci-lint', and 'revive'.
+'golines', 'staticcheck', 'golangci-lint', and 'revive'.
 >
     null = {
         disabled = { 'golines' }
@@ -403,9 +404,18 @@ that Goldsmith should not configure. Current values for these services are
 The above instructs Goldsmith to not configure the 'golines' service when
 configuring null-ls.
 
+If `golangci-lint` is configured to run it will use a configuration file if one
+exists, but will happily run without one. See |:GoCreateConfigs| for a way to 
+create an initial configuration file.
+
 By default `revive` does not run. This is because it requires a configuration
 file to run correctly. See |:GoCreateConfigs| for a way to create an initial
-configuration file.
+configuration file. If you attempt to run `revive` without a configuration file
+an error will be shown.
+
+Also by default `staticcheck` does not run. `staticcheck` already runs as a
+service within `gopls` so having it also run as a separate linter seems redundant
+and it is not recommended. 
 
 *null.config*                                            *goldsmith-null.config*
 
@@ -1070,3 +1080,4 @@ the plugins that can be utilized by Goldsmith.
   `fixplurals`                    https://github.com/davidrjenni/reftools/cmd/fixplurals
   `revive`                        https://github.com/mgechev/revive
   `golangci-lint`                 https://github.com/golangci/golangci-lint/cmd/golangci-lint
+  `staticcheck`                   https://honnef.co/go/tools/cmd/staticcheck

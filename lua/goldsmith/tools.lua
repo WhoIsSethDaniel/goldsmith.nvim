@@ -107,6 +107,19 @@ local TOOLS = {
       return string.match(out, 'v([%d%.]+)')
     end,
   },
+  staticcheck = {
+    status = 'install',
+    location = 'honnef.co/go/tools/cmd/staticcheck',
+    tag = 'latest',
+    exe = 'staticcheck',
+    null = true,
+    required = false,
+    not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
+    get_version = function(cmd)
+      local out = vim.fn.system(cmd .. ' -version')
+      return string.match(out, '%(v([%d%.]+)%)')
+    end,
+  },
   lspconfig = {
     name = 'nvim-lspconfig',
     required = true,

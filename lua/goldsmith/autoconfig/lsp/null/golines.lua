@@ -8,7 +8,7 @@ local help = require 'null-ls.helpers'
 local M = {}
 
 local function get_config()
-  return config.get 'format'
+  return config.get 'format' or {}
 end
 
 function M.service_name()
