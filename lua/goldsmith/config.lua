@@ -1,6 +1,9 @@
 local M = {}
 
 local CONFIG = {
+  completion = {
+    omni = false,
+  },
   goimports = {
     run_on_save = true,
     timeout = 1000,

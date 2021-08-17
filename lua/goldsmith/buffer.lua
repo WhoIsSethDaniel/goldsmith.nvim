@@ -1,3 +1,5 @@
+local config = require 'goldsmith.config'
+
 -- 'current' is simply the most recent 'go' buffer to have been used
 local M = {
   all = {},
@@ -21,6 +23,13 @@ function M.get_valid_buffer()
     else
       M.all[buf] = nil
     end
+  end
+end
+
+function M.maybe_set_omnifunc()
+  local omni = config.get('completion', 'omni')
+  if omni then
+    vim.api.nvim_buf_set_option(vim.api.nvim_get_current_buf(), 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   end
 end
 

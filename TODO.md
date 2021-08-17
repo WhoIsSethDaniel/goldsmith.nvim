@@ -19,8 +19,8 @@
   - [x] linters / formatters should not be setup if linter does not exist
   - [x] more metadata discoverable via ac (c.f. filetypes)
   - [x] refactor
+  - [x] omnifunc option
   - [ ] configuration for keymappings in on_attach
-  - [ ] omnifunc option
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...

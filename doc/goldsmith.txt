@@ -173,7 +173,7 @@ You can turn off the auto-configuration of servers, e.g.:
     require("goldsmith").config({ autoconfig = false })
 <
 If you do not allow Goldsmith to help configure your servers there are 
-certain features that will not work. 
+certain features of Goldsmith that will not work. 
 
 *goldsmith-configuration-explicit*
 You can explicitly configure servers in two different ways. The first way
@@ -248,51 +248,54 @@ configuration.
 A configuration that sets settings to the defaults:
 >
     require("goldsmith").config({
-        goimports = {
-            run_on_save = true,
-            timeout = 1000,
-        },
-        goalt = {
-          use_current_window = false,
-        },
-        tests = {},
-        window = {
-            pos = "right",
-            focus = true,
-            height = 20,
-            width = 80,
-        },
-        terminal = {
-            pos = "right",
-            focus = false,
-            height = 20,
-            width = 80,
-        },
-        tags  = {
-            default_tag = "json",
-            transform = "snakecase",
-            skip_unexported = false,
-        },
-        ['golangci-lint'] = {
-            config_file = '.golangci.yml',
-        },
-        revive = {
-            config_file = 'revive.toml',
-        },
-        format = {
-            max_line_length = 120,
-            run_on_save = true,
-        },
-        highlight = {
-            current_symbol = true,
-        },
-        codelens = {
-            show = true,
-        },
-        gopls = {},
-        null = {
-          disabled = { 'revive' }
-        },
+      completion = {
+        omni = false,
+      },
+      goimports = {
+        run_on_save = true,
+        timeout = 1000,
+      },
+      goalt = {
+        use_current_window = false,
+      },
+      tests = {},
+      terminal = {
+        pos = 'right',
+        focus = false,
+        height = 20,
+        width = 80,
+      },
+      window = {
+        pos = 'right',
+        focus = true,
+        height = 20,
+        width = 80,
+      },
+      tags = {
+        default_tag = 'json',
+        transform = 'snakecase',
+        skip_unexported = false,
+      },
+      revive = {
+        config_file = 'revive.toml',
+      },
+      ['golangci-lint'] = {
+        config_file = '.golangci.yml'
+      },
+      format = {
+        max_line_length = 120,
+        run_on_save = true,
+      },
+      highlight = {
+        current_symbol = true,
+      },
+      codelens = {
+        show = true,
+      },
+      gopls = {},
+      null = {
+        disabled = { 'revive', 'staticcheck' },
+      },
     })
 <
 
@@ -381,7 +384,21 @@ See |goldsmith-resources| for where `revive` can be found.
 
 To install `revive` you can use |:GoInstallBinaries|.
 
-LSP SERVER                                                *goldsmith-lsp-server*
+COMPLETION                                                *goldsmith-completion*
+
+*completion.omni*                                    *goldsmith-completion.omni*
+
+Default: false
+Setup the Neovim omnicomplete function ('omnifunc'). By default this is turned 
+off as most people will want to setup an auto-completion plugin, such as 
+nvim-compe (https://github.com/hrsh7th/nvim-compe), instead of using this.
+
+This simply sets 'omnifunc' to |vim.lsp.omnifunc()|.
+
+If you are unfamiliar with how completion works, by default, in Neovim you
+should read |ins-completion|.
+
+LSP SERVERS                                              *goldsmith-lsp-servers*
 
 *null.disabled*                                        *goldsmith-null.disabled*
 

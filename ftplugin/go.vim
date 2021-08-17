@@ -14,6 +14,8 @@ setlocal formatoptions-=t
 setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
+lua require'goldsmith.buffer'.maybe_set_omnifunc()
+
 function s:GoDocComplete(A,C,P) abort
 	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
