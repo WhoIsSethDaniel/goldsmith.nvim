@@ -248,6 +248,24 @@ configuration.
 A configuration that sets settings to the defaults:
 >
     require("goldsmith").config({
+      mappings = {
+        ['gd'] = 'definition',
+        ['K'] = 'hover',
+        ['gi'] = 'implementation',
+        ['<C-k>'] = 'signature_help',
+        ['<leader>wa'] = 'add_workspace_folder',
+        ['<leader>wr'] = 'remove_workspace_folder',
+        ['<leader>wl'] = 'list_workspace_folders',
+        ['<leader>D'] = 'type_definition',
+        ['<leader>rn'] = 'rename',
+        ['<leader>gr'] = 'references',
+        ['<leader>ca'] = 'code_action',
+        ['<leader>e'] = 'show_line_diagnostics',
+        ['[d'] = 'goto_previous_diagnostic',
+        [']d'] = 'goto_next_diagnostic',
+        ['<leader>q'] = 'diagnostic_set_loclist',
+        ['<leader>f'] = 'format',
+      },
       completion = {
         omni = false,
       },
@@ -301,6 +319,10 @@ A configuration that sets settings to the defaults:
 
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
+
+MAPPINGS                                            *goldsmith-mappings-setting*
+
+For this setting please see |goldsmith-mappings|.
 
 FORMATTING                                       *goldsmith-formatting-settings*
 
@@ -1015,7 +1037,81 @@ this does.
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
-Currently no mappings are defined.
+There is a default set of mappings. Each mapping is attached to a particular 
+action. The defaults are defined as a table where each key in the table is a 
+Neovim key sequence and the value is a symbolic name for an action. The defaults
+are:
+>
+    mappings = {
+        ['gd'] = 'definition',
+        ['K'] = 'hover',
+        ['gi'] = 'implementation',
+        ['<C-k>'] = 'signature_help',
+        ['<leader>wa'] = 'add_workspace_folder',
+        ['<leader>wr'] = 'remove_workspace_folder',
+        ['<leader>wl'] = 'list_workspace_folders',
+        ['<leader>D'] = 'type_definition',
+        ['<leader>rn'] = 'rename',
+        ['<leader>gr'] = 'references',
+        ['<leader>ca'] = 'code_action',
+        ['<leader>e'] = 'show_line_diagnostics',
+        ['[d'] = 'goto_previous_diagnostic',
+        [']d'] = 'goto_next_diagnostic',
+        ['<leader>q'] = 'diagnostic_set_loclist',
+        ['<leader>f'] = 'format',
+      }
+<
+Each action is defined as:
+* definition - see |vim.lsp.buf.definition()|
+* hover - see |vim.lsp.buf.hover()|
+* implementation - see |vim.lsp.buf.implementation()|
+* signature_help - see |vim.lsp.buf.signature_help()|
+* add_workspace_folder - see |vim.lsp.buf.add_workspace_folder()|
+* remove_workspace_folder - see |vim.lsp.buf.remove_workspace_folder()|
+* list_workspace_folders - see |vim.lsp.buf.list_workspace_folders()|
+* type_definition - see |vim.lsp.buf.type_definition()|
+* rename - see |vim.lsp.buf.rename()|
+* references - see |vim.lsp.buf.references()|
+* code_action - see |vim.lsp.buf.code_action()|
+* show_line_diagnostics - see |vim.lsp.diagnostic.show_line_diagnostics()|
+* goto_previous_diagnostic - see |vim.lsp.diagnostic.get_prev()|
+* goto_next_diagnostic - see |vim.lsp.diagnostic.get_next()|
+* diagnostic_set_loclist - see |vim.lsp.diagnostic.set_loclist()|
+* format - format the current buffer using all available formatters
+
+By default these mappings are applied to all Go buffers. 
+
+If you provide your own 'on_attach' method when configuring your LSP servers, or 
+if you do not use Goldsmith to configure your servers, you will not be able to 
+use this setting unless you also call the 'set_buffer_mappings' function in your 
+'on_attach' method.
+>
+    require('goldsmith').set_buffer_mappings(bufnum)
+<
+The 'set_buffer_mappings' function takes a single argument and it is the buffer
+number to apply the mappings to. You can call 'set_buffer_mappings' in any 
+'on_attach' method. If the given buffer is not a Go buffer 'set_buffer_mappings' 
+will return false and will not setup any mappings. Otherwise it sets up the 
+appropriate mappings based on your config and returns true. A simple example:
+>
+    function on_attach(client, buffer)
+      ...some early setup...
+      if not require('goldsmith').set_buffer_mappings(buffer) then
+        ...setup keymappings for non-go servers...
+      end
+      ...some late setup...
+    end
+< 
+You can define multiple mappings for a single action simply by having multiple 
+entries in the mappings table for an action, e.g.:
+>
+    mappings = {
+        ['gd'] = 'definition',
+        ['<C-]>'] = 'definition',
+        ...
+    }
+<
+The above defines both 'gd' and '<C-]>' as mappings for the 'definition' action.
 
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*
@@ -1047,7 +1143,9 @@ nvim-treesitter-textobjects plugin.
 ================================================================================
 FUNCTIONS                                                  *goldsmith-functions*
 
-Currently no functions are defined.
+*set_buffer_mappings()*
+
+See |goldsmith-mappings| for a detailed look at set_buffer_mappings().
 
 ================================================================================
 HEALTHCHECK                                              *goldsmith-healthcheck*

@@ -15,12 +15,12 @@
   - [x] show source of warning/errors/etc... in vtext (i.e. show that 'revive' is the source)
   - [x] code action not working (at least in go.mod)
   - [x] https://github.com/neovim/nvim-lspconfig/wiki/UI-customization - go through this see what to use
-- [ ] autoconfig
+- [x] autoconfig
   - [x] linters / formatters should not be setup if linter does not exist
   - [x] more metadata discoverable via ac (c.f. filetypes)
   - [x] refactor
   - [x] omnifunc option
-  - [ ] configuration for keymappings in on_attach
+  - [x] configuration for keymappings in on_attach
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...

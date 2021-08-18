@@ -1,6 +1,24 @@
 local M = {}
 
 local CONFIG = {
+  mappings = {
+    ['gd'] = 'definition',
+    ['K'] = 'hover',
+    ['gi'] = 'implementation',
+    ['<C-k>'] = 'signature_help',
+    ['<leader>wa'] = 'add_workspace_folder',
+    ['<leader>wr'] = 'remove_workspace_folder',
+    ['<leader>wl'] = 'list_workspace_folders',
+    ['<leader>D'] = 'type_definition',
+    ['<leader>rn'] = 'rename',
+    ['<leader>gr'] = 'references',
+    ['<leader>ca'] = 'code_action',
+    ['<leader>e'] = 'show_line_diagnostics',
+    ['[d'] = 'goto_previous_diagnostic',
+    [']d'] = 'goto_next_diagnostic',
+    ['<leader>q'] = 'diagnostic_set_loclist',
+    ['<leader>f'] = 'format',
+  },
   completion = {
     omni = false,
   },
@@ -33,7 +51,7 @@ local CONFIG = {
     config_file = 'revive.toml',
   },
   ['golangci-lint'] = {
-    config_file = '.golangci.yml'
+    config_file = '.golangci.yml',
   },
   format = {
     max_line_length = 120,

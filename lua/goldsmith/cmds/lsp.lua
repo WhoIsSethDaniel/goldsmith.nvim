@@ -21,6 +21,30 @@ function M.signature_help()
   vim.lsp.buf.signature_help()
 end
 
+function M.format()
+  require'goldsmith.cmds.format'.run()
+end
+
+function M.add_workspace_folder()
+  vim.lsp.buf.add_workspace_folder()
+end
+
+function M.remove_workspace_folder()
+  vim.lsp.buf.remove_workspace_folder()
+end
+
+function M.list_workspace_folders()
+  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+end
+
+function M.goto_previous_diagnostic()
+  vim.lsp.diagnostic.goto_prev()
+end
+
+function M.goto_next_diagnostic()
+  vim.lsp.diagnostic.goto_next()
+end
+
 -- :GoDefType :GoTypeDef
 function M.type_definition()
   vim.lsp.buf.type_definition()
