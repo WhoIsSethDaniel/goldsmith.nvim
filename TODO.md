@@ -21,6 +21,8 @@
   - [x] refactor
   - [x] omnifunc option
   - [x] configuration for keymappings in on_attach
+- [x] godef / gotypedef / goto_implementation()
+  - [x] option for opening in window
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -37,10 +39,6 @@
 - [ ] config
   - [ ] far better config validation using validate()
   - [ ] mechanism to warn of major config changes
-- [ ] godef
-  - [ ] option for opening in window: https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#go-to-definition-in-a-split-window
-- [ ] mappings
-- [ ] functions
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets
 - [ ] tests (w/plenary?)

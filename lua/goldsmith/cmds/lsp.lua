@@ -1,14 +1,42 @@
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
+local wb = require 'goldsmith.winbuf'
 
 local M = {}
 
--- :GoDef ctrl-] gd
+local function jump(m)
+  local params = vim.lsp.util.make_position_params()
+   vim.lsp.buf_request(0, m, params, function(_, method, result)
+    if result == nil or vim.tbl_isempty(result) then
+      log.info('Jump', 'No location found')
+      return nil
+    end
+
+    local c = vim.tbl_deep_extend('force', config.get('window'), config.get('jump') or {})
+    if not c['use_current_window'] then
+      wb.create_winbuf(c)
+    end
+
+    if vim.tbl_islist(result) then
+      vim.lsp.util.jump_to_location(result[1])
+
+      if #result > 1 then
+        vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(result))
+        vim.api.nvim_command 'copen'
+      end
+    else
+      vim.lsp.util.jump_to_location(result)
+    end
+  end)
+end
+
+-- :GoDef
 function M.goto_definition()
-  vim.lsp.buf.definition()
+  jump('textDocument/definition')
 end
 
 function M.goto_implementation()
-  vim.lsp.buf.implementation()
+  jump('textDocument/implementation')
 end
 
 -- :GoInfo
@@ -21,33 +49,9 @@ function M.signature_help()
   vim.lsp.buf.signature_help()
 end
 
-function M.format()
-  require'goldsmith.cmds.format'.run()
-end
-
-function M.add_workspace_folder()
-  vim.lsp.buf.add_workspace_folder()
-end
-
-function M.remove_workspace_folder()
-  vim.lsp.buf.remove_workspace_folder()
-end
-
-function M.list_workspace_folders()
-  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-end
-
-function M.goto_previous_diagnostic()
-  vim.lsp.diagnostic.goto_prev()
-end
-
-function M.goto_next_diagnostic()
-  vim.lsp.diagnostic.goto_next()
-end
-
 -- :GoDefType :GoTypeDef
 function M.type_definition()
-  vim.lsp.buf.type_definition()
+  jump('textDocument/typeDefinition')
 end
 
 -- :GoRename <arg>
@@ -122,6 +126,30 @@ end
 -- :GoCodeLensRun
 function M.run_codelens()
   vim.lsp.codelens.run()
+end
+
+function M.format()
+  require('goldsmith.cmds.format').run(1)
+end
+
+function M.add_workspace_folder()
+  vim.lsp.buf.add_workspace_folder()
+end
+
+function M.remove_workspace_folder()
+  vim.lsp.buf.remove_workspace_folder()
+end
+
+function M.list_workspace_folders()
+  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+end
+
+function M.goto_previous_diagnostic()
+  vim.lsp.diagnostic.goto_prev()
+end
+
+function M.goto_next_diagnostic()
+  vim.lsp.diagnostic.goto_next()
 end
 
 return M

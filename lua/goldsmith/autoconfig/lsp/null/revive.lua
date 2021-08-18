@@ -83,7 +83,13 @@ function M.setup()
       diagnostics_format = 'revive: #{m}',
       command = cmd(),
       to_stdin = false,
-      args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' },
+      args = function()
+        if conf['config_file'] == nil then
+          return { '-formatter=json', '$FILENAME' }
+        else
+          return { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' }
+        end
+      end,
       format = 'raw',
       on_output = parse_messages(),
     },

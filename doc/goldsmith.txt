@@ -279,6 +279,9 @@ A configuration that sets settings to the defaults:
         use_current_window = false,
       },
       tests = {},
+      jump = {
+        use_current_window = true,
+      },
       terminal = {
         pos = 'right',
         focus = false,
@@ -296,9 +299,6 @@ A configuration that sets settings to the defaults:
         transform = 'snakecase',
         skip_unexported = false,
       },
-      revive = {
-        config_file = 'revive.toml',
-      },
       ['golangci-lint'] = {
         config_file = '.golangci.yml'
       },
@@ -312,9 +312,10 @@ A configuration that sets settings to the defaults:
       codelens = {
         show = true,
       },
+      revive = {},
       gopls = {},
       null = {
-        disabled = { 'revive', 'staticcheck' },
+        disabled = { 'staticcheck' },
       },
     })
 <
@@ -401,8 +402,9 @@ To install `golangci-lint` you can use |:GoInstallBinaries|.
 *revive.config_file*                              *goldsmith-revive.config_file*
 
 Default: revive.toml
-The configuration file for `revive`. If revive has been configured to run this 
-file is required to exist and should exist in the project root directory. 
+The configuration file for `revive`. If this configuration variable is set to
+anething other than nil it means the given configuration file must exist. To 
+create the configuration file please see |:GoCreateConfigs|.
 
 See |goldsmith-resources| for where `revive` can be found.
 
@@ -426,7 +428,7 @@ LSP SERVERS                                              *goldsmith-lsp-servers*
 
 *null.disabled*                                        *goldsmith-null.disabled*
 
-Default: { 'revive', 'staticcheck' }
+Default: { 'staticcheck' }
 If this setting is set to either 'true' or an empty table it means that null-ls
 will not be configured by Goldsmith.
 >
@@ -445,14 +447,17 @@ that Goldsmith should not configure. Current values for these services are
 The above instructs Goldsmith to not configure the 'golines' service when
 configuring null-ls.
 
-If `golangci-lint` is configured to run it will use a configuration file if one
-exists, but will happily run without one. See |:GoCreateConfigs| for a way to 
-create an initial configuration file.
+If `revive` is configured to run it will use a configuration file only if you 
+have specified one using |revive.config_file|. Otherwise it does not use a 
+configuration file. If you have specified a configuration file that file must
+exist in a location that revive will look for it, otherwise it will error. See 
+|:GoCreateConfigs| for a way to create an initial configuration file.
 
-By default `revive` does not run. This is because it requires a configuration
-file to run correctly. See |:GoCreateConfigs| for a way to create an initial
-configuration file. If you attempt to run `revive` without a configuration file
-an error will be shown.
+If `golangci-lint` is configured to run it will use a configuration file if one
+exists, but will happily run without one. If you have specified a configuration
+file using |golangci-lint.config_file| this file must exist otherwise 
+golangci-lint will error. See |:GoCreateConfigs| for a way to create an initial 
+configuration file.
 
 Also by default `staticcheck` does not run. `staticcheck` already runs as a
 service within `gopls` so having it also run as a separate linter seems redundant
@@ -481,6 +486,25 @@ https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 See |goldsmith-resources| for where `gopls` can be found.
 
 To install `gopls` you can use |:GoInstallBinaries|.
+
+JUMPING                                                *goldsmith-jump-settings*
+
+*jump.use_current_window*                    *goldsmith-jump.use_current_window*
+
+Default: true
+You can use |goldsmith-window-settings| within the 'jump' key to modify how code 
+jumping works. By default jumping occurs within the current window. But, if you
+set jump.use_current_window to false, jumping will occur in a separate window.
+e.g.:
+>
+    jump = {
+      use_current_window = false,
+      pos = 'left'
+    }
+<
+The above instructs Goldsmith to not use the current window when jumping. Instead
+it should open a new window and that window should be on the left side of the
+screen. Every jump will open a new window.
 
 HIGHLIGHTING AND CODE LENS           *goldsmith-highlighting-code-lens-settings*
 
@@ -889,6 +913,12 @@ To install `fixplurals` you can use |:GoInstallBinaries|.
 
 Jump to the definition of the symbol under the cursor.
 
+You can set |goldsmith-window-settings| within the 'jump' configuration key to 
+control the effect of running :GoDef. By default running :GoDef will jump to 
+the definition of the symbol under the cursor in the current window. If you have
+set |jump.use_current_window| to false it will open a new window based on your 
+|goldsmith-window-settings|. 
+
                                                                        *:GoInfo*
 :GoInfo
 
@@ -906,6 +936,12 @@ window.
 :GoTypeDef
 
 Jump to the definition of the type of the symbol under the cursor.
+
+You can set |goldsmith-window-settings| within the 'jump' configuration key to 
+control the effect of running :GoTypeDef. By default running :GoTypeDef will jump 
+to the definition of the symbol under the cursor in the current window. If you 
+have set |jump.use_current_window| to false it will open a new window based on 
+your |goldsmith-window-settings|. 
 
                                                                  *:GoCodeAction*
 :GoCodeAction
@@ -997,9 +1033,7 @@ server these services will not run with the created configuration file. NOTE:
 :LspRestart does not always work. You may need to restart Neovim.
 
 Currently there are two configuration files that are created, one for `revive` 
-and one for `golangci-lint`. Without a configuration file `revive` will not work 
-so a configuration file is mandatory for its proper functioning. `golangci-lint`
-will work without a configuration file.
+and one for `golangci-lint`.
 
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS

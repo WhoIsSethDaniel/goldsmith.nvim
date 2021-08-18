@@ -7,12 +7,31 @@ local help = require 'null-ls.helpers'
 
 local M = {}
 
-local parse_messages = function()
+local function parse_messages()
   local severities = { error = 1, warning = 2, information = 3, hint = 4 }
-  return function(msgs)
+  local config_warning = false
+  return function(params, done)
+    if string.match(params.err or '', "Can't read config") ~= nil then
+      done()
+      if config_warning then
+        return
+      end
+      config_warning = true
+      log.error(
+        'Lint',
+        "'golangci-lint' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
+      )
+      return
+    end
+    config_warning = false
+    local ok, msgs = pcall(vim.fn.json_decode, params.err)
+    if not ok or type(msgs) ~= 'table' then
+      done()
+      return
+    end
+    local fname = vim.fn.fnamemodify(params.bufname, ':p:.')
     local diags = {}
-    local fname = vim.fn.fnamemodify(msgs.bufname, ':p:.')
-    for _, d in ipairs(msgs.output.Issues) do
+    for _, d in ipairs(msgs.Issues) do
       if fname == d.Pos.Filename then
         table.insert(diags, {
           message = d.Text,
@@ -23,7 +42,7 @@ local parse_messages = function()
         })
       end
     end
-    return diags
+    done(diags)
   end
 end
 
@@ -62,7 +81,7 @@ function M.setup()
       to_stdin = false,
       args = function()
         local cf = conf['config_file']
-        if vim.fn.filereadable(cf) > 0 then
+        if cf ~= nil then
           return {
             'run',
             '--out-format=json',
@@ -73,8 +92,7 @@ function M.setup()
           return { 'run', '--out-format=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
         end
       end,
-      to_stderr = true,
-      format = 'json',
+      format = 'raw',
       on_output = parse_messages(),
     },
   }

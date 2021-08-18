@@ -29,7 +29,9 @@ local CONFIG = {
   goalt = {
     use_current_window = false,
   },
-  tests = {},
+  jump = {
+    use_current_window = true,
+  },
   terminal = {
     pos = 'right',
     focus = false,
@@ -47,12 +49,7 @@ local CONFIG = {
     transform = 'snakecase',
     skip_unexported = false,
   },
-  revive = {
-    config_file = 'revive.toml',
-  },
-  ['golangci-lint'] = {
-    config_file = '.golangci.yml',
-  },
+  ['golangci-lint'] = {},
   format = {
     max_line_length = 120,
     run_on_save = true,
@@ -63,9 +60,11 @@ local CONFIG = {
   codelens = {
     show = true,
   },
+  revive = {},
+  tests = {},
   gopls = {},
   null = {
-    disabled = { 'revive', 'staticcheck' },
+    disabled = { 'staticcheck' },
   },
 }
 
