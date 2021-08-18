@@ -94,14 +94,13 @@ Features currently included:
 * generate test stubs automatically using `gotests`
 * create implementation stubs for your interfaces using :GoImpl
 * :GoFillStruct utilizes LSP to fill the current struct
-* commands for common tasks (the following list is not complete):
-    * switch to the 'alternate' file quickly
-    * struct tag editing: add / remove / update struct tags and options
-    * build your project using :GoBuild 
-    * run your main package using :GoRun
-    * fetch new Go libraries using :GoGet
-    * install new Go tools using :GoInstall
-    * run tests using :GoTest
+* switch to the 'alternate' file quickly using :GoAlt
+* struct tag editing: add / remove / update struct tags and options
+* build your project using :GoBuild 
+* run your main package using :GoRun
+* fetch new Go libraries using :GoGet
+* install new Go tools using :GoInstall
+* run tests using :GoTest
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 
@@ -111,6 +110,9 @@ SUPPORTED PLUGINS                                  *goldsmith-supported-plugins*
 A list of plugins that are either required or optional, but all are supported
 in some way by Goldsmith. See the |goldsmith-resources| section below for links
 to each plugin mentioned.
+
+You may also want to look at |goldsmith-healthcheck| and review the output. There
+may be more plugins than are listed here.
 
 Required
 * nvim-lspconfig
@@ -1142,6 +1144,15 @@ nvim-treesitter-textobjects plugin.
 
 ================================================================================
 FUNCTIONS                                                  *goldsmith-functions*
+
+*config()*
+
+See |goldsmith-configuration| for a detailed look at config().
+
+*setup()*
+
+See the wiki for a detailed look at setup().
+https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
 *set_buffer_mappings()*
 
