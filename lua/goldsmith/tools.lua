@@ -325,7 +325,7 @@ function M.names(attrs)
 end
 
 function M.dump()
-  print(vim.inspect(TOOLS))
+  require('goldsmith.log').info('dump', vim.inspect(TOOLS))
 end
 
 return M

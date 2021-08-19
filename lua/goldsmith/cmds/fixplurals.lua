@@ -45,16 +45,16 @@ function M.run()
             end)
           end
         end
-        print(string.format('GoFixPlurals: file(s) changed: %s', table.concat(changed, ', ')))
+        log.info('GoFixPlurals', string.format('file(s) changed: %s', table.concat(changed, ', ')))
       else
         dry = 0
         job.run(string.format('fixplurals %s', vim.fn.expand '%'), cfg)
       end
     else
-      print 'GoFixPlurals: no files changed'
+      log.info('GoFixPlurals', 'no files changed')
     end
   end
-  vim.cmd[[ silent! wall ]]
+  vim.cmd [[ silent! wall ]]
   job.run(string.format('fixplurals -dry %s', vim.fn.expand '%'), cfg)
 end
 

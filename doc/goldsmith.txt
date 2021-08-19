@@ -299,9 +299,6 @@ A configuration that sets settings to the defaults:
         transform = 'snakecase',
         skip_unexported = false,
       },
-      ['golangci-lint'] = {
-        config_file = '.golangci.yml'
-      },
       format = {
         max_line_length = 120,
         run_on_save = true,
@@ -312,6 +309,7 @@ A configuration that sets settings to the defaults:
       codelens = {
         show = true,
       },
+      ['golangci-lint'] = {},
       revive = {},
       gopls = {},
       null = {
@@ -391,9 +389,11 @@ LINTING                                             *goldsmith-linting-settings*
 
 *golangci-lint.config_file*                *goldsmith-golangci-lint.config_file*
 
-Default: .golangci.yml
-The configuration file for `goalangci-lint`. If golangci-lint has been configured 
-to run this file is not required to exist, but is recommended.
+Default: nil
+The configuration file for `golangci-lint`. If golangci-lint has been configured 
+to run, and you explicitly specify a config file, then that file is required to 
+exist. Otherwise golangci-lint uses its normal means to find its configuration 
+file.
 
 See |goldsmith-resources| for where `golangci-lint` can be found.
 
@@ -401,9 +401,9 @@ To install `golangci-lint` you can use |:GoInstallBinaries|.
 
 *revive.config_file*                              *goldsmith-revive.config_file*
 
-Default: revive.toml
+Default: nil
 The configuration file for `revive`. If this configuration variable is set to
-anething other than nil it means the given configuration file must exist. To 
+anything other than nil it means the given configuration file must exist. To 
 create the configuration file please see |:GoCreateConfigs|.
 
 See |goldsmith-resources| for where `revive` can be found.
@@ -1018,6 +1018,10 @@ This command creates the recommended configuration files for all linters,
 formatters, etc... that require a configuration file, in the root directory of 
 your project. (Goldsmith assumes that the current working directory is the root 
 of your project.)
+
+For this command to create a configuration file it first means that each service
+that requires a configuration must have its config_file setting set to something
+other than nil.
 
 This command will not overwrite any file in the current working directory that
 already exists unless you provide the '!'. 

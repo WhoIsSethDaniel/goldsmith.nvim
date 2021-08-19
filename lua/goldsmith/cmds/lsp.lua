@@ -141,7 +141,7 @@ function M.remove_workspace_folder()
 end
 
 function M.list_workspace_folders()
-  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  log.info('', vim.inspect(vim.lsp.buf.list_workspace_folders()))
 end
 
 function M.goto_previous_diagnostic()

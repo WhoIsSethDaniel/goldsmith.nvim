@@ -23,6 +23,8 @@
   - [x] configuration for keymappings in on_attach
 - [x] godef / gotypedef / goto_implementation()
   - [x] option for opening in window
+- [x] config
+  - [x] far better config validation using validate()
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -36,9 +38,6 @@
   - [ ] debug console
 - [ ] testing
   - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
-- [ ] config
-  - [ ] far better config validation using validate()
-  - [ ] mechanism to warn of major config changes
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets
 - [ ] tests (w/plenary?)

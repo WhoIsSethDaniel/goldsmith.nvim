@@ -1,5 +1,5 @@
 local buffer = require 'goldsmith.buffer'
-local cmds = require 'goldsmith.lsp.cmds'
+local cmds = require 'goldsmith.lsp.commands'
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'

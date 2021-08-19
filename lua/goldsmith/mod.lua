@@ -1,4 +1,4 @@
-local cmds = require 'goldsmith.lsp.cmds'
+local cmds = require 'goldsmith.lsp.commands'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
 local log = require 'goldsmith.log'

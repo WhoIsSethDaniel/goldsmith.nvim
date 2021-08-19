@@ -2,7 +2,7 @@ local buffer = require 'goldsmith.buffer'
 local config = require 'goldsmith.config'
 local wb = require 'goldsmith.winbuf'
 local job = require 'goldsmith.job'
-local cmds = require 'goldsmith.lsp.cmds'
+local cmds = require 'goldsmith.lsp.commands'
 local log = require 'goldsmith.log'
 
 local M = { buf_nr = -1 }
