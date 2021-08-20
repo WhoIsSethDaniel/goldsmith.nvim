@@ -73,4 +73,14 @@ function M.find_window_by_name(name)
   end
 end
 
+function M.create_debug_buffer()
+  local b = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_option(b, 'filetype', 'goldsmith-debug')
+  vim.api.nvim_buf_set_option(b, 'bufhidden', 'hide')
+  vim.api.nvim_buf_set_option(b, 'buftype', 'nofile')
+  vim.api.nvim_buf_set_option(b, 'swapfile', false)
+  vim.api.nvim_buf_set_option(b, 'buflisted', false)
+  return b
+end
+
 return M

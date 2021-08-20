@@ -1,7 +1,7 @@
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
-local log = require 'goldsmith.log'
+local log
 
 local M = {}
 
@@ -12,7 +12,7 @@ local server_data = {}
 local registered_plugins = { 'treesitter-textobjects' }
 
 local on_attach = function(client, bufnr)
-  require'goldsmith.mappings'.set_buffer_mappings(bufnr)
+  require('goldsmith.mappings').set_buffer_mappings(bufnr)
 end
 
 local function server_module(server)
@@ -87,7 +87,7 @@ local function all_configured_servers_for_filetype(type)
 end
 
 local set_root_dir = function(fname)
-  local util = require('lspconfig.util')
+  local util = require 'lspconfig.util'
   return util.root_pattern('go.work', 'go.mod', '.git')(fname) or util.path.dirname(fname)
 end
 
@@ -109,15 +109,15 @@ function M.map(f)
   for _, s in ipairs(M.get_all_servers()) do
     local m = server_module(s)
     if m['map'] == nil then
-      f(s,m)
+      f(s, m)
     else
-      f(s,m)
+      f(s, m)
       m.map(f)
     end
   end
   for _, p in ipairs(M.get_all_plugins()) do
     local m = plugin_module(p)
-    f(p,m)
+    f(p, m)
   end
 end
 
@@ -146,6 +146,8 @@ end
 
 function M.init()
   require('goldsmith.tools').check()
+  log = require('goldsmith.log')
+  log.init()
   for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
   end
@@ -185,10 +187,7 @@ function M.setup_server(server, cf)
   if sm.has_requirements() then
     sm.setup(cf)
   else
-    log.error(
-      nil,
-      string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
-    )
+    log.error(nil, string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version

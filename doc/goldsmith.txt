@@ -1183,16 +1183,16 @@ nvim-treesitter-textobjects plugin.
 ================================================================================
 FUNCTIONS                                                  *goldsmith-functions*
 
-*config()*
+*goldsmith-config()*
 
 See |goldsmith-configuration| for a detailed look at config().
 
-*setup()*
+*goldsmith-setup()*
 
 See the wiki for a detailed look at setup().
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
-*set_buffer_mappings()*
+*goldsmith-set_buffer_mappings()*
 
 See |goldsmith-mappings| for a detailed look at set_buffer_mappings().
 

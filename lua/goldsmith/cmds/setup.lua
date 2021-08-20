@@ -26,6 +26,7 @@ function M.create_configs(overwrite, ...)
       table.insert(files, f)
     end
   end
+  local created = 0
   ac.map(function(name, m)
     if m['get_config'] == nil or m['config_file_contents'] == nil then
       return
@@ -45,8 +46,12 @@ function M.create_configs(overwrite, ...)
     end
 
     f:write(m.config_file_contents())
+    created = created + 1
     print(string.format("Created configuration file '%s'", filename))
   end)
+  if created == 0 then
+    log.info('Setup', "No files created. Do they already exist? (try using '!' to overwrite). Check that you have a defined 'config_file' for each service.")
+  end
 end
 
 return M

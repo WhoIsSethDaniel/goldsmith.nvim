@@ -25,6 +25,9 @@
   - [x] option for opening in window
 - [x] config
   - [x] far better config validation using validate()
+- [ ] debugging the plugin
+  - [x] debug mode
+  - [ ] debug console
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -33,9 +36,6 @@
   - [x] completion (ability to choose subset of files)
   - [x] move from lint
   - [ ] ability to have templates? or other files instead of the builtin ones
-- [ ] debugging the plugin
-  - [ ] debug mode
-  - [ ] debug console
 - [ ] testing
   - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

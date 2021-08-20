@@ -73,7 +73,8 @@ local function validate_action(maps)
         'format'
       )(v)
     then
-      require('goldsmith.log').error('Valid', string.format("Mapping '%s' has unknown action '%s'", k, v))
+      -- logging not available yet
+      vim.api.nvim_err_writeln(string.format("Goldsmith: Valid: Mapping '%s' has unknown action '%s'", k, v))
     end
   end
 end
@@ -96,6 +97,9 @@ local SPEC = {
     [']d'] = 'goto_next_diagnostic',
     ['<leader>q'] = 'diagnostic_set_loclist',
     ['<leader>f'] = 'format',
+  },
+  internal = {
+    debug = { false, 'b' },
   },
   completion = {
     omni = { false, 'b' },
@@ -278,7 +282,9 @@ function M.set(grp, key, val)
 end
 
 function M.dump()
-  require('goldsmith.log').info('dump', vim.inspect(_config))
+  require('goldsmith.log').debug('config', function()
+    return vim.inspect(_config)
+  end)
 end
 
 return M
