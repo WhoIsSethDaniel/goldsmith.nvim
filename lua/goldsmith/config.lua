@@ -1,161 +1,102 @@
 local M = {}
 
-local function in_set(...)
-  local vals = { ... }
+local _config = {}
+local _defaults = {}
+
+local autoconfig = true
+
+function M.turn_off_autoconfig()
+  autoconfig = false
+end
+
+function M.autoconfig_is_on()
+  return autoconfig
+end
+
+-- logging is not available until config is read and validated
+local function error(label, msg)
+  vim.api.nvim_err_writeln(string.format('Goldsmith: %s: %s', label, msg))
+end
+
+-- once set to false it cannot go back to true
+local function set_autoconfig(uc)
+  local ac = uc['autoconfig']
+  if ac ~= nil and type(ac) ~= 'boolean' then
+    error('Config', "Key 'autoconfig' must be a boolean value.")
+    return
+  end
+  if ac ~= nil and ac == false then
+    autoconfig = false
+  end
+  uc['autoconfig'] = nil
+end
+
+local function is_type(allow_nil, ...)
+  local types = { ... }
   return function(v)
-    return vim.tbl_contains(vals, v)
+    if allow_nil and v == nil then
+      return true
+    end
+    for _, typ in ipairs(types) do
+      if type(v) == typ then
+        return true
+      end
+    end
+    return false
   end
 end
 
-local function in_set_or_nil(...)
+local function in_set(allow_nil, ...)
   local vals = { ... }
   return function(v)
-    if v == nil then
+    if allow_nil and v == nil then
       return true
     end
     return vim.tbl_contains(vals, v)
   end
 end
 
-local function is_positive()
+local function is_positive(allow_nil)
   return function(v)
+    if allow_nil and v == nil then
+      return true
+    end
     return type(v) == 'number' and v > 0
   end
 end
 
-local function is_positive_or_nil()
-  return function(v)
-    if v == nil then
-      return true
-    end
-    return is_positive()(v)
-  end
-end
-
-local terminal_valid_maybe = {
-  pos = {
-    nil,
-    in_set_or_nil('top', 'bottom', 'left', 'right'),
-    'valid position',
-  },
-  focus = { nil, 'b' },
-  height = {
-    nil,
-    is_positive_or_nil(),
-    'positive integer',
-  },
-  width = {
-    nil,
-    is_positive_or_nil(),
-    'positive integer',
-  },
-}
-
-local terminal_valid = {
-  pos = {
-    'right',
-    in_set('top', 'bottom', 'left', 'right'),
-    'valid position',
-  },
-  focus = { false, 'b' },
-  height = {
-    20,
-    is_positive(),
-    'positive integer',
-  },
-  width = {
-    80,
-    is_positive(),
-    'positive integer',
-  },
-}
-
-local window_valid_maybe = {
-  pos = {
-    nil,
-    in_set_or_nil('top', 'bottom', 'left', 'right'),
-    'valid position',
-  },
-  focus = { nil, 'b' },
-  height = {
-    nil,
-    is_positive_or_nil(),
-    'positive integer',
-  },
-  width = {
-    nil,
-    is_positive_or_nil(),
-    'positive integer',
-  },
-}
-
-local window_valid = {
-  pos = {
-    'right',
-    in_set('top', 'bottom', 'left', 'right'),
-    'valid position',
-  },
-  focus = { true, 'b' },
-  height = {
-    20,
-    is_positive(),
-    'positive integer',
-  },
-  width = {
-    80,
-    is_positive(),
-    'positive integer',
-  },
-}
-
-local function validate_action(maps)
-  for k, v in pairs(maps) do
-    if
-      not in_set(
-        'definition',
-        'hover',
-        'implementation',
-        'signature_help',
-        'add_workspace_folder',
-        'remove_workspace_folder',
-        'list_workspace_folders',
-        'type_definition',
-        'rename',
-        'references',
-        'code_action',
-        'show_line_diagnostics',
-        'goto_previous_diagnostic',
-        'goto_next_diagnostic',
-        'diagnostic_set_loclist',
-        'format'
-      )(v)
-    then
-      -- logging not available yet
-      vim.api.nvim_err_writeln(string.format("Goldsmith: Valid: Mapping '%s' has unknown action '%s'", k, v))
+local function window_validate(allow_nil, nil_default, focus)
+  local function def(d)
+    if nil_default then
+      return nil
+    else
+      return d
     end
   end
+  return {
+    pos = {
+      def 'right',
+      in_set(allow_nil, 'top', 'bottom', 'left', 'right'),
+      'valid position: top, bottom, left, right',
+    },
+    focus = { def(focus), 'b' },
+    height = {
+      def(20),
+      is_positive(allow_nil),
+      'positive integer',
+    },
+    width = {
+      def(80),
+      is_positive(allow_nil),
+      'positive integer',
+    },
+  }
 end
 
+local window_spec = window_validate(true, true, true)
+local terminal_spec = window_validate(true, true, false)
 local SPEC = {
-  mappings = {
-    ['gd'] = 'definition',
-    ['K'] = 'hover',
-    ['gi'] = 'implementation',
-    ['<C-k>'] = 'signature_help',
-    ['<leader>wa'] = 'add_workspace_folder',
-    ['<leader>wr'] = 'remove_workspace_folder',
-    ['<leader>wl'] = 'list_workspace_folders',
-    ['<leader>D'] = 'type_definition',
-    ['<leader>rn'] = 'rename',
-    ['<leader>gr'] = 'references',
-    ['<leader>ca'] = 'code_action',
-    ['<leader>e'] = 'show_line_diagnostics',
-    ['[d'] = 'goto_previous_diagnostic',
-    [']d'] = 'goto_next_diagnostic',
-    ['<leader>q'] = 'diagnostic_set_loclist',
-    ['<leader>f'] = 'format',
-  },
-  debug = vim.tbl_extend('error', window_valid_maybe, { enable = { false, 'b' } }),
+  debug = vim.tbl_extend('error', window_spec, { enable = { false, 'b' } }),
   completion = {
     omni = { false, 'b' },
   },
@@ -163,22 +104,22 @@ local SPEC = {
     run_on_save = { true, 'b' },
     timeout = { 1000, 'n' },
   },
-  gobuild = terminal_valid_maybe,
-  gorun = terminal_valid_maybe,
-  gotest = terminal_valid_maybe,
-  goget = terminal_valid_maybe,
-  goinstall = terminal_valid_maybe,
-  godoc = window_valid_maybe,
-  goalt = vim.tbl_extend('error', window_valid_maybe, { use_current_window = { false, 'b' } }),
-  jump = vim.tbl_extend('error', window_valid_maybe, { use_current_window = { true, 'b' } }),
-  terminal = terminal_valid,
-  window = window_valid,
+  gobuild = terminal_spec,
+  gorun = terminal_spec,
+  gotest = terminal_spec,
+  goget = terminal_spec,
+  goinstall = terminal_spec,
+  godoc = window_spec,
+  goalt = vim.tbl_extend('error', window_spec, { use_current_window = { false, 'b' } }),
+  jump = vim.tbl_extend('error', window_spec, { use_current_window = { true, 'b' } }),
+  terminal = window_validate(false, false, false),
+  window = window_validate(false, false, true),
   tags = {
     default_tag = { 'json', 's' },
     transform = {
       'snakecase',
-      in_set('snakecase', 'camelcase', 'lispcase', 'pascalcase', 'keep'),
-      'valid transformation',
+      in_set(false, 'snakecase', 'camelcase', 'lispcase', 'pascalcase', 'keep'),
+      'valid transform: snakecase, camelcase, lispcase, pascalcase, keep',
     },
     skip_unexported = { false, 'b' },
   },
@@ -188,7 +129,7 @@ local SPEC = {
   format = {
     max_line_length = {
       120,
-      is_positive(),
+      is_positive(false),
       'positive integer',
     },
     run_on_save = { true, 'b' },
@@ -207,8 +148,11 @@ local SPEC = {
     template_dir = { nil, 's' },
     template_params_dir = { nil, 's' },
   },
-  gopls = {},
+  gopls = {
+    config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
+  },
   null = {
+    config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
     disabled = {
       { 'staticcheck' },
       function(v)
@@ -221,7 +165,7 @@ local SPEC = {
         for _, s in ipairs(v) do
           local vals = { 'staticcheck', 'golines', 'golangci-lint', 'revive' }
           if not vim.tbl_contains(vals, s) then
-            return false
+            return false, s
           end
         end
         return true
@@ -231,19 +175,25 @@ local SPEC = {
   },
 }
 
-local _config = {}
-local _defaults = {}
-local _validate = {}
-
-local autoconfig = true
-
-function M.turn_off_autoconfig()
-  autoconfig = false
-end
-
-function M.autoconfig_is_on()
-  return autoconfig
-end
+-- mappings are different from all other config items, so they are not in the SPEC
+local default_mappings = {
+  ['gd'] = 'definition',
+  ['K'] = 'hover',
+  ['gi'] = 'implementation',
+  ['<C-k>'] = 'signature_help',
+  ['<leader>wa'] = 'add_workspace_folder',
+  ['<leader>wr'] = 'remove_workspace_folder',
+  ['<leader>wl'] = 'list_workspace_folders',
+  ['<leader>D'] = 'type_definition',
+  ['<leader>rn'] = 'rename',
+  ['<leader>gr'] = 'references',
+  ['<leader>ca'] = 'code_action',
+  ['<leader>e'] = 'show_line_diagnostics',
+  ['[d'] = 'goto_previous_diagnostic',
+  [']d'] = 'goto_next_diagnostic',
+  ['<leader>q'] = 'diagnostic_set_loclist',
+  ['<leader>f'] = 'format',
+}
 
 local function defaults()
   if not vim.tbl_isempty(_defaults) then
@@ -258,70 +208,116 @@ local function defaults()
   return _defaults
 end
 
-local function user_validate(uc)
+local function validate_keymap_action(maps)
+  for k, v in pairs(maps) do
+    if not in_set(false, unpack(vim.tbl_values(default_mappings)))(v) then
+      -- logging not available yet
+      error('Config', string.format("Mapping '%s' has unknown action '%s'", k, v))
+    end
+  end
+end
+
+local function check_only_valid_keys(allowed, keys)
+  for _, k in ipairs(keys) do
+    if not vim.tbl_contains(allowed, k) then
+      return false, k
+    end
+  end
+  return true
+end
+
+local function build_validation(uc)
+  local validate = {}
   for grp, val in pairs(SPEC) do
-    if grp ~= 'mappings' then
-      for k, v in pairs(val) do
-        local vkey = grp .. '.' .. k
-        local default = v[1]
-        local value = uc[grp][k] or default
-        local check = v[2]
-        if type(check) == 'function' then
-          _validate[vkey] = { value, check, v[3] }
+    validate[grp] = function()
+      local ok, bad = check_only_valid_keys(vim.tbl_keys(SPEC[grp]), vim.tbl_keys(uc[grp]))
+      if not ok then
+        error('Config', string.format("Unknown name '%s' in configuration group '%s'", bad, grp))
+        return false
+      end
+      return true
+    end
+    for k, v in pairs(val) do
+      local vkey = grp .. '.' .. k
+      local default = v[1]
+      local value = uc[grp][k] or default
+      local check = v[2]
+      if type(check) == 'function' then
+        validate[vkey] = { value, check, v[3] }
+      else
+        if default == nil then
+          validate[vkey] = { value, check, true }
         else
-          if default == nil then
-            _validate[vkey] = { value, check, true }
-          else
-            _validate[vkey] = { value, check }
-          end
+          validate[vkey] = { value, check }
         end
       end
     end
   end
-  return _validate
+  return validate
 end
 
-local function set_autoconfig(ac)
-  if ac ~= nil and type(ac) == 'boolean' and ac == false then
-    autoconfig = false
+local function validate(v)
+  local type_map = { s = 'string', b = 'boolean', t = 'table', f = 'function', n = 'number' }
+  for key, spec in pairs(v) do
+    if type(spec) == 'function' then
+      if not spec() then
+        return
+      end
+    else
+      local default = spec[1]
+      if type(spec[2]) == 'function' then
+        local f = spec[2]
+        local msg = spec[3]
+        local ok, got = f(default)
+        if not ok then
+          if msg == nil then
+            error('Config', string.format("Key '%s' has invalid value '%s'", key, got or default))
+            return
+          else
+            error('Config', string.format("Key '%s' has invalid value '%s', expected %s", key, got or default, msg))
+            return
+          end
+        end
+      else
+        local type_sym = spec[2]
+        local nil_ok = spec[3] or false
+        if default == nil then
+          if not nil_ok then
+            error('Config', string.format("Key '%s' may not be nil.", key))
+            return
+          end
+        elseif not (type(default) == type_map[type_sym]) then
+          error('Config', string.format("Key '%s' must be of type '%s', got '%s'", key, type_map[type_sym], default))
+          return
+        end
+      end
+    end
   end
-end
-
-local function combine_configs(user_config)
-  local d = defaults()
-  if user_config['mappings'] then
-    d['mappings'] = {}
-  end
-  return vim.tbl_deep_extend('force', d, user_config)
 end
 
 local function all_config_keys()
   return vim.tbl_keys(defaults())
 end
 
-local function validate_config(c)
-  local valid_keys = all_config_keys()
-  local tl_key_validate = {}
-  for _, uk in ipairs(vim.tbl_keys(c)) do
-    tl_key_validate[uk] = {
-      uk,
-      function(v)
-        return vim.tbl_contains(valid_keys, v)
-      end,
-      'valid configuration key',
-    }
+local function validate_config()
+  local mappings = _config['mappings']
+  validate_keymap_action(mappings)
+  _config['mappings'] = nil
+
+  local ok, bad = check_only_valid_keys(all_config_keys(), vim.tbl_keys(_config))
+  if not ok then
+    error('Config', string.format("Unknown name '%s' in configuration.", bad))
   end
-  vim.validate(tl_key_validate)
-  vim.validate(user_validate(c))
-  validate_action(c['mappings'])
+
+  validate(build_validation(_config))
+  _config = vim.tbl_extend('error', _config, { mappings = mappings })
 end
 
 function M.setup(user_config)
   user_config = user_config or {}
-  set_autoconfig(user_config['autoconfig'])
-  user_config['autoconfig'] = nil
-  _config = combine_configs(user_config)
-  validate_config(_config)
+  set_autoconfig(user_config)
+  _config = vim.tbl_deep_extend('force', defaults(), user_config)
+  validate_config()
 end
 
 function M.get(grp, key)
