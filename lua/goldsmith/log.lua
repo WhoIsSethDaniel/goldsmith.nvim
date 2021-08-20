@@ -17,6 +17,7 @@ end
 
 local function debug_log(lvl, cat, msg)
   if debug_wb ~= nil and vim.api.nvim_buf_is_loaded(debug_wb.buf) then
+    vim.api.nvim_buf_set_option(debug_wb.buf, 'modifiable', true)
     if type(msg) == 'function' then
       msg = msg()
     end
@@ -28,6 +29,7 @@ local function debug_log(lvl, cat, msg)
       true,
       vim.split(string.format('%s: %s: %s', lvl, cat, msg), '\n')
     )
+    vim.api.nvim_buf_set_option(debug_wb.buf, 'modifiable', false)
   end
 end
 

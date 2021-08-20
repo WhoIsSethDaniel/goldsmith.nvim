@@ -83,6 +83,7 @@ function M.create_debug_buffer()
   vim.api.nvim_buf_set_option(b, 'buftype', 'nofile')
   vim.api.nvim_buf_set_option(b, 'swapfile', false)
   vim.api.nvim_buf_set_option(b, 'buflisted', false)
+  vim.api.nvim_buf_set_option(b, 'modifiable', false)
   vim.api.nvim_buf_set_name(b, '[Goldsmith Debug Console]')
   return { buf = b, win = -1 }
 end
@@ -95,7 +96,13 @@ function M.toggle_debug_console(wb, opts)
       return wb
     else
       if vim.api.nvim_buf_is_loaded(wb.buf) then
-        return M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
+        local nwb = M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
+        vim.api.nvim_win_set_option(nwb.win, 'cursorline', false)
+        vim.api.nvim_win_set_option(nwb.win, 'cursorcolumn', false)
+        vim.api.nvim_win_set_option(nwb.win, 'number', false)
+        vim.api.nvim_win_set_option(nwb.win, 'relativenumber', false)
+        vim.api.nvim_win_set_option(nwb.win, 'signcolumn', 'no')
+        return nwb
       end
     end
   end

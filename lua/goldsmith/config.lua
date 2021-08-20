@@ -14,7 +14,8 @@ function M.autoconfig_is_on()
 end
 
 -- logging is not available until config is read and validated
-local function error(label, msg)
+local function log_error(label, msg)
+  -- vim.api.nvim_err_writeln(string.format('Goldsmith: %s: %s', label, msg))
   vim.api.nvim_err_writeln(string.format('Goldsmith: %s: %s', label, msg))
 end
 
@@ -22,7 +23,7 @@ end
 local function set_autoconfig(uc)
   local ac = uc['autoconfig']
   if ac ~= nil and type(ac) ~= 'boolean' then
-    error('Config', "Key 'autoconfig' must be a boolean value.")
+    log_error('Config', "Key 'autoconfig' must be a boolean value.")
     return
   end
   if ac ~= nil and ac == false then
@@ -96,7 +97,7 @@ end
 local window_spec = window_validate(true, true, true)
 local terminal_spec = window_validate(true, true, false)
 local SPEC = {
-  debug = vim.tbl_extend('error', window_spec, { enable = { false, 'b' } }),
+  debug = vim.tbl_deep_extend('error', window_spec, { enable = { false, 'b' } }),
   completion = {
     omni = { false, 'b' },
   },
@@ -110,8 +111,8 @@ local SPEC = {
   goget = terminal_spec,
   goinstall = terminal_spec,
   godoc = window_spec,
-  goalt = vim.tbl_extend('error', window_spec, { use_current_window = { false, 'b' } }),
-  jump = vim.tbl_extend('error', window_spec, { use_current_window = { true, 'b' } }),
+  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
+  jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
   terminal = window_validate(false, false, false),
   window = window_validate(false, false, true),
   tags = {
@@ -212,7 +213,8 @@ local function validate_keymap_action(maps)
   for k, v in pairs(maps) do
     if not in_set(false, unpack(vim.tbl_values(default_mappings)))(v) then
       -- logging not available yet
-      error('Config', string.format("Mapping '%s' has unknown action '%s'", k, v))
+      log_error('Config', string.format("Mapping '%s' has unknown action '%s'", k, v))
+      return
     end
   end
 end
@@ -232,7 +234,7 @@ local function build_validation(uc)
     validate[grp] = function()
       local ok, bad = check_only_valid_keys(vim.tbl_keys(SPEC[grp]), vim.tbl_keys(uc[grp]))
       if not ok then
-        error('Config', string.format("Unknown name '%s' in configuration group '%s'", bad, grp))
+        log_error('Config', string.format("Unknown name '%s' in configuration group '%s'", bad, grp))
         return false
       end
       return true
@@ -271,10 +273,10 @@ local function validate(v)
         local ok, got = f(default)
         if not ok then
           if msg == nil then
-            error('Config', string.format("Key '%s' has invalid value '%s'", key, got or default))
+            log_error('Config', string.format("Key '%s' has invalid value '%s'", key, got or default))
             return
           else
-            error('Config', string.format("Key '%s' has invalid value '%s', expected %s", key, got or default, msg))
+            log_error('Config', string.format("Key '%s' has invalid value '%s', expected %s", key, got or default, msg))
             return
           end
         end
@@ -283,11 +285,14 @@ local function validate(v)
         local nil_ok = spec[3] or false
         if default == nil then
           if not nil_ok then
-            error('Config', string.format("Key '%s' may not be nil.", key))
+            log_error('Config', string.format("Key '%s' may not be nil.", key))
             return
           end
         elseif not (type(default) == type_map[type_sym]) then
-          error('Config', string.format("Key '%s' must be of type '%s', got '%s'", key, type_map[type_sym], default))
+          log_error(
+            'Config',
+            string.format("Key '%s' must be of type '%s', got '%s'", key, type_map[type_sym], default)
+          )
           return
         end
       end
@@ -300,13 +305,14 @@ local function all_config_keys()
 end
 
 local function validate_config()
-  local mappings = _config['mappings']
-  validate_keymap_action(mappings)
+  local mappings = _config['mappings'] or default_mappings
   _config['mappings'] = nil
+  validate_keymap_action(mappings)
 
   local ok, bad = check_only_valid_keys(all_config_keys(), vim.tbl_keys(_config))
   if not ok then
-    error('Config', string.format("Unknown name '%s' in configuration.", bad))
+    log_error('Config', string.format("Unknown name '%s' in configuration.", bad))
+    return
   end
 
   validate(build_validation(_config))

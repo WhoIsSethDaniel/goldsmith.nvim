@@ -1156,6 +1156,30 @@ Each action is defined as:
 
 By default these mappings are applied to all Go buffers. 
 
+You can configure your own keymappings for each action by providing your own
+mappings section in your configuration.
+>
+    require'goldsmith'.config({
+      ...
+      mappings = {
+          ['gd'] = 'definition',
+          ['K'] = 'hover',
+      },
+      ...
+    })
+<
+The above defines just two keymappings that do two different actions. No other
+keymappings will be defined, including the default keymappings.
+
+If you do not want Goldsmith to define any keymappings you can set the mappings
+section to an empty table:
+>
+    require'goldsmith'.config({
+      ...
+      mappings = {},
+      ...
+    })
+< 
 If you provide your own 'on_attach' method when configuring your LSP servers, or 
 if you do not use Goldsmith to configure your servers, you will not be able to 
 use this setting unless you also call the 'set_buffer_mappings' function in your 
