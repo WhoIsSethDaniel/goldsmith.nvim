@@ -25,9 +25,9 @@
   - [x] option for opening in window
 - [x] config
   - [x] far better config validation using validate()
-- [ ] debugging the plugin
+- [x] debugging the plugin
   - [x] debug mode
-  - [ ] debug console
+  - [x] debug console
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...

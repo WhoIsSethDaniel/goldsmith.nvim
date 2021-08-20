@@ -99,6 +99,9 @@ command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelen
 " initial setup
 command! -nargs=* -bang -complete=custom,s:GoCreateConfigsComplete GoCreateConfigs call s:CreateConfigs('<bang>',<f-args>)
 
+" debug
+command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
+
 augroup goldsmith_ft_go
   autocmd! * <buffer>
   autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)

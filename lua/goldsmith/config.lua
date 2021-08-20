@@ -7,11 +7,49 @@ local function in_set(...)
   end
 end
 
+local function in_set_or_nil(...)
+  local vals = { ... }
+  return function(v)
+    if v == nil then
+      return true
+    end
+    return vim.tbl_contains(vals, v)
+  end
+end
+
 local function is_positive()
   return function(v)
     return type(v) == 'number' and v > 0
   end
 end
+
+local function is_positive_or_nil()
+  return function(v)
+    if v == nil then
+      return true
+    end
+    return is_positive()(v)
+  end
+end
+
+local terminal_valid_maybe = {
+  pos = {
+    nil,
+    in_set_or_nil('top', 'bottom', 'left', 'right'),
+    'valid position',
+  },
+  focus = { nil, 'b' },
+  height = {
+    nil,
+    is_positive_or_nil(),
+    'positive integer',
+  },
+  width = {
+    nil,
+    is_positive_or_nil(),
+    'positive integer',
+  },
+}
 
 local terminal_valid = {
   pos = {
@@ -28,6 +66,25 @@ local terminal_valid = {
   width = {
     80,
     is_positive(),
+    'positive integer',
+  },
+}
+
+local window_valid_maybe = {
+  pos = {
+    nil,
+    in_set_or_nil('top', 'bottom', 'left', 'right'),
+    'valid position',
+  },
+  focus = { nil, 'b' },
+  height = {
+    nil,
+    is_positive_or_nil(),
+    'positive integer',
+  },
+  width = {
+    nil,
+    is_positive_or_nil(),
     'positive integer',
   },
 }
@@ -98,9 +155,7 @@ local SPEC = {
     ['<leader>q'] = 'diagnostic_set_loclist',
     ['<leader>f'] = 'format',
   },
-  internal = {
-    debug = { false, 'b' },
-  },
+  debug = vim.tbl_extend('error', window_valid_maybe, { enable = { false, 'b' } }),
   completion = {
     omni = { false, 'b' },
   },
@@ -108,14 +163,14 @@ local SPEC = {
     run_on_save = { true, 'b' },
     timeout = { 1000, 'n' },
   },
-  gobuild = terminal_valid,
-  gorun = terminal_valid,
-  gotest = terminal_valid,
-  goget = terminal_valid,
-  goinstall = terminal_valid,
-  godoc = window_valid,
-  goalt = vim.tbl_extend('error', window_valid, { use_current_window = { false, 'b' } }),
-  jump = vim.tbl_extend('error', window_valid, { use_current_window = { true, 'b' } }),
+  gobuild = terminal_valid_maybe,
+  gorun = terminal_valid_maybe,
+  gotest = terminal_valid_maybe,
+  goget = terminal_valid_maybe,
+  goinstall = terminal_valid_maybe,
+  godoc = window_valid_maybe,
+  goalt = vim.tbl_extend('error', window_valid_maybe, { use_current_window = { false, 'b' } }),
+  jump = vim.tbl_extend('error', window_valid_maybe, { use_current_window = { true, 'b' } }),
   terminal = terminal_valid,
   window = window_valid,
   tags = {

@@ -33,6 +33,9 @@ function M.create_winbuf(opts)
   local wn = vim.fn.bufwinid(reuse)
   if reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) and wn ~= -1 then
     vim.fn.win_gotoid(wn)
+  elseif reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) then
+    vim.cmd(string.format('%s %s %d%s', dim.orient, dim.place, dim.n, action))
+    vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), reuse)
   else
     local file = opts['file'] or ''
     vim.cmd(string.format('%s %s %d%s %s', dim.orient, dim.place, dim.n, action, file))
@@ -80,7 +83,24 @@ function M.create_debug_buffer()
   vim.api.nvim_buf_set_option(b, 'buftype', 'nofile')
   vim.api.nvim_buf_set_option(b, 'swapfile', false)
   vim.api.nvim_buf_set_option(b, 'buflisted', false)
-  return b
+  vim.api.nvim_buf_set_name(b, '[Goldsmith Debug Console]')
+  return { buf = b, win = -1 }
+end
+
+function M.toggle_debug_console(wb, opts)
+  if wb ~= nil then
+    if wb.win >= 0 and vim.api.nvim_win_is_valid(wb.win) then
+      vim.api.nvim_win_hide(wb.win)
+      wb.win = -1
+      return wb
+    else
+      if vim.api.nvim_buf_is_loaded(wb.buf) then
+        return M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
+      end
+    end
+  end
+  require('goldsmith.log').error('Debug', 'Cannot find Debug Console. The buffer may have been destroyed.')
+  return nil
 end
 
 return M

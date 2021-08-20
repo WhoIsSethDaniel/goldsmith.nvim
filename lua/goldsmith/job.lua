@@ -1,8 +1,11 @@
-local wb = require'goldsmith.winbuf'
+local log = require 'goldsmith.log'
+local wb = require 'goldsmith.winbuf'
 
 local M = {}
 
 function M.run(cmd, opts)
+  log.debug('Job', function() return 'cmd: '..vim.inspect(cmd) end)
+  log.debug('Job', function() return 'opts: '..vim.inspect(opts) end)
   local job
   if opts['terminal'] then
     local winbuf = wb.create_winbuf(vim.tbl_deep_extend('force', opts, { create = true }))

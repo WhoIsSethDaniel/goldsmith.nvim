@@ -626,6 +626,19 @@ height of the window.
 
 This sets this setting globally. You can also set it per-command.
 
+DEBUGGING                                             *goldsmith-debug-settings*
+
+*debug.enable*                                          *goldsmith-debug.enable*
+
+Default: false
+Experts only, please. This is mostly intended as a way to help others debug 
+problems as well as for Goldsmith developers to debug their code.
+
+When set to true Goldsmith will log all activity to an initially hidden buffer.
+To see the contents of the buffer you can use |:GoDebugConsole|.
+
+See the documentation for |:GoDebugConsole| for more information.
+
 PER-COMMAND SETTINGS                            *goldsmith-settings-per-command*
 
 Some settings may be applied per-command. 
@@ -1073,6 +1086,18 @@ the given [module] using the 'replacement'
 
 Cleanup the go.mod file. See 'go help mod tidy' for more information on what
 this does.
+
+                                                               *:GoDebugConsole*
+:GoDebugConsole
+
+If |goldsmith-debug.enable| is set to true this command will toggle the 
+visibility of the debug console. By default the console is hidden.
+
+The debug console displays the output of all Goldsmith logging. Some output may 
+be very large. Turning on debugging can impose a performance cost on Goldsmith.
+
+If the buffer associated with the debug console is deleted, or otherwise removed,
+the console becomes useless and all logging is lost.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
