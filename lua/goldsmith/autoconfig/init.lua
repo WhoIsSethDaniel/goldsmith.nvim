@@ -38,7 +38,7 @@ local function get_server_conf(server)
   elseif type(cf) == 'table' then
     return cf
   else
-    log.error(nil, string.format("Server configuration for server '%s' must be a table or function", server))
+    log.error('Autoconfig', string.format("Server configuration for server '%s' must be a table or function", server))
     return {}
   end
 end
@@ -138,12 +138,6 @@ function M.all_servers_are_running()
   return true
 end
 
-function M.loadtime_check()
-  for _, s in ipairs(M.get_configured_servers()) do
-    server_module(s).loadtime_check()
-  end
-end
-
 function M.init()
   require('goldsmith.tools').check()
   log = require('goldsmith.log')
@@ -163,6 +157,10 @@ function M.setup_plugin(name)
   end
 end
 
+local function correct_server_conf_key(name)
+  return servers.lsp_plugin_name(name)
+end
+
 function M.setup_server(server, cf)
   local name
   local i = plugins.info(server)
@@ -175,7 +173,7 @@ function M.setup_server(server, cf)
     name = server
   end
   if name == nil then
-    log.error(nil, string.format("Cannot determine how to configure '%s'", server))
+    log.error('Autoconfig', string.format("Cannot determine how to configure '%s'", server))
   end
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
@@ -185,14 +183,17 @@ function M.setup_server(server, cf)
   end
   local sm = server_module(name)
   if sm.has_requirements() then
-    sm.setup(cf)
+    cf = sm.setup(cf)
+    local sname = correct_server_conf_key(name)
+    log.debug(name, function() return vim.inspect(cf) end)
+    require('lspconfig')[sname].setup(cf)
   else
-    log.error(nil, string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
+    log.error('Autoconfig', string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version
     log.error(
-      nil,
+      'Autoconfig',
       string.format(
         "Server '%s' is not at the minimum required version (%s); some things may not work correctly",
         server,

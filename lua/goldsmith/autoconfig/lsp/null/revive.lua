@@ -54,25 +54,6 @@ function M.has_requirements()
   return tools.is_installed 'revive'
 end
 
-function M.check_and_warn_about_requirements()
-  if not tools.is_installed 'revive' then
-    log.error(
-      'Lint',
-      "'revive' is not installed and will not be run by null-ls. Use ':GoInstallBinaries revive' to install it"
-    )
-    return false
-  end
-  local conf = M.get_config()
-  if vim.fn.filereadable(conf['config_file']) == 0 then
-    log.error(
-      'Lint',
-      "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
-    )
-    return false
-  end
-  return true
-end
-
 function M.setup()
   local conf = M.get_config()
   return {

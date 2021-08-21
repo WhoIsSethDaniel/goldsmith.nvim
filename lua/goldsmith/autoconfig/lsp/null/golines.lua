@@ -23,14 +23,6 @@ function M.has_requirements()
   return tools.is_installed 'golines'
 end
 
-function M.check_and_warn_about_requirements()
-  if not tools.is_installed 'golines' then
-    log.error('Format', "'golines' is not installed and will not be run by null-ls. Use ':GoInstallBinaries golines' to install it")
-    return false
-  end
-  return true
-end
-
 function M.setup()
   local conf = get_config()
   return {

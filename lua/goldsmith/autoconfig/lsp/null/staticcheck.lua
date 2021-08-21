@@ -34,25 +34,6 @@ function M.has_requirements()
   return tools.is_installed 'staticcheck'
 end
 
-function M.check_and_warn_about_requirements()
-  if not tools.is_installed 'staticcheck' then
-    log.error(
-      'Format',
-      "'staticcheck' is not installed and will not be run by null-ls. Use ':GoInstallBinaries staticcheck' to install it"
-    )
-    return false
-  end
-  local conf = M.get_config()
-  if vim.fn.filereadable(conf['config_file']) == 0 then
-    log.error(
-      'Format',
-      "'staticcheck' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
-    )
-    return false
-  end
-  return true
-end
-
 function M.setup()
   return {
     name = M.service_name(),
@@ -74,11 +55,6 @@ end
 
 function M.get_config()
   return config.get 'staticcheck' or {}
-end
-
-function M.config_file_contents()
-  return [[
-]]
 end
 
 return M

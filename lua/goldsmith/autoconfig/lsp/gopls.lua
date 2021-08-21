@@ -1,7 +1,6 @@
 -- see https://github.com/golang/tools/blob/master/gopls/doc/settings.md
 -- for all settings for the most recent version of gopls;
 -- see https://github.com/golang/tools/releases for a changelog
-local util = require 'lspconfig.util'
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local tools = require 'goldsmith.tools'
@@ -110,10 +109,6 @@ local function set_filetypes(ft)
   return ft
 end
 
-local function correct_server_conf_key()
-  return servers.lsp_plugin_name 'gopls'
-end
-
 function M.is_disabled()
   return false
 end
@@ -134,10 +129,6 @@ function M.has_requirements()
   return false
 end
 
-function M.loadtime_check()
-  return
-end
-
 function M.setup(cf)
   cf['filetypes'] = set_filetypes(cf['filetypes'] or {})
   cf['flags'] = set_flags(cf['flags'] or {})
@@ -148,8 +139,7 @@ function M.setup(cf)
   if cf['capabilities'] == nil then
     cf['capabilities'] = set_default_capabilities()
   end
-  local server = correct_server_conf_key()
-  require('lspconfig')[server].setup(cf)
+  return cf
 end
 
 return M

@@ -2,6 +2,7 @@ local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
 local tools = require 'goldsmith.tools'
 local servers = require 'goldsmith.lsp.servers'
+local log = require 'goldsmith.log'
 
 local null = require 'null-ls'
 
@@ -62,12 +63,6 @@ function M.is_disabled(service)
   return false
 end
 
-function M.loadtime_check()
-  for _, s in ipairs(M.running_services()) do
-    service_module(s).check_and_warn_about_requirements()
-  end
-end
-
 function M.setup(cf)
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
@@ -77,7 +72,7 @@ function M.setup(cf)
   end
   null.config(cf)
   null.register(running_services)
-  require('lspconfig')['null-ls'].setup(cf)
+  return cf
 end
 
 return M
