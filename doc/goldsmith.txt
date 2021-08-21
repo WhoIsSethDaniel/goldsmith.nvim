@@ -94,7 +94,7 @@ Features currently included:
 * generate test stubs automatically using `gotests`
 * create implementation stubs for your interfaces using :GoImpl
 * :GoFillStruct utilizes LSP to fill the current struct
-* switch to the 'alternate' file quickly using :GoAlt
+* switch to the "alternate" file quickly using :GoAlt
 * struct tag editing: add / remove / update struct tags and options
 * build your project using :GoBuild 
 * run your main package using :GoRun
@@ -337,7 +337,7 @@ For this setting please see |goldsmith-mappings|.
 
 FORMATTING                                       *goldsmith-formatting-settings*
 
-*format.run_on_save*                              *goldsmith-format.run_on_save*
+`format.run_on_save`                              *goldsmith-format.run_on_save*
 
 Default: true
 When you save your current document formatting should be applied. 
@@ -345,7 +345,7 @@ When you save your current document formatting should be applied.
 This will apply all formatting except for `goimports` formatting. `goimports` 
 formatting is conditional on the setting of |goimports.run_on_save|.
 
-*format.max_line_length*                      *goldsmith-format.max_line_length*
+`format.max_line_length`                      *goldsmith-format.max_line_length*
 
 Default: 120
 The max number of columns to allow for code lines. 
@@ -356,14 +356,14 @@ See |goldsmith-resources| for where `golines` can be found.
 
 To install `golines` you can use |:GoInstallBinaries|.
 
-*goimports.run_on_save*                        *goldsmith-goimports.run_on_save*
+`goimports.run_on_save`                        *goldsmith-goimports.run_on_save*
 
 Default: true
-When you save Go program source have gopls run 'goimports' to arrange and fix 
+When you save Go program source have gopls run `goimports` to arrange and fix 
 the import section. If you set this to false you can run |:GoImports| manually
 to arrange the imports in your code.
 
-*goimports.timeout*                                *goldsmith-goimports.timeout*
+`goimports.timeout`                                *goldsmith-goimports.timeout*
 
 Default: 1000
 How long to wait for a response from gopls when requesting that goimports be 
@@ -371,33 +371,33 @@ run. The units are milliseconds, so 1000 = 1 second.
 
 ALTERNATE FILE                               *goldsmith-alternate-file-settings*
 
-*goalt.use_current_window*                  *goldsmith-goalt.use_current_window*
+`goalt.use_current_window`                  *goldsmith-goalt.use_current_window*
 
 Default: false
-Set to 'true' to use the current window when loading the alternate file. If 
-'false' Goldsmith will create a new window based on your
+Set to "true" to use the current window when loading the alternate file. If 
+"false" Goldsmith will create a new window based on your
 |goldsmith-window-settings|.
 
 TESTING                                             *goldsmith-testing-settings*
 
-*tests.template*                                      *goldsmith-tests.template*
+`tests.template`                                      *goldsmith-tests.template*
 
 Default: nil
 Specify custom test code templates.
 
-*tests.template_dir*                              *goldsmith-tests.template_dir*
+`tests.template_dir`                              *goldsmith-tests.template_dir*
 
 Default: nil
 Path to a directory containing custom test code templates.
 
-*tests.template_params_dir*                *goldsmith-tests.template_params_dir*
+`tests.template_params_dir`                *goldsmith-tests.template_params_dir*
 
 Default: nil
 Read external parameters to template by json with file.
 
 LINTING                                             *goldsmith-linting-settings*
 
-*golangci-lint.config_file*                *goldsmith-golangci-lint.config_file*
+`golangci-lint.config_file`                *goldsmith-golangci-lint.config_file*
 
 Default: nil
 The configuration file for `golangci-lint`. If golangci-lint has been configured 
@@ -409,7 +409,7 @@ See |goldsmith-resources| for where `golangci-lint` can be found.
 
 To install `golangci-lint` you can use |:GoInstallBinaries|.
 
-*revive.config_file*                              *goldsmith-revive.config_file*
+`revive.config_file`                              *goldsmith-revive.config_file*
 
 Default: nil
 The configuration file for `revive`. If this configuration variable is set to
@@ -422,7 +422,7 @@ To install `revive` you can use |:GoInstallBinaries|.
 
 COMPLETION                                                *goldsmith-completion*
 
-*completion.omni*                                    *goldsmith-completion.omni*
+`completion.omni`                                    *goldsmith-completion.omni*
 
 Default: false
 Setup the Neovim omnicomplete function ('omnifunc'). By default this is turned 
@@ -436,10 +436,10 @@ should read |ins-completion|.
 
 LSP SERVERS                                              *goldsmith-lsp-servers*
 
-*null.disabled*                                        *goldsmith-null.disabled*
+`null.disabled`                                        *goldsmith-null.disabled*
 
-Default: { 'staticcheck' }
-If this setting is set to either 'true' or an empty table it means that null-ls
+Default: { "staticcheck" }
+If this setting is set to either "true" or an empty table it means that null-ls
 will not be configured by Goldsmith.
 >
     null = {
@@ -448,13 +448,13 @@ will not be configured by Goldsmith.
 <
 If this setting is a non-empty table each entry should be the name of a service
 that Goldsmith should not configure. Current values for these services are 
-'golines', 'staticcheck', 'golangci-lint', and 'revive'.
+"golines", "staticcheck", "golangci-lint", and "revive".
 >
     null = {
         disabled = { 'golines' }
     }
 <
-The above instructs Goldsmith to not configure the 'golines' service when
+The above instructs Goldsmith to not configure the `golines` service when
 configuring null-ls.
 
 If `revive` is configured to run it will use a configuration file only if you 
@@ -473,7 +473,7 @@ Also by default `staticcheck` does not run. `staticcheck` already runs as a
 service within `gopls` so having it also run as a separate linter seems redundant
 and it is not recommended. 
 
-*null.config*                                            *goldsmith-null.config*
+`null.config`                                            *goldsmith-null.config*
 
 Default: {}
 Pass settings on to Goldsmith for null-ls. These settings would be just like what 
@@ -484,7 +484,7 @@ https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
 See |goldsmith-resources| for where `null-ls` can be found.
 
-*gopls.config*                                          *goldsmith-gopls.config*
+`gopls.config`                                          *goldsmith-gopls.config*
 
 Default: {}
 Pass settings on to Goldsmith for gopls. These settings would be just like what 
@@ -499,10 +499,10 @@ To install `gopls` you can use |:GoInstallBinaries|.
 
 JUMPING                                                *goldsmith-jump-settings*
 
-*jump.use_current_window*                    *goldsmith-jump.use_current_window*
+`jump.use_current_window`                    *goldsmith-jump.use_current_window*
 
 Default: true
-You can use |goldsmith-window-settings| within the 'jump' key to modify how code 
+You can use |goldsmith-window-settings| within the "jump" key to modify how code 
 jumping works. By default jumping occurs within the current window. But, if you
 set jump.use_current_window to false, jumping will occur in a separate window.
 e.g.:
@@ -518,7 +518,7 @@ screen. Every jump will open a new window.
 
 HIGHLIGHTING AND CODE LENS           *goldsmith-highlighting-code-lens-settings*
 
-*highlight.current_symbol*                  *goldsmith-highlight.current_symbol*
+`highlight.current_symbol`                  *goldsmith-highlight.current_symbol*
 
 Default: true
 Highlight the current symbol the cursor is over throughout the current document.
@@ -526,7 +526,7 @@ Highlight the current symbol the cursor is over throughout the current document.
 This setting can be changed from within Goldsmith by using |:GoSymHighlightOn|
 and |:GoSymHighlightOff|.
 
-*codelens.show*                                        *goldsmith-codelens.show*
+`codelens.show`                                        *goldsmith-codelens.show*
 
 Default: true
 Show `codelens` items from `gopls`. When this is turned on *and* you have 
@@ -542,19 +542,19 @@ and |:GoCodeLensOff|.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
-*tags.default_tag*                                  *goldsmith-tags.default_tag*
+`tags.default_tag`                                  *goldsmith-tags.default_tag*
 
 Default: json
 When adding tags define what is the default tag if no tags are provided to 
 |:GoAddTags|.
 
-*tags.transform*                                      *goldsmith-tags.transform*
+`tags.transform`                                      *goldsmith-tags.transform*
 
 Default: snakecase
 Apply the named transformation to the tag name. The available transformations are:
-'snakecase', 'camelcase', 'lispcase', 'pascalcase', and 'keep'.
+"snakecase", "camelcase", "lispcase", "pascalcase", and "keep".
 
-*tags.skip_unexported*                          *goldsmith-tags.skip_unexported*
+`tags.skip_unexported`                          *goldsmith-tags.skip_unexported*
 
 Default: false
 When applying tags skip any fields that are unexported.
@@ -565,7 +565,7 @@ Terminal settings are used by commands that have output that is displayed in a
 terminal window.  Commands that have such output are |:GoBuild|, |:GoRun|, 
 |:GoGet|, |:GoInstall|, and |:GoTest| (and possibly others).
 
-*terminal.pos*                                          *goldsmith-terminal.pos*
+`terminal.pos`                                          *goldsmith-terminal.pos*
 
 Default: right
 Position the terminal window will be placed at when a command with output is run.
@@ -574,7 +574,7 @@ An example of a command with output is :GoBuild. Valid values are "top",
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.focus*                                      *goldsmith-terminal.focus*
+`terminal.focus`                                      *goldsmith-terminal.focus*
 
 Default: false
 Whether or not the terminal window will have focus when a command with output is
@@ -583,7 +583,7 @@ no effect. An example of a command with terminal output is :GoBuild.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.width*                                      *goldsmith-terminal.width*
+`terminal.width`                                      *goldsmith-terminal.width*
 
 Default: 80
 When using a pos that requires a vertical split this value represents the width 
@@ -591,7 +591,7 @@ of the terminal.
 
 This sets this setting globally. You can also set it per-command.
 
-*terminal.height*                                    *goldsmith-terminal.height*
+`terminal.height`                                    *goldsmith-terminal.height*
 
 Default: 20
 When using a pos that requires a horizontal split this value represents the 
@@ -604,7 +604,7 @@ WINDOW SETTINGS                                      *goldsmith-window-settings*
 Window settings are used by commands that create a new non-terminal window.
 Commands that have such output are |:GoAlt|, and |:GoDoc| (and possibly others).
 
-*window.pos*                                          *goldsmith-window.pos*
+`window.pos`                                          *goldsmith-window.pos*
 
 Default: right
 Position the window will be placed at when a new window is created. Valid
@@ -612,7 +612,7 @@ values are "top", "bottom", "left", "right".
 
 This sets this setting globally. You can also set it per-command.
 
-*window.focus*                                      *goldsmith-window.focus*
+`window.focus`                                      *goldsmith-window.focus*
 
 Default: false
 Whether or not the new window will have focus after it is created. If the window 
@@ -620,7 +620,7 @@ has focus at the time the command is run then this option has no effect.
 
 This sets this setting globally. You can also set it per-command.
 
-*window.width*                                      *goldsmith-window.width*
+`window.width`                                      *goldsmith-window.width*
 
 Default: 80
 When using a pos that requires a vertical split this value represents the width 
@@ -628,7 +628,7 @@ of the window.
 
 This sets this setting globally. You can also set it per-command.
 
-*window.height*                                    *goldsmith-window.height*
+`window.height`                                    *goldsmith-window.height*
 
 Default: 20
 When using a pos that requires a horizontal split this value represents the 
@@ -638,7 +638,7 @@ This sets this setting globally. You can also set it per-command.
 
 DEBUGGING                                             *goldsmith-debug-settings*
 
-*debug.enable*                                          *goldsmith-debug.enable*
+`debug.enable`                                          *goldsmith-debug.enable*
 
 Default: false
 Experts only, please. This is mostly intended as a way to help others debug 
@@ -702,7 +702,7 @@ information.
                                                                         *:GoHelp*
 :GoHelp topic
 
-View the 'go help' documentation for the given topic, e.g.:
+View the `go help` documentation for the given topic, e.g.:
 >
     :GoHelp test
 <
@@ -870,15 +870,15 @@ To install `gotests` you can use |:GoInstallBinaries|.
                                                                         *:GoAlt*
 :GoAlt[!]
 
-Switch to the 'alternate' file for the current file. 
+Switch to the "alternate" file for the current file. 
 
 If you are editing a code file this will switch you to the test file for that 
-code file. If you use '!' and the test file does not exist one will be created.
+code file. If you use "!" and the test file does not exist one will be created.
 
 If you are editing a test file this will switch you to the code file for that
-test file. If you use '!' and the code file does not exist one will be created. 
+test file. If you use "!" and the code file does not exist one will be created. 
 
-If a buffer for the 'alternate' file exists that buffer will be used. If a
+If a buffer for the "alternate" file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
 or window will be created if they do not already exist (contingent on the 
 value of |goalt.use_current_window|).
@@ -887,7 +887,7 @@ value of |goalt.use_current_window|).
 :GoFillStruct
 
 Will fill the struct the cursor is over. This utilizes `gopls` and is simply a
-frontend for performing the 'fill_struct' code action. The main difference 
+frontend for performing the "fill_struct" code action. The main difference 
 between this and using |:GoCodeAction| is that |:GoCodeAction| will prompt you
 to select from a list of actions (even if the list has only one entry). 
 :GoFillStruct will never prompt.
@@ -899,7 +899,7 @@ Create a stub implementation for the given <interface> using <recv> as the
 receiver. The stub implementation will be inserted on the lines directly
 below the cursor.
 
-To create a stub implementation for the io.Reader interface using 'f *File' 
+To create a stub implementation for the io.Reader interface using "f *File"
 as the receiver:
 >
     :GoImpl f *File io.Reader
@@ -936,7 +936,7 @@ To install `fixplurals` you can use |:GoInstallBinaries|.
 
 Jump to the definition of the symbol under the cursor.
 
-You can set |goldsmith-window-settings| within the 'jump' configuration key to 
+You can set |goldsmith-window-settings| within the "jump" configuration key to 
 control the effect of running :GoDef. By default running :GoDef will jump to 
 the definition of the symbol under the cursor in the current window. If you have
 set |jump.use_current_window| to false it will open a new window based on your 
@@ -960,7 +960,7 @@ window.
 
 Jump to the definition of the type of the symbol under the cursor.
 
-You can set |goldsmith-window-settings| within the 'jump' configuration key to 
+You can set |goldsmith-window-settings| within the "jump" configuration key to 
 control the effect of running :GoTypeDef. By default running :GoTypeDef will jump 
 to the definition of the symbol under the cursor in the current window. If you 
 have set |jump.use_current_window| to false it will open a new window based on 
@@ -1047,7 +1047,7 @@ that requires a configuration must have its config_file setting set to something
 other than nil.
 
 This command will not overwrite any file in the current working directory that
-already exists unless you provide the '!'. 
+already exists unless you provide the "!". 
 
 You can optionally provide the name of the config file to generate, or a list 
 of names of config files to generate. Tab-completion may be used to discover 
@@ -1083,18 +1083,18 @@ Format the current go.mod file.
                                                                  *:GoModReplace*
 :GoModReplace [module] replacement
 
-Create a new 'replace' rule in the current go.mod file. 
+Create a new "replace" rule in the current go.mod file. 
 
-If only the 'replacement' is given the module to replace it will be determined 
+If only the "replacement" is given the module to replace it will be determined 
 by the module that the cursor is currently sitting on. 
 
-If [module] and 'replacement' are given then a 'replace' rule is created for
-the given [module] using the 'replacement'
+If [module] and "replacement" are given then a "replace" rule is created for
+the given [module] using the "replacement"
 
                                                                     *:GoModTidy*
 :GoModTidy
 
-Cleanup the go.mod file. See 'go help mod tidy' for more information on what
+Cleanup the go.mod file. See `go help mod tidy` for more information on what
 this does.
 
                                                                *:GoDebugConsole*
@@ -1180,16 +1180,16 @@ section to an empty table:
       ...
     })
 < 
-If you provide your own 'on_attach' method when configuring your LSP servers, or 
+If you provide your own "on_attach" method when configuring your LSP servers, or 
 if you do not use Goldsmith to configure your servers, you will not be able to 
-use this setting unless you also call the 'set_buffer_mappings' function in your 
-'on_attach' method.
+use this setting unless you also call the "set_buffer_mappings()" function in your 
+"on_attach" method.
 >
     require('goldsmith').set_buffer_mappings(bufnum)
 <
-The 'set_buffer_mappings' function takes a single argument and it is the buffer
-number to apply the mappings to. You can call 'set_buffer_mappings' in any 
-'on_attach' method. If the given buffer is not a Go buffer 'set_buffer_mappings' 
+The "set_buffer_mappings()" function takes a single argument and it is the buffer
+number to apply the mappings to. You can call "set_buffer_mappings()" in any 
+"on_attach" method. If the given buffer is not a Go buffer "set_buffer_mappings()"
 will return false and will not setup any mappings. Otherwise it sets up the 
 appropriate mappings based on your config and returns true. A simple example:
 >
@@ -1210,7 +1210,7 @@ entries in the mappings table for an action, e.g.:
         ...
     }
 <
-The above defines both 'gd' and '<C-]>' as mappings for the 'definition' action.
+The above defines both "gd" and "<C-]>" as mappings for the "definition" action.
 
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*
