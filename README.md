@@ -26,7 +26,8 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * run your main package using :GoRun
 * fetch new Go libraries using :GoGet
 * install new Go tools using :GoInstall
-* run tests using :GoTest
+* integrated and enhanced testing with vim-test. Use :GoTest, :GoTestNearest, and other 
+  commands to use vim-test
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 
