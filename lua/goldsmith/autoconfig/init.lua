@@ -12,7 +12,6 @@ local server_data = {}
 local registered_plugins = { 'treesitter-textobjects' }
 
 local on_attach = function(client, bufnr)
-  require('goldsmith.mappings').set_buffer_mappings(bufnr)
 end
 
 local function server_module(server)

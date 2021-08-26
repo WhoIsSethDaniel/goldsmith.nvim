@@ -10,7 +10,14 @@ local function find_all_functions(root, funcs)
   for node in root:iter_children() do
     local ntype = node:type()
     if ntype == 'function_declaration' or ntype == 'method_declaration' then
-      table.insert(funcs, (ts_utils.get_node_text(node:child(1)))[1])
+      local line, col = ts_utils.get_node_range(node)
+      local f = {
+        -- node = node,
+        name = (ts_utils.get_node_text(node:child(1)))[1],
+        line = line,
+        col = col,
+      }
+      table.insert(funcs, f)
     end
     find_all_functions(node, funcs)
   end

@@ -4,7 +4,7 @@ local M = {}
 
 function M.run(uncond)
   M.run_lsp_format(uncond)
-  M.run_goimports(uncond)
+  M.run_organize_imports(uncond)
 end
 
 function M.run_lsp_format(uncond)
@@ -13,9 +13,25 @@ function M.run_lsp_format(uncond)
   end
 end
 
-function M.run_goimports(uncond)
+function M.run_organize_imports(uncond)
   if uncond == 1 or config.get('goimports', 'run_on_save') then
-    M.goimports(config.get('goimports', 'timeout'))
+    M.organize_imports(config.get('goimports', 'timeout'))
+  end
+end
+
+-- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
+function M.organize_imports(wait_ms)
+  local params = vim.lsp.util.make_range_params()
+  params.context = { only = { 'source.organizeImports' } }
+  local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)
+  for _, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        vim.lsp.util.apply_workspace_edit(r.edit)
+      else
+        vim.lsp.buf.execute_command(r.command)
+      end
+    end
   end
 end
 
@@ -23,6 +39,8 @@ end
 -- It is different in that this version supports multiple language servers (but only one will
 -- be able to fulfill the request -- presumedly gopls).
 -- This code is also similar to the codeAction handler defined at lua/vim/lsp/handlers.lua.
+-- Probably shouldn't use. See:
+-- https://github.com/neovim/nvim-lspconfig/issues/115
 function M.goimports(timeout_ms)
   local context = { only = { 'source.organizeImports' } }
   -- local context = { source = { organizeImports = true } }

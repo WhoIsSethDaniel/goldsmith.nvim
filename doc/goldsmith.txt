@@ -20,9 +20,10 @@ CONTENTS                                                    *goldsmith-contents*
   7. Mappings.....................................|goldsmith-mappings|
   8. Text Objects.................................|goldsmith-text-objects|
   9. Functions....................................|goldsmith-functions|
- 10. Health Check.................................|goldsmith-healthcheck|
- 11. Help.........................................|goldsmith-help|
- 12. Resources....................................|goldsmith-resources|
+ 10. Testing......................................|goldsmith-testing|
+ 11. Health Check.................................|goldsmith-healthcheck|
+ 12. Help.........................................|goldsmith-help|
+ 13. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -100,7 +101,8 @@ Features currently included:
 * run your main package using :GoRun
 * fetch new Go libraries using :GoGet
 * install new Go tools using :GoInstall
-* run tests using :GoTest
+* integrated and enhanced testing with vim-test. Use :GoTest, :GoTestNearest, and other 
+  commands to use vim-test
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 
@@ -250,23 +252,8 @@ configuration.
 A configuration that sets settings to the defaults:
 >
     require("goldsmith").config({
-      mappings = {
-        ['gd'] = 'definition',
-        ['K'] = 'hover',
-        ['gi'] = 'implementation',
-        ['<C-k>'] = 'signature_help',
-        ['<leader>wa'] = 'add_workspace_folder',
-        ['<leader>wr'] = 'remove_workspace_folder',
-        ['<leader>wl'] = 'list_workspace_folders',
-        ['<leader>D'] = 'type_definition',
-        ['<leader>rn'] = 'rename',
-        ['<leader>gr'] = 'references',
-        ['<leader>ca'] = 'code_action',
-        ['<leader>e'] = 'show_line_diagnostics',
-        ['[d'] = 'goto_previous_diagnostic',
-        [']d'] = 'goto_next_diagnostic',
-        ['<leader>q'] = 'diagnostic_set_loclist',
-        ['<leader>f'] = 'format',
+      mappings = { 
+        disable = false,
       },
       codelens = {
         show = true
@@ -333,7 +320,14 @@ SETTINGS                                                    *goldsmith-settings*
 
 MAPPINGS                                            *goldsmith-mappings-setting*
 
-For this setting please see |goldsmith-mappings|.
+`mappings.enable`                                    *goldsmith-mappings.enable*
+
+Default: true
+When set to false the default key mappings are used. When set to true the user
+must specify the mappings wanted.
+
+For more information about this setting and key mappings please see 
+|goldsmith-mappings|.
 
 FORMATTING                                       *goldsmith-formatting-settings*
 
@@ -380,20 +374,65 @@ Set to "true" to use the current window when loading the alternate file. If
 
 TESTING                                             *goldsmith-testing-settings*
 
-`tests.template`                                      *goldsmith-tests.template*
+`testing.strategy`                                  *goldsmith-testing.strategy*
+
+Default: neovim
+When `vim-test` is loaded and available it will be used to run tests. This 
+variable can be used to set the default test#strategy (see |test-strategies| if 
+you have `vim-test` installed) if you have not already set it. 
+
+See |goldsmith-testing| for much more information about testing in Goldsmith.
+
+`testing.arguments`                                *goldsmith-testing.arguments*
+
+Default: {}
+Pass these arguments to "go test" whenever a :GoTest* command is run. This must be 
+a table where each key is a valid argument for "go test". e.g.:
+>
+    testing = {
+      arguments = { '-v' }
+    }
+<
+This will always pass '-v' to "go test" for any :GoTest* command.
+
+`testing.template`                                  *goldsmith-testing.template*
 
 Default: nil
 Specify custom test code templates.
 
-`tests.template_dir`                              *goldsmith-tests.template_dir*
+See |goldsmith-testing| for much more information about testing in Goldsmith.
+
+`testing.template_dir`                          *goldsmith-testing.template_dir*
 
 Default: nil
 Path to a directory containing custom test code templates.
 
-`tests.template_params_dir`                *goldsmith-tests.template_params_dir*
+See |goldsmith-testing| for much more information about testing in Goldsmith.
+
+`testing.template_params_dir`            *goldsmith-testing.template_params_dir*
 
 Default: nil
 Read external parameters to template by json with file.
+
+See |goldsmith-testing| for much more information about testing in Goldsmith.
+
+`gotestvisit.use_current_window`      *goldsmith-gotestvisit.use_current_window*
+
+Default: false
+You can use |goldsmith-window-settings| within the "gotestvisit" key to modify 
+how |:GoTestVisit| works. By default |:GoTestVisit| will create a new window. 
+But, if you set gotestvisit.use_current_window to true, it will use the window
+you are currently in.
+e.g.:
+>
+    gotestvisit = {
+      use_current_window = true,
+      pos = 'left'
+    }
+<
+The above instructs Goldsmith to use the current window when |:GoTestVisit| is
+run. It also instructs Goldsmith to place the window on the left side of the
+screen.
 
 LINTING                                             *goldsmith-linting-settings*
 
@@ -563,7 +602,7 @@ TERMINAL SETTINGS                                  *goldsmith-terminal-settings*
 
 Terminal settings are used by commands that have output that is displayed in a
 terminal window.  Commands that have such output are |:GoBuild|, |:GoRun|, 
-|:GoGet|, |:GoInstall|, and |:GoTest| (and possibly others).
+|:GoGet|, and |:GoInstall| (and possibly others).
 
 `terminal.pos`                                          *goldsmith-terminal.pos*
 
@@ -754,12 +793,6 @@ Run `go install` to add new tools to use. Takes the same arguments as
 
 Tell gopls and null-ls to format the current Go buffer immediately.
 
-                                                                       *:GoTest*
-:GoTest
-
-Run `go test` in the current working directory. Takes the same arguments as
-`go test`. 
-
                                                                     *:GoAddTags*
 :[range]GoAddTags [key[,option]] [key[,option]] ...
 
@@ -835,37 +868,6 @@ tools to install.
 
 Running :GoInstallBinaries multiple times is fine. Each time it is run it will
 attempt to build and install each tool, updating the tool, if needed.
-
-                                                                   *:GoAddTests*
-:GoAddTests [options]
-
-Generate tests for all functions/methods in the current Go file. This does not
-overwrite any tests that already exist, but it may make new stub tests. 
-
-The only options are -p and -e. -p means generate parallel subtests. -e means
-to only generate tests for exported functions/methods.
-
-Behind the scenes this uses the `gotests` tool. See |goldsmith-resources| for
-where this tool can be found.
-
-To install `gotests` you can use |:GoInstallBinaries|.
-
-                                                                    *:GoAddTest*
-:GoAddTest [options] [function_name]
-
-Generate a stub test for either the function/method passed to the command or 
-generate a stub test for the current function/method the cursor is currently
-in. If the given [function_name] does not exist no test is created.
-
-The only option is -p. -p means generate parallel subtests.
-
-You can use command completion to see all available functions in the current
-file.
-
-Behind the scenes this uses the `gotests` tool. See |goldsmith-resources| for
-where this tool can be found.
-
-To install `gotests` you can use |:GoInstallBinaries|.
 
                                                                         *:GoAlt*
 :GoAlt[!]
@@ -1112,105 +1114,123 @@ the console becomes useless and all logging is lost.
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
-There is a default set of mappings. Each mapping is attached to a particular 
-action. The defaults are defined as a table where each key in the table is a 
-Neovim key sequence and the value is a symbolic name for an action. The defaults
-are:
->
-    mappings = {
-        ['gd'] = 'definition',
-        ['K'] = 'hover',
-        ['gi'] = 'implementation',
-        ['<C-k>'] = 'signature_help',
-        ['<leader>wa'] = 'add_workspace_folder',
-        ['<leader>wr'] = 'remove_workspace_folder',
-        ['<leader>wl'] = 'list_workspace_folders',
-        ['<leader>D'] = 'type_definition',
-        ['<leader>rn'] = 'rename',
-        ['<leader>gr'] = 'references',
-        ['<leader>ca'] = 'code_action',
-        ['<leader>e'] = 'show_line_diagnostics',
-        ['[d'] = 'goto_previous_diagnostic',
-        [']d'] = 'goto_next_diagnostic',
-        ['<leader>q'] = 'diagnostic_set_loclist',
-        ['<leader>f'] = 'format',
-      }
-<
-Each action is defined as:
-* definition - see |vim.lsp.buf.definition()|
-* hover - see |vim.lsp.buf.hover()|
-* implementation - see |vim.lsp.buf.implementation()|
-* signature_help - see |vim.lsp.buf.signature_help()|
-* add_workspace_folder - see |vim.lsp.buf.add_workspace_folder()|
-* remove_workspace_folder - see |vim.lsp.buf.remove_workspace_folder()|
-* list_workspace_folders - see |vim.lsp.buf.list_workspace_folders()|
-* type_definition - see |vim.lsp.buf.type_definition()|
-* rename - see |vim.lsp.buf.rename()|
-* references - see |vim.lsp.buf.references()|
-* code_action - see |vim.lsp.buf.code_action()|
-* show_line_diagnostics - see |vim.lsp.diagnostic.show_line_diagnostics()|
-* goto_previous_diagnostic - see |vim.lsp.diagnostic.get_prev()|
-* goto_next_diagnostic - see |vim.lsp.diagnostic.get_next()|
-* diagnostic_set_loclist - see |vim.lsp.diagnostic.set_loclist()|
-* format - format the current buffer using all available formatters
+There are a set of <Plug> keys which can be used to create your own mappings.
+Many of these have a default mapping. You can turn off all default mappings
+by setting |goldsmith-mappings.enable| to true.
 
-By default these mappings are applied to all Go buffers. 
+Available <Plug> keys and their default (if any):
 
-You can configure your own keymappings for each action by providing your own
-mappings section in your configuration.
->
-    require'goldsmith'.config({
-      ...
-      mappings = {
-          ['gd'] = 'definition',
-          ['K'] = 'hover',
-      },
-      ...
-    })
-<
-The above defines just two keymappings that do two different actions. No other
-keymappings will be defined, including the default keymappings.
+*(goldsmith-godef)*
+Default: gd <C-]>
 
-If you do not want Goldsmith to define any keymappings you can set the mappings
-section to an empty table:
->
-    require'goldsmith'.config({
-      ...
-      mappings = {},
-      ...
-    })
-< 
-If you provide your own "on_attach" method when configuring your LSP servers, or 
-if you do not use Goldsmith to configure your servers, you will not be able to 
-use this setting unless you also call the "set_buffer_mappings()" function in your 
-"on_attach" method.
->
-    require('goldsmith').set_buffer_mappings(bufnum)
-<
-The "set_buffer_mappings()" function takes a single argument and it is the buffer
-number to apply the mappings to. You can call "set_buffer_mappings()" in any 
-"on_attach" method. If the given buffer is not a Go buffer "set_buffer_mappings()"
-will return false and will not setup any mappings. Otherwise it sets up the 
-appropriate mappings based on your config and returns true. A simple example:
->
-    function on_attach(client, buffer)
-      ...some early setup...
-      if not require('goldsmith').set_buffer_mappings(buffer) then
-        ...setup keymappings for non-go servers...
-      end
-      ...some late setup...
-    end
-< 
-You can define multiple mappings for a single action simply by having multiple 
-entries in the mappings table for an action, e.g.:
->
-    mappings = {
-        ['gd'] = 'definition',
-        ['<C-]>'] = 'definition',
-        ...
-    }
-<
-The above defines both "gd" and "<C-]>" as mappings for the "definition" action.
+The same as |:GoDef|. Go to the definition of the symbol beneath the cursor.
+
+*(goldsmith-hover)*
+Default: K
+
+The same as |:GoInfo|. Display information about the symbol under the cursor in 
+a floating window.
+
+*(goldsmith-goimplementation)*
+Default: gi
+
+Lists all the implementations for the symbol under the cursor in the quickfix
+window.
+
+*(goldsmith-sighelp)*
+Default: <C-k>
+
+The same as |:GoSigHelp|. Display signature information about the symbol under
+the cursor in a floating window.
+
+*(goldsmith-add-ws-folder)*
+Default: <leader>wa
+
+Add a workspace folder.
+
+*(goldsmith-rm-ws-folder)*
+Default: <leader>wr
+
+Remove a workspace folder.
+
+*(goldsmith-list-ws-folders)*
+Default: <leader>wl
+
+List all workspace folders.
+
+*(goldsmith-typedef)*
+Default: <leader>D
+
+The same as |:GoTypeDef|. Jump to the definition of the type of the symbol 
+under the cursor.
+
+*(goldsmith-rename)*
+Default: <leader>rn
+
+The same as |:GoRename|. Rename the symbol under the cursor.
+
+*(goldsmith-goref)*
+Default: <leader>gr
+
+The same as |:GoRef|. List all references to the symbol under the cursor in the
+quickfix window.
+
+*(goldsmith-codeaction)*
+Default: <leader>ca
+
+The same as |:GoCodeAction|. Perform the code action for any code actions 
+available on the current line.
+
+*(goldsmith-showdiag)*
+Default: <leader>e
+
+The same as |:GoShowDiag|. Show all diagnostics for the current line in a 
+floating window.
+
+*(goldsmith-prevdiag)*
+Default: [d
+
+Jump to the previous diagnostic closest to the cursor position.
+
+*(goldsmith-nextdiag)*
+Default: ]d
+
+Jump to the inext diagnostic closest to the cursor position.
+
+*(goldsmith-setloc)*
+Default: <leader>q
+
+The same as |:GoListDiag|. Place all diagnostics for the current buffer in the 
+location list.
+
+*(goldsmith-format)*
+Default: <leader>f
+
+The same as |:GoFormat|. Tell gopls and null-ls to format the current Go buffer
+immediately.
+
+EXAMPLE MAPPINGS
+
+An example setting all mappings, using Lua, to the defaults (this can be placed 
+in your on_attach function):
+
+local opts = { silent = true }
+vim.api.nvim_buf_set_keymap(0, 'n', 'gd', '<Plug>(goldsmith-godef)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<Plug>(goldsmith-hover)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', 'gi', '<Plug>(goldsmith-goimplementation)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<C-k>', '<Plug>(goldsmith-sighelp)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>wa', '<Plug>(goldsmith-add-ws-folder)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>wr', '<Plug>(goldsmith-rm-ws-folder)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>wl', '<Plug>(goldsmith-list-ws-folders)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>D', '<Plug>(goldsmith-typedef)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>rn', '<Plug>(goldsmith-rename)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>ca', '<Plug>(goldsmith-codeaction)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', 'gr', '<Plug>(goldsmith-goref)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>e', '<Plug>(goldsmith-showdiag)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '[d', '<Plug>(goldsmith-prevdiag)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', ']d', '<Plug>(goldsmith-nextdiag)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>q', '<Plug>(goldsmith-setloc)', opts)
+vim.api.nvim_buf_set_keymap(0, 'n', '<space>f', '<Plug>(goldsmith-format)', opts)
 
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*
@@ -1222,7 +1242,7 @@ plugin.
 af            "a function", select contents from a function definition to the
                closing bracket.
 
-                ;                                *goldsmith-v_if* *goldsmith-if*
+                                                 *goldsmith-v_if* *goldsmith-if*
 if            "inside a function", select contents of a function,
               excluding the function definition and the closing bracket. This
               text-object also supports literal functions
@@ -1251,9 +1271,127 @@ See |goldsmith-configuration| for a detailed look at config().
 See the wiki for a detailed look at setup().
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
-*goldsmith-set_buffer_mappings()*
+================================================================================
+TESTING                                                      *goldsmith-testing*
 
-See |goldsmith-mappings| for a detailed look at set_buffer_mappings().
+INTRODUCTION
+
+Goldsmith can integrate with `vim-test` for the running of tests. It does so by 
+having similar commands to `vim-test`, but with enhanced capabilities. All of
+the `vim-test` commands remain available to use. See |goldsmith-resources| for 
+where `vim-test` can be found.
+
+Goldsmith also integrates with the `gotests` test generation tool. See
+|goldsmith-resources| for where this tool can be found. To install `gotests` you 
+can use |:GoInstallBinaries|.
+
+Goldsmith can work without `gotests` or `vim-test`, but it is not recommended as
+functionality will be greatly degraded. Some commands may return errors or fail
+to work as intended.
+
+SETTINGS
+
+If you have installed `vim-test` and/or `gotests`, but have yet to configure
+them, you can still use Goldsmith. Goldsmith will detect when required `vim-test`
+or `gotests` variables are unset and will set them to reasonable defaults. See 
+|goldsmith-testing-settings| for what settings can be set.
+
+COMMANDS
+
+                                                                  *:GoTestSuite*
+:GoTestSuite [args]
+
+Currently this is exactly like |:TestSuite| except that you can run it from a 
+code file and it will run all tests for the current project.
+
+This command only exists if `vim-test` is installed.
+
+                                                                   *:GoTestLast*
+:GoTestLast [args]
+
+Currently this is exactly like |:TestLast|.
+
+This command only exists if `vim-test` is installed.
+
+                                                                    *:GoTestPkg*
+:GoTestPkg [args]
+
+In Goldsmith, if you run :GoTestPkg within a code file it will have `vim-test`
+run the tests for the package the current file is in. If you run :GoTestPkg 
+within a test file it acts just like |:TestFile|.
+
+Command completion can be used to pass directories within the current project
+to the command. The list of directories are those that contain packages.
+
+This command only exists if `vim-test` is installed.
+
+                                                                *:GoTestNearest*
+:GoTestNearest [args]
+
+In Goldsmith, if you run :GoTestNearest within a code file it will identify the
+function your cursor is currently in, match that function's name to a test 
+routine in your test file, and will run that test. If your cursor is not within
+a function, or if there is no matching test routine, :GoTestNearest will act
+just like |:TestNearest|.
+
+The function test matching works as follows: it searches for two different 
+function names within your test file, Test<funcname> and Test_<funcname>. The
+matching is case sensitive.
+
+This command only exists if `vim-test` is installed.
+
+                                                                  *:GoTestVisit*
+:GoTestVisit[!]
+
+In Goldsmith, if you run :GoTestVisit within a code file, and if you have not 
+previously run a test, this command will take you to the test file for the
+current code file (essentially acting like |:GoAlt|.) If you have previously
+run a test this command acts just like |:TestVisit|. With the '!' set the 
+alternate file will be created if it is not already created.
+
+This command will honor your |goldsmith-window-settings| and your "gotestvisit"
+window settings.
+
+This command only exists if `vim-test` is installed.
+
+                                                                       *:GoTest*
+:GoTest [tests | args]
+
+If `vim-test` is not installed this command simply runs "go test" with whatever
+arguments are passed in (including arguments passed in via 
+|goldsmith-testing.arguments|). It will display the output in a terminal window
+that honors your |goldsmith-terminal-settings|.
+
+If `vim-test` is installed, :GoTest can be used to run individual tests. Command 
+completion can be used to fill-in the tests you wish to run. All tests for the
+current code or test file will be displayed (someday it may display all tests
+from the current package, but that hasn't been written yet). When :GoTest is used
+to run individual tests you cannot currently pass other arguments. However, you 
+may be able to use |goldsmith-testing.arguments| instead.
+
+If you do not pass tests to :GoTest it will act just like |:TestFile|. In this
+case passing arguments is fine.
+
+                                                                   *:GoAddTests*
+:GoAddTests [options]
+
+Generate tests for all functions/methods in the current Go file. This does not
+overwrite any tests that already exist, but it may make new stub tests. 
+
+The only options are -p and -e. -p means generate parallel subtests. -e means
+to only generate tests for exported functions/methods.
+
+                                                                    *:GoAddTest*
+:GoAddTest [options] [function_name]
+
+Generate a stub test for either the function/method passed to the command or 
+generate a stub test for the current function/method the cursor is currently
+in. If the given [function_name] does not exist no test is created.
+
+The only option is -p. -p means generate parallel subtests.
+
+You can use command completion to see all available functions in the current
+file.
 
 ================================================================================
 HEALTHCHECK                                              *goldsmith-healthcheck*

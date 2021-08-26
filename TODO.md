@@ -23,11 +23,25 @@
   - [x] configuration for keymappings in on_attach
 - [x] godef / gotypedef / goto_implementation()
   - [x] option for opening in window
-- [x] config
+ [x] config
   - [x] far better config validation using validate()
+- [x] make consistent the use of disable / enable in the config
 - [x] debugging the plugin
   - [x] debug mode
   - [x] debug console
+- [ ] testing
+  - [x] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
+  - [x] more docs - including what GoTest does w/o vim-test
+  - [x] perhaps 'join' the settings / docs for GoAddTest(s) etc.... with vim-test integration
+  - [x] command completion for some :GoTest commands?
+  - [x] :GoTestSuite should work when in a code file
+  - [x] refactor test.lua
+  - [x] :GoTest completion
+    - [x] fix - currently won't work
+  - [x] completion for :GoTestPkg should be packages (dirs), not files
+  - [x] :GoTestVisit should honor window settings
+    - [x] should not depend on goalt
+    - [x] need to honor focus
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -35,11 +49,20 @@
 - [ ] GoCreateConfigs
   - [x] completion (ability to choose subset of files)
   - [x] move from lint
+  - [ ] instead of complete listing filenames, list service instead
   - [ ] ability to have templates? or other files instead of the builtin ones
 - [ ] testing
-  - [ ] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
+  - [ ] :GoTest test-name completion should include all tests in the current package
+  - [ ] :GoTestVisit repeated code similar to goalt
+  - [ ] keymaps for all
+  - [ ] basic testing should be much better
+- [ ] formatting
+  - [ ] add gofmt to null-ls
+  - [ ] add gofumpt to null-ls
+- [ ] lots more debug logging
+- [ ] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
-- [ ] snippets
+- [ ] snippets?
 - [ ] tests (w/plenary?)
 - [ ] workspaces / multiple workspaces
 - [ ] build tag editing

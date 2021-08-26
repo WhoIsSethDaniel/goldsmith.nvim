@@ -11,14 +11,18 @@ function M.complete(arglead, cmdline, cursorPos)
   local current = ts.get_current_function_name()
   if current ~= nil then
     for i, f in ipairs(funcs) do
-      if f == current then
+      if f.name == current then
         table.remove(funcs, i)
-        table.insert(funcs, current)
+        table.insert(funcs, f)
         break
       end
     end
   end
-  return table.concat(funcs, '\n')
+  local f = {}
+  for _, fd in ipairs(funcs) do
+    table.insert(f, fd.name)
+  end
+  return table.concat(f, '\n')
 end
 
 local function parse_args(...)
@@ -86,7 +90,7 @@ function M.run(...)
     log.error('Tests', 'Current file is a test file')
     return
   end
-  local extra = config.get 'tests' or {}
+  local extra = config.get 'testing' or {}
   if extra['template'] ~= nil and extra['template'] ~= '' then
     args = string.format('%s -template %s', args, extra['template'])
   end

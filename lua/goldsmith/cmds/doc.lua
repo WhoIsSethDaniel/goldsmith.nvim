@@ -3,7 +3,6 @@ local config = require 'goldsmith.config'
 local wb = require 'goldsmith.winbuf'
 local job = require 'goldsmith.job'
 local cmds = require 'goldsmith.lsp.commands'
-local log = require 'goldsmith.log'
 
 local M = { buf_nr = -1 }
 
@@ -88,7 +87,6 @@ function M.run(type, ...)
             err = err .. e
           end
         end
-        log.error(nil, string.format("go%s", type), err)
       end,
       on_exit = function(id, code, event)
         if code > 0 then

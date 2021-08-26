@@ -173,27 +173,32 @@ local TOOLS = {
     installed = false,
     plugin = true,
     location = 'https://github.com/vim-test/vim-test',
+    testing = true,
+    weight = 1,
     not_found = {
-      'This plugin is not currently used by Goldsmith.',
+      'This plugin can be used for running tests.',
+      'It is highly recommended that you install this plugin.'
     },
     check_installed = function()
       return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
     end,
   },
-  ultest = {
-    name = 'vim-ultest',
-    required = false,
-    installed = false,
-    plugin = true,
-    location = 'https://github.com/rcarriga/vim-ultest',
-    not_found = {
-      'This plugin is not currently used by Goldsmith.',
-    },
-    check_installed = function()
-      local ok, _ = pcall(require, 'ultest')
-      return ok
-    end,
-  },
+  -- ultest = {
+  --   name = 'vim-ultest',
+  --   required = false,
+  --   installed = false,
+  --   plugin = true,
+  --   location = 'https://github.com/rcarriga/vim-ultest',
+  --   testing = true,
+  --   weight = 10,
+  --   not_found = {
+  --     'This plugin is not currently used by Goldsmith.',
+  --   },
+  --   check_installed = function()
+  --     local ok, _ = pcall(require, 'ultest')
+  --     return ok
+  --   end,
+  -- },
   treesitter = {
     name = 'nvim-treesitter',
     required = true,
@@ -301,7 +306,10 @@ function M.info(name)
 end
 
 function M.is_installed(name)
-  return TOOLS[name].installed or TOOLS[name].cmd ~= nil
+  if TOOLS[name].installed or TOOLS[name].cmd ~= nil then
+    return true
+  end
+  return false
 end
 
 function M.is_required(name)

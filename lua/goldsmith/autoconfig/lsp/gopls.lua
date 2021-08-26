@@ -86,6 +86,8 @@ local function set_default_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   -- if the user wants to use postfixCompletions this is REQUIRED
   capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.preselectSupport = true
+  capabilities.textDocument.completion.completionItem.commitCharacterSupport = true
   return capabilities
 end
 

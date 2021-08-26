@@ -101,6 +101,7 @@ local SPEC = {
   completion = {
     omni = { false, 'b' },
   },
+  mappings = { enable = { true, 'b' } },
   goimports = {
     run_on_save = { true, 'b' },
     timeout = { 1000, 'n' },
@@ -112,6 +113,7 @@ local SPEC = {
   goinstall = terminal_spec,
   godoc = window_spec,
   goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
+  gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
   terminal = window_validate(false, false, false),
   window = window_validate(false, false, true),
@@ -144,7 +146,9 @@ local SPEC = {
   revive = {
     config_file = { nil, 's' },
   },
-  tests = {
+  testing = {
+    strategy = { 'neovim', 's' },
+    arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
     template_params_dir = { nil, 's' },
@@ -176,26 +180,6 @@ local SPEC = {
   },
 }
 
--- mappings are different from all other config items, so they are not in the SPEC
-local default_mappings = {
-  ['gd'] = 'definition',
-  ['K'] = 'hover',
-  ['gi'] = 'implementation',
-  ['<C-k>'] = 'signature_help',
-  ['<leader>wa'] = 'add_workspace_folder',
-  ['<leader>wr'] = 'remove_workspace_folder',
-  ['<leader>wl'] = 'list_workspace_folders',
-  ['<leader>D'] = 'type_definition',
-  ['<leader>rn'] = 'rename',
-  ['<leader>gr'] = 'references',
-  ['<leader>ca'] = 'code_action',
-  ['<leader>e'] = 'show_line_diagnostics',
-  ['[d'] = 'goto_previous_diagnostic',
-  [']d'] = 'goto_next_diagnostic',
-  ['<leader>q'] = 'diagnostic_set_loclist',
-  ['<leader>f'] = 'format',
-}
-
 local function defaults()
   if not vim.tbl_isempty(_defaults) then
     return _defaults
@@ -207,16 +191,6 @@ local function defaults()
     end
   end
   return _defaults
-end
-
-local function validate_keymap_action(maps)
-  for k, v in pairs(maps) do
-    if not in_set(false, unpack(vim.tbl_values(default_mappings)))(v) then
-      -- logging not available yet
-      log_error('Config', string.format("Mapping '%s' has unknown action '%s'", k, v))
-      return
-    end
-  end
 end
 
 local function check_only_valid_keys(allowed, keys)
@@ -305,10 +279,6 @@ local function all_config_keys()
 end
 
 local function validate_config()
-  local mappings = _config['mappings'] or default_mappings
-  _config['mappings'] = nil
-  validate_keymap_action(mappings)
-
   local ok, bad = check_only_valid_keys(all_config_keys(), vim.tbl_keys(_config))
   if not ok then
     log_error('Config', string.format("Unknown name '%s' in configuration.", bad))
@@ -316,7 +286,6 @@ local function validate_config()
   end
 
   validate(build_validation(_config))
-  _config = vim.tbl_extend('error', _config, { mappings = mappings })
 end
 
 function M.setup(user_config)
