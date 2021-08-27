@@ -42,6 +42,23 @@ local function get_server_conf(server)
   end
 end
 
+local function setup_logging()
+  log = require('goldsmith.log')
+  log.init()
+end
+
+local function has_requirements()
+  local ok = true
+  for _, p in ipairs(plugins.names()) do
+    local info = plugins.info(p)
+    if plugins.is_required(p) and not plugins.is_installed(p) then
+      log.error('Config', string.format("Goldsmith will not work without '%s' installed. See ':checkhealth goldsmith' for more info.", info.name))
+      ok = false
+    end
+  end
+  return ok
+end
+
 local function get_plugins_to_configure()
   return registered_plugins
 end
@@ -139,8 +156,10 @@ end
 
 function M.init()
   require('goldsmith.tools').check()
-  log = require('goldsmith.log')
-  log.init()
+  setup_logging()
+  if not has_requirements() then
+    return
+  end
   for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
   end
@@ -154,10 +173,6 @@ function M.setup_plugin(name)
   if m.has_requirements() then
     m.setup()
   end
-end
-
-local function correct_server_conf_key(name)
-  return servers.lsp_plugin_name(name)
 end
 
 function M.setup_server(server, cf)
@@ -183,9 +198,7 @@ function M.setup_server(server, cf)
   local sm = server_module(name)
   if sm.has_requirements() then
     cf = sm.setup(cf)
-    local sname = correct_server_conf_key(name)
-    log.debug(name, function() return vim.inspect(cf) end)
-    require('lspconfig')[sname].setup(cf)
+    servers.run_setup_function(name, cf)
   else
     log.error('Autoconfig', string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
   end

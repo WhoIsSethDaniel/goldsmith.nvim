@@ -1,5 +1,6 @@
 local tools = require 'goldsmith.tools'
 local plugins = require 'goldsmith.plugins'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -20,12 +21,45 @@ function M.is_server(name)
   return false
 end
 
-function M.lsp_plugin_name(server)
-  if plugins.is_installed 'lspinstall' then
-    return M.info(server).lspinstall_name
-  elseif plugins.is_installed 'lspconfig' then
-    return M.info(server).lspconfig_name
+function M.run_setup_function(server, config)
+  if plugins.is_installed 'lspinstaller' then
+    local installed = require('nvim-lsp-installer').get_installed_servers()
+    for _, s in ipairs(installed) do
+      local sname = M.info(server).lspconfig_name
+      if s.name == sname then
+        log.debug(sname, function()
+          return vim.inspect(config)
+        end)
+        local ok, svr = require('nvim-lsp-installer').get_server(sname)
+        svr:setup(config)
+        return true
+      end
+    end
   end
+
+  if plugins.is_installed 'lspinstall' then
+    local installed = require('lspinstall').installed_servers()
+    local sname = M.info(server).lspinstall_name
+    if vim.tbl_contains(installed, sname) then
+      log.debug(sname, function()
+        return vim.inspect(config)
+      end)
+      require('lspconfig')[sname].setup(config)
+      return true
+    end
+  end
+
+  if plugins.is_installed 'lspconfig' then
+    local sname = M.info(server).lspconfig_name
+    log.debug(sname, function()
+      return vim.inspect(config)
+    end)
+    require('lspconfig')[sname].setup(config)
+    return true
+  end
+
+  log.error('Config', string.format("Failed to setup server '%s'.", server))
+  return false
 end
 
 function M.names()

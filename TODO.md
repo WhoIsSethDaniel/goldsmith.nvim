@@ -29,7 +29,7 @@
 - [x] debugging the plugin
   - [x] debug mode
   - [x] debug console
-- [ ] testing
+- [x] testing
   - [x] make :GoTest a wrapper around vim-test? or vim-ultest? both? none?
   - [x] more docs - including what GoTest does w/o vim-test
   - [x] perhaps 'join' the settings / docs for GoAddTest(s) etc.... with vim-test integration
@@ -42,6 +42,11 @@
   - [x] :GoTestVisit should honor window settings
     - [x] should not depend on goalt
     - [x] need to honor focus
+- [x] verify gs fails gracefully when lspconfig is not installed
+- [ ] support for nvim-lsp-installer  
+  - [x] basic support
+  - [ ] vim doc - better ac doc
+  - [ ] wiki doc - better ac doc
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -55,7 +60,8 @@
   - [ ] :GoTest test-name completion should include all tests in the current package
   - [ ] :GoTestVisit repeated code similar to goalt
   - [ ] keymaps for all
-  - [ ] basic testing should be much better
+  - [ ] 'basic' testing should be much better
+  - [ ] ultest integration
 - [ ] formatting
   - [ ] add gofmt to null-ls
   - [ ] add gofumpt to null-ls

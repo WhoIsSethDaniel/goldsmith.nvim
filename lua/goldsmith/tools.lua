@@ -134,6 +134,20 @@ local TOOLS = {
       return ok
     end,
   },
+  lspinstaller = {
+    name = 'nvim-lsp-installer',
+    required = false,
+    installed = false,
+    plugin = true,
+    location = 'https://github.com/williamboman/nvim-lsp-installer',
+    not_found = {
+      'This plugin may be used to install the LSP servers such as gopls.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'nvim-lsp-installer')
+      return ok
+    end,
+  },
   lspinstall = {
     name = 'nvim-lspinstall',
     required = false,

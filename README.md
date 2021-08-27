@@ -30,6 +30,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
   commands to use vim-test
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
+* support for [lspinstall](https://github.com/kabouzeid/nvim-lspinstall) and [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer)
 
 # Installation
 Install using your favorite plugin manager. 

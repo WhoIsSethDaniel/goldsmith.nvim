@@ -105,6 +105,7 @@ Features currently included:
   commands to use vim-test
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
+* support for lspinstall and nvim-lsp-installer
 
 ================================================================================
 SUPPORTED PLUGINS                                  *goldsmith-supported-plugins*
@@ -121,12 +122,16 @@ Required
   Configure gopls and null-ls
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
+* FixCursorHold
+  Currently required to fix a bug with Neovim and the CursorHold event
 
 Optional
 * nvim-treesitter-textobjects
   Needed if you want treesitter textobjects and treesitter navigation. See
   |goldsmith-text-objects|.
 * nvim-lspinstall
+  For installing language servers. i.e. gopls
+* nvim-lsp-installer
   For installing language servers. i.e. gopls
 * null-ls
   For running extra linters and formatters
@@ -205,6 +210,9 @@ is by passing the configuration for each server to goldsmith.config():
 
     ...
 
+    -- the next two lines are *not* required as long as you do not 
+    -- call lspconfig.setup() or use another setup() for these
+    -- servers. 
     require("goldsmith").setup('gopls')
     require("goldsmith").setup('null')
 <
@@ -249,12 +257,10 @@ you can use either a function or a table for providing the
 configuration.
 
 *goldsmith-configuration-all-defaults*
-A configuration that sets settings to the defaults:
+A configuration that sets settings to the defaults (not guaranteed to
+be entirely up-to-date):
 >
     require("goldsmith").config({
-      mappings = { 
-        disable = false,
-      },
       codelens = {
         show = true
       },
@@ -283,13 +289,18 @@ A configuration that sets settings to the defaults:
       gopls = {},
       gorun = {},
       gotest = {},
+      gotestvisit = {
+        use_current_window = false
+      },
       highlight = {
         current_symbol = true
       },
       jump = {
         use_current_window = true
       },
-      mappings = {},
+      mappings = {
+        enable = true
+      },
       null = {
         disabled = { "staticcheck" }
       },
@@ -305,16 +316,18 @@ A configuration that sets settings to the defaults:
         pos = "right",
         width = 80
       },
-      tests = {},
+      testing = {
+        arguments = {},
+        strategy = "neovim"
+      },
       window = {
         focus = true,
         height = 20,
         pos = "right",
         width = 80
       }
-    })
+    }
 <
-
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
 
@@ -1426,6 +1439,7 @@ the plugins that can be utilized by Goldsmith.
 * supported plugins:
   `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
   `nvim-lspinstall`               https://github.com/kabouzeid/nvim-lspinstall
+  `nvim-lsp-installer`            https://github.com/williamboman/nvim-lsp-installer
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   `null-ls`                       https://github.com/jose-elias-alvarez/null-ls.nvim
