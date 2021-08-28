@@ -385,6 +385,12 @@ Set to "true" to use the current window when loading the alternate file. If
 "false" Goldsmith will create a new window based on your
 |goldsmith-window-settings|.
 
+`goalt.shortcut`                                      *goldsmith-goalt.shortcut*
+
+Default: false
+Set to "true" to use the command shortcut |:A| when you want to switch to the
+alternate file.
+
 TESTING                                             *goldsmith-testing-settings*
 
 `testing.strategy`                                  *goldsmith-testing.strategy*
@@ -535,6 +541,20 @@ Much more on this setting is in |goldsmith-configuration| and at the wiki page:
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
 See |goldsmith-resources| for where `null-ls` can be found.
+
+`gopls.options`                                        *goldsmith-gopls.options*
+
+Default: { '-remote=auto' }
+Pass options to the gopls server process when it starts. This must be a list
+where each field is an option to pass to gopls. To pass no options to gopls set 
+this option to an empty table.
+>
+    gopls = {
+        options = { '-remote=auto', '-logfile=auto' }
+    }
+<
+The example above preserves the default option(s) for gopls and adds an option
+that turns on logging.
 
 `gopls.config`                                          *goldsmith-gopls.config*
 
@@ -882,7 +902,9 @@ tools to install.
 Running :GoInstallBinaries multiple times is fine. Each time it is run it will
 attempt to build and install each tool, updating the tool, if needed.
 
+                                                                            *:A*
                                                                         *:GoAlt*
+:A[!]
 :GoAlt[!]
 
 Switch to the "alternate" file for the current file. 
@@ -897,6 +919,9 @@ If a buffer for the "alternate" file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
 or window will be created if they do not already exist (contingent on the 
 value of |goalt.use_current_window|).
+
+To use the :A command you must set |goldsmith-goalt.shortcut| to true 
+otherwise it will not be defined.
 
                                                                  *:GoFillStruct*
 :GoFillStruct

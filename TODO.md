@@ -26,6 +26,7 @@
  [x] config
   - [x] far better config validation using validate()
 - [x] make consistent the use of disable / enable in the config
+- [x] server cmd needs config to pass options
 - [x] debugging the plugin
   - [x] debug mode
   - [x] debug console
@@ -66,7 +67,6 @@
 - [ ] formatting
   - [ ] add gofmt to null-ls
   - [ ] add gofumpt to null-ls
-- [ ] server cmd needs config to pass options
 - [ ] lots more debug logging
 - [ ] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

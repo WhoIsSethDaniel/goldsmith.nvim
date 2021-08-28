@@ -112,7 +112,7 @@ local SPEC = {
   goget = terminal_spec,
   goinstall = terminal_spec,
   godoc = window_spec,
-  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
+  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' }, shortcut = { false, 'b' } }),
   gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
   terminal = window_validate(false, false, false),
@@ -154,6 +154,7 @@ local SPEC = {
     template_params_dir = { nil, 's' },
   },
   gopls = {
+    options = { { '-remote=auto' }, 't' },
     config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
   },
   null = {

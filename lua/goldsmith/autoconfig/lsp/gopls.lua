@@ -4,6 +4,7 @@
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local tools = require 'goldsmith.tools'
+local config = require 'goldsmith.config'
 
 local M = {}
 
@@ -101,8 +102,12 @@ end
 -- debug options:
 -- '-logfile=auto',
 -- '-rpc.trace'
-local function set_command()
-  return { servers.info('gopls').cmd, '-remote=auto' }
+local function set_command(cmd)
+  if cmd == nil then
+    return vim.tbl_flatten { servers.info('gopls').cmd, config.get('gopls', 'options') }
+  else
+    return cmd
+  end
 end
 
 local function set_filetypes(ft)
@@ -139,9 +144,7 @@ function M.setup(cf)
   cf['flags'] = set_flags(cf['flags'] or {})
   cf['settings'] = set_server_settings(cf['settings'] or {})
   cf['capabilities'] = set_default_capabilities(cf['capabilities'])
-  if cf['cmd'] == nil then
-    cf['cmd'] = set_command()
-  end
+  cf['cmd'] = set_command(cf['cmd'])
   return cf
 end
 
