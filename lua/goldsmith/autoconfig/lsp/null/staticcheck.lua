@@ -34,7 +34,7 @@ function M.has_requirements()
   return tools.is_installed 'staticcheck'
 end
 
-function M.setup()
+function M.setup(user_args)
   return {
     name = M.service_name(),
     method = null.methods.DIAGNOSTICS,
@@ -44,7 +44,7 @@ function M.setup()
       command = cmd(),
       to_stdin = false,
       to_stderr = true,
-      args = { '-f=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') },
+      args = vim.list_extend({ '-f=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }, user_args),
       format = 'line',
       on_output = parse_messages(),
       use_cache = false,

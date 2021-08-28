@@ -49,16 +49,15 @@
   - [x] vim doc - better ac doc
   - [x] wiki doc - better ac doc
   - [x] fix cmd issue
-- [ ] formatting
+- [x] formatting
   - [x] add gofmt to null-ls
   - [x] add gofumpt to null-ls
   - [x] when gofmt/gofumpt are turned on the cmd.format should not query gopls, but only null-ls (except for imports)
   - [x] should disallow turning both on
-  - [ ] need way to pass args
-- [ ] wiki docs
+  - [x] need way to pass args
+- [x] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
-  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] GoCreateConfigs
   - [x] completion (ability to choose subset of files)
   - [x] move from lint
@@ -70,6 +69,7 @@
   - [ ] keymaps for all
   - [ ] 'basic' testing should be much better
   - [ ] ultest integration
+  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] lots more debug logging
 - [ ] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

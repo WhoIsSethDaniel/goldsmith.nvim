@@ -1,4 +1,5 @@
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -10,6 +11,7 @@ function M.configure(client)
   if gofmt == true or gofumpt == true then
     if client.name == 'gopls' then
       -- turn off gopls doc formatting
+      log.debug('Format', 'Turning off gopls formatting')
       caps.document_formatting = false
     elseif client.name == 'null-ls' then
       caps.document_formatting = true

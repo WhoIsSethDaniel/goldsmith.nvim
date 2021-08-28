@@ -62,8 +62,15 @@ function M.setup(cf)
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
     if m.has_requirements() and not M.is_disabled(service) then
-      table.insert(running_services, m.setup())
-      null.register(m.setup())
+      local setup
+      local user_args = config.get('null', service)
+      if type(user_args) == 'table' then
+        setup = m.setup(user_args)
+      else
+        setup = m.setup({})
+      end
+      table.insert(running_services, setup)
+      null.register(setup)
     end
   end
   null.config(cf)

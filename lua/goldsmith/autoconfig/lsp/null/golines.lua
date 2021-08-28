@@ -23,7 +23,7 @@ function M.has_requirements()
   return tools.is_installed 'golines'
 end
 
-function M.setup()
+function M.setup(user_args)
   local conf = get_config()
   return {
     name = M.service_name(),
@@ -32,7 +32,7 @@ function M.setup()
     generator = help.formatter_factory {
       command = cmd(),
       to_stdin = true,
-      args = { string.format('--max-len=%d', conf['max_line_length']) },
+      args = vim.list_extend({ string.format('--max-len=%d', conf['max_line_length']) }, user_args),
     },
   }
 end

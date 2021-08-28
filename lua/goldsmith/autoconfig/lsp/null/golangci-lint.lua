@@ -58,7 +58,7 @@ function M.has_requirements()
   return tools.is_installed 'golangci-lint'
 end
 
-function M.setup()
+function M.setup(user_args)
   local conf = M.get_config()
   return {
     name = M.service_name(),
@@ -69,17 +69,19 @@ function M.setup()
       command = cmd(),
       to_stdin = false,
       args = function()
+        local args
         local cf = conf['config_file']
         if cf ~= nil then
-          return {
+          args = {
             'run',
             '--out-format=json',
             string.format('--config=%s', cf),
             vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'),
           }
         else
-          return { 'run', '--out-format=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
+          args = { 'run', '--out-format=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
         end
+        return vim.list_extend(args, user_args)
       end,
       format = 'raw',
       on_output = parse_messages(),

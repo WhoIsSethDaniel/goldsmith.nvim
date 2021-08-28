@@ -54,7 +54,7 @@ function M.has_requirements()
   return tools.is_installed 'revive'
 end
 
-function M.setup()
+function M.setup(user_args)
   local conf = M.get_config()
   return {
     name = M.service_name(),
@@ -65,11 +65,13 @@ function M.setup()
       command = cmd(),
       to_stdin = false,
       args = function()
+        local args
         if conf['config_file'] == nil then
-          return { '-formatter=json', '$FILENAME' }
+          args = { '-formatter=json', '$FILENAME' }
         else
-          return { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' }
+          args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' }
         end
+        return vim.list_extend(args, user_args)
       end,
       format = 'raw',
       on_output = parse_messages(),

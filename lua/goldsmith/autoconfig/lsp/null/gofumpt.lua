@@ -12,7 +12,7 @@ local function get_config()
 end
 
 function M.service_name()
-  return 'golines'
+  return 'gofumpt'
 end
 
 local function cmd()
@@ -23,8 +23,12 @@ function M.has_requirements()
   return tools.is_installed 'gofumpt'
 end
 
-function M.setup()
-  return { sources = { null.builtins.formatting.gofumpt } }
+function M.setup(user_args)
+  local f = null.builtins.formatting.gofumpt
+  if user_args == nil then
+    return { sources = { f } }
+  end
+  return { sources = { f.with { args = user_args } } }
 end
 
 return M

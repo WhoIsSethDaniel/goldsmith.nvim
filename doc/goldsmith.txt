@@ -521,6 +521,9 @@ configuration file. If you have specified a configuration file that file must
 exist in a location that revive will look for it, otherwise it will error. See 
 |:GoCreateConfigs| for a way to create an initial configuration file.
 
+You can pass extra arguments to `revive` by setting this variable to a list where
+each element in the list is a valid argument to `revive`.
+
 `null.golangci-lint`                              *goldsmith-null.golangci-lint*
 
 Default: true
@@ -530,6 +533,9 @@ file using |golangci-lint.config_file| this file must exist otherwise
 golangci-lint will error. See |:GoCreateConfigs| for a way to create an initial 
 configuration file.
 
+You can pass extra arguments to `golangci-lint` by setting this variable to a list 
+where each element in the list is a valid argument to `golangci-lint`.
+
 `null.staticcheck`                                  *goldsmith-null.staticcheck*
 
 Default: false
@@ -537,11 +543,17 @@ By default `staticcheck` does not run. `staticcheck` already runs as a
 service within `gopls` so having it also run as a separate linter seems redundant
 and it is not recommended. 
 
+You can pass extra arguments to `staticcheck` by setting this variable to a list 
+where each element in the list is a valid argument to `staticcheck`.
+
 `null.golines`                                          *goldsmith-null.golines*
 
 Default: true
 By default `golines` is configured to run. It will determine at what point a 
 line is too long by using |format.max_line_length|.
+
+You can pass extra arguments to `golines` by setting this variable to a list 
+where each element in the list is a valid argument to `golines`.
 
 `null.gofmt`                                              *goldsmith-null.gofmt*
 
@@ -550,12 +562,18 @@ By default `gofmt` is not run by null-ls. Instead formatting is done by `gopls`.
 If you set this to "true" the `gopls` formatting will be turned off (except for
 import organization) and null-ls will perform all formatting.
 
+You can pass extra arguments to `gofmt` by setting this variable to a list 
+where each element in the list is a valid argument to `gofmt`.
+
 `null.gofumpt`                                          *goldsmith-null.gofumpt*
 
 Default: false
 By default `gofumpt` is not run by null-ls. Instead formatting is done by `gopls`. 
 If you set this to "true" the `gopls` formatting will be turned off (except for
 import organization) and null-ls will perform all formatting.
+
+You can pass extra arguments to `gofumpt` by setting this variable to a list 
+where each element in the list is a valid argument to `gofumpt`.
 
 `null.config`                                            *goldsmith-null.config*
 

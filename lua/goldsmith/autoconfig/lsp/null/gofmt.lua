@@ -23,8 +23,12 @@ function M.has_requirements()
   return tools.is_installed 'gofmt'
 end
 
-function M.setup()
-  return { sources = { null.builtins.formatting.gofmt } }
+function M.setup(user_args)
+  local f = null.builtins.formatting.gofmt
+  if user_args == nil then
+    return { sources = { f } }
+  end
+  return { sources = { f.with { args = user_args } } }
 end
 
 return M
