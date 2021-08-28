@@ -88,7 +88,7 @@ end
 local function services()
   local svcs = {}
   for _, s in ipairs(service_defaults()) do
-    svcs[s[1]] = { s[2], is_type(false, 'boolean', 'table'), "expected either true/false or list of arguments" }
+    svcs[s[1]] = { s[2], is_type(false, 'boolean', 'table'), "either true/false or list of arguments" }
   end
   return svcs
 end

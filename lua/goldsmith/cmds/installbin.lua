@@ -6,6 +6,7 @@ local M = {}
 
 function M.complete(arglead, cmdline, cursorPos)
   local names = tools.names { status = 'install' }
+  table.sort(names)
   return table.concat(names, '\n')
 end
 
