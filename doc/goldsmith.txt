@@ -256,6 +256,9 @@ The above configuration is equivalent to the previous example. Again,
 you can use either a function or a table for providing the 
 configuration.
 
+If you provide both configuration in config() and in setup() the setup()
+configuration will be chosen.
+
 *goldsmith-configuration-all-defaults*
 A configuration that sets settings to the defaults (not guaranteed to
 be entirely up-to-date):
@@ -275,6 +278,7 @@ be entirely up-to-date):
         run_on_save = true
       },
       goalt = {
+        shortcut = false,
         use_current_window = false
       },
       gobuild = {},
@@ -286,7 +290,9 @@ be entirely up-to-date):
       },
       goinstall = {},
       ["golangci-lint"] = {},
-      gopls = {},
+      gopls = {
+        options = { "-remote=auto" }
+      },
       gorun = {},
       gotest = {},
       gotestvisit = {
@@ -302,7 +308,13 @@ be entirely up-to-date):
         enable = true
       },
       null = {
-        disabled = { "staticcheck" }
+        disabled = false,
+        gofmt = false,
+        gofumpt = false,
+        ["golangci-lint"] = true,
+        golines = true,
+        revive = true,
+        staticcheck = false
       },
       revive = {},
       tags = {
@@ -496,40 +508,54 @@ LSP SERVERS                                              *goldsmith-lsp-servers*
 
 `null.disabled`                                        *goldsmith-null.disabled*
 
-Default: { "staticcheck" }
-If this setting is set to either "true" or an empty table it means that null-ls
-will not be configured by Goldsmith.
->
-    null = {
-        disabled = true
-    }
-<
-If this setting is a non-empty table each entry should be the name of a service
-that Goldsmith should not configure. Current values for these services are 
-"golines", "staticcheck", "golangci-lint", and "revive".
->
-    null = {
-        disabled = { 'golines' }
-    }
-<
-The above instructs Goldsmith to not configure the `golines` service when
-configuring null-ls.
+Default: false
+If this setting is set to "true" it means that no Go-related services will be run
+by null-ls.
 
+`null.revive`                                            *goldsmith-null.revive*
+
+Default: true
 If `revive` is configured to run it will use a configuration file only if you 
 have specified one using |revive.config_file|. Otherwise it does not use a 
 configuration file. If you have specified a configuration file that file must
 exist in a location that revive will look for it, otherwise it will error. See 
 |:GoCreateConfigs| for a way to create an initial configuration file.
 
+`null.golangci-lint`                              *goldsmith-null.golangci-lint*
+
+Default: true
 If `golangci-lint` is configured to run it will use a configuration file if one
 exists, but will happily run without one. If you have specified a configuration
 file using |golangci-lint.config_file| this file must exist otherwise 
 golangci-lint will error. See |:GoCreateConfigs| for a way to create an initial 
 configuration file.
 
-Also by default `staticcheck` does not run. `staticcheck` already runs as a
+`null.staticcheck`                                  *goldsmith-null.staticcheck*
+
+Default: false
+By default `staticcheck` does not run. `staticcheck` already runs as a
 service within `gopls` so having it also run as a separate linter seems redundant
 and it is not recommended. 
+
+`null.golines`                                          *goldsmith-null.golines*
+
+Default: true
+By default `golines` is configured to run. It will determine at what point a 
+line is too long by using |format.max_line_length|.
+
+`null.gofmt`                                              *goldsmith-null.gofmt*
+
+Default: false
+By default `gofmt` is not run by null-ls. Instead formatting is done by `gopls`. 
+If you set this to "true" the `gopls` formatting will be turned off (except for
+import organization) and null-ls will perform all formatting.
+
+`null.gofumpt`                                          *goldsmith-null.gofumpt*
+
+Default: false
+By default `gofumpt` is not run by null-ls. Instead formatting is done by `gopls`. 
+If you set this to "true" the `gopls` formatting will be turned off (except for
+import organization) and null-ls will perform all formatting.
 
 `null.config`                                            *goldsmith-null.config*
 

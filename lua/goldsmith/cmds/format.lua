@@ -2,6 +2,21 @@ local config = require 'goldsmith.config'
 
 local M = {}
 
+function M.configure(client)
+  local caps = client.resolved_capabilities
+  local gofmt = not config.service_is_disabled('gofmt')
+  local gofumpt = not config.service_is_disabled('gofumpt')
+
+  if gofmt == true or gofumpt == true then
+    if client.name == 'gopls' then
+      -- turn off gopls doc formatting
+      caps.document_formatting = false
+    elseif client.name == 'null-ls' then
+      caps.document_formatting = true
+    end
+  end
+end
+
 function M.run(uncond)
   M.run_lsp_format(uncond)
   M.run_organize_imports(uncond)

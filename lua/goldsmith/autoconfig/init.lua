@@ -11,9 +11,6 @@ local server_data = {}
 -- yes, currently manually populated
 local registered_plugins = { 'treesitter-textobjects' }
 
-local on_attach = function(client, bufnr)
-end
-
 local function server_module(server)
   return require(string.format('goldsmith.autoconfig.lsp.%s', servers.info(server).module_name))
 end
@@ -43,7 +40,7 @@ local function get_server_conf(server)
 end
 
 local function setup_logging()
-  log = require('goldsmith.log')
+  log = require 'goldsmith.log'
   log.init()
 end
 
@@ -52,7 +49,13 @@ local function has_requirements()
   for _, p in ipairs(plugins.names()) do
     local info = plugins.info(p)
     if plugins.is_required(p) and not plugins.is_installed(p) then
-      log.error('Config', string.format("Goldsmith will not work without '%s' installed. See ':checkhealth goldsmith' for more info.", info.name))
+      log.error(
+        'Config',
+        string.format(
+          "Goldsmith will not work without '%s' installed. See ':checkhealth goldsmith' for more info.",
+          info.name
+        )
+      )
       ok = false
     end
   end
@@ -100,6 +103,15 @@ local function all_configured_servers_for_filetype(type)
     end
   end
   return s
+end
+
+local function set_on_attach(user_on_attach)
+  return function(client, bufnr)
+    if user_on_attach ~= nil then
+      user_on_attach(client, bufnr)
+    end
+    require('goldsmith').client_configure(client)
+  end
 end
 
 local set_root_dir = function(fname)
@@ -190,9 +202,7 @@ function M.setup_server(server, cf)
     log.error('Autoconfig', string.format("Cannot determine how to configure '%s'", server))
     return
   end
-  if cf['on_attach'] == nil then
-    cf['on_attach'] = on_attach
-  end
+  cf['on_attach'] = set_on_attach(cf['on_attach'])
   if cf['root_dir'] == nil then
     cf['root_dir'] = set_root_dir
   end
@@ -201,17 +211,19 @@ function M.setup_server(server, cf)
     cf = sm.setup(cf)
     servers.run_setup_function(name, cf)
   else
-    log.error('Autoconfig', string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
+    log.error(
+      'Autoconfig',
+      string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
+    )
     return
   end
   if not sm.is_minimum_version() then
-    local mv = servers.info(server).minimum_version
     log.error(
       'Autoconfig',
       string.format(
         "Server '%s' is not at the minimum required version (%s); some things may not work correctly",
         server,
-        mv
+        servers.info(server).minimum_version
       )
     )
   end

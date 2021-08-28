@@ -63,6 +63,27 @@ local TOOLS = {
       return string.match(out, 'v([%d%.]+)')
     end,
   },
+  gofmt = {
+    required = false,
+    location = "in your Go distribution.",
+    tag = 'latest',
+    exe = 'gofmt',
+    null = true,
+    not_found = { 'This is the standard code formatter for Go.' }
+  },
+  gofumpt = {
+    status = 'install',
+    location = 'mvdan.cc/gofumpt',
+    required = false,
+    tag = 'latest',
+    exe = 'gofumpt',
+    null = true,
+    not_found = { 'This formats Go code the standard way, but a little more strictly.'  },
+    get_version = function(cmd)
+      local out = vim.fn.system(cmd .. ' -version')
+      return string.match(out, 'v([%d%.]+)')
+    end,
+  },
   impl = {
     status = 'install',
     location = 'github.com/josharian/impl',

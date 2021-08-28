@@ -72,11 +72,11 @@ local function get_versioned_server_settings()
       settings[var] = m[1]
     end
   end
-  return settings
+  return { gopls = settings }
 end
 
 local function set_server_settings(settings)
-  return vim.tbl_deep_extend('keep', get_versioned_server_settings(), settings, SETTINGS)
+  return vim.tbl_deep_extend('keep', settings, get_versioned_server_settings(), SETTINGS)
 end
 
 local function set_flags(flags)
@@ -106,7 +106,7 @@ local function set_command(cmd)
   if cmd == nil then
     return vim.tbl_flatten { servers.info('gopls').cmd, config.get('gopls', 'options') }
   else
-    return cmd
+    return vim.tbl_flatten{ cmd, config.get('gopls', 'options') }
   end
 end
 

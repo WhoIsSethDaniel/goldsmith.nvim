@@ -66,6 +66,33 @@ local function is_positive(allow_nil)
   end
 end
 
+local function service_defaults()
+  return {
+    { 'staticcheck', false },
+    { 'golines', true },
+    { 'golangci-lint', true },
+    { 'revive', true },
+    { 'gofmt', false },
+    { 'gofumpt', false },
+  }
+end
+
+local function valid_services()
+  local services = {}
+  for _, v in service_defaults() do
+    table.insert(services, v[1])
+  end
+  return services
+end
+
+local function services()
+  local svcs = {}
+  for _, v in ipairs(service_defaults()) do
+    svcs[v[1]] = { v[2], 'b' }
+  end
+  return svcs
+end
+
 local function window_validate(allow_nil, nil_default, focus)
   local function def(d)
     if nil_default then
@@ -157,28 +184,12 @@ local SPEC = {
     options = { { '-remote=auto' }, 't' },
     config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
   },
-  null = {
-    config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
-    disabled = {
-      { 'staticcheck' },
-      function(v)
-        if type(v) == 'boolean' then
-          return true
-        end
-        if type(v) ~= 'table' then
-          return false
-        end
-        for _, s in ipairs(v) do
-          local vals = { 'staticcheck', 'golines', 'golangci-lint', 'revive' }
-          if not vim.tbl_contains(vals, s) then
-            return false, s
-          end
-        end
-        return true
-      end,
-      'either boolean or valid list of services',
-    },
-  },
+  null = vim.tbl_deep_extend(
+    'error',
+    { config = { nil, is_type(true, 'table', 'function'), 'expected table or function' } },
+    { disabled = { false, 'b' } },
+    services()
+  ),
 }
 
 local function defaults()
@@ -275,6 +286,14 @@ local function validate(v)
   end
 end
 
+local function post_validate()
+  local c = _config
+  if c.null.gofmt == true and c.null.gofumpt == true then
+    log_error('Config', 'null.gofmt and null.gofumpt should not both be turned on. Turning off gofmt.')
+    M.set('null', 'gofmt', false)
+  end
+end
+
 local function all_config_keys()
   return vim.tbl_keys(defaults())
 end
@@ -287,6 +306,11 @@ local function validate_config()
   end
 
   validate(build_validation(_config))
+  post_validate()
+end
+
+function M.service_is_disabled(name)
+  return not M.get('null', name)
 end
 
 function M.setup(user_config)
@@ -309,6 +333,9 @@ function M.set(grp, key, val)
 end
 
 function M.dump()
+  require('goldsmith.log').debug('config', function()
+    return vim.inspect(defaults())
+  end)
   require('goldsmith.log').debug('config', function()
     return vim.inspect(_config)
   end)

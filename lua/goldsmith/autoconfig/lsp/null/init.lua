@@ -49,16 +49,11 @@ function M.running_services()
 end
 
 function M.is_disabled(service)
-  local disabled = config.get('null', 'disabled')
-  if type(disabled) == 'boolean' and disabled == true then
+  if config.get('null', 'disabled') == true then
     return true
-  elseif type(disabled) == 'table' then
-    if vim.tbl_isempty(disabled) then
-      return true
-    end
-    if vim.tbl_contains(disabled, service) then
-      return true
-    end
+  end
+  if service ~= nil then
+    return config.service_is_disabled(service)
   end
   return false
 end
@@ -68,10 +63,10 @@ function M.setup(cf)
     local m = service_module(service)
     if m.has_requirements() and not M.is_disabled(service) then
       table.insert(running_services, m.setup())
+      null.register(m.setup())
     end
   end
   null.config(cf)
-  null.register(running_services)
   return cf
 end
 
