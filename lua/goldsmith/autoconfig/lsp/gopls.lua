@@ -82,12 +82,15 @@ local function set_flags(flags)
   return vim.tbl_deep_extend('keep', flags, FLAGS)
 end
 
-local function set_default_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- if the user wants to use postfixCompletions this is REQUIRED
+local function set_default_capabilities(cap)
+  local capabilities = cap
+  if capabilities == nil then
+    capabilities = vim.lsp.protocol.make_client_capabilities()
+  end
+  -- if the user wants to use postfixCompletions snippetSupport is REQUIRED
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.preselectSupport = true
-  capabilities.textDocument.completion.completionItem.commitCharacterSupport = true
+  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
   return capabilities
 end
 
@@ -135,11 +138,9 @@ function M.setup(cf)
   cf['filetypes'] = set_filetypes(cf['filetypes'] or {})
   cf['flags'] = set_flags(cf['flags'] or {})
   cf['settings'] = set_server_settings(cf['settings'] or {})
+  cf['capabilities'] = set_default_capabilities(cf['capabilities'])
   if cf['cmd'] == nil then
     cf['cmd'] = set_command()
-  end
-  if cf['capabilities'] == nil then
-    cf['capabilities'] = set_default_capabilities()
   end
   return cf
 end

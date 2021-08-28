@@ -43,10 +43,11 @@
     - [x] should not depend on goalt
     - [x] need to honor focus
 - [x] verify gs fails gracefully when lspconfig is not installed
-- [ ] support for nvim-lsp-installer  
+- [x] support for nvim-lsp-installer  
   - [x] basic support
-  - [ ] vim doc - better ac doc
-  - [ ] wiki doc - better ac doc
+  - [x] vim doc - better ac doc
+  - [x] wiki doc - better ac doc
+  - [x] fix cmd issue
 - [ ] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -65,6 +66,7 @@
 - [ ] formatting
   - [ ] add gofmt to null-ls
   - [ ] add gofumpt to null-ls
+- [ ] server cmd needs config to pass options
 - [ ] lots more debug logging
 - [ ] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

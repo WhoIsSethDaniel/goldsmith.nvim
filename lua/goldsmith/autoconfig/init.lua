@@ -188,6 +188,7 @@ function M.setup_server(server, cf)
   end
   if name == nil then
     log.error('Autoconfig', string.format("Cannot determine how to configure '%s'", server))
+    return
   end
   if cf['on_attach'] == nil then
     cf['on_attach'] = on_attach
@@ -201,6 +202,7 @@ function M.setup_server(server, cf)
     servers.run_setup_function(name, cf)
   else
     log.error('Autoconfig', string.format("Server '%s' does not have all needed requirements and cannot be configured", server))
+    return
   end
   if not sm.is_minimum_version() then
     local mv = servers.info(server).minimum_version

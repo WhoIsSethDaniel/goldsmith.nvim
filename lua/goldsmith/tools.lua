@@ -278,16 +278,21 @@ function M.find_bin(program, info)
       li_installed = li.is_server_installed(info.lspinstall_name)
     end
     if li_installed then
-      TOOLS[program].installed = true
-      TOOLS[program].via = 'lspinstall'
       local cmd = string.format('%s/%s', li_util.install_path(info.lspinstall_name), info.exe)
       if vim.fn.filereadable(cmd) ~= 0 then
+        TOOLS[program].via = 'lspinstall'
         return cmd
       end
-    else
-      TOOLS[program].installed = true
-      TOOLS[program].via = 'user installation'
     end
+    if plugins.is_installed('lspinstaller') then
+      local _, s = require'nvim-lsp-installer'.get_server(program)
+      local cmd = s._default_options.cmd[1]
+      if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
+        TOOLS[program].via = 'lsp-installer'
+        return cmd
+      end
+    end
+    TOOLS[program].via = 'user installation'
   end
   local cmd = vim.fn.exepath(TOOLS[program].exe)
   if cmd == '' then
@@ -306,6 +311,9 @@ function M.check(names)
       TOOLS[tool].version = 'unknown'
     else
       TOOLS[tool].cmd = M.find_bin(tool, TOOLS[tool])
+      if TOOLS[tool].cmd ~= nil then
+        TOOLS[tool].installed = true
+      end
       if TOOLS[tool].cmd == nil or TOOLS[tool].get_version == nil then
         TOOLS[tool].version = 'unknown'
       else
