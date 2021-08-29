@@ -25,10 +25,10 @@ function M.complete(arglead, cmdline, cursorPos)
   return table.concat(f, '\n')
 end
 
-local function parse_args(...)
+local function parse_args(args)
   local f
   local opt = ''
-  for i, a in ipairs { ... } do
+  for i, a in ipairs(args) do
     if a == '-p' or a == '-e' then
       if opt ~= '' then
         log.error('Tests', '-p and -e may not be used together')
@@ -40,7 +40,7 @@ local function parse_args(...)
         opt = '-exported'
       end
     else
-      if i ~= #... then
+      if i ~= #args then
         log.error('Tests', 'too many arguments to :GoAddTest')
         return
       else
@@ -52,8 +52,8 @@ local function parse_args(...)
   return opt, f
 end
 
-function M.add(...)
-  local opt, f = parse_args(...)
+function M.add(args)
+  local opt, f = parse_args(args)
   if opt == nil then
     return
   end
@@ -119,7 +119,7 @@ function M.run(...)
       if ok then
         print 'Test(s) generated.'
       else
-        log.error('Tests', 'Failed to generate tests. %s (code %d)', vim.inspect(out), code)
+        log.error('Tests', string.format('Failed to generate tests. %s (code %d)', vim.inspect(out), code))
       end
     end,
   })

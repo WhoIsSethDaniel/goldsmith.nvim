@@ -15,8 +15,7 @@ function M.tidy()
   cmds.tidy()
 end
 
-function M.replace(...)
-  local args = { ... }
+function M.replace(args)
   local replace, mod
   if #args < 1 then
     log.error(nil, 'Too few arguments to :GoModReplace')

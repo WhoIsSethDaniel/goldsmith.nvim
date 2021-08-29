@@ -57,7 +57,7 @@ function M.doc_complete(arglead, cmdline, cursorPos)
   end
 end
 
-function M.run(type, ...)
+function M.run(type, args)
   local cmd_cfg = config.get 'godoc' or {}
   local window_cfg = config.get 'window'
   local cfg = vim.tbl_deep_extend(
@@ -67,13 +67,9 @@ function M.run(type, ...)
     { create = true, title = '[Go Documentation]', reuse = M.buf_nr }
   )
 
-  local args = ''
-  for _, a in ipairs { ... } do
-    args = args .. ' ' .. a
-  end
   local out = ''
   job.run(
-    string.format('go %s %s', type, args),
+    string.format('go %s %s', type, table.concat(args, ' ')),
     vim.tbl_deep_extend('force', cfg, {
       stderr_buffered = true,
       stdout_buffered = true,

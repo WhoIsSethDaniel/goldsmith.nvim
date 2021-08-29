@@ -10,12 +10,12 @@ function M.complete(arglead, cmdline, cursorPos)
   return table.concat(names, '\n')
 end
 
-function M.run(...)
+function M.run(args)
   local install = {}
-  if ... ~= nil then
+  if not vim.tbl_isempty(args) then
     local possibles = tools.names { status = 'install' }
     for _, k in ipairs(possibles) do
-      for _, n in ipairs { ... } do
+      for _, n in ipairs(args) do
         if k == n then
           table.insert(install, k)
           break

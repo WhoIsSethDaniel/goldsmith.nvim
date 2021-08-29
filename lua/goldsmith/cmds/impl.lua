@@ -45,12 +45,11 @@ function M.complete(arglead, cmdline, cursorPos)
   return table.concat(pkgs, '\n')
 end
 
-function M.run(...)
+function M.run(args)
   local cfg = config.get 'goimpl' or {}
 
   local recv
   local iface
-  local args = { ... }
   local n = #args
   if n > 3 then
     log.error(nil, 'Too many arguments. :GoImpl <recv> <iface>')

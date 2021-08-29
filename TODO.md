@@ -55,6 +55,7 @@
   - [x] when gofmt/gofumpt are turned on the cmd.format should not query gopls, but only null-ls (except for imports)
   - [x] should disallow turning both on
   - [x] need way to pass args
+- [x] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [x] wiki docs
   - [x] different configuration items / configurations
   - [x] why certain things are *not* part of Goldsmith: debugging, diagnostics, highlighting, etc...
@@ -71,7 +72,6 @@
   - [ ] ultest integration
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] lots more debug logging
-- [ ] replace all uses of script-scoped vimscript with {<f-args>} in command call
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (w/plenary?)

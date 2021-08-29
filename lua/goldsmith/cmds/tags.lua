@@ -5,7 +5,7 @@ local log = require 'goldsmith.log'
 
 local M = {}
 
-local function run(action, location, ...)
+function M.run(action, location, args)
   local range
   if location.count > -1 then
     range = string.format('-line %d,%d', location.line1, location.line2)
@@ -15,7 +15,7 @@ local function run(action, location, ...)
   local tags = {}
   local options = {}
   local i = 1
-  for _, ko in ipairs(...) do
+  for _, ko in ipairs(args) do
     for w in string.gmatch(ko, '%w+') do
       if tags[i] ~= nil then
         table.insert(options, string.format('%s=%s', tags[i], w))
@@ -68,14 +68,6 @@ local function run(action, location, ...)
       end
     end,
   })
-end
-
-function M.add(line1, line2, count, ...)
-  run('add', { line1 = line1, line2 = line2, count = count }, ...)
-end
-
-function M.remove(line1, line2, count, ...)
-  run('remove', { line1 = line1, line2 = line2, count = count }, ...)
 end
 
 return M

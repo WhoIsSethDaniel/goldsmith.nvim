@@ -56,7 +56,7 @@ end
 
 -- :GoRename <arg>
 function M.rename(new)
-  vim.lsp.buf.rename(new)
+  vim.lsp.buf.rename(new[1])
 end
 
 -- :GoCodeAction

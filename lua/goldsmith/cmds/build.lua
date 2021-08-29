@@ -3,13 +3,9 @@ local config = require 'goldsmith.config'
 
 local M = {}
 
-function M.run(...)
+function M.run(args)
   local cmd_cfg = config.get 'gobuild' or {}
   local terminal_cfg = config.get 'terminal'
-  local args = ''
-  for _, a in ipairs { ... } do
-    args = string.format('%s %s', args, a)
-  end
 
   local b = vim.api.nvim_get_current_buf()
 
@@ -18,7 +14,7 @@ function M.run(...)
     return
   end
 
-  local cmd = vim.fn.expandcmd(string.format("%s %s", makeprg, args))
+  local cmd = vim.fn.expandcmd(string.format("%s %s", makeprg, table.concat(args, ' ')))
 
   local lines = {}
   local on_event = function(id, data, event)

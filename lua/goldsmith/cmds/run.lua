@@ -3,17 +3,13 @@ local config = require 'goldsmith.config'
 
 local M = {}
 
-function M.run(...)
+function M.run(args)
   local cmd_cfg = config.get 'gorun' or {}
   local terminal_cfg = config.get 'terminal'
-  local args = ''
-  for _, a in ipairs { ... } do
-    args = string.format('%s %s', args, a)
+  if #args == 0 then
+    args = { '.' }
   end
-  if args == '' then
-    args = '.'
-  end
-  local cmd = string.format('go run %s', args)
+  local cmd = string.format('go run %s', table.concat(args, ' '))
   job.run(cmd, vim.tbl_deep_extend('force', terminal_cfg, cmd_cfg, { terminal = true }))
 end
 

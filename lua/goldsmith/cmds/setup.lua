@@ -19,9 +19,9 @@ function M.complete()
   return table.concat(names, '\n')
 end
 
-function M.create_configs(overwrite, ...)
+function M.create_configs(overwrite, args)
   local files = {}
-  for _, f in ipairs(... or { ... }) do
+  for _, f in ipairs(args) do
     if not vim.tbl_contains(files, f) then
       table.insert(files, f)
     end
