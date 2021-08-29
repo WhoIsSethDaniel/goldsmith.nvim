@@ -49,4 +49,8 @@ function M.alternate_file_name(name)
   end
 end
 
+function M.relative_to_cwd(name)
+  return './' .. vim.fn.fnamemodify(name, ':h:.')
+end
+
 return M

@@ -75,6 +75,7 @@ end
 function M.init()
   local d = config.get('debug', 'enable')
   M.error = log(d, 'error')
+  M.warn = log(d, 'warn')
   M.info = log(d, 'info')
   M.debug = log(d, 'debug')
   M.is_debug = function()

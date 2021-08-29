@@ -1,13 +1,20 @@
-- [ ] basic testing improvement
+- [ ] native testing improvement
+  - [x] config for vim-test or native
+  - [ ] should reuse terminal window, if available
+  - [ ] need warn level log w/color
+  - [ ] errorformat
+  - [ ] quickfix (or location list?)
+  - [ ] terminal or job strategy
 - [ ] vim-test testing
   - [ ] :GoTest test-name completion should include all tests in the current package
   - [ ] :GoTestVisit repeated code similar to goalt
-  - [ ] keymaps for all
 - [ ] start a new project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] testing
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] ultest integration
+  - [ ] maps for all testing commands
+- [ ] when config fails gs should not continue, if possible
 - [ ] user defined keymaps using GS config
 - [ ] lots more debug logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

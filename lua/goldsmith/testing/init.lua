@@ -1,12 +1,11 @@
-local tools = require 'goldsmith.tools'
 local wb = require 'goldsmith.winbuf'
 local fs = require 'goldsmith.fs'
 local ts = require 'goldsmith.treesitter'
 local go = require 'goldsmith.go'
+local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
-
-local default_testing_mod = 'basic'
 
 goldsmith_test_complete = function()
   return M.test_complete()
@@ -22,7 +21,7 @@ function M.package_complete()
   for _, p in ipairs(l) do
     local d = vim.fn.fnamemodify(p.Dir, ':.')
     if d ~= vim.fn.getcwd() then
-      table.insert(pkgs, './'..d)
+      table.insert(pkgs, './' .. d)
     end
   end
   table.sort(pkgs)
@@ -55,20 +54,13 @@ function M.setup()
     return
   end
 
-  local testing_plugins = tools.names { testing = true }
-  table.sort(testing_plugins, function(a, b)
-    return tools.info(a).weight > tools.info(b).weight
-  end)
-
-  local mod_name = default_testing_mod
-  for _, tp in ipairs(testing_plugins) do
-    if tools.is_installed(tp) then
-      mod_name = tools.info(tp).name
-      break
-    end
-  end
-
+  local mod_name = config.get('testing', 'runner')
   local m = require(string.format('goldsmith.testing.%s', mod_name))
+  if not m.has_requirements() then
+    log.warn('Testing', string.format("Requirements for %s are not met. Setting testing to 'native'.", mod_name))
+    mod_name = 'native'
+    m = require(string.format('goldsmith.testing.%s', mod_name))
+  end
   M.testing_module = function()
     return m
   end

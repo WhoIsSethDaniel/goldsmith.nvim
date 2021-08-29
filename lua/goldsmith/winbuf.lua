@@ -84,10 +84,10 @@ end
 function M.create_test_file_buffer(f)
   local b = M.find_buffer_by_name(f)
   if b == nil then
-    b = vim.api.nvim_create_buf(true, false)
+    b = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_option(b, 'bufhidden', 'hide')
     vim.api.nvim_buf_call(b, function()
-      vim.cmd(string.format('e! %s', f))
+      vim.cmd(string.format('silent! e! %s', f))
     end)
   end
   return b

@@ -88,7 +88,7 @@ end
 local function services()
   local svcs = {}
   for _, s in ipairs(service_defaults()) do
-    svcs[s[1]] = { s[2], is_type(false, 'boolean', 'table'), "either true/false or list of arguments" }
+    svcs[s[1]] = { s[2], is_type(false, 'boolean', 'table'), 'either true/false or list of arguments' }
   end
   return svcs
 end
@@ -175,6 +175,7 @@ local SPEC = {
   },
   testing = {
     strategy = { 'neovim', 's' },
+    runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },
     arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
