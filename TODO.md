@@ -62,7 +62,7 @@
 - [ ] GoCreateConfigs
   - [x] completion (ability to choose subset of files)
   - [x] move from lint
-  - [ ] instead of 'complete' listing filenames, list service instead
+  - [x] instead of 'complete' listing filenames, list service instead
   - [ ] ability to have templates? or other files instead of the builtin ones
 - [ ] testing
   - [ ] :GoTest test-name completion should include all tests in the current package

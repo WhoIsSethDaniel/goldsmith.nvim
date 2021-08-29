@@ -83,6 +83,10 @@ function M.get_config()
   return config.get 'revive' or {}
 end
 
+function M.config_file()
+  return M.get_config()['config_file']
+end
+
 function M.config_file_contents()
   return [[
 # for more information about revive and its

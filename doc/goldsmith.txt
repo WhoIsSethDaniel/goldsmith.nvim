@@ -1118,7 +1118,7 @@ See also |codelens.show|
 Run the current codelens that is displaying on the current line.
 
                                                               *:GoCreateConfigs*
-:GoCreateConfigs[!] [file] ...
+:GoCreateConfigs[!] [service] ...
 
 This is meant as a convenience command to be used when first starting a project.
 This command creates the recommended configuration files for all linters, 
@@ -1133,15 +1133,10 @@ other than nil.
 This command will not overwrite any file in the current working directory that
 already exists unless you provide the "!". 
 
-You can optionally provide the name of the config file to generate, or a list 
-of names of config files to generate. Tab-completion may be used to discover 
-the name(s) of configuration files that can be written. Names of configuration 
-files that are not recognized will be ignored.
-
-After you have created the file(s) you can restart the server that is running 
-the given services using the :LspRestart command. If you do not restart the 
-server these services will not run with the created configuration file. NOTE:
-:LspRestart does not always work. You may need to restart Neovim.
+You can optionally provide the name of the service you wish to generate a 
+configuration file for, or a list of such services. Tab-completion may be used 
+to discover the name(s) of services that have configuration files that can be 
+written. Names of services that are not recognized will be ignored.
 
 Currently there are two configuration files that are created, one for `revive` 
 and one for `golangci-lint`.

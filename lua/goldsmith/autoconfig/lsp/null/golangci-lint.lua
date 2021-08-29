@@ -93,6 +93,10 @@ function M.get_config()
   return config.get 'golangci-lint' or {}
 end
 
+function M.config_file()
+  return M.get_config()['config_file']
+end
+
 function M.config_file_contents()
   return [[
 # for information on each linter see:
