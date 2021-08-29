@@ -88,8 +88,8 @@ Features currently included:
 * manually update imports using the :GoImports command
 * use :checkhealth to see if your Goldsmith setup should work correctly
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save
-* run extra linters and/or formatters using null-ls: currently has support for golines, revive, 
-  golangci-lint, and staticcheck
+* run extra linters and/or formatters using null-ls: currently has support for golines, gofmt, gofumpt,
+  revive, golangci-lint, and staticcheck
 * see the source of the diagnostic when running extra linters
 * Goldsmith can completely configure everything for you, if you want
 * generate test stubs automatically using `gotests`
