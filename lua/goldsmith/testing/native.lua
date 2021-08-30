@@ -4,8 +4,67 @@ local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
+local go = require 'goldsmith.go'
+local t = require 'goldsmith.testing'
 
 local M = {}
+
+local function errorformat()
+  local goroot = go.env 'goroot'
+  local indent = '%\\\\%(    %\\\\)'
+  local format = {}
+
+  -- this entire errorformat is a shameless steal from vim-go;
+  -- it has taken me many weeks to figure out what it is doing and
+  -- why it does it
+  table.insert(format, '%-G=== RUN   %.%#')
+  table.insert(format, ',%-G' .. indent .. '%#--- PASS: %.%#')
+  table.insert(format, ',%G--- FAIL: %\\\\%(Example%\\\\)%\\\\@=%m (%.%#)')
+
+  table.insert(format, ',%G' .. indent .. '%#--- FAIL: %m (%.%#)')
+  table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: %m')
+
+  table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: ')
+
+  table.insert(format, ',%G' .. indent .. '%#%\\t%\\{2}%m')
+  table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: %m')
+  table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: ')
+
+  table.insert(format, ',%A' .. indent .. '%\\+%f:%l: %m')
+  table.insert(format, ',%A' .. indent .. '%\\+%f:%l: ')
+  table.insert(format, ',%G' .. indent .. '%\\{2\\,}%m')
+
+  table.insert(format, ',%+Gpanic: test timed out after %.%\\+')
+
+  table.insert(format, ',%+Afatal error: %.%# [recovered]')
+  table.insert(format, ',%+Apanic: %.%# [recovered]')
+  table.insert(format, ',%+Afatal error: %.%#')
+  table.insert(format, ',%+Apanic: %.%#')
+
+  table.insert(format, ',%-Cgoroutine %\\d%\\+ [running]:')
+  table.insert(format, ',%-C%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
+  table.insert(format, ',%Z%\\t%f:%l +0x%[0-9A-Fa-f]%\\+')
+
+  table.insert(format, ',%-Gruntime.goparkunlock(%.%#')
+  table.insert(format, ',%-G%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+')
+
+  table.insert(format, ',%-G%\\t%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
+
+  table.insert(format, ',%-Cexit status %[0-9]%\\+')
+
+  table.insert(format, ',%-CFAIL%\\t%.%#')
+
+  table.insert(format, ',%A%f:%l:%c: %m')
+  table.insert(format, ',%A%f:%l: %m')
+
+  table.insert(format, ',%-C%\\tpanic: %.%#')
+  table.insert(format, ',%G%\\t%m')
+
+  table.insert(format, ',%-C%.%#')
+  table.insert(format, ',%-G%.%#')
+
+  return format
+end
 
 function M.has_requirements()
   return true
@@ -15,7 +74,7 @@ function M.setup_command(args)
   -- for future use
 end
 
-local function get_last_file(f)
+local function set_last_file(f)
   if fs.is_test_file(f) then
     return f
   else
@@ -65,10 +124,11 @@ do
     },
     run = {
       function()
-        last_file = get_last_file(cf)
+        last_file = set_last_file(cf)
         if #args > 0 then
           local new = {}
           table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
+          table.insert(new, fs.relative_to_cwd(cf) .. '/...')
           args = new
           return true
         else
@@ -79,7 +139,7 @@ do
     test = {
       function()
         table.insert(args, fs.relative_to_cwd(cf))
-        last_file = get_last_file(cf)
+        last_file = set_last_file(cf)
         return true
       end,
     },
@@ -102,6 +162,7 @@ do
               if vim.tbl_contains(possible_test_names, t.name) then
                 match = true
                 table.insert(args, string.format('-run=%s', t.name))
+                table.insert(args, fs.relative_to_cwd(cf))
                 break
               end
             end
@@ -117,6 +178,7 @@ do
           local cfunc = ts.get_current_function_name()
           if cfunc ~= nil then
             table.insert(args, string.format('-run=%s', cfunc))
+            table.insert(args, fs.relative_to_cwd(cf))
           else
             log.warn('Test', 'Cannot determine current function.')
             return false
@@ -125,7 +187,7 @@ do
           log.warn('Test', 'Cannot determine type of file.')
           return false
         end
-        last_file = get_last_file(cf)
+        last_file = set_last_file(cf)
         return true
       end,
     },
@@ -162,17 +224,45 @@ do
           cmd = vim.list_extend({ 'go', 'test' }, vim.tbl_flatten { config.get('testing', 'arguments'), args })
         end
         last_cmd = cmd
-        job.run(cmd, vim.tbl_deep_extend('force', config.get 'gotest', config.get 'terminal', { terminal = true }), {
-          stdout_buffered = true,
-          stderr_buffered = true,
-          on_error = function(id, data)
-            -- empty
-          end,
-          on_stdout = function(id, data)
-            -- empty
-          end,
-          on_exit = function() end,
-        })
+        local out = {}
+        local efm = table.concat(errorformat(), '')
+        local opts = {}
+        if t.testing_strategy() == 'native_terminal' then
+          opts = vim.tbl_deep_extend('force', config.get 'testing', config.get 'terminal', { terminal = true })
+        end
+        job.run(
+          cmd,
+          vim.tbl_deep_extend('force', opts, {
+            stdout_buffered = true,
+            stderr_buffered = true,
+            on_error = function(id, data)
+              if data then
+                vim.list_extend(out, data)
+              end
+            end,
+            on_stdout = function(id, data)
+              if data then
+                vim.list_extend(out, data)
+              end
+            end,
+            on_exit = function()
+              -- only needed for terminal mode, really
+              out = vim.tbl_map(function(l)
+                return string.gsub(l, '\r', '')
+              end, out)
+              log.info('Testing', string.format("'%s': command finished", table.concat(cmd, ' ')))
+              vim.fn.setqflist({}, ' ', {
+                title = cmd,
+                lines = out,
+                efm = efm,
+              })
+              vim.api.nvim_command 'doautocmd QuickFixCmdPost'
+              if #out > 0 then
+                vim.api.nvim_command 'copen'
+              end
+            end,
+          })
+        )
       end
     end
   end

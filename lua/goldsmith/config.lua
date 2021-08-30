@@ -135,7 +135,6 @@ local SPEC = {
   },
   gobuild = terminal_spec,
   gorun = terminal_spec,
-  gotest = terminal_spec,
   goget = terminal_spec,
   goinstall = terminal_spec,
   godoc = window_spec,
@@ -173,14 +172,15 @@ local SPEC = {
   revive = {
     config_file = { nil, 's' },
   },
-  testing = {
-    strategy = { 'neovim', 's' },
+  testing = vim.tbl_deep_extend(
+    'error',
+    window_validate(false, false, false), {
+    strategy = { 'native_terminal', 's' },
     runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },
     arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
-    template_params_dir = { nil, 's' },
-  },
+    template_params_dir = { nil, 's' } }),
   gopls = {
     options = { { '-remote=auto' }, 't' },
     config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },

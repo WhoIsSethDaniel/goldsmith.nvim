@@ -15,6 +15,21 @@ goldsmith_test_package_complete = function()
   return M.package_complete()
 end
 
+function M.testing_strategy()
+  local strategy = config.get('testing', 'strategy')
+  local runner = config.get('testing', 'runner')
+  if runner == 'native' then
+    if strategy ~= 'native_background' and strategy ~= 'native_terminal' then
+      return 'native_terminal'
+    end
+  elseif runner == 'vim-test' then
+    if strategy == 'native_background' or strategy == 'native_terminal' then
+      return 'neovim'
+    end
+  end
+  return strategy
+end
+
 function M.package_complete()
   local l = go.list './...'
   local pkgs = {}

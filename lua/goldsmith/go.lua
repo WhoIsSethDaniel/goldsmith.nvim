@@ -17,4 +17,14 @@ function M.list(args)
   return vim.fn.json_decode('['..table.concat(out,'')..']')
 end
 
+function M.env(name)
+  local cmd = string.format('go env %s', string.upper(name))
+  local out = vim.fn.systemlist(cmd)
+  if vim.v.shell_error ~= 0 then
+    log.error('Go', string.format("Failed to run '%s'", cmd))
+    return
+  end
+  return out[1]
+end
+
 return M

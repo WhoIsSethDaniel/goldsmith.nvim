@@ -4,6 +4,7 @@ local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local plugins = require 'goldsmith.plugins'
+local t = require 'goldsmith.testing'
 
 local M = {}
 
@@ -33,8 +34,10 @@ end
 
 function M.setup_command(args)
   if vim.g['test#strategy'] == nil then
-    local strategy = config.get('testing', 'strategy')
-    if strategy ~= nil then
+    local strategy = t.testing_strategy()
+    if strategy == nil then
+      vim.g['test#strategy'] = 'neovim'
+    else
       vim.g['test#strategy'] = strategy
     end
   end

@@ -419,11 +419,14 @@ See |goldsmith-testing| for a lot more on what the various test comamnds can do.
 
 `testing.strategy`                                  *goldsmith-testing.strategy*
 
-Default: neovim
+Default: native_terminal
 When using the 'native' test runner this is used to set whether a terminal should
-be used or if tests should always be run in the background. (this is currently
-not implemented for the 'native' test runner.) If it does not recognize the 
-strategy it will default to using the terminal.
+be used or if tests should always be run in the background. If it does not
+recognize the strategy it will default to using the terminal. Valid strategies 
+when using the 'native' test runner are: native_background and native_terminal.
+The latter shows the complete output of the test in a terminal window. The former
+runs the tests in the background and, if there are errors, displays the quickfix
+window.
 
 When `vim-test` has been selected as the test runner this variable can be used 
 to set the default test#strategy (see |test-strategies| if you have `vim-test` 
