@@ -152,10 +152,10 @@ do
               string.format('Test%s', cfunc),
             }
             local match = false
-            for _, t in ipairs(tests) do
-              if vim.tbl_contains(possible_test_names, t.name) then
+            for _, test in ipairs(tests) do
+              if vim.tbl_contains(possible_test_names, test.name) then
                 match = true
-                table.insert(args, string.format('-run=%s', t.name))
+                table.insert(args, string.format('-run=%s', test.name))
                 table.insert(args, fs.relative_to_cwd(cf))
                 break
               end
@@ -278,7 +278,7 @@ do
             if code == 0 then
               table.remove(cmd)
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
-              return
+             return
             end
             local details = go.list()
             local module = details[1].ImportPath

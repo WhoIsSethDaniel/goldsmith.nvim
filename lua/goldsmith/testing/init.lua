@@ -19,11 +19,11 @@ function M.testing_strategy()
   local strategy = config.get('testing', 'strategy')
   local runner = config.get('testing', 'runner')
   if runner == 'native' then
-    if not vim.tbl_contains( config.native_testing_strategies(), strategy) then
+    if not vim.tbl_contains(config.native_testing_strategies(), strategy) then
       return config.native_testing_default_strategy()
     end
   elseif runner == 'vim-test' then
-    if vim.tbl_contains( config.native_testing_strategies(), strategy) then
+    if vim.tbl_contains(config.native_testing_strategies(), strategy) then
       return config.vim_test_default_strategy()
     end
   end
@@ -46,22 +46,25 @@ function M.package_complete()
 end
 
 function M.test_complete()
-  local cf = vim.fn.expand '%'
-  local tf = cf
-  if fs.is_code_file(cf) then
-    tf = fs.test_file_name(cf)
-  end
-  local b = wb.create_test_file_buffer(tf)
-  local tests = vim.api.nvim_buf_call(b, function()
-    return ts.get_all_functions()
-  end)
-  local n = {}
-  for _, t in ipairs(tests) do
-    if string.match(t.name, '^Test') ~= nil then
-      table.insert(n, t.name)
+  local cp = fs.relative_to_cwd(vim.fn.expand '%')
+  local list = go.list(cp)
+  local test_files = list[1]['TestGoFiles'] or {}
+  local dir = list[1]['Dir']
+  local tests = {}
+  for _, tf in ipairs(test_files) do
+    local fp = dir .. '/' .. tf
+    local f, err = io.open(dir .. '/' .. tf)
+    if f == nil then
+      log.warn('Testing', string.format("Cannot open file '%s' for reading: %s", fp, err))
+    else
+      for line in f:lines() do
+        local fname = string.match(line, 'func%s+(Test.*)%(')
+        table.insert(tests, fname)
+      end
     end
   end
-  return table.concat(n, '\n')
+  table.sort(tests)
+  return table.concat(tests, '\n')
 end
 
 function M.setup()

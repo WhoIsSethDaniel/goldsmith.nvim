@@ -1467,9 +1467,9 @@ Arguments to `go test` may be passed via the command and via
 
 With 'native' testing there are two scenarios: 1) if arguments are passed in 
 they are assumed to be names of tests to run. You can use command-completion to 
-see the names of all tests for the current file (eventually this may change to 
-be all tests in the current package, but this hasn't been written yet), 2) if no
-arguments are passed in this acts just like |:GoTestNearest|.
+see the names of all tests for the current package (this has the potential to be
+slow if you have many test files in a package) 2) if no arguments are passed 
+in this acts just like |:GoTestNearest|.
 
 With `vim-test` testing there are also two scenarios: 1) the same as with 'native'
 testing, 2) if no arguments are passed in it acts just like |:GoTestPkg|.

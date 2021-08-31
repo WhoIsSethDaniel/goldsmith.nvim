@@ -11,7 +11,7 @@
   - [x] perhaps use json output; may solve some problems
   - [x] currently won't work in non-module mode
 - [ ] vim-test testing
-  - [ ] :GoTestPkg test-name completion should include all tests in the current package
+  - [x] :GoTestPkg test-name completion should include all tests in the current package
   - [ ] :GoTestVisit repeated code similar to goalt
 - [ ] start a new project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
@@ -23,6 +23,7 @@
 - [ ] when config fails gs should not continue, if possible
 - [ ] user defined keymaps using GS config
 - [ ] lots more debug logging
+  - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (w/plenary?)

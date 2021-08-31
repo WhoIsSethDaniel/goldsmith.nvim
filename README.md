@@ -27,7 +27,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * fetch new Go libraries using :GoGet
 * install new Go tools using :GoInstall
 * integrated and enhanced testing with [vim-test](https://github.com/vim-test/vim-test). Use :GoTest, :GoTestNearest, and other 
-  commands to use vim-test
+  commands to use vim-test or use the builtin testing framework with the same commands
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 * support for [lspinstall](https://github.com/kabouzeid/nvim-lspinstall) and [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer)
