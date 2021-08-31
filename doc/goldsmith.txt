@@ -1020,19 +1020,6 @@ where this tool can be found.
 
 To install `impl` you can use |:GoInstallBinaries|.
 
-                                                                 *:GoFixPlurals*
-:GoFixPlurals
-
-Check the current package for function and method signatures that have redundant 
-parameter and result types and fix them. This operates on the current package,
-and not the current file, so it is possible that un-opened files that are part 
-of the current package will be modified.
-
-Behind the scenes this uses the `fixplurals` tool. See |goldsmith-resources| for
-where this tool can be found.
-
-To install `fixplurals` you can use |:GoInstallBinaries|.
-
                                                                         *:GoDef*
 :GoDef
 
@@ -1569,7 +1556,6 @@ the plugins that can be utilized by Goldsmith.
   `gotests`                       https://github.com/cweill/gotests
   `golines`                       https://github.com/segmentio/golines
   `impl`                          https://github.com/josharian/impl
-  `fixplurals`                    https://github.com/davidrjenni/reftools/cmd/fixplurals
   `revive`                        https://github.com/mgechev/revive
   `golangci-lint`                 https://github.com/golangci/golangci-lint/cmd/golangci-lint
   `staticcheck`                   https://honnef.co/go/tools/cmd/staticcheck

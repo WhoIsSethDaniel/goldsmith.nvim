@@ -95,17 +95,6 @@ local TOOLS = {
       'It is required if you want to use the :GoImpl command.',
     },
   },
-  fixplurals = {
-    status = 'install',
-    location = 'github.com/davidrjenni/reftools/cmd/fixplurals',
-    tag = 'latest',
-    exe = 'fixplurals',
-    required = false,
-    not_found = {
-      'This is used to remove redundant parameter and result types from function signatures.',
-      'It is required if you want to use the :GoFixPlurals command.',
-    },
-  },
   revive = {
     status = 'install',
     location = 'github.com/mgechev/revive',
