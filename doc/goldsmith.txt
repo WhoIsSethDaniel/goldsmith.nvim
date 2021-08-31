@@ -1358,6 +1358,19 @@ TESTING                                                      *goldsmith-testing*
 
 INTRODUCTION
 
+By default Goldsmith uses its 'native' testing framework. 'native' testing does 
+a number of things that may be surprising. All test commands run with '-json', 
+however the output (if you are using the 'terminal' strategy) is just like '-v'.
+Currently there is no way to see the actual JSON output unless you use |:GoTest|. 
+There is also no way to see the non-verbose output due to how the JSON output 
+works. This was chosen due to an issue with finding the specific file that 
+produced the error when using traditional Vim means (i.e. using |errorformat|).
+Using the JSON output allows for correct reporting of which file produced the 
+error, if any. The author has also seen this file-identification problem using
+`vim-test` and also `vim-go`. Since this method is novel it may well have 
+problems, particularly at the edges. Please report any problems you find using 
+|goldsmith-help|.
+
 Goldsmith can integrate with `vim-test` for the running of tests. It does so by 
 having similar commands to `vim-test`, but with enhanced capabilities. All of
 the `vim-test` commands remain available to use. See |goldsmith-resources| for 
@@ -1371,21 +1384,6 @@ Goldsmith can work fine without `gotests` or `vim-test`. If you don't want to
 install `vim-test` the Goldsmith 'native' testing is quite good. If you don't want
 to install `gotests` all test-generation (|:GoAddTests| and |:GoAddTest|) will 
 fail to work.
-
-'native' testing does a number of things that may be surprising. All test
-commands run with '-json', however the output (if you are using the 'terminal'
-strategy) is just like '-v'. Currently there is no way to see the actual JSON
-output unless you use |:GoTest|. There is also no way to see the non-verbose 
-output due to how the JSON output works. This was chosen due to an issue with
-finding the specific file that produced the error when using traditional Vim
-means (i.e. using |errorformat|). Using the JSON output allows for correct
-reporting of which file produced the error, if any. The author has also seen
-this file-identification problem using `vim-test` and also `vim-go`. Since 
-this method is novel it may well have problems, particularly at the edges.
-Please report any problems you find using |goldsmith-help|.
-
-'native' testing does not currently work properly with Go when used in 
-non-module mode.
 
 SETTINGS
 
@@ -1464,17 +1462,6 @@ window settings.
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
-                                                                       *:GoTest*
-:GoTest [args]
-
-This command simply runs 'go test' with the arguments that are passed to it. This 
-command will not populate the quickfix list. By default it runs in a terminal. If 
-you pass '!' it will run in the background. This command does not interact with 
-the quickfix or location list in any way.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
                                                                     *:GoTestRun*
 :GoTestRun [tests]
 
@@ -1485,9 +1472,22 @@ be all tests in the current package, but this hasn't been written yet), 2) if no
 arguments are passed in this acts just like |:GoTestNearest|.
 
 With `vim-test` testing there are also two scenarios: 1) the same as with 'native'
-testing, 2) if no arguments are passed in it acts just like |:GoTest|.
+testing, 2) if no arguments are passed in it acts just like |:GoTestPkg|.
 
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
+
+                                                                       *:GoTest*
+:GoTest [args]
+
+This command simply runs 'go test' with the arguments that are passed to it. This 
+command will not populate the quickfix list. By default it runs in a terminal. If 
+you pass '!' it will run in the background. This command does not interact with 
+the quickfix or location list in any way and does not honor the
+|goldsmith-testing-settings| except for window-related settings. It is intended
+to be bare proxy to `go test`.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
 
                                                                    *:GoAddTests*
 :GoAddTests [options]
@@ -1548,7 +1548,6 @@ the plugins that can be utilized by Goldsmith.
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   `null-ls`                       https://github.com/jose-elias-alvarez/null-ls.nvim
   `vim-test`                      https://github.com/vim-test/vim-test
-  `vim-ultest`                    https://github.com/rcarriga/vim-ultest
 
 * 3rd-party tools
   `gopls`                         https://golang.org/x/tools/gopls
