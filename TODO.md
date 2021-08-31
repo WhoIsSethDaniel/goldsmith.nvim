@@ -1,5 +1,5 @@
 - [x] window/terminal options func
-- [ ] native testing improvement
+- [x] native testing improvement
   - [x] config for vim-test or native
   - [x] errorformat
   - [x] quickfix (or location list?)
@@ -9,7 +9,7 @@
   - [x] need warn level log w/color
   - [x] :GoTest should probably just be direct proxy to 'go test'
   - [x] perhaps use json output; may solve some problems
-  - [ ] currently won't work in non-module mode
+  - [x] currently won't work in non-module mode
 - [ ] vim-test testing
   - [ ] :GoTest test-name completion should include all tests in the current package
   - [ ] :GoTestVisit repeated code similar to goalt

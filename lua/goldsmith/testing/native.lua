@@ -218,7 +218,10 @@ do
         local opts = {}
         local decoded = {}
         if t.testing_strategy() == 'terminal' then
-          opts = config.window_opts('testing', { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 })
+          opts = config.window_opts(
+            'testing',
+            { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
+          )
           last_win = wb.create_winbuf(opts)
           vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
           vim.api.nvim_buf_set_lines(last_win.buf, 0, -1, false, {})
@@ -248,12 +251,12 @@ do
               if data then
                 vim.list_extend(out, data)
                 local last = table.remove(data)
-                if last_win and #out > 1 then
+                if #out > 1 then
                   for _, l in ipairs(out) do
                     if l ~= '' then
                       local jd = vim.fn.json_decode(l)
                       table.insert(decoded, jd)
-                      if jd.Action == 'output' then
+                      if t.testing_strategy() == 'terminal' and jd.Action == 'output' then
                         vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
                         local output = vim.split(jd.Output, '\n')
                         vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { output[1] })
@@ -267,16 +270,22 @@ do
             end
           end)(),
           on_exit = function(id, code)
-            vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
-            vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { '', "[Press 'q' or '<Esc>' to close window]" })
-            vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+            if t.testing_strategy() == 'terminal' then
+              vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
+              vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { '', "[Press 'q' or '<Esc>' to close window]" })
+              vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+            end
             if code == 0 then
               table.remove(cmd)
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
               return
             end
             local details = go.list()
-            local module = details[1].Module.Path
+            local module = details[1].ImportPath
+            if module == nil then
+              log.warn('Testing', 'Cannot determine import path for current project.')
+              module = ''
+            end
             local qflist = {}
             for _, jd in ipairs(decoded) do
               if jd.Action == 'output' then
