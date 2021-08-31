@@ -74,14 +74,14 @@ do
           f = vim.g['test#last_position'].file
         end
 
-        local window_cfg = config.window_opts('gotestvisit')
+        local window_cfg = config.window_opts('gotestvisit', { file = f })
         local b = vim.api.nvim_get_current_buf()
         if not window_cfg['use_current_window'] then
           local win = wb.find_window_by_name(f)
           if win ~= nil then
             vim.fn.win_gotoid(win)
           else
-            wb.create_winbuf(vim.tbl_deep_extend('force', window_cfg, { file = f }))
+            wb.create_winbuf(window_cfg)
           end
         end
         return true, function()

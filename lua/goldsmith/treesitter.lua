@@ -106,7 +106,11 @@ function M.get_current_function_name()
     return
   end
 
-  return (ts_utils.get_node_text(expr:child(1)))[1]
+  if expr:type() == 'function_declaration' then
+    return (ts_utils.get_node_text(expr:child(1)))[1]
+  elseif expr:type() == 'method_declaration' then
+    return (ts_utils.get_node_text(expr:child(2)))[1]
+  end
 end
 
 return M

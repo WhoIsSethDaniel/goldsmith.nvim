@@ -105,19 +105,22 @@ do
           f = vim.fn.fnamemodify(fs.alternate_file_name(cf), ':p')
 
           if vim.fn.getftype(f) == '' and bang == '' then
-            log.error('Test', string.format('%s: file does not exist', f))
+            log.error('GoTestVisit', string.format('%s: file does not exist', f))
             return false
           end
         end
 
-        local window_cfg = config.window_opts 'gotestvisit'
-        if not window_cfg['use_current_window'] then
-          local win = wb.find_window_by_name(f)
-          if win ~= nil then
-            vim.fn.win_gotoid(win)
-          else
-            wb.create_winbuf(vim.tbl_deep_extend('force', window_cfg, { file = f }))
-          end
+        local window_cfg = config.window_opts('gotestvisit', { file = f })
+        if window_cfg['use_current_window'] then
+          vim.cmd(string.format('silent! e! %s', f))
+          vim.cmd [[ silent! w! ]]
+          return true
+        end
+        local win = wb.find_window_by_name(f)
+        if win ~= nil then
+          vim.fn.win_gotoid(win)
+        else
+          wb.create_winbuf(window_cfg)
         end
         -- returning false suppresses job running
         return false
@@ -140,9 +143,13 @@ do
     nearest = {
       function()
         if fs.is_code_file(cf) then
-          local cfunc = ts.get_current_function_name()
           local tf = fs.test_file_name(cf)
-          if cfunc ~= nil and vim.fn.filereadable(tf) > 0 then
+          if vim.fn.filereadable(tf) == 0 then
+            log.warn("Testing", string.format("No test file for '%s'", cf))
+            return false
+          end
+          local cfunc = ts.get_current_function_name()
+          if cfunc ~= nil then
             local b = wb.create_test_file_buffer(tf)
             local tests = vim.api.nvim_buf_call(b, function()
               return ts.get_all_functions()
@@ -278,7 +285,7 @@ do
             if code == 0 then
               table.remove(cmd)
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
-             return
+              return
             end
             local details = go.list()
             local module = details[1].ImportPath
