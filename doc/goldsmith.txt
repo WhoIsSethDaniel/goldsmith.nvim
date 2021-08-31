@@ -278,7 +278,6 @@ be entirely up-to-date):
         run_on_save = true
       },
       goalt = {
-        shortcut = false,
         use_current_window = false
       },
       gobuild = {},
@@ -413,24 +412,28 @@ This variable may either be set to 'native' or to 'vim-test'. When set to
 This is the default.
 
 When set to 'vim-test' the various :GoTest\* commands use the `vim-test`
-test runner.
+test runner. `vim-test` must be installed for it to function properly.
 
 See |goldsmith-testing| for a lot more on what the various test comamnds can do.
 
+See |goldsmith-resources| for where you can find `vim-test`.
+
 `testing.strategy`                                  *goldsmith-testing.strategy*
 
-Default: native_terminal
+Default: terminal
 When using the 'native' test runner this is used to set whether a terminal should
 be used or if tests should always be run in the background. If it does not
 recognize the strategy it will default to using the terminal. Valid strategies 
-when using the 'native' test runner are: native_background and native_terminal.
+when using the 'native' test runner are: 'background' and 'terminal'.
 The latter shows the complete output of the test in a terminal window. The former
 runs the tests in the background and, if there are errors, displays the quickfix
 window.
 
 When `vim-test` has been selected as the test runner this variable can be used 
 to set the default test#strategy (see |test-strategies| if you have `vim-test` 
-installed) if you have not already set it. 
+installed) if you have not already set it. Valid strategies when using the
+`vim-test` runner are documented in |test-strategies| (if you have `vim-test`
+installed).
 
 See |goldsmith-testing| for much more information about testing in Goldsmith.
 
@@ -966,9 +969,7 @@ tools to install.
 Running :GoInstallBinaries multiple times is fine. Each time it is run it will
 attempt to build and install each tool, updating the tool, if needed.
 
-                                                                            *:A*
                                                                         *:GoAlt*
-:A[!]
 :GoAlt[!]
 
 Switch to the "alternate" file for the current file. 
@@ -983,9 +984,6 @@ If a buffer for the "alternate" file exists that buffer will be used. If a
 window already exists with that buffer the window will be used. A new buffer
 or window will be created if they do not already exist (contingent on the 
 value of |goalt.use_current_window|).
-
-To use the :A command you must set |goldsmith-goalt.shortcut| to true 
-otherwise it will not be defined.
 
                                                                  *:GoFillStruct*
 :GoFillStruct
@@ -1384,7 +1382,23 @@ can use |:GoInstallBinaries|.
 
 Goldsmith can work fine without `gotests` or `vim-test`. If you don't want to
 install `vim-test` the Goldsmith 'native' testing is quite good. If you don't want
-to install `gotests` all test-generation will fail to work.
+to install `gotests` all test-generation (|:GoAddTests| and |:GoAddTest|) will 
+fail to work.
+
+'native' testing does a number of things that may be surprising. All test
+commands run with '-json', however the output (if you are using the 'terminal'
+strategy) is just like '-v'. Currently there is no way to see the actual JSON
+output unless you use |:GoTest|. There is also no way to see the non-verbose 
+output due to how the JSON output works. This was chosen due to an issue with
+finding the specific file that produced the error when using traditional Vim
+means (i.e. using |errorformat|). Using the JSON output allows for correct
+reporting of which file produced the error, if any. The author has also seen
+this file-identification problem using `vim-test` and also `vim-go`. Since 
+this method is novel it may well have problems, particularly at the edges.
+Please report any problems you find using |goldsmith-help|.
+
+'native' testing does not currently work properly with Go when used in 
+non-module mode.
 
 SETTINGS
 
@@ -1466,7 +1480,10 @@ Arguments to `go test` may be passed via the command and via
                                                                        *:GoTest*
 :GoTest [args]
 
-This command simply runs all the tests for the package the current file is in.
+This command simply runs 'go test' with the arguments that are passed to it. This 
+command will not populate the quickfix list. By default it runs in a terminal. If 
+you pass '!' it will run in the background. This command does not interact with 
+the quickfix or location list in any way.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.

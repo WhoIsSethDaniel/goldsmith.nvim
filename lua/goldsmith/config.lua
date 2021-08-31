@@ -121,6 +121,29 @@ local function window_validate(allow_nil, nil_default, focus)
   }
 end
 
+local function native_testing_strategies()
+  return {
+    { name = 'terminal', default = true },
+    { name = 'background' }
+  }
+end
+
+function M.vim_test_default_strategy()
+  return 'neovim'
+end
+
+function M.native_testing_default_strategy()
+  for _, s in ipairs(native_testing_strategies()) do
+    if s['default'] then
+      return s.name
+    end
+  end
+end
+
+function M.native_testing_strategies()
+  return vim.tbl_map(function(s) return s.name end, native_testing_strategies())
+end
+
 local window_spec = window_validate(true, true, true)
 local terminal_spec = window_validate(true, true, false)
 local SPEC = {
@@ -138,7 +161,7 @@ local SPEC = {
   goget = terminal_spec,
   goinstall = terminal_spec,
   godoc = window_spec,
-  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' }, shortcut = { false, 'b' } }),
+  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
   terminal = window_validate(false, false, false),
@@ -175,7 +198,7 @@ local SPEC = {
   testing = vim.tbl_deep_extend(
     'error',
     window_validate(false, false, false), {
-    strategy = { 'native_terminal', 's' },
+    strategy = { M.native_testing_default_strategy(), 's' },
     runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },
     arguments = { {}, 't' },
     template = { nil, 's' },
@@ -250,7 +273,7 @@ local function validate(v)
   for key, spec in pairs(v) do
     if type(spec) == 'function' then
       if not spec() then
-        return
+        return false
       end
     else
       local default = spec[1]
@@ -261,10 +284,10 @@ local function validate(v)
         if not ok then
           if msg == nil then
             log_error('Config', string.format("Key '%s' has invalid value '%s'", key, got or default))
-            return
+            return false
           else
             log_error('Config', string.format("Key '%s' has invalid value '%s', expected %s", key, got or default, msg))
-            return
+            return false
           end
         end
       else
@@ -273,18 +296,19 @@ local function validate(v)
         if default == nil then
           if not nil_ok then
             log_error('Config', string.format("Key '%s' may not be nil.", key))
-            return
+            return false
           end
         elseif not (type(default) == type_map[type_sym]) then
           log_error(
             'Config',
             string.format("Key '%s' must be of type '%s', got '%s'", key, type_map[type_sym], default)
           )
-          return
+          return false
         end
       end
     end
   end
+  return true
 end
 
 local function post_validate()
@@ -292,6 +316,13 @@ local function post_validate()
   if c.null.gofmt == true and c.null.gofumpt == true then
     log_error('Config', 'null.gofmt and null.gofumpt should not both be turned on. Turning off gofmt.')
     M.set('null', 'gofmt', false)
+  end
+  if c.testing.runner == 'native' then
+    if not vim.tbl_contains(M.native_testing_strategies(), c.testing.strategy) then
+      log_error('Config', string.format("When the test runner is 'native' valid strategies are: %s", table.concat(M.native_testing_strategies, ',')))
+      log_error('Config', string.format("testing.strategy is currently set to %s; setting to default", c.testing.strategy))
+      M.set('testing', 'strategy', nil)
+    end
   end
 end
 
@@ -308,6 +339,14 @@ local function validate_config()
 
   validate(build_validation(_config))
   post_validate()
+end
+
+function M.window_opts(grp, ...)
+  return vim.tbl_deep_extend('force', M.get('window'), M.get(grp), ...)
+end
+
+function M.terminal_opts(grp, ...)
+  return vim.tbl_deep_extend('force', M.get('terminal'), M.get(grp), { terminal = true }, ...)
 end
 
 function M.service_is_disabled(name)

@@ -37,39 +37,36 @@ local function log(debug, lvl)
   if not debug and lvl == 'debug' then
     return function() end
   end
+  local logger
   if lvl == 'error' then
-    if debug then
-      return function(label, msg)
-        vim.api.nvim_err_writeln(log_string(label, msg))
-        debug_log(lvl, label, msg)
+    logger = vim.api.nvim_err_writeln
+  elseif lvl == 'warn' then
+    logger = function(msg)
+      vim.api.nvim_echo({ { msg, 'WarningMsg' } }, true, {})
+    end
+  elseif lvl == 'info' or lvl == 'debug' then
+    logger = print
+  end
+  if debug then
+    return function(label, msg)
+      if lvl ~= 'debug' then
+        logger(log_string(label, msg))
       end
-    else
-      return function(label, msg)
-        vim.api.nvim_err_writeln(log_string(label, msg))
-      end
+      debug_log(lvl, label, msg)
     end
   else
-    if debug then
-      return function(label, msg)
-        if lvl ~= 'debug' then
-          print(log_string(label, msg))
-        end
-        debug_log(lvl, label, msg)
-      end
-    else
-      return function(label, msg)
-        print(log_string(label, msg))
-      end
+    return function(label, msg)
+      logger(log_string(label, msg))
     end
   end
 end
 
 function M.toggle_debug_console()
   if not M.is_debug() then
-    M.info('Debug', 'Debugging is not turned on. To turn on debugging set debug.enable to true and restart nvim.')
+    M.warn('Debug', 'Debugging is not turned on. To turn on debugging set debug.enable to true and restart nvim.')
     return
   end
-  debug_wb = wb.toggle_debug_console(debug_wb, vim.tbl_deep_extend('force', config.get 'window', config.get 'debug'))
+  debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts 'debug')
 end
 
 function M.init()

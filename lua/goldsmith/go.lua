@@ -3,7 +3,7 @@ local log = require 'goldsmith.log'
 local M = {}
 
 function M.list(args)
-  local cmd = string.format('go list -json %s', args)
+  local cmd = string.format('go list -json %s', args or '.')
   local out = vim.fn.systemlist(cmd)
   if vim.v.shell_error ~= 0 then
     log.error('Go', string.format("Failed to run '%s'", cmd))

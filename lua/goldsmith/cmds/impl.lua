@@ -69,7 +69,7 @@ function M.run(args)
   local b = vim.api.nvim_get_current_buf()
   job.run(
     string.format("impl '%s' %s", recv, iface),
-    vim.tbl_deep_extend('force', cfg, {
+    cfg, {
       stderr_buffered = true,
       stdout_buffered = true,
       on_stdout = function(id, data, name)
@@ -87,7 +87,6 @@ function M.run(args)
         vim.api.nvim_buf_set_lines(b, r, r, false, out)
       end,
     })
-  )
 end
 
 return M

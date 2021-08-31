@@ -1,11 +1,15 @@
+- [x] window/terminal options func
 - [ ] native testing improvement
   - [x] config for vim-test or native
   - [x] errorformat
   - [x] quickfix (or location list?)
   - [x] terminal or job strategy
-  - [ ] should reuse terminal window, if available
-  - [ ] need warn level log w/color
-  - [ ] check name of terminal
+  - [x] should reuse terminal window, if available
+  - [x] check name of terminal
+  - [x] need warn level log w/color
+  - [x] :GoTest should probably just be direct proxy to 'go test'
+  - [x] perhaps use json output; may solve some problems
+  - [ ] currently won't work in non-module mode
 - [ ] vim-test testing
   - [ ] :GoTest test-name completion should include all tests in the current package
   - [ ] :GoTestVisit repeated code similar to goalt
@@ -16,11 +20,11 @@
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] ultest integration
   - [ ] maps for all testing commands
+- [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] when config fails gs should not continue, if possible
 - [ ] user defined keymaps using GS config
 - [ ] lots more debug logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
-- [ ] window/terminal options func
 - [ ] snippets?
 - [ ] tests (w/plenary?)
 - [ ] workspaces / multiple workspaces

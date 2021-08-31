@@ -36,7 +36,7 @@ function M.setup_command(args)
   if vim.g['test#strategy'] == nil then
     local strategy = t.testing_strategy()
     if strategy == nil then
-      vim.g['test#strategy'] = 'neovim'
+      vim.g['test#strategy'] = config.vim_test_default_strategy()
     else
       vim.g['test#strategy'] = strategy
     end
@@ -74,7 +74,7 @@ do
           f = vim.g['test#last_position'].file
         end
 
-        local window_cfg = vim.tbl_deep_extend('force', config.get 'window', config.get 'gotestvisit')
+        local window_cfg = config.window_opts('gotestvisit')
         local b = vim.api.nvim_get_current_buf()
         if not window_cfg['use_current_window'] then
           local win = wb.find_window_by_name(f)
@@ -101,23 +101,6 @@ do
           table.insert(new, '-run=' .. table.concat(args, '$\\\\|') .. '$')
           args = new
         end
-        if fs.is_code_file(cf) then
-          local tf = fs.test_file_name(cf)
-          local lp = vim.g['test#last_position']
-          if lp == nil or lp['file'] ~= tf then
-            vim.g['test#last_position'] = {
-              file = tf,
-              line = 1,
-              col = 1,
-            }
-          end
-        end
-        return true
-      end,
-    },
-    test = {
-      ':TestFile',
-      function()
         if fs.is_code_file(cf) then
           local tf = fs.test_file_name(cf)
           local lp = vim.g['test#last_position']
@@ -225,7 +208,6 @@ function M.create_commands()
   vim.api.nvim_exec(
     [[
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.vim-test'.run({<f-args>})
-      command! -nargs=* -bar                GoTest        lua require'goldsmith.testing.vim-test'.test({<f-args>})
       command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.vim-test'.nearest({<f-args>})
       command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.vim-test'.suite({<f-args>})
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.vim-test'.last({<f-args>})

@@ -9,62 +9,63 @@ local t = require 'goldsmith.testing'
 
 local M = {}
 
-local function errorformat()
-  local goroot = go.env 'goroot'
-  local indent = '%\\\\%(    %\\\\)'
-  local format = {}
+-- save for posterity
+-- local function errorformat()
+--   local goroot = go.env 'goroot'
+--   local indent = '%\\\\%(    %\\\\)'
+--   local format = {}
 
-  -- this entire errorformat is a shameless steal from vim-go;
-  -- it has taken me many weeks to figure out what it is doing and
-  -- why it does it
-  table.insert(format, '%-G=== RUN   %.%#')
-  table.insert(format, ',%-G' .. indent .. '%#--- PASS: %.%#')
-  table.insert(format, ',%G--- FAIL: %\\\\%(Example%\\\\)%\\\\@=%m (%.%#)')
+--   -- this entire errorformat is a shameless steal from vim-go;
+--   -- it has taken me many weeks to figure out what it is doing and
+--   -- why it does it
+--   table.insert(format, '%-G=== RUN   %.%#')
+--   table.insert(format, ',%-G' .. indent .. '%#--- PASS: %.%#')
+--   table.insert(format, ',%G--- FAIL: %\\\\%(Example%\\\\)%\\\\@=%m (%.%#)')
 
-  table.insert(format, ',%G' .. indent .. '%#--- FAIL: %m (%.%#)')
-  table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: %m')
+--   table.insert(format, ',%G' .. indent .. '%#--- FAIL: %m (%.%#)')
+--   table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: %m')
 
-  table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: ')
+--   table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: ')
 
-  table.insert(format, ',%G' .. indent .. '%#%\\t%\\{2}%m')
-  table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: %m')
-  table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: ')
+--   table.insert(format, ',%G' .. indent .. '%#%\\t%\\{2}%m')
+--   table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: %m')
+--   table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: ')
 
-  table.insert(format, ',%A' .. indent .. '%\\+%f:%l: %m')
-  table.insert(format, ',%A' .. indent .. '%\\+%f:%l: ')
-  table.insert(format, ',%G' .. indent .. '%\\{2\\,}%m')
+--   table.insert(format, ',%A' .. indent .. '%\\+%f:%l: %m')
+--   table.insert(format, ',%A' .. indent .. '%\\+%f:%l: ')
+--   table.insert(format, ',%G' .. indent .. '%\\{2\\,}%m')
 
-  table.insert(format, ',%+Gpanic: test timed out after %.%\\+')
+--   table.insert(format, ',%+Gpanic: test timed out after %.%\\+')
 
-  table.insert(format, ',%+Afatal error: %.%# [recovered]')
-  table.insert(format, ',%+Apanic: %.%# [recovered]')
-  table.insert(format, ',%+Afatal error: %.%#')
-  table.insert(format, ',%+Apanic: %.%#')
+--   table.insert(format, ',%+Afatal error: %.%# [recovered]')
+--   table.insert(format, ',%+Apanic: %.%# [recovered]')
+--   table.insert(format, ',%+Afatal error: %.%#')
+--   table.insert(format, ',%+Apanic: %.%#')
 
-  table.insert(format, ',%-Cgoroutine %\\d%\\+ [running]:')
-  table.insert(format, ',%-C%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
-  table.insert(format, ',%Z%\\t%f:%l +0x%[0-9A-Fa-f]%\\+')
+--   table.insert(format, ',%-Cgoroutine %\\d%\\+ [running]:')
+--   table.insert(format, ',%-C%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
+--   table.insert(format, ',%Z%\\t%f:%l +0x%[0-9A-Fa-f]%\\+')
 
-  table.insert(format, ',%-Gruntime.goparkunlock(%.%#')
-  table.insert(format, ',%-G%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+')
+--   table.insert(format, ',%-Gruntime.goparkunlock(%.%#')
+--   table.insert(format, ',%-G%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+')
 
-  table.insert(format, ',%-G%\\t%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
+--   table.insert(format, ',%-G%\\t%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
 
-  table.insert(format, ',%-Cexit status %[0-9]%\\+')
+--   table.insert(format, ',%-Cexit status %[0-9]%\\+')
 
-  table.insert(format, ',%-CFAIL%\\t%.%#')
+--   table.insert(format, ',%-CFAIL%\\t%.%#')
 
-  table.insert(format, ',%A%f:%l:%c: %m')
-  table.insert(format, ',%A%f:%l: %m')
+--   table.insert(format, ',%A%f:%l:%c: %m')
+--   table.insert(format, ',%A%f:%l: %m')
 
-  table.insert(format, ',%-C%\\tpanic: %.%#')
-  table.insert(format, ',%G%\\t%m')
+--   table.insert(format, ',%-C%\\tpanic: %.%#')
+--   table.insert(format, ',%G%\\t%m')
 
-  table.insert(format, ',%-C%.%#')
-  table.insert(format, ',%-G%.%#')
+--   table.insert(format, ',%-C%.%#')
+--   table.insert(format, ',%-G%.%#')
 
-  return format
-end
+--   return format
+-- end
 
 function M.has_requirements()
   return true
@@ -83,7 +84,7 @@ local function set_last_file(f)
 end
 
 do
-  local args, cmd, cf, last_file, last_cmd
+  local args, cmd, cf, last_file, last_cmd, last_win
   local dispatch = {
     last = {
       function()
@@ -109,7 +110,7 @@ do
           end
         end
 
-        local window_cfg = vim.tbl_deep_extend('force', config.get 'window', config.get 'gotestvisit')
+        local window_cfg = config.window_opts 'gotestvisit'
         if not window_cfg['use_current_window'] then
           local win = wb.find_window_by_name(f)
           if win ~= nil then
@@ -134,13 +135,6 @@ do
         else
           return true, 'nearest'
         end
-      end,
-    },
-    test = {
-      function()
-        table.insert(args, fs.relative_to_cwd(cf))
-        last_file = set_last_file(cf)
-        return true
       end,
     },
     nearest = {
@@ -217,52 +211,97 @@ do
         return M[next] {}
       end
       if ok then
-        if #args == 0 then
-          args = { '.' }
-        end
         if cmd == nil then
           cmd = vim.list_extend({ 'go', 'test' }, vim.tbl_flatten { config.get('testing', 'arguments'), args })
         end
         last_cmd = cmd
-        local out = {}
-        local efm = table.concat(errorformat(), '')
         local opts = {}
-        if t.testing_strategy() == 'native_terminal' then
-          opts = vim.tbl_deep_extend('force', config.get 'testing', config.get 'terminal', { terminal = true })
+        local decoded = {}
+        if t.testing_strategy() == 'terminal' then
+          opts = config.window_opts('testing', { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 })
+          last_win = wb.create_winbuf(opts)
+          vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
+          vim.api.nvim_buf_set_lines(last_win.buf, 0, -1, false, {})
+          vim.api.nvim_buf_set_option(last_win.buf, 'filetype', 'gotest')
+          vim.api.nvim_buf_set_option(last_win.buf, 'bufhidden', 'delete')
+          vim.api.nvim_buf_set_option(last_win.buf, 'buftype', 'nofile')
+          vim.api.nvim_buf_set_option(last_win.buf, 'swapfile', false)
+          vim.api.nvim_buf_set_option(last_win.buf, 'buflisted', false)
+          vim.api.nvim_win_set_option(last_win.win, 'cursorline', false)
+          vim.api.nvim_win_set_option(last_win.win, 'cursorcolumn', false)
+          vim.api.nvim_win_set_option(last_win.win, 'number', false)
+          vim.api.nvim_win_set_option(last_win.win, 'relativenumber', false)
+          vim.api.nvim_win_set_option(last_win.win, 'signcolumn', 'no')
+          vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
         end
-        job.run(
-          cmd,
-          vim.tbl_deep_extend('force', opts, {
-            stdout_buffered = true,
-            stderr_buffered = true,
-            on_error = function(id, data)
+        table.insert(cmd, '-json')
+        job.run(cmd, opts, {
+          stderr_buffered = true,
+          on_error = function(id, data)
+            log.error('Testing', string.format("Test cmd '%s' failed with: %s", table.concat(cmd, ' '), data))
+          end,
+          on_stdout = (function()
+            local out = {}
+            return function(id, data)
               if data then
                 vim.list_extend(out, data)
+                local last = table.remove(data)
+                if last_win and #out > 1 then
+                  for _, l in ipairs(out) do
+                    if l ~= '' then
+                      local jd = vim.fn.json_decode(l)
+                      table.insert(decoded, jd)
+                      if jd.Action == 'output' then
+                        vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
+                        local output = vim.split(jd.Output, '\n')
+                        vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { output[1] })
+                        vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+                      end
+                    end
+                  end
+                end
+                out = { last }
               end
-            end,
-            on_stdout = function(id, data)
-              if data then
-                vim.list_extend(out, data)
+            end
+          end)(),
+          on_exit = function(id, code)
+            vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
+            vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { '', "[Press 'q' or '<Esc>' to close window]" })
+            vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+            if code == 0 then
+              table.remove(cmd)
+              log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
+              return
+            end
+            local details = go.list()
+            local module = details[1].Module.Path
+            local qflist = {}
+            for _, jd in ipairs(decoded) do
+              if jd.Action == 'output' then
+                local fail_file, fail_line, fail_mess = string.match(jd.Output, '^%s+([^%s]+%.go):(%d+):%s*(.*)$')
+                local fail_rel_path = string.sub(jd.Package, string.len(module) + 2)
+                if fail_rel_path ~= '' then
+                  fail_rel_path = fail_rel_path .. '/'
+                end
+                if fail_file ~= nil then
+                  table.insert(qflist, {
+                    filename = vim.fn.fnamemodify(fail_rel_path .. fail_file, ':p'),
+                    lnum = fail_line,
+                    col = 1,
+                    text = fail_mess,
+                    type = 'E',
+                  })
+                end
               end
-            end,
-            on_exit = function()
-              -- only needed for terminal mode, really
-              out = vim.tbl_map(function(l)
-                return string.gsub(l, '\r', '')
-              end, out)
-              log.info('Testing', string.format("'%s': command finished", table.concat(cmd, ' ')))
-              vim.fn.setqflist({}, ' ', {
-                title = cmd,
-                lines = out,
-                efm = efm,
-              })
-              vim.api.nvim_command 'doautocmd QuickFixCmdPost'
-              if #out > 0 then
-                vim.api.nvim_command 'copen'
-              end
-            end,
-          })
-        )
+            end
+            if #qflist > 0 then
+              vim.fn.setqflist(qflist, 'r')
+              vim.cmd [[ copen ]]
+            end
+          end,
+        })
       end
     end
   end
@@ -272,7 +311,6 @@ function M.create_commands()
   vim.api.nvim_exec(
     [[
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({<f-args>})
-      command! -nargs=* -bar                GoTest        lua require'goldsmith.testing.native'.test({<f-args>})
       command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({<f-args>})
       command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({<f-args>})
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})

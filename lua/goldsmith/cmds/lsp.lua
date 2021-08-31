@@ -12,7 +12,7 @@ local function jump(m)
       return nil
     end
 
-    local c = vim.tbl_deep_extend('force', config.get('window'), config.get('jump') or {})
+    local c = config.window_opts('jump')
     if not c['use_current_window'] then
       wb.create_winbuf(c)
     end

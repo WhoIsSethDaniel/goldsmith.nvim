@@ -19,12 +19,12 @@ function M.testing_strategy()
   local strategy = config.get('testing', 'strategy')
   local runner = config.get('testing', 'runner')
   if runner == 'native' then
-    if strategy ~= 'native_background' and strategy ~= 'native_terminal' then
-      return 'native_terminal'
+    if not vim.tbl_contains( config.native_testing_strategies(), strategy) then
+      return config.native_testing_default_strategy()
     end
   elseif runner == 'vim-test' then
-    if strategy == 'native_background' or strategy == 'native_terminal' then
-      return 'neovim'
+    if vim.tbl_contains( config.native_testing_strategies(), strategy) then
+      return config.vim_test_default_strategy()
     end
   end
   return strategy

@@ -58,63 +58,52 @@ function M.doc_complete(arglead, cmdline, cursorPos)
 end
 
 function M.run(type, args)
-  local cmd_cfg = config.get 'godoc' or {}
-  local window_cfg = config.get 'window'
-  local cfg = vim.tbl_deep_extend(
-    'force',
-    window_cfg,
-    cmd_cfg,
-    { create = true, title = '[Go Documentation]', reuse = M.buf_nr }
-  )
-
+  local cfg = config.window_opts('godoc', { create = true, title = '[Go Documentation]', reuse = M.buf_nr })
   local out = ''
-  job.run(
-    string.format('go %s %s', type, table.concat(args, ' ')),
-    vim.tbl_deep_extend('force', cfg, {
-      stderr_buffered = true,
-      stdout_buffered = true,
-      on_stdout = function(id, data, name)
-        out = data
-      end,
-      on_stderr = function(id, data, name)
-        local err = ''
-        for _, e in ipairs(data) do
-          if string.match(e, '^exit status') == nil and e ~= '' then
-            err = err .. e
-          end
+  job.run(string.format('go %s %s', type, table.concat(args, ' ')), cfg, {
+    stderr_buffered = true,
+    stdout_buffered = true,
+    on_stdout = function(id, data, name)
+      out = data
+    end,
+    on_stderr = function(id, data, name)
+      local err = ''
+      for _, e in ipairs(data) do
+        if string.match(e, '^exit status') == nil and e ~= '' then
+          err = err .. e
         end
-      end,
-      on_exit = function(id, code, event)
-        if code > 0 then
-          return
-        end
+      end
+    end,
+    on_exit = function(id, code, event)
+      if code > 0 then
+        return
+      end
 
-        local winbuf = wb.create_winbuf(cfg)
-        M.buf_nr = winbuf.buf
+      local winbuf = wb.create_winbuf(cfg)
+      M.buf_nr = winbuf.buf
 
-        vim.api.nvim_buf_set_option(winbuf.buf, 'filetype', 'godoc')
-        vim.api.nvim_buf_set_option(winbuf.buf, 'bufhidden', 'delete')
-        vim.api.nvim_buf_set_option(winbuf.buf, 'buftype', 'nofile')
-        vim.api.nvim_buf_set_option(winbuf.buf, 'swapfile', false)
-        vim.api.nvim_buf_set_option(winbuf.buf, 'buflisted', false)
-        vim.api.nvim_win_set_option(winbuf.win, 'cursorline', false)
-        vim.api.nvim_win_set_option(winbuf.win, 'cursorcolumn', false)
-        vim.api.nvim_win_set_option(winbuf.win, 'number', false)
-        vim.api.nvim_win_set_option(winbuf.win, 'relativenumber', false)
-        vim.api.nvim_win_set_option(winbuf.win, 'signcolumn', 'no')
+      vim.api.nvim_buf_set_option(winbuf.buf, 'filetype', 'godoc')
+      vim.api.nvim_buf_set_option(winbuf.buf, 'bufhidden', 'delete')
+      vim.api.nvim_buf_set_option(winbuf.buf, 'buftype', 'nofile')
+      vim.api.nvim_buf_set_option(winbuf.buf, 'swapfile', false)
+      vim.api.nvim_buf_set_option(winbuf.buf, 'buflisted', false)
+      vim.api.nvim_win_set_option(winbuf.win, 'cursorline', false)
+      vim.api.nvim_win_set_option(winbuf.win, 'cursorcolumn', false)
+      vim.api.nvim_win_set_option(winbuf.win, 'number', false)
+      vim.api.nvim_win_set_option(winbuf.win, 'relativenumber', false)
+      vim.api.nvim_win_set_option(winbuf.win, 'signcolumn', 'no')
 
-        vim.api.nvim_buf_set_option(winbuf.buf, 'modifiable', true)
-        vim.api.nvim_buf_set_lines(winbuf.buf, 0, -1, false, {})
-        vim.api.nvim_buf_set_lines(winbuf.buf, -1, -1, false, out)
-        vim.api.nvim_buf_set_option(winbuf.buf, 'modifiable', false)
+      vim.api.nvim_buf_set_option(winbuf.buf, 'modifiable', true)
+      vim.api.nvim_buf_set_lines(winbuf.buf, 0, -1, false, {})
+      vim.api.nvim_buf_set_lines(winbuf.buf, -1, -1, false, out)
+      vim.api.nvim_buf_set_option(winbuf.buf, 'modifiable', false)
 
-        vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close<CR>', { silent = true, noremap = true })
-        vim.api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
-        vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
-        vim.api.nvim_buf_set_keymap(winbuf.buf, 'n', '<Esc>[', '<Esc>[', { silent = true, noremap = true })
-      end,
-    })
-  )
+      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close<CR>', { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(winbuf.buf, 'n', '<Esc>[', '<Esc>[', { silent = true, noremap = true })
+    end,
+  })
 end
 
 return M
