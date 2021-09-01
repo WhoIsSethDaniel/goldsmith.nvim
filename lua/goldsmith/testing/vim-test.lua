@@ -34,12 +34,8 @@ end
 
 function M.setup_command(args)
   if vim.g['test#strategy'] == nil then
-    local strategy = t.testing_strategy()
-    if strategy == nil then
-      vim.g['test#strategy'] = config.vim_test_default_strategy()
-    else
-      vim.g['test#strategy'] = strategy
-    end
+    local strategy = config.get('testing','vim-test').strategy
+    vim.g['test#strategy'] = strategy
   end
   if vim.g['test#strategy'] == 'neovim' and vim.g['test#neovim#term_position'] == nil then
     local term = config.get 'terminal'
@@ -127,15 +123,14 @@ do
               return ts.get_all_functions()
             end)
             local possible_test_names = {
-              string.format('Test_%s', cfunc),
               string.format('Test%s', cfunc),
             }
-            for _, t in ipairs(tests) do
-              if vim.tbl_contains(possible_test_names, t.name) then
+            for _, test in ipairs(tests) do
+              if vim.tbl_contains(possible_test_names, test.name) then
                 vim.g['test#last_position'] = {
                   file = tf,
-                  line = t.line + 1,
-                  col = t.col,
+                  line = test.line + 1,
+                  col = test.col,
                 }
                 break
               end

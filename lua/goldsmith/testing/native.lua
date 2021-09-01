@@ -224,7 +224,8 @@ do
         last_cmd = cmd
         local opts = {}
         local decoded = {}
-        if t.testing_strategy() == 'terminal' then
+        local strategy = config.get('testing', 'native').strategy
+        if strategy == 'display' then
           opts = config.window_opts(
             'testing',
             { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
@@ -263,7 +264,7 @@ do
                     if l ~= '' then
                       local jd = vim.fn.json_decode(l)
                       table.insert(decoded, jd)
-                      if t.testing_strategy() == 'terminal' and jd.Action == 'output' then
+                      if strategy == 'display' and jd.Action == 'output' then
                         vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
                         local output = vim.split(jd.Output, '\n')
                         vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { output[1] })
@@ -277,7 +278,7 @@ do
             end
           end)(),
           on_exit = function(id, code)
-            if t.testing_strategy() == 'terminal' then
+            if strategy == 'display' then
               vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
               vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { '', "[Press 'q' or '<Esc>' to close window]" })
               vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)

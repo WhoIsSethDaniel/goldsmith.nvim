@@ -295,7 +295,6 @@ be entirely up-to-date):
         options = { "-remote=auto" }
       },
       gorun = {},
-      gotest = {},
       gotestvisit = {
         use_current_window = false
       },
@@ -331,7 +330,17 @@ be entirely up-to-date):
       },
       testing = {
         arguments = {},
-        strategy = "neovim"
+        focus = false,
+        height = 20,
+        native = {
+          strategy = "display"
+        },
+        pos = "right",
+        runner = "native",
+        ["vim-test"] = {
+          strategy = "neovim"
+        },
+        width = 80
       },
       window = {
         focus = true,
@@ -420,17 +429,22 @@ See |goldsmith-testing| for a lot more on what the various test comamnds can do.
 
 See |goldsmith-resources| for where you can find `vim-test`.
 
-`testing.strategy`                                  *goldsmith-testing.strategy*
+`testing.native.strategy`                    *goldsmith-testing.native.strategy*
 
-Default: terminal
-When using the 'native' test runner this is used to set whether a terminal should
-be used or if tests should always be run in the background. If it does not
-recognize the strategy it will default to using the terminal. Valid strategies 
-when using the 'native' test runner are: 'background' and 'terminal'.
-The latter shows the complete output of the test in a terminal window. The former
-runs the tests in the background and, if there are errors, displays the quickfix
-window.
+Default: display
+When using the 'native' test runner this is used to set whether the test output 
+should be displayed or if tests should always be run in the background. Valid 
+strategies when using the 'native' test runner are: 'background' and 'display'.
+The latter shows the complete output of the test in a window. The former
+runs the tests in the background. Both strategies will bring up the quickfix 
+window if there are errors. The 'display' strategy honors your
+|goldsmith-window-settings|.
 
+See |goldsmith-testing| for much more information about testing in Goldsmith.
+
+`testing.vim-test.strategy`                *goldsmith-testing.vim-test.strategy*
+
+Default: neovim
 When `vim-test` has been selected as the test runner this variable can be used 
 to set the default test#strategy (see |test-strategies| if you have `vim-test` 
 installed) if you have not already set it. Valid strategies when using the
@@ -1362,10 +1376,10 @@ INTRODUCTION
 
 By default Goldsmith uses its 'native' testing framework. 'native' testing does 
 a number of things that may be surprising. All test commands run with '-json', 
-however the output (if you are using the 'terminal' strategy) is just like '-v'.
+however the output (if you are using the 'display' strategy) is just like '-v'.
 Currently there is no way to see the actual JSON output unless you use |:GoTest|. 
 There is also no way to see the non-verbose output due to how the JSON output 
-works. This was chosen due to an issue with finding the specific file that 
+works. This method was chosen due to an issue with finding the specific file that 
 produced the error when using traditional Vim means (i.e. using |errorformat|).
 Using the JSON output allows for correct reporting of which file produced the 
 error, if any. The author has also seen this file-identification problem using
@@ -1485,8 +1499,8 @@ This command simply runs 'go test' with the arguments that are passed to it. Thi
 command will not populate the quickfix list. By default it runs in a terminal. If 
 you pass '!' it will run in the background. This command does not interact with 
 the quickfix or location list in any way and does not honor the
-|goldsmith-testing-settings| except for window-related settings. It is intended
-to be bare proxy to `go test`.
+|goldsmith-testing-settings| except for terminal-related settings (see
+|goldsmith-terminal-settings|). It is intended to be a bare proxy to `go test`.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.

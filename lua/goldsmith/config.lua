@@ -121,29 +121,6 @@ local function window_validate(allow_nil, nil_default, focus)
   }
 end
 
-local function native_testing_strategies()
-  return {
-    { name = 'terminal', default = true },
-    { name = 'background' }
-  }
-end
-
-function M.vim_test_default_strategy()
-  return 'neovim'
-end
-
-function M.native_testing_default_strategy()
-  for _, s in ipairs(native_testing_strategies()) do
-    if s['default'] then
-      return s.name
-    end
-  end
-end
-
-function M.native_testing_strategies()
-  return vim.tbl_map(function(s) return s.name end, native_testing_strategies())
-end
-
 local window_spec = window_validate(true, true, true)
 local terminal_spec = window_validate(true, true, false)
 local SPEC = {
@@ -195,15 +172,15 @@ local SPEC = {
   revive = {
     config_file = { nil, 's' },
   },
-  testing = vim.tbl_deep_extend(
-    'error',
-    window_validate(false, false, false), {
-    strategy = { M.native_testing_default_strategy(), 's' },
+  testing = vim.tbl_deep_extend('error', window_validate(false, false, false), {
+    ['vim-test'] = { strategy = { 'neovim', 's' } },
+    native = { strategy = { 'display', in_set(false, 'display', 'background'), 'valid strategies: display, background' } },
     runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },
     arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
-    template_params_dir = { nil, 's' } }),
+    template_params_dir = { nil, 's' },
+  }),
   gopls = {
     options = { { '-remote=auto' }, 't' },
     config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
@@ -216,17 +193,22 @@ local SPEC = {
   ),
 }
 
-local function defaults()
+local function defaults(spec)
   if not vim.tbl_isempty(_defaults) then
     return _defaults
   end
-  for grp, val in pairs(SPEC) do
-    _defaults[grp] = {}
+  local d = {}
+  for grp, val in pairs(spec) do
+    d[grp] = {}
     for k, v in pairs(val) do
-      _defaults[grp][k] = v[1]
+      if not vim.tbl_islist(v) then
+        d[grp] = vim.tbl_deep_extend('force', d[grp] or {}, defaults { [k] = v })
+      else
+        d[grp][k] = v[1]
+      end
     end
   end
-  return _defaults
+  return d
 end
 
 local function check_only_valid_keys(allowed, keys)
@@ -238,11 +220,11 @@ local function check_only_valid_keys(allowed, keys)
   return true
 end
 
-local function build_validation(uc)
+local function build_validation(spec, uc)
   local validate = {}
-  for grp, val in pairs(SPEC) do
+  for grp, val in pairs(spec) do
     validate[grp] = function()
-      local ok, bad = check_only_valid_keys(vim.tbl_keys(SPEC[grp]), vim.tbl_keys(uc[grp]))
+      local ok, bad = check_only_valid_keys(vim.tbl_keys(spec[grp]), vim.tbl_keys(uc[grp]))
       if not ok then
         log_error('Config', string.format("Unknown name '%s' in configuration group '%s'", bad, grp))
         return false
@@ -250,17 +232,22 @@ local function build_validation(uc)
       return true
     end
     for k, v in pairs(val) do
-      local vkey = grp .. '.' .. k
-      local default = v[1]
-      local value = uc[grp][k] or default
-      local check = v[2]
-      if type(check) == 'function' then
-        validate[vkey] = { value, check, v[3] }
+      if not vim.tbl_islist(v) then
+        local key = grp .. '.' .. k
+        validate = vim.tbl_deep_extend('force', validate, build_validation({ [key] = v }, { [key] = uc[grp][k] or {} }))
       else
-        if default == nil then
-          validate[vkey] = { value, check, true }
+        local vkey = grp .. '.' .. k
+        local default = v[1]
+        local value = uc[grp][k] or default
+        local check = v[2]
+        if type(check) == 'function' then
+          validate[vkey] = { value, check, v[3] }
         else
-          validate[vkey] = { value, check }
+          if default == nil then
+            validate[vkey] = { value, check, true }
+          else
+            validate[vkey] = { value, check }
+          end
         end
       end
     end
@@ -317,17 +304,10 @@ local function post_validate()
     log_error('Config', 'null.gofmt and null.gofumpt should not both be turned on. Turning off gofmt.')
     M.set('null', 'gofmt', false)
   end
-  if c.testing.runner == 'native' then
-    if not vim.tbl_contains(M.native_testing_strategies(), c.testing.strategy) then
-      log_error('Config', string.format("When the test runner is 'native' valid strategies are: %s", table.concat(M.native_testing_strategies, ',')))
-      log_error('Config', string.format("testing.strategy is currently set to %s; setting to default", c.testing.strategy))
-      M.set('testing', 'strategy', nil)
-    end
-  end
 end
 
 local function all_config_keys()
-  return vim.tbl_keys(defaults())
+  return vim.tbl_keys(defaults(SPEC))
 end
 
 local function validate_config()
@@ -337,16 +317,16 @@ local function validate_config()
     return
   end
 
-  validate(build_validation(_config))
+  validate(build_validation(SPEC, _config))
   post_validate()
 end
 
 function M.window_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get('window'), M.get(grp), ...)
+  return vim.tbl_deep_extend('force', M.get 'window', M.get(grp), ...)
 end
 
 function M.terminal_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get('terminal'), M.get(grp), { terminal = true }, ...)
+  return vim.tbl_deep_extend('force', M.get 'terminal', M.get(grp), { terminal = true }, ...)
 end
 
 function M.service_is_disabled(name)
@@ -356,7 +336,8 @@ end
 function M.setup(user_config)
   user_config = user_config or {}
   set_autoconfig(user_config)
-  _config = vim.tbl_deep_extend('force', defaults(), user_config)
+  _defaults = defaults(SPEC)
+  _config = vim.tbl_deep_extend('force', defaults(SPEC), user_config)
   validate_config()
 end
 
@@ -374,7 +355,7 @@ end
 
 function M.dump()
   require('goldsmith.log').debug('config', function()
-    return vim.inspect(defaults())
+    return vim.inspect(defaults(SPEC))
   end)
   require('goldsmith.log').debug('config', function()
     return vim.inspect(_config)

@@ -15,21 +15,6 @@ goldsmith_test_package_complete = function()
   return M.package_complete()
 end
 
-function M.testing_strategy()
-  local strategy = config.get('testing', 'strategy')
-  local runner = config.get('testing', 'runner')
-  if runner == 'native' then
-    if not vim.tbl_contains(config.native_testing_strategies(), strategy) then
-      return config.native_testing_default_strategy()
-    end
-  elseif runner == 'vim-test' then
-    if vim.tbl_contains(config.native_testing_strategies(), strategy) then
-      return config.vim_test_default_strategy()
-    end
-  end
-  return strategy
-end
-
 function M.package_complete()
   local l = go.list './...'
   local pkgs = {}

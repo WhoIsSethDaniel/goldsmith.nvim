@@ -1,3 +1,4 @@
+- [x] fix defaults() in config for testing
 - [x] window/terminal options func
 - [x] native testing improvement
   - [x] config for vim-test or native
@@ -15,6 +16,7 @@
 - [ ] start a new project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] testing
+  - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] ultest integration
   - [ ] maps for all testing commands
