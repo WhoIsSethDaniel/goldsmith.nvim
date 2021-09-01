@@ -84,6 +84,11 @@ end
 
 do
   local args, cmd, cf, last_file, last_cmd, last_win
+  function M.close_window()
+    if last_win ~= nil then
+      vim.api.nvim_win_hide(last_win.win)
+    end
+  end
   local dispatch = {
     last = {
       function()
@@ -208,7 +213,7 @@ do
   }
   for act, d in pairs(dispatch) do
     M[act] = function(...)
-      args = ...
+      args = ... or {}
       cmd = nil
       cf = vim.fn.expand '%'
       M.setup_command(args)
@@ -223,7 +228,7 @@ do
         last_cmd = cmd
         local opts = {}
         local decoded = {}
-        local strategy = config.get('testing', 'native').strategy
+        local strategy = config.get('testing', 'native', 'strategy')
         if strategy == 'display' then
           opts = config.window_opts(
             'testing',

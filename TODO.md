@@ -1,5 +1,6 @@
 - [x] fix defaults() in config for testing
 - [x] window/terminal options func
+- [x] user defined keymaps using GS config
 - [x] native testing improvement
   - [x] config for vim-test or native
   - [x] errorformat
@@ -19,10 +20,10 @@
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] ultest integration
-  - [ ] maps for all testing commands
+  - [x] maps for all testing commands
+    - [x] should maps be for plugs?
 - [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] when config fails gs should not continue, if possible
-- [ ] user defined keymaps using GS config
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

@@ -128,10 +128,6 @@ function M.run_codelens()
   vim.lsp.codelens.run()
 end
 
-function M.format()
-  require('goldsmith.cmds.format').run(1)
-end
-
 function M.add_workspace_folder()
   vim.lsp.buf.add_workspace_folder()
 end

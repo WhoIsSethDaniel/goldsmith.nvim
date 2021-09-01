@@ -128,7 +128,31 @@ local SPEC = {
   completion = {
     omni = { false, 'b' },
   },
-  mappings = { enable = { true, 'b' } },
+  mappings = vim.tbl_deep_extend('error', { enable = { true, 'b' } }, {
+    godef = { nil, 't', true },
+    hover = { nil, 't', true },
+    goimplementation = { nil, 't', true },
+    sighelp = { nil, 't', true },
+    ['add-ws-folder'] = { nil, 't', true },
+    ['rm-ws-folder'] = { nil, 't', true },
+    ['list-ws-folders'] = { nil, 't', true },
+    typedef = { nil, 't', true },
+    rename = { nil, 't', true },
+    goref = { nil, 't', true },
+    codeaction = { nil, 't', true },
+    showdiag = { nil, 't', true },
+    prevdiag = { nil, 't', true },
+    nextdiag = { nil, 't', true },
+    setloclist = { nil, 't', true },
+    format = { nil, 't', true },
+    ['toggle-debug-console'] = { nil, 't', true },
+    ['test-close-window'] = { nil, 't', true },
+    ['test-last'] = { nil, 't', true },
+    ['test-nearest'] = { nil, 't', true },
+    ['test-visit'] = { nil, 't', true },
+    ['test-suite'] = { nil, 't', true },
+    ['test-pkg'] = { nil, 't', true },
+  }),
   goimports = {
     run_on_save = { true, 'b' },
     timeout = { 1000, 'n' },
@@ -341,11 +365,13 @@ function M.setup(user_config)
   validate_config()
 end
 
-function M.get(grp, key)
+function M.get(grp, key, other)
   if key == nil then
     return _config[grp]
-  else
+  elseif other == nil then
     return _config[grp][key]
+  else
+    return _config[grp][key][other]
   end
 end
 

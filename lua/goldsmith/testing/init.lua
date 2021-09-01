@@ -4,6 +4,7 @@ local ts = require 'goldsmith.treesitter'
 local go = require 'goldsmith.go'
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
+local km = require 'goldsmith.keymaps'
 
 local M = {}
 
@@ -58,15 +59,33 @@ function M.setup()
   end
 
   local mod_name = config.get('testing', 'runner')
-  local m = require(string.format('goldsmith.testing.%s', mod_name))
+  local mod_path = string.format('goldsmith.testing.%s', mod_name)
+  local m = require(mod_path)
   if not m.has_requirements() then
     log.warn('Testing', string.format("Requirements for %s are not met. Setting testing to 'native'.", mod_name))
     mod_name = 'native'
-    m = require(string.format('goldsmith.testing.%s', mod_name))
+    mod_path = string.format('goldsmith.testing.%s', mod_name)
+    m = require(mod_path)
   end
+
+  local _, f = pcall(require, mod_path)
+  M.last = f.last
+  M.nearest = f.nearest
+  M.visit = f.visit
+  M.suite = f.suite
+  M.pkg = f.pkg
+
+  M.close_window = function()
+    if mod_name == 'native' then
+      return require('goldsmith.testing.native').close_window()
+    end
+    log.warn('Testing', "close_window not available for '%s' test runner", mod_name)
+  end
+
   M.testing_module = function()
     return m
   end
+
   m.create_commands()
 end
 

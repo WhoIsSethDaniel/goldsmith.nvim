@@ -34,7 +34,7 @@ end
 
 function M.setup_command(args)
   if vim.g['test#strategy'] == nil then
-    local strategy = config.get('testing','vim-test').strategy
+    local strategy = config.get('testing','vim-test', 'strategy')
     vim.g['test#strategy'] = strategy
   end
   if vim.g['test#strategy'] == 'neovim' and vim.g['test#neovim#term_position'] == nil then
@@ -177,7 +177,7 @@ do
   }
   for cmd, d in pairs(dispatch) do
     M[cmd] = function(...)
-      args = vim.tbl_flatten { ... }
+      args = ... or {}
       test_cmd = d[1]
       cf = vim.fn.expand '%'
       M.setup_command(args)

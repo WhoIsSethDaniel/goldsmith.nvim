@@ -355,6 +355,9 @@ SETTINGS                                                    *goldsmith-settings*
 
 MAPPINGS                                            *goldsmith-mappings-setting*
 
+There are many mappings settings that you can use. See |goldsmith-mappings| for
+details on each mapping setting and its default key mapping.
+
 `mappings.enable`                                    *goldsmith-mappings.enable*
 
 Default: true
@@ -1212,9 +1215,41 @@ the console becomes useless and all logging is lost.
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
-There are a set of <Plug> keys which can be used to create your own mappings.
+INTRODUCTION
+
+There are a set of <Plug> actions which can be used to create your own mappings.
 Many of these have a default mapping. You can turn off all default mappings
-by setting |goldsmith-mappings.enable| to true.
+by setting |goldsmith-mappings.enable| to false.
+
+You can also change the mapping for each <Plug> key or disable a <Plug> key in
+the configuration settings. e.g.:
+>
+    mappings = {
+      hover = { 'h', 'K' },
+    } 
+<
+The above maps the 'h' and 'K' keys to trigger the "<Plug>(goldsmith-hover)"
+action.
+>
+    mappings = {
+      hover = {},
+    } 
+<
+The above turns off all mappings for the "<Plug>(goldsmith-hover)" action. You 
+must assign the action an empty table and not nil. Assigning to nil instructs
+Goldsmith to use the default value for that action.
+>
+    mappings = {
+      enable = false,
+      hover = { 'K' },
+    } 
+<
+The above turns off all default mappings and sets only "<Plug>(goldsmith-hover)"
+to a keymap.
+
+Currently all <Plug> actions are for |Normal| mode.
+
+ALL KEY MAPS
 
 Available <Plug> keys and their default (if any):
 
@@ -1268,7 +1303,7 @@ Default: <leader>rn
 The same as |:GoRename|. Rename the symbol under the cursor.
 
 *(goldsmith-goref)*
-Default: <leader>gr
+Default: gr
 
 The same as |:GoRef|. List all references to the symbol under the cursor in the
 quickfix window.
@@ -1307,10 +1342,57 @@ Default: <leader>f
 The same as |:GoFormat|. Tell gopls and null-ls to format the current Go buffer
 immediately.
 
+*(goldsmith-toggle-debug-console)*
+Default: <leader>dc
+
+The same as |:GoDebugConsole|. Toggle the debugging console used by Goldsmith when 
+in debug mode. 
+
+See |goldsmith-debug-settings| for more information on debug mode.
+
+See the documentation for |:GoDebugConsole| for more information about it.
+
+*(goldsmith-test-last)*
+Default: <leader>tl
+
+The same as |:GoTestLast|. Run the most recent test command again.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-nearest)*
+Default: <leader>tn
+
+The same as |:GoTestNearest|. Run the nearest test to the cursor.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-visit)*
+Default: <leader>tv
+
+The same as |:GoTestVisit|. View the file with the last test that ran.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-suite)*
+Default: <leader>ts
+
+The same as |:GoTestSuite|. Run all tests for the current project.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-pkg)*
+Default: <leader>tp
+
+The same as |:GoTestPkg|. Run all tests for the current package.
+
+See |goldsmith-testing| for more information.
+
 EXAMPLE MAPPINGS
 
-An example setting all mappings, using Lua, to the defaults (this can be placed 
-in your on_attach function):
+It is much easier to use the |goldsmith-mappings| configuration to set <Plug> 
+actions to a key map. However, you can create the keymap yourself if you want.
+
+An example setting some mappings, using Lua, to the defaults:
 
 local opts = { silent = true }
 vim.api.nvim_buf_set_keymap(0, 'n', 'gd', '<Plug>(goldsmith-godef)', opts)

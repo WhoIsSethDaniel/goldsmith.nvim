@@ -14,43 +14,6 @@ setlocal formatoptions-=t
 setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
-lua require'goldsmith.buffer'.set_buffer_options()
-
-" defaults:
-" ['gd'] = 'goto_definition',
-" ['<C-]>'] = 'goto_definition',
-" ['K'] = 'hover',
-" ['gi'] = 'goto_implementation',
-" ['<C-k>'] = 'signature_help',
-" ['<leader>wa'] = 'add_workspace_folder',
-" ['<leader>wr'] = 'remove_workspace_folder',
-" ['<leader>wl'] = 'list_workspace_folders',
-" ['<leader>D'] = 'type_definition',
-" ['<leader>rn'] = 'rename',
-" ['<leader>gr'] = 'references',
-" ['<leader>ca'] = 'code_action',
-" ['<leader>e'] = 'show_diagnostics',
-" ['[d'] = 'goto_previous_diagnostic',
-" [']d'] = 'goto_next_diagnostic',
-" ['<leader>q'] = 'diagnostic_set_loclist',
-" ['<leader>f'] = 'format',
-nnoremap <silent> <buffer> <Plug>(goldsmith-godef) <cmd>lua require'goldsmith.cmds.lsp'.goto_definition()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-hover) <cmd>lua require'goldsmith.cmds.lsp'.hover()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-goimplementation) <cmd>lua require'goldsmith.cmds.lsp'.goto_implementation()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-sighelp) <cmd>lua require'goldsmith.cmds.lsp'.signature_help()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-add-ws-folder) <cmd>lua require'goldsmith.cmds.lsp'.add_workspace_folder()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-rm-ws-folder) <cmd>lua require'goldsmith.cmds.lsp'.remove_workspace_folder()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-list-ws-folders) <cmd>lua require'goldsmith.cmds.lsp'.list_workspace_folders()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-typedef) <cmd>lua require'goldsmith.cmds.lsp'.type_definition()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-rename) <cmd>lua require'goldsmith.cmds.lsp'.rename()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-goref) <cmd>lua require'goldsmith.cmds.lsp'.references()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-codeaction) <cmd>lua require'goldsmith.cmds.lsp'.code_action()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-showdiag) <cmd>lua require'goldsmith.cmds.lsp'.show_diagnostics()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-prevdiag) <cmd>lua require'goldsmith.cmds.lsp'.goto_previous_diagnostic()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-nextdiag) <cmd>lua require'goldsmith.cmds.lsp'.goto_next_diagnostic()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-setloc) <cmd>lua require'goldsmith.cmds.lsp'.diagnostic_set_loclist()<cr>
-nnoremap <silent> <buffer> <Plug>(goldsmith-format) <cmd>lua require'goldsmith.cmds.lsp'.format()<cr>
-
 function s:GoDocComplete(A,C,P) abort
 	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
@@ -134,6 +97,8 @@ augroup goldsmith_ft_go
   autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END
+
+lua require'goldsmith.buffer'.set_buffer_options()
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
