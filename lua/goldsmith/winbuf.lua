@@ -93,15 +93,9 @@ function M.create_test_file_buffer(f)
   return b
 end
 
-
 function M.create_debug_buffer()
   local b = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_option(b, 'filetype', 'goldsmith-debug')
-  vim.api.nvim_buf_set_option(b, 'bufhidden', 'hide')
-  vim.api.nvim_buf_set_option(b, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_option(b, 'swapfile', false)
-  vim.api.nvim_buf_set_option(b, 'buflisted', false)
-  vim.api.nvim_buf_set_option(b, 'modifiable', false)
+  M.make_buffer_plain(b, nil, { ft = 'goldsmith-debug', bufhidden = 'hide' })
   vim.api.nvim_buf_set_name(b, '[Goldsmith Debug Console]')
   return { buf = b, win = -1 }
 end
@@ -115,17 +109,48 @@ function M.toggle_debug_console(wb, opts)
     else
       if vim.api.nvim_buf_is_loaded(wb.buf) then
         local nwb = M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
-        vim.api.nvim_win_set_option(nwb.win, 'cursorline', false)
-        vim.api.nvim_win_set_option(nwb.win, 'cursorcolumn', false)
-        vim.api.nvim_win_set_option(nwb.win, 'number', false)
-        vim.api.nvim_win_set_option(nwb.win, 'relativenumber', false)
-        vim.api.nvim_win_set_option(nwb.win, 'signcolumn', 'no')
+        M.make_buffer_plain(nil, nwb.win)
         return nwb
       end
     end
   end
   require('goldsmith.log').error('Debug', 'Cannot find Debug Console. The buffer may have been destroyed.')
   return nil
+end
+
+function M.append_to_buffer(b, output)
+  vim.api.nvim_buf_set_option(b, 'modifiable', true)
+  vim.api.nvim_buf_set_lines(b, -1, -1, true, output)
+  vim.api.nvim_buf_set_option(b, 'modifiable', false)
+end
+
+function M.clear_buffer(b)
+  vim.api.nvim_buf_set_option(b, 'modifiable', true)
+  vim.api.nvim_buf_set_lines(b, 0, -1, false, {})
+  vim.api.nvim_buf_set_option(b, 'modifiable', false)
+end
+
+function M.make_buffer_plain(b, w, opts)
+  if b ~= nil then
+    if opts['ft'] ~= nil then
+      vim.api.nvim_buf_set_option(b, 'filetype', opts['ft'])
+    end
+    if opts['bufhidden'] == nil then
+      vim.api.nvim_buf_set_option(b, 'bufhidden', 'delete')
+    else
+      vim.api.nvim_buf_set_option(b, 'bufhidden', opts['bufhidden'])
+    end
+    vim.api.nvim_buf_set_option(b, 'buftype', 'nofile')
+    vim.api.nvim_buf_set_option(b, 'swapfile', false)
+    vim.api.nvim_buf_set_option(b, 'buflisted', false)
+  end
+  if w ~= nil then
+    vim.api.nvim_win_set_option(w, 'cursorline', false)
+    vim.api.nvim_win_set_option(w, 'cursorcolumn', false)
+    vim.api.nvim_win_set_option(w, 'number', false)
+    vim.api.nvim_win_set_option(w, 'signcolumn', 'no')
+    vim.api.nvim_win_set_option(w, 'relativenumber', false)
+  end
 end
 
 return M

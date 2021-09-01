@@ -5,7 +5,6 @@ local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
 local go = require 'goldsmith.go'
-local t = require 'goldsmith.testing'
 
 local M = {}
 
@@ -145,7 +144,7 @@ do
         if fs.is_code_file(cf) then
           local tf = fs.test_file_name(cf)
           if vim.fn.filereadable(tf) == 0 then
-            log.warn("Testing", string.format("No test file for '%s'", cf))
+            log.warn('Testing', string.format("No test file for '%s'", cf))
             return false
           end
           local cfunc = ts.get_current_function_name()
@@ -231,19 +230,8 @@ do
             { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
           )
           last_win = wb.create_winbuf(opts)
-          vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
-          vim.api.nvim_buf_set_lines(last_win.buf, 0, -1, false, {})
-          vim.api.nvim_buf_set_option(last_win.buf, 'filetype', 'gotest')
-          vim.api.nvim_buf_set_option(last_win.buf, 'bufhidden', 'delete')
-          vim.api.nvim_buf_set_option(last_win.buf, 'buftype', 'nofile')
-          vim.api.nvim_buf_set_option(last_win.buf, 'swapfile', false)
-          vim.api.nvim_buf_set_option(last_win.buf, 'buflisted', false)
-          vim.api.nvim_win_set_option(last_win.win, 'cursorline', false)
-          vim.api.nvim_win_set_option(last_win.win, 'cursorcolumn', false)
-          vim.api.nvim_win_set_option(last_win.win, 'number', false)
-          vim.api.nvim_win_set_option(last_win.win, 'relativenumber', false)
-          vim.api.nvim_win_set_option(last_win.win, 'signcolumn', 'no')
-          vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+          wb.clear_buffer(last_win.buf)
+          wb.make_buffer_plain(last_win.buf, last_win.win, { ft = 'gotest' })
           vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
           vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
         end
@@ -265,10 +253,7 @@ do
                       local jd = vim.fn.json_decode(l)
                       table.insert(decoded, jd)
                       if strategy == 'display' and jd.Action == 'output' then
-                        vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
-                        local output = vim.split(jd.Output, '\n')
-                        vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { output[1] })
-                        vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+                        wb.append_to_buffer(last_win.buf, { (vim.split(jd.Output, '\n'))[1] })
                       end
                     end
                   end
@@ -279,9 +264,7 @@ do
           end)(),
           on_exit = function(id, code)
             if strategy == 'display' then
-              vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', true)
-              vim.api.nvim_buf_set_lines(last_win.buf, -1, -1, true, { '', "[Press 'q' or '<Esc>' to close window]" })
-              vim.api.nvim_buf_set_option(last_win.buf, 'modifiable', false)
+              wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
             end
             if code == 0 then
               table.remove(cmd)

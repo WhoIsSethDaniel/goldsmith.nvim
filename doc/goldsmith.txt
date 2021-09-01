@@ -460,10 +460,10 @@ Pass these arguments to "go test" whenever a :GoTest* command is run. This must 
 a table where each key is a valid argument for "go test". e.g.:
 >
     testing = {
-      arguments = { '-v' }
+      arguments = { '-timeout=10s' }
     }
 <
-This will always pass '-v' to "go test" for any :GoTest* command.
+This will always pass '-timeout=10s' to "go test" for any :GoTest* command.
 
 `testing.template`                                  *goldsmith-testing.template*
 
