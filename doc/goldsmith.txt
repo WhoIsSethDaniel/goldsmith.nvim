@@ -811,7 +811,7 @@ This sets this setting globally. You can also set it per-command.
 
 `window.focus`                                      *goldsmith-window.focus*
 
-Default: false
+Default: true
 Whether or not the new window will have focus after it is created. If the window 
 has focus at the time the command is run then this option has no effect.
 
