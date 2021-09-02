@@ -272,9 +272,6 @@ be entirely up-to-date):
       completion = {
         omni = false
       },
-      debug = {
-        enable = false
-      },
       format = {
         max_line_length = 120,
         run_on_save = true
@@ -340,6 +337,10 @@ be entirely up-to-date):
         staticcheck = false
       },
       revive = {},
+      system = {
+        debug = false,
+        root_dir = { ".git", "go.mod", "go.work" }
+      },
       tags = {
         default_tag = "json",
         skip_unexported = false,
@@ -385,6 +386,19 @@ Determine the root directory of the current project. This uses a list of
 files/directories to search for. The search looks from the current file's 
 directory down to root. If it does not find any of the files/directories it 
 defaults to the directory for the current file.
+
+`system.debug`                                          *goldsmith-system.debug*
+
+Default: false
+Experts only, please. This is mostly intended as a way to help others debug 
+problems as well as for Goldsmith developers to debug their code.
+
+When set to true Goldsmith will log all activity to an initially hidden buffer.
+To see the contents of the buffer you can use |:GoDebugConsole|.
+
+The debug console will honor your |goldsmith-window-settings|.
+
+See the documentation for |:GoDebugConsole| for more information.
 
 MAPPINGS                                            *goldsmith-mappings-setting*
 
@@ -820,21 +834,6 @@ When using a pos that requires a horizontal split this value represents the
 height of the window.
 
 This sets this setting globally. You can also set it per-command.
-
-DEBUGGING                                             *goldsmith-debug-settings*
-
-`debug.enable`                                          *goldsmith-debug.enable*
-
-Default: false
-Experts only, please. This is mostly intended as a way to help others debug 
-problems as well as for Goldsmith developers to debug their code.
-
-When set to true Goldsmith will log all activity to an initially hidden buffer.
-To see the contents of the buffer you can use |:GoDebugConsole|.
-
-The debug console will honor your |goldsmith-window-settings|.
-
-See the documentation for |:GoDebugConsole| for more information.
 
 PER-COMMAND SETTINGS                            *goldsmith-settings-per-command*
 

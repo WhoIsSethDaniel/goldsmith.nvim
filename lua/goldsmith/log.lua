@@ -57,11 +57,11 @@ function M.toggle_debug_console()
     M.warn('Debug', 'Debugging is not turned on. To turn on debugging set debug.enable to true and restart nvim.')
     return
   end
-  debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts 'debug')
+  debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts())
 end
 
 function M.setup()
-  local d = config.get('debug', 'enable')
+  local d = config.get('system', 'debug')
   M.error = log(d, 'error')
   M.warn = log(d, 'warn')
   M.info = log(d, 'info')

@@ -124,8 +124,8 @@ end
 local window_spec = window_validate(true, true, true)
 local terminal_spec = window_validate(true, true, false)
 local SPEC = {
-  debug = vim.tbl_deep_extend('error', window_spec, { enable = { false, 'b' } }),
   system = {
+    debug = { false, 'b' },
     root_dir = { { '.git', 'go.mod', 'go.work' }, 't' },
   },
   completion = {
@@ -349,7 +349,7 @@ local function validate_config()
 end
 
 function M.window_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'window', M.get(grp), ...)
+  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, ...)
 end
 
 function M.terminal_opts(grp, ...)
