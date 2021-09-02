@@ -41,7 +41,7 @@ end
 
 local function setup_logging()
   log = require 'goldsmith.log'
-  log.init()
+  log.setup()
 end
 
 local function has_requirements()
@@ -52,7 +52,7 @@ local function has_requirements()
       log.error(
         'Config',
         string.format(
-          "Goldsmith will not work without '%s' installed. See ':checkhealth goldsmith' for more info.",
+          "Goldsmith will not work without '%s' installed.",
           info.name
         )
       )
@@ -116,7 +116,7 @@ end
 
 local set_root_dir = function(fname)
   local util = require 'lspconfig.util'
-  return util.root_pattern('go.work', 'go.mod', '.git')(fname) or util.path.dirname(fname)
+  return util.root_pattern(unpack(config.get('system', 'root_dir')))(fname) or util.path.dirname(fname)
 end
 
 M.autoconfig_is_on = config.autoconfig_is_on

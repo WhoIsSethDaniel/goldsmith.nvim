@@ -125,6 +125,9 @@ local window_spec = window_validate(true, true, true)
 local terminal_spec = window_validate(true, true, false)
 local SPEC = {
   debug = vim.tbl_deep_extend('error', window_spec, { enable = { false, 'b' } }),
+  system = {
+    root_dir = { { '.git', 'go.mod', 'go.work' }, 't' },
+  },
   completion = {
     omni = { false, 'b' },
   },

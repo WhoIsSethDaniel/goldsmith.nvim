@@ -376,6 +376,16 @@ be entirely up-to-date):
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
 
+SYSTEM                                               *goldsmith-system-settings*
+
+`system.root_dir`                                    *goldsmith-system.root_dir*
+
+Default: { '.git', 'go.mod', 'go.work' }
+Determine the root directory of the current project. This uses a list of 
+files/directories to search for. The search looks from the current file's 
+directory down to root. If it does not find any of the files/directories it 
+defaults to the directory for the current file.
+
 MAPPINGS                                            *goldsmith-mappings-setting*
 
 There are many mappings settings that you can use. See |goldsmith-mappings| for
@@ -827,6 +837,8 @@ problems as well as for Goldsmith developers to debug their code.
 
 When set to true Goldsmith will log all activity to an initially hidden buffer.
 To see the contents of the buffer you can use |:GoDebugConsole|.
+
+The debug console will honor your |goldsmith-window-settings|.
 
 See the documentation for |:GoDebugConsole| for more information.
 

@@ -60,7 +60,7 @@ function M.toggle_debug_console()
   debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts 'debug')
 end
 
-function M.init()
+function M.setup()
   local d = config.get('debug', 'enable')
   M.error = log(d, 'error')
   M.warn = log(d, 'warn')

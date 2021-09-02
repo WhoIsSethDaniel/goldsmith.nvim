@@ -1,4 +1,5 @@
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -53,18 +54,34 @@ function M.get_valid_buffer()
   end
 end
 
+function M.set_project_root()
+  local rootdir = require('lspconfig.util').root_pattern(unpack(config.get('system', 'root_dir')))(vim.fn.expand '%:p')
+    or vim.fn.expand '%:p:h'
+  if rootdir == nil then
+    rootdir = vim.fn.fnamemodify(vim.fn.expand '%', ':p:h')
+    vim.cmd(string.format('lcd %s', rootdir))
+  else
+    vim.cmd(string.format('lcd %s', rootdir))
+  end
+  log.debug('AutoConfig', string.format('root dir: %s', rootdir))
+  return rootdir
+end
+
 function M.setup()
   local b = vim.api.nvim_get_current_buf()
 
   M.checkin(b)
+
+  if not pcall(M.set_project_root) then
+    log.error('AutoConfig', 'Failed to set project root. Is lspconfig installed?')
+  end
 
   local omni = config.get('completion', 'omni')
   if omni then
     M.set_omnifunc(b)
   end
 
-  local enable_mappings = config.get('mappings', 'enable')
-  M.set_buffer_keymaps(b, enable_mappings)
+  M.set_buffer_keymaps(b, config.get('mappings', 'enable'))
 end
 
 function M.set_omnifunc(b)

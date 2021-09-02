@@ -15,15 +15,13 @@
   - [x] currently won't work in non-module mode
 - [x] vim-test testing
   - [x] :GoTestPkg test-name completion should include all tests in the current package
-- [ ] start a new project
-  - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
+- [x] may have to cd to project dir
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
-    - [x] should maps be for plugs?
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-  - [ ] ultest integration
-- [ ] may have to cd to project dir
+- [ ] start a new project
+  - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] when config fails gs should not continue, if possible
 - [ ] lots more debug logging
@@ -31,6 +29,10 @@
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (w/plenary?)
+- [ ] testing
+  - [ ] benchmarking
+  - [ ] coverage
+  - [ ] ultest integration
 - [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
