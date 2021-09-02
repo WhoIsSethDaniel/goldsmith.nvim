@@ -443,12 +443,6 @@ Set to "true" to use the current window when loading the alternate file. If
 "false" Goldsmith will create a new window based on your
 |goldsmith-window-settings|.
 
-`goalt.shortcut`                                      *goldsmith-goalt.shortcut*
-
-Default: false
-Set to "true" to use the command shortcut |:A| when you want to switch to the
-alternate file.
-
 TESTING                                             *goldsmith-testing-settings*
 
 `testing.runner`                                      *goldsmith-testing.runner*

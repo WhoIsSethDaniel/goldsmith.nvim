@@ -42,9 +42,6 @@ command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run({<f-args>})
 command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run({<f-args>})
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run({<f-args>})
 command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
-if luaeval("require'goldsmith.config'.get('goalt', 'shortcut')")
-command! -nargs=0 -bang A lua require'goldsmith.cmds.alt'.run('<bang>')
-endif
 
 command! -nargs=0 GoImports lua require'goldsmith.cmds.format'.run_goimports(1)
 command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(1)
