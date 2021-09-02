@@ -32,12 +32,12 @@ end
 function M.map(f)
   for _, s in ipairs(M.services()) do
     local m = service_module(s)
-    f(s,m)
+    f(s, m)
   end
 end
 
 function M.services()
-  return tools.names({ null = true })
+  return tools.names { null = true }
 end
 
 function M.running_services()
@@ -61,16 +61,20 @@ end
 function M.setup(cf)
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
-    if m.has_requirements() and not M.is_disabled(service) then
-      local setup
-      local user_args = config.get('null', service)
-      if type(user_args) == 'table' then
-        setup = m.setup(user_args)
+    if not M.is_disabled(service) then
+      if m.has_requirements() then
+        local setup
+        local user_args = config.get('null', service)
+        if type(user_args) == 'table' then
+          setup = m.setup(user_args)
+        else
+          setup = m.setup {}
+        end
+        table.insert(running_services, setup)
+        null.register(setup)
       else
-        setup = m.setup({})
+        log.warn('Null', string.format("'%s' is not installed. Any service that requires it will not function. Run ':checkhealth goldsmith' for more.", service))
       end
-      table.insert(running_services, setup)
-      null.register(setup)
     end
   end
   null.config(cf)

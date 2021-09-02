@@ -28,9 +28,10 @@ function M.plugin_check()
 
   plugins.check()
   for _, plugin in ipairs(plugins.names()) do
+    local advice = {}
     local pi = plugins.info(plugin)
     local name = pi.name
-    local advice = pi.not_found
+    vim.list_extend(advice, pi.not_found)
     table.insert(advice, string.format('The module is here: %s', pi.location))
     if plugins.is_installed(plugin) then
       health_ok(string.format('%s: plugin is installed', name))
@@ -89,12 +90,14 @@ function M.tool_check()
 
   tools.check()
   for _, tool in ipairs(tools.names { status = 'install' }) do
+    local not_found = {}
     local ti = tools.info(tool)
     if ti.cmd == nil then
       if ti.status == 'install' then
-        table.insert(ti.not_found, string.format("It may be installed by running ':GoInstallBinaries %s'", tool))
+        vim.list_extend(not_found, ti.not_found)
+        table.insert(not_found, string.format("It may be installed by running ':GoInstallBinaries %s'", tool))
       end
-      health_warn(string.format('%s: MISSING', tool), ti.not_found)
+      health_warn(string.format('%s: MISSING', tool), not_found)
     else
       health_ok(string.format('%s: FOUND at %s (%s)', tool, ti.cmd, ti.version))
     end

@@ -8,7 +8,7 @@ M.setup = ac.register_server
 M.init = ac.init
 
 M.client_configure = function(client)
-  require('goldsmith.cmds.format').configure(client)
+  require('goldsmith.format').configure(client)
 end
 
 return M

@@ -1,3 +1,5 @@
+local buffer = require 'goldsmith.buffer'
+
 local M = {}
 
 function M.determine_window(opts)
@@ -97,6 +99,7 @@ function M.create_debug_buffer()
   local b = vim.api.nvim_create_buf(false, true)
   M.make_buffer_plain(b, nil, { ft = 'goldsmith-debug', bufhidden = 'hide' })
   vim.api.nvim_buf_set_name(b, '[Goldsmith Debug Console]')
+  buffer.set_buffer_map(b, '', 'toggle-debug-console', '<cmd>hide<cr>', { silent = true })
   return { buf = b, win = -1 }
 end
 

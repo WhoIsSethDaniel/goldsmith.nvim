@@ -5,6 +5,7 @@ local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
 local go = require 'goldsmith.go'
+local buffer = require 'goldsmith.buffer'
 
 local M = {}
 
@@ -237,8 +238,9 @@ do
           last_win = wb.create_winbuf(opts)
           wb.clear_buffer(last_win.buf)
           wb.make_buffer_plain(last_win.buf, last_win.win, { ft = 'gotest' })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', '<cmd>close<cr>', { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', '<cmd>close<cr>', { silent = true, noremap = true })
+          buffer.set_buffer_map(last_win.buf, '', 'test-close-window', '<cmd>close<cr>', { silent = true })
         end
         table.insert(cmd, '-json')
         job.run(cmd, opts, {

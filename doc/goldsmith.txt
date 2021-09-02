@@ -1560,7 +1560,7 @@ no matching test routine a warning will be printed.
 Within a test file this command will identify the function your cursor is 
 currently in and will attempt to run it as a test.
 
-The function test matching works as follows: it searches for two different 
+The function test matching works as follows: it searches for two different
 function names within your test file, Test<funcname> and Test_<funcname>. The
 matching is case sensitive.
 

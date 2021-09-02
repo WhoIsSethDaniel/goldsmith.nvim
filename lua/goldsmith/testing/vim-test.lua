@@ -123,6 +123,7 @@ do
               return ts.get_all_functions()
             end)
             local possible_test_names = {
+              string.format('Test_%s', cfunc),
               string.format('Test%s', cfunc),
             }
             for _, test in ipairs(tests) do

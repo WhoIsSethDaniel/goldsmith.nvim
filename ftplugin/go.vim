@@ -97,8 +97,7 @@ augroup goldsmith_ft_go
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END
 
-lua require'goldsmith.buffer'.checkin()
-lua require'goldsmith.buffer'.set_buffer_options()
+lua require'goldsmith.buffer'.setup()
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

@@ -32,8 +32,8 @@ local default_action_map = {
   ['test-pkg'] = { act = "require'goldsmith.testing'.pkg()" },
 }
 
-function M.checkin()
-  current = vim.api.nvim_get_current_buf()
+function M.checkin(b)
+  current = b
   all[current] = current
 end
 
@@ -53,8 +53,10 @@ function M.get_valid_buffer()
   end
 end
 
-function M.set_buffer_options()
+function M.setup()
   local b = vim.api.nvim_get_current_buf()
+
+  M.checkin(b)
 
   local omni = config.get('completion', 'omni')
   if omni then
@@ -69,11 +71,16 @@ function M.set_omnifunc(b)
   vim.api.nvim_buf_set_option(b, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
+-- for use in non-go related buffers
+function M.set_buffer_map(buf, mode, name, act, opts)
+  local maps = config.get('mappings', name)
+  for _, km in ipairs(maps) do
+    vim.api.nvim_buf_set_keymap(buf, mode, km, act, opts or {})
+  end
+end
+
 function M.set_buffer_keymaps(buf, use_defaults)
   local function set_map(name, mode, maps, action, opts)
-    if action == nil or action == '' then
-      return
-    end
     local plug = string.format('<Plug>(goldsmith-%s)', name)
     vim.api.nvim_buf_set_keymap(buf, mode, plug, string.format('<cmd>lua %s<cr>', action), opts)
     for _, km in ipairs(maps) do

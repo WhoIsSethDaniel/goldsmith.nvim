@@ -14,7 +14,7 @@ goldsmith_test_package_complete = function()
 end
 
 function M.package_complete()
-  local l = go.list './...'
+  local l = go.list './...' -- potentially expensive?
   local pkgs = {}
   for _, p in ipairs(l) do
     local d = vim.fn.fnamemodify(p.Dir, ':.')

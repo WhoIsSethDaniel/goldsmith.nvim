@@ -1,3 +1,4 @@
+- [x] breakup format into cmds and other
 - [x] fix defaults() in config for testing
 - [x] window/terminal options func
 - [x] user defined keymaps using GS config
@@ -22,6 +23,7 @@
     - [x] should maps be for plugs?
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
   - [ ] ultest integration
+- [ ] may have to cd to project dir
 - [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] when config fails gs should not continue, if possible
 - [ ] lots more debug logging
@@ -29,6 +31,6 @@
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (w/plenary?)
-- [ ] workspaces / multiple workspaces
 - [ ] build tag editing
-- [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
+- [ ] workspaces / multiple workspaces
+  - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
