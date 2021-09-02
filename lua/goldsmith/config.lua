@@ -5,12 +5,18 @@ local _defaults = {}
 
 local autoconfig = true
 
+local config_is_ok = false
+
 function M.turn_off_autoconfig()
   autoconfig = false
 end
 
 function M.autoconfig_is_on()
   return autoconfig
+end
+
+function M.config_is_ok()
+  return config_is_ok
 end
 
 -- logging is not available until config is read and validated
@@ -331,6 +337,7 @@ local function post_validate()
     log_error('Config', 'null.gofmt and null.gofumpt should not both be turned on. Turning off gofmt.')
     M.set('null', 'gofmt', false)
   end
+  return true
 end
 
 local function all_config_keys()
@@ -344,8 +351,11 @@ local function validate_config()
     return
   end
 
-  validate(build_validation(SPEC, _config))
-  post_validate()
+  config_is_ok = validate(build_validation(SPEC, _config))
+  if M.config_is_ok() then
+    config_is_ok = post_validate()
+  end
+  return config_is_ok
 end
 
 function M.window_opts(grp, ...)
@@ -353,7 +363,7 @@ function M.window_opts(grp, ...)
 end
 
 function M.terminal_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'terminal', M.get(grp), { terminal = true }, ...)
+  return vim.tbl_deep_extend('force', M.get 'terminal', grp and M.get(grp) or {}, { terminal = true }, ...)
 end
 
 function M.service_is_disabled(name)
@@ -365,7 +375,7 @@ function M.setup(user_config)
   set_autoconfig(user_config)
   _defaults = defaults(SPEC)
   _config = vim.tbl_deep_extend('force', defaults(SPEC), user_config)
-  validate_config()
+  return validate_config()
 end
 
 function M.get(grp, key, other)
