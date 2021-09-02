@@ -1,10 +1,7 @@
-local wb = require 'goldsmith.winbuf'
 local fs = require 'goldsmith.fs'
-local ts = require 'goldsmith.treesitter'
 local go = require 'goldsmith.go'
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
-local km = require 'goldsmith.keymaps'
 
 local M = {}
 

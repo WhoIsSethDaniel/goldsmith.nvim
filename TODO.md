@@ -18,10 +18,10 @@
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
-  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-  - [ ] ultest integration
   - [x] maps for all testing commands
     - [x] should maps be for plugs?
+  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+  - [ ] ultest integration
 - [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] when config fails gs should not continue, if possible
 - [ ] lots more debug logging

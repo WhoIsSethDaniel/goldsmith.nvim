@@ -305,7 +305,30 @@ be entirely up-to-date):
         use_current_window = true
       },
       mappings = {
-        enable = true
+        ["add-ws-folder"] = { "<leader>wa" },
+        codeaction = { "<leader>ca" },
+        enable = true,
+        format = { "<leader>f" },
+        godef = { "gd", "<C-]>" },
+        goimplementation = { "gi" },
+        goref = { "gr" },
+        hover = { "K" },
+        ["list-ws-folders"] = { "<leader>wl" },
+        nextdiag = { "]d" },
+        prevdiag = { "[d" },
+        rename = { "<leader>rn" },
+        ["rm-ws-folder"] = { "<leader>wr" },
+        setloclist = { "<leader>q" },
+        showdiag = { "<leader>e" },
+        sighelp = { "<C-k>" },
+        ["test-close-window"] = { "<leader>tc" },
+        ["test-last"] = { "<leader>tl" },
+        ["test-nearest"] = { "<leader>tn" },
+        ["test-pkg"] = { "<leader>tp" },
+        ["test-suite"] = { "<leader>ts" },
+        ["test-visit"] = { "<leader>tv" },
+        ["toggle-debug-console"] = {},
+        typedef = { "<leader>D" }
       },
       null = {
         disabled = false,
@@ -1229,7 +1252,7 @@ the configuration settings. e.g.:
     } 
 <
 The above maps the 'h' and 'K' keys to trigger the "<Plug>(goldsmith-hover)"
-action.
+action. All other mappings will use the default.
 >
     mappings = {
       hover = {},
@@ -1343,7 +1366,7 @@ The same as |:GoFormat|. Tell gopls and null-ls to format the current Go buffer
 immediately.
 
 *(goldsmith-toggle-debug-console)*
-Default: <leader>dc
+Default: none
 
 The same as |:GoDebugConsole|. Toggle the debugging console used by Goldsmith when 
 in debug mode. 
@@ -1387,7 +1410,7 @@ The same as |:GoTestPkg|. Run all tests for the current package.
 
 See |goldsmith-testing| for more information.
 
-EXAMPLE MAPPINGS
+MAPPING MANUALLY
 
 It is much easier to use the |goldsmith-mappings| configuration to set <Plug> 
 actions to a key map. However, you can create the keymap yourself if you want.

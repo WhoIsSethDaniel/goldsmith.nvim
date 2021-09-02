@@ -129,29 +129,29 @@ local SPEC = {
     omni = { false, 'b' },
   },
   mappings = vim.tbl_deep_extend('error', { enable = { true, 'b' } }, {
-    godef = { nil, 't', true },
-    hover = { nil, 't', true },
-    goimplementation = { nil, 't', true },
-    sighelp = { nil, 't', true },
-    ['add-ws-folder'] = { nil, 't', true },
-    ['rm-ws-folder'] = { nil, 't', true },
-    ['list-ws-folders'] = { nil, 't', true },
-    typedef = { nil, 't', true },
-    rename = { nil, 't', true },
-    goref = { nil, 't', true },
-    codeaction = { nil, 't', true },
-    showdiag = { nil, 't', true },
-    prevdiag = { nil, 't', true },
-    nextdiag = { nil, 't', true },
-    setloclist = { nil, 't', true },
-    format = { nil, 't', true },
-    ['toggle-debug-console'] = { nil, 't', true },
-    ['test-close-window'] = { nil, 't', true },
-    ['test-last'] = { nil, 't', true },
-    ['test-nearest'] = { nil, 't', true },
-    ['test-visit'] = { nil, 't', true },
-    ['test-suite'] = { nil, 't', true },
-    ['test-pkg'] = { nil, 't', true },
+    godef = { { 'gd', '<C-]>' }, 't' },
+    hover = { { 'K' }, 't' },
+    goimplementation = { { 'gi' }, 't' },
+    sighelp = { { '<C-k>' }, 't' },
+    ['add-ws-folder'] = { { '<leader>wa' }, 't' },
+    ['rm-ws-folder'] = { { '<leader>wr' }, 't' },
+    ['list-ws-folders'] = { { '<leader>wl' }, 't' },
+    typedef = { { '<leader>D' }, 't' },
+    rename = { { '<leader>rn' }, 't' },
+    goref = { { 'gr' }, 't' },
+    codeaction = { { '<leader>ca' }, 't' },
+    showdiag = { { '<leader>e' }, 't' },
+    prevdiag = { { '[d' }, 't' },
+    nextdiag = { { ']d' }, 't' },
+    setloclist = { { '<leader>q' }, 't' },
+    format = { { '<leader>f' }, 't' },
+    ['toggle-debug-console'] = { {}, 't' },
+    ['test-close-window'] = { { '<leader>tc' }, 't' },
+    ['test-last'] = { { '<leader>tl' }, 't' },
+    ['test-nearest'] = { { '<leader>tn' }, 't' },
+    ['test-visit'] = { { '<leader>tv' }, 't' },
+    ['test-suite'] = { { '<leader>ts' }, 't' },
+    ['test-pkg'] = { { '<leader>tp' }, 't' },
   }),
   goimports = {
     run_on_save = { true, 'b' },
@@ -381,10 +381,10 @@ end
 
 function M.dump()
   require('goldsmith.log').debug('config', function()
-    return vim.inspect(defaults(SPEC))
+    return 'defaults: ' .. vim.inspect(defaults(SPEC))
   end)
   require('goldsmith.log').debug('config', function()
-    return vim.inspect(_config)
+    return 'config: ' .. vim.inspect(_config)
   end)
 end
 

@@ -93,11 +93,11 @@ command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
 augroup goldsmith_ft_go
   autocmd! * <buffer>
   autocmd BufWritePre,InsertLeave <buffer> lua require'goldsmith.cmds.format'.run(0)
-  autocmd BufEnter    <buffer> lua require'goldsmith.buffer'.checkin()
   autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END
 
+lua require'goldsmith.buffer'.checkin()
 lua require'goldsmith.buffer'.set_buffer_options()
 
 let &cpo = s:cpo_save
