@@ -63,7 +63,7 @@ function M.set_project_root()
   else
     vim.cmd(string.format('lcd %s', rootdir))
   end
-  log.debug('AutoConfig', string.format('root dir: %s', rootdir))
+  log.debug('Autoconfig', string.format('root dir: %s', rootdir))
   return rootdir
 end
 
@@ -73,7 +73,7 @@ function M.setup()
   M.checkin(b)
 
   if not pcall(M.set_project_root) then
-    log.error('AutoConfig', 'Failed to set project root. Is lspconfig installed?')
+    log.error('Autoconfig', 'Failed to set project root. Is lspconfig installed?')
   end
 
   local omni = config.get('completion', 'omni')

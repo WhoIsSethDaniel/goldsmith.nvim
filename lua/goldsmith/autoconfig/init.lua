@@ -170,7 +170,7 @@ function M.init()
   require('goldsmith.tools').check()
   setup_logging()
   if not has_requirements() then
-    return
+    return false
   end
   for _, s in ipairs(get_servers_to_configure()) do
     M.setup_server(s, get_server_conf(s))
@@ -178,6 +178,7 @@ function M.init()
   for _, p in ipairs(get_plugins_to_configure()) do
     M.setup_plugin(p)
   end
+  return true
 end
 
 function M.setup_plugin(name)
@@ -200,7 +201,7 @@ function M.setup_server(server, cf)
   end
   if name == nil then
     log.error('Autoconfig', string.format("Cannot determine how to configure '%s'", server))
-    return
+    return false
   end
   cf['on_attach'] = set_on_attach(cf['on_attach'])
   if cf['root_dir'] == nil then
@@ -215,10 +216,10 @@ function M.setup_server(server, cf)
       'Autoconfig',
       string.format("Server '%s' does not have all needed requirements and cannot be configured", server)
     )
-    return
+    return false
   end
   if not sm.is_minimum_version() then
-    log.error(
+    log.warn(
       'Autoconfig',
       string.format(
         "Server '%s' is not at the minimum required version (%s); some things may not work correctly",
@@ -226,7 +227,9 @@ function M.setup_server(server, cf)
         servers.info(server).minimum_version
       )
     )
+    return false
   end
+  return true
 end
 
 function M.register_server(server, cf)

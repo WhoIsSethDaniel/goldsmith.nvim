@@ -15,6 +15,7 @@
   - [x] currently won't work in non-module mode
 - [x] vim-test testing
   - [x] :GoTestPkg test-name completion should include all tests in the current package
+- [x] when config fails gs should not continue, if possible
 - [x] may have to cd to project dir
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
@@ -23,7 +24,6 @@
 - [ ] start a new project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] perhaps run 'go list ./...' occasionally in background
-- [ ] when config fails gs should not continue, if possible
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

@@ -6,6 +6,11 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+if g:goldsmith_is_setup == v:false
+  echoerr 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+  finish
+endif
+
 compiler go
 
 setlocal textwidth=0
