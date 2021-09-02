@@ -33,6 +33,7 @@ local default_action_map = {
   ['test-pkg'] = { act = "require'goldsmith.testing'.pkg()" },
   ['alt-file'] = { act = "require'goldsmith.cmds.alt'.run()" },
   ['alt-file-force'] = { act = "require'goldsmith.cmds.alt'.run('!')" },
+  ['fillstruct'] = { act = "require'goldsmith.cmds.fillstruct'.run(1000)" },
 }
 
 function M.checkin(b)

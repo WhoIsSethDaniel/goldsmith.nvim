@@ -1191,6 +1191,18 @@ written. Names of services that are not recognized will be ignored.
 Currently there are two configuration files that are created, one for `revive` 
 and one for `golangci-lint`.
 
+                                                               *:GoDebugConsole*
+:GoDebugConsole
+
+If |goldsmith-debug.enable| is set to true this command will toggle the 
+visibility of the debug console. By default the console is hidden.
+
+The debug console displays the output of all Goldsmith logging. Some output may 
+be very large. Turning on debugging can impose a performance cost on Goldsmith.
+
+If the buffer associated with the debug console is deleted, or otherwise removed,
+the console becomes useless and all logging is lost.
+
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
 
@@ -1225,18 +1237,6 @@ the given [module] using the "replacement"
 
 Cleanup the go.mod file. See `go help mod tidy` for more information on what
 this does.
-
-                                                               *:GoDebugConsole*
-:GoDebugConsole
-
-If |goldsmith-debug.enable| is set to true this command will toggle the 
-visibility of the debug console. By default the console is hidden.
-
-The debug console displays the output of all Goldsmith logging. Some output may 
-be very large. Turning on debugging can impose a performance cost on Goldsmith.
-
-If the buffer associated with the debug console is deleted, or otherwise removed,
-the console becomes useless and all logging is lost.
 
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
@@ -1423,6 +1423,11 @@ Default: none
 
 The same as |:GoAlt| with the bang (e.g. :GoAlt!). Switch to the alternate file 
 for the current file and create the alternate file if it does not exist.
+
+*(goldsmith-fillstruct)*
+Default: none
+
+The same as |:GoFillStruct|. Fill all fields of the struct the cursor is under.
 
 MAPPING MANUALLY
 

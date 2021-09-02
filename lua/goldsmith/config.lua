@@ -163,6 +163,7 @@ local SPEC = {
     ['test-pkg'] = { { '<leader>tp' }, 't' },
     ['alt-file'] = { {}, 't' },
     ['alt-file-force'] = { {}, 't' },
+    ['fillstruct'] = { {}, 't' },
   }),
   goimports = {
     run_on_save = { true, 'b' },
