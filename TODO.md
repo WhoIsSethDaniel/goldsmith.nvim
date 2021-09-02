@@ -23,7 +23,6 @@
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
-- [ ] perhaps run 'go list ./...' occasionally in background
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

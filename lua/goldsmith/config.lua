@@ -161,6 +161,8 @@ local SPEC = {
     ['test-visit'] = { { '<leader>tv' }, 't' },
     ['test-suite'] = { { '<leader>ts' }, 't' },
     ['test-pkg'] = { { '<leader>tp' }, 't' },
+    ['alt-file'] = { {}, 't' },
+    ['alt-file-force'] = { {}, 't' },
   }),
   goimports = {
     run_on_save = { true, 'b' },
