@@ -118,8 +118,7 @@ You may also want to look at |goldsmith-healthcheck| and review the output. Ther
 may be more plugins than are listed here.
 
 Required
-* nvim-lspconfig
-  Configure gopls and null-ls
+* nvim-lspconfig Configure gopls and null-ls
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
 * FixCursorHold
@@ -149,11 +148,10 @@ You can use all the defaults by placing the following in your configuration:
 >
     require("goldsmith").config()
 <
-Assuming you do nothing else the above will cause Goldsmith to attempt to
-configure null-ls and gopls for you. This means that null-ls will attempt
-to run `golines` and `golangci-lint`, and gopls will have a minimal 
-configuration that looks something like the following (this example is with 
-gopls 0.7.1):
+Assuming you do nothing else the above will cause Goldsmith to attempt to 
+configure null-ls and gopls for you. This means that null-ls will attempt to run
+its default services, and gopls will have a minimal configuration that looks
+something like the following (this example is with gopls 0.7.1):
 >
     capabilities = { ... }
     cmd = { "<discovered gopls executable>", "-remote=auto" },
@@ -181,12 +179,14 @@ You can turn off the auto-configuration of servers, e.g.:
 >
     require("goldsmith").config({ autoconfig = false })
 <
-If you do not allow Goldsmith to help configure your servers there are 
-certain features of Goldsmith that will not work. 
+If you do not allow Goldsmith to help configure your servers there are certain 
+features of Goldsmith that will not work. If you do not run `gopls` at all 
+nearly all of Goldsmith will not work. It is recommended to use Goldsmith to 
+help manage your servers.
 
 *goldsmith-configuration-explicit*
-You can explicitly configure servers in two different ways. The first way
-is by passing the configuration for each server to goldsmith.config():
+You can explicitly configure servers in two different ways. The first way is 
+by passing the configuration for each server to goldsmith.config():
 >
     require("goldsmith").config({
         gopls = {
@@ -216,24 +216,28 @@ is by passing the configuration for each server to goldsmith.config():
     require("goldsmith").setup('gopls')
     require("goldsmith").setup('null')
 <
-The example above configures `gopls` using a combination of the provided 
-configuration plus configuration that Goldsmith provides. Any conflicts
-between the provided configuration and Goldsmith's configuration are
-decided in favor of the user's configuration.
+The example above configures `gopls` using a combination of the provided
+configuration plus configuration that Goldsmith provides. Any conflicts between
+the provided configuration and Goldsmith's configuration are decided in favor of
+the user's configuration.
 
-You can pass the configuration either as a table or as a function. The 
-example above shows one of each. Using a function is a good way to 
-delay the generation of the configuration until as late as possible. If
-you have a very dynamic configuration you should use a function.
+You can pass the configuration either as a table or as a function. The example
+above shows one of each. Using a function is a good way to delay the generation
+of the configuration until as late as possible. If you have a very dynamic
+configuration you should use a function.
 
-If you are using Goldsmith to configure servers you should not use
-lspconfig to configure those servers. Goldsmith will configure the
-servers and call lspconfig.
+If you are using Goldsmith to configure servers you should not use lspconfig to
+configure those servers. Goldsmith will configure the servers and call lspconfig.
 
-If you want null-ls to do non-Go things (such as in the example above 
-where null-ls will run stylua and shfmt), and you want Goldsmith to
-configure null-ls for Go-related things, you will need to pass the
-non-Go portion of your null-ls configuration to Goldsmith.
+If you want null-ls to do non-Go things (such as in the example above where 
+null-ls will run stylua and shfmt), and you want Goldsmith to configure null-ls
+for Go-related things, you will need to pass the non-Go portion of your null-ls
+configuration to Goldsmith.
+
+At the end of the above example Goldsmith's setup() function is called. In this
+example this step is entirely optional and is only shown in this example to 
+introduce the |goldsmith-setup()| function. For most configurations calling 
+Goldsmith's setup() function is not recommended.
 
 A second way to pass configuration for your servers to Goldsmith is 
 using the second argument to setup():
@@ -252,12 +256,11 @@ using the second argument to setup():
         sources = { fmt.stylua, fmt.shfmt } 
     })
 <
-The above configuration is equivalent to the previous example. Again,
-you can use either a function or a table for providing the 
-configuration.
+The above configuration is equivalent to the previous example. Again, you can
+use either a function or a table for providing the configuration.
 
-If you provide both configuration in config() and in setup() the setup()
-configuration will be chosen.
+If you provide both configuration in config() and in setup() they will not be
+merged, instead the setup() configuration will be chosen.
 
 *goldsmith-configuration-all-defaults*
 A configuration that sets settings to the defaults (not guaranteed to
@@ -398,7 +401,7 @@ The debug console will honor your |goldsmith-window-settings|.
 
 See the documentation for |:GoDebugConsole| for more information.
 
-MAPPINGS                                            *goldsmith-mappings-setting*
+MAPPINGS                                           *goldsmith-mappings-settings*
 
 There are many mappings settings that you can use. See |goldsmith-mappings| for
 details on each mapping setting and its default key mapping.
@@ -1241,7 +1244,7 @@ this does.
 ================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
-INTRODUCTION
+INTRODUCTION                                   *goldsmith-mappings-introduction*
 
 There are a set of <Plug> actions which can be used to create your own mappings.
 Many of these have a default mapping. You can turn off all default mappings
@@ -1275,7 +1278,7 @@ to a keymap.
 
 Currently all <Plug> actions are for |Normal| mode.
 
-ALL KEY MAPS
+ALL KEY MAPS                                       *goldsmith-mappings-all-maps*
 
 Available <Plug> keys and their default (if any):
 
@@ -1429,7 +1432,7 @@ Default: none
 
 The same as |:GoFillStruct|. Fill all fields of the struct the cursor is under.
 
-MAPPING MANUALLY
+MAPPING MANUALLY                                     *goldsmith-mappings-manual*
 
 It is much easier to use the |goldsmith-mappings| configuration to set <Plug> 
 actions to a key map. However, you can create the keymap yourself if you want.
@@ -1626,8 +1629,7 @@ the quickfix or location list in any way and does not honor the
 |goldsmith-testing-settings| except for terminal-related settings (see
 |goldsmith-terminal-settings|). It is intended to be a bare proxy to `go test`.
 
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
+Arguments to `go test` may only be passed via the command.
 
                                                                    *:GoAddTests*
 :GoAddTests [options]
@@ -1655,7 +1657,7 @@ HEALTHCHECK                                              *goldsmith-healthcheck*
 
 Goldsmith makes use of the Neovim |health| framework. You can run
 >
-	:checkhealth goldsmith
+    :checkhealth goldsmith
 <
 and get a best-effort attempt to find problems with your Go and Goldsmith setup.
 
