@@ -235,6 +235,8 @@ function M.setup_server(server, cf)
   return true
 end
 
+M.needed = servers.is_server
+
 function M.register_server(server, cf)
   config.turn_off_autoconfig()
   local ok, sn = servers.is_server(server)

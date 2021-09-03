@@ -209,12 +209,6 @@ by passing the configuration for each server to goldsmith.config():
     })
 
     ...
-
-    -- the next two lines are *not* required as long as you do not 
-    -- call lspconfig.setup() or use another setup() for these
-    -- servers. 
-    require("goldsmith").setup('gopls')
-    require("goldsmith").setup('null')
 <
 The example above configures `gopls` using a combination of the provided
 configuration plus configuration that Goldsmith provides. Any conflicts between
@@ -233,34 +227,6 @@ If you want null-ls to do non-Go things (such as in the example above where
 null-ls will run stylua and shfmt), and you want Goldsmith to configure null-ls
 for Go-related things, you will need to pass the non-Go portion of your null-ls
 configuration to Goldsmith.
-
-At the end of the above example Goldsmith's setup() function is called. In this
-example this step is entirely optional and is only shown in this example to 
-introduce the |goldsmith-setup()| function. For most configurations calling 
-Goldsmith's setup() function is not recommended.
-
-A second way to pass configuration for your servers to Goldsmith is 
-using the second argument to setup():
->
-    require("goldsmith").setup('gopls', function()
-        return {
-            cmd = { 'gopls' },
-            settings = {
-                gopls = {
-                    gofumpt = false,
-                },
-            },
-        },
-    end)
-    require("goldsmith").setup('null', { 
-        sources = { fmt.stylua, fmt.shfmt } 
-    })
-<
-The above configuration is equivalent to the previous example. Again, you can
-use either a function or a table for providing the configuration.
-
-If you provide both configuration in config() and in setup() they will not be
-merged, instead the setup() configuration will be chosen.
 
 *goldsmith-configuration-all-defaults*
 A configuration that sets settings to the defaults (not guaranteed to
@@ -1493,9 +1459,9 @@ FUNCTIONS                                                  *goldsmith-functions*
 
 See |goldsmith-configuration| for a detailed look at config().
 
-*goldsmith-setup()*
+*goldsmith-needed()*
 
-See the wiki for a detailed look at setup().
+See the wiki for a detailed look at needed().
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
 ================================================================================
