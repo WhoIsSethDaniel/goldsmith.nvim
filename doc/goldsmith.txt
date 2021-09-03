@@ -924,6 +924,8 @@ as `go run`. e.g., the following runs the main package in the current directory:
 >
     :GoRun .
 <
+If no arguments are passed a '.' will be inserted at the end of the command.
+
                                                                         *:GoGet*
 :GoGet [packages]
 
