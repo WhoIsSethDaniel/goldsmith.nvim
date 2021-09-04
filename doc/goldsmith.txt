@@ -71,8 +71,11 @@ the version of all tools using |goldsmith-healthcheck|.
 Tool                      Version
 ---------------------------------
 go                         1.14
-gopls                      0.6.6
+gofumpt                    0.1.1
+golangci-lint              1.40.0
 golines                    0.4.0
+gopls                      0.6.6
+staticcheck                0.2.0
 
 ================================================================================
 FEATURES                                                    *goldsmith-features*
