@@ -42,7 +42,7 @@ function M.create_configs(overwrite, services)
 
     f:write(m.config_file_contents())
     created = created + 1
-    print(string.format("Created configuration file '%s'", filename))
+    log.info('Setup', string.format("Created configuration file '%s'", filename))
   end)
   if created == 0 then
     log.info(

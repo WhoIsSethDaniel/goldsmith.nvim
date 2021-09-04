@@ -4,8 +4,6 @@ local tools = require 'goldsmith.tools'
 local servers = require 'goldsmith.lsp.servers'
 local log = require 'goldsmith.log'
 
-local null = require 'null-ls'
-
 local M = {}
 
 local running_services = {}
@@ -59,10 +57,12 @@ function M.is_disabled(service)
 end
 
 function M.setup(cf)
+  local null
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
     if not M.is_disabled(service) then
       if m.has_requirements() then
+        null = require 'null-ls'
         local setup
         local user_args = config.get('null', service)
         if type(user_args) == 'table' then
@@ -73,11 +73,19 @@ function M.setup(cf)
         table.insert(running_services, setup)
         null.register(setup)
       else
-        log.warn('Null', string.format("'%s' is not installed. Any service that requires it will not function. Run ':checkhealth goldsmith' for more.", service))
+        log.warn(
+          'Null',
+          string.format(
+            "'%s' is not installed. Any service that requires it will not function. Run ':checkhealth goldsmith' for more.",
+            service
+          )
+        )
       end
     end
   end
-  null.config(cf)
+  if null then
+    null.config(cf)
+  end
   return cf
 end
 

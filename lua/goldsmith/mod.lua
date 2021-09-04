@@ -58,7 +58,7 @@ function M.replace(args)
       vim.api.nvim_buf_call(b, function()
         vim.cmd [[ silent! e! ]]
       end)
-      print 'Replaced module'
+      log.info('Mod', 'Replaced module')
     end,
   })
 end
@@ -79,7 +79,7 @@ function M.format()
       vim.api.nvim_buf_call(b, function()
         vim.cmd [[ silent! e! ]]
       end)
-      print 'Requested formatting is done.'
+      log.info('Mod', 'Requested formatting is done.')
     end,
   })
 end
