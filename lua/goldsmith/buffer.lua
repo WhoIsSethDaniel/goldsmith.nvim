@@ -60,12 +60,7 @@ end
 function M.set_project_root()
   local rootdir = require('lspconfig.util').root_pattern(unpack(config.get('system', 'root_dir')))(vim.fn.expand '%:p')
     or vim.fn.expand '%:p:h'
-  if rootdir == nil then
-    rootdir = vim.fn.fnamemodify(vim.fn.expand '%', ':p:h')
-    vim.cmd(string.format('lcd %s', rootdir))
-  else
-    vim.cmd(string.format('lcd %s', rootdir))
-  end
+  vim.cmd(string.format('lcd %s', rootdir))
   log.debug('Autoconfig', string.format('root dir: %s', rootdir))
   return rootdir
 end

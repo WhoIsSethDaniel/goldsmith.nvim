@@ -6,13 +6,17 @@ local M = {}
 
 local function jump(m)
   local params = vim.lsp.util.make_position_params()
-   vim.lsp.buf_request(0, m, params, function(_, method, result)
+  vim.lsp.buf_request(0, m, params, function(_, a2, a3, a4)
+    -- see https://github.com/neovim/neovim/pull/15504
+    -- for the reason for the type check; essentially
+    -- the signature for the lsp-handler changed
+    local result = type(a4) == 'number' and a3 or a2
     if result == nil or vim.tbl_isempty(result) then
       log.info('Jump', 'No location found')
       return nil
     end
 
-    local c = config.window_opts('jump')
+    local c = config.window_opts 'jump'
     if not c['use_current_window'] then
       wb.create_winbuf(c)
     end
@@ -32,11 +36,11 @@ end
 
 -- :GoDef
 function M.goto_definition()
-  jump('textDocument/definition')
+  jump 'textDocument/definition'
 end
 
 function M.goto_implementation()
-  jump('textDocument/implementation')
+  jump 'textDocument/implementation'
 end
 
 -- :GoInfo
@@ -51,7 +55,7 @@ end
 
 -- :GoDefType :GoTypeDef
 function M.type_definition()
-  jump('textDocument/typeDefinition')
+  jump 'textDocument/typeDefinition'
 end
 
 -- :GoRename <arg>
