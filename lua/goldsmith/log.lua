@@ -54,7 +54,7 @@ end
 
 function M.toggle_debug_console()
   if not M.is_debug() then
-    M.warn('Debug', 'Debugging is not turned on. To turn on debugging set debug.enable to true and restart nvim.')
+    M.warn('Debug', 'Debugging is not turned on. To turn on debugging set system.debug to true and restart nvim.')
     return
   end
   debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts())
