@@ -164,7 +164,7 @@ You can use all the defaults by placing the following in your configuration:
 Assuming you do nothing else the above will cause Goldsmith to attempt to 
 configure null-ls and gopls for you. This means that null-ls will attempt to run
 its default services, and gopls will have a minimal configuration that looks
-something like the following (this example is with gopls 0.7.1):
+something like the following (this example is with `gopls` 0.7.1):
 >
     capabilities = { ... }
     cmd = { "<discovered gopls executable>", "-remote=auto" },
@@ -1474,7 +1474,11 @@ See |goldsmith-configuration| for a detailed look at config().
 
 *goldsmith-needed()*
 
-See the wiki for a detailed look at needed().
+The needed() function takes a single argument: the name of a server. e.g. "gopls"
+or "null" or "clangd". If the name of a server that Goldsmith can configure is 
+passed-in the function returns true. Otherwise false. This is useful when 
+creating a configuration for many LSP servers. See the wiki for a detailed look 
+at needed():
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
 ================================================================================
