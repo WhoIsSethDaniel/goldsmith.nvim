@@ -8,7 +8,7 @@
   - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
-- [ ] tests (w/plenary?)
+- [ ] tests (using plenary?)
 - [ ] testing
   - [ ] benchmarking
   - [ ] coverage

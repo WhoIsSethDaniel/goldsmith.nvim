@@ -22,10 +22,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * :GoFillStruct utilizes LSP to fill the current struct
 * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
 * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
-* build your project using :GoBuild 
-* run your main package using :GoRun
-* fetch new Go libraries using :GoGet
-* install new Go tools using :GoInstall
+* use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, :GoRun, and others
 * use the excellent builtin testing framework to run individual tests, package tests, or all your tests, or use the integrated and enhanced testing with [vim-test](https://github.com/vim-test/vim-test)
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
@@ -50,17 +47,6 @@ to configure Goldsmith.
 
 Also see the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) or 
 after installing Goldsmith by using `:h goldsmith`.
-
-The most basic configuration is:
-```lua
-require("goldsmith").config()
-```
-However, if you already have lspconfig configured you may want to do this:
-```lua
-require("goldsmith").config({ autoconfig = false })
-```
-There are many other options. See the [configuration page](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) on the wiki and
-the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) for much more information.
 
 # Minimal Requirements
 * Neovim >= 0.5.0
