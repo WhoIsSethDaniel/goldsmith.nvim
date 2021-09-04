@@ -167,7 +167,7 @@ function M.all_servers_are_running()
 end
 
 function M.init()
-  if not config.config_is_ok() then
+  if not config.setup() then
     return false
   end
   require('goldsmith.tools').check()

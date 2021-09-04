@@ -5,7 +5,7 @@ local _defaults = {}
 
 local autoconfig = true
 
-local config_is_ok = false
+local config_is_ok = nil
 
 function M.turn_off_autoconfig()
   autoconfig = false
@@ -374,6 +374,11 @@ function M.service_is_disabled(name)
 end
 
 function M.setup(user_config)
+  -- if config.is_ok is nil it means
+  -- the config hasn't been read yet
+  if M.config_is_ok() ~= nil then
+    return M.config_is_ok()
+  end
   user_config = user_config or {}
   set_autoconfig(user_config)
   _defaults = defaults(SPEC)

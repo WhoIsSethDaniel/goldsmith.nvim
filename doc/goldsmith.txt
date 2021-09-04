@@ -143,7 +143,23 @@ Go-related LSP servers. For more complete examples please see the wiki page on
 configuration:
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
 
+*goldsmith-using-lua*
+Goldsmith is written in Lua and the configuration of Goldsmith uses Lua code. If 
+you are using a Vim-style configuration you can wrap your Goldsmith configuration 
+in a Lua here-doc:
+>
+    lua<<EOF
+      require("goldsmith").config(
+       ...
+      )
+    EOF
+<
+The above may be placed in your .vimrc, or similar, file.
+
 *goldsmith-configuration-default*
+Running config() is not required. If you do not run config() it is the same as
+running config() with no arguments: all the defaults are chosen.
+
 You can use all the defaults by placing the following in your configuration:
 >
     require("goldsmith").config()
