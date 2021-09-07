@@ -84,9 +84,9 @@ local function set_last_file(f)
 end
 
 do
-  local args, cmd, cf, last_file, last_cmd, last_win
+  local args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
   function M.close_window()
-    if last_win ~= nil then
+    if last_win ~= nil and vim.api.nvim_win_is_valid(last_win.win) then
       vim.api.nvim_win_hide(last_win.win)
     end
   end
@@ -223,6 +223,13 @@ do
         return M[next] {}
       end
       if ok then
+        if current_job ~= nil then
+          last_job = current_job
+          if vim.fn.jobwait({ last_job }, 0)[1] == -1 then
+            log.warn('Testing', 'Killing currently running test job')
+            vim.fn.jobstop(last_job)
+          end
+        end
         if cmd == nil then
           cmd = vim.list_extend({ 'go', 'test' }, vim.tbl_flatten { config.get('testing', 'arguments'), args })
         end
@@ -243,7 +250,7 @@ do
           buffer.set_buffer_map(last_win.buf, '', 'test-close-window', '<cmd>close<cr>', { silent = true })
         end
         table.insert(cmd, '-json')
-        job.run(cmd, opts, {
+        current_job = job.run(cmd, opts, {
           stderr_buffered = true,
           on_error = function(id, data)
             log.error('Testing', string.format("Test cmd '%s' failed with: %s", table.concat(cmd, ' '), data))
@@ -251,6 +258,9 @@ do
           on_stdout = (function()
             local out = {}
             return function(id, data)
+              if id == last_job then
+                return
+              end
               if data then
                 vim.list_extend(out, data)
                 local last = table.remove(data)
@@ -270,6 +280,10 @@ do
             end
           end)(),
           on_exit = function(id, code)
+            if id == last_job then
+              last_job = nil
+              return
+            end
             if strategy == 'display' then
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
             end

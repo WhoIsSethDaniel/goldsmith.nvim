@@ -1,21 +1,21 @@
 - [x] go list
   - [x] currently requires downloading missing packages to cache (when -json ./...)
   - [x] root of project may not always contain needed info
+- [x] root dir 
+  - [x] need to decouple from lsp root dir
+- [x] testing improvements
+  - [x] prevent / allow user to start new testing in window currently running tests
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-- [ ] start a new go project
-  - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] lots more debug logging
   - [ ] review all logging
+- [ ] start a new go project
+  - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (using plenary?)
-- [ ] testing improvements
-  - [ ] killing off long running tests if user deletes window/buffer?
-  - [ ] prevent / allow user to start new testing in window currently running tests
-  - [ ] some kind of spinner for long running tests?  maybe in statusline?
 - [ ] testing
   - [ ] benchmarking
   - [ ] coverage

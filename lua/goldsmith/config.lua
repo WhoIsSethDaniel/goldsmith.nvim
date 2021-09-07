@@ -99,6 +99,14 @@ local function services()
   return svcs
 end
 
+function M.lsp_root_dir()
+  local lrd = M.get('system', 'lsp_root_dir')
+  if lrd == nil then
+    return M .get('system', 'root_dir')
+  end
+  return lrd
+end
+
 local function window_validate(allow_nil, nil_default, focus)
   local function def(d)
     if nil_default then
@@ -133,6 +141,7 @@ local SPEC = {
   system = {
     debug = { false, 'b' },
     root_dir = { { '.git', 'go.mod', 'go.work' }, 't' },
+    lsp_root_dir = { nil, 't' },
   },
   completion = {
     omni = { false, 'b' },

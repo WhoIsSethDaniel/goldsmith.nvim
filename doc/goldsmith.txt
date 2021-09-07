@@ -322,7 +322,7 @@ be entirely up-to-date):
       revive = {},
       system = {
         debug = false,
-        root_dir = { ".git", "go.mod", "go.work" }
+        root_dir = { ".git", "go.mod", "go.work" },
       },
       tags = {
         default_tag = "json",
@@ -369,6 +369,13 @@ Determine the root directory of the current project. This uses a list of
 files/directories to search for. The search looks from the current file's 
 directory down to root. If it does not find any of the files/directories it 
 defaults to the directory for the current file.
+
+`system.lsp_root_dir`                            *goldsmith-system.lsp_root_dir*
+
+Default: nil
+If set this is passed to lspconfig and used to determine the root of the current
+project for each LSP server that Goldsmith manages. If it is not set then
+|goldsmith-system.root_dir| is used for this purpose.
 
 `system.debug`                                          *goldsmith-system.debug*
 
@@ -1399,6 +1406,15 @@ Default: <leader>tp
 The same as |:GoTestPkg|. Run all tests for the current package.
 
 See |goldsmith-testing| for more information.
+
+*(goldsmith-test-close-window)*
+Default: <leader>tc
+
+Close the window for the currently running test(s). This effectively turns the
+currently running test job into a background job. This is not a toggle. Once the
+window is closed you cannot get it back.
+
+This mapping is only available when using the 'native' runner.
 
 *(goldsmith-alt-file)*
 Default: none

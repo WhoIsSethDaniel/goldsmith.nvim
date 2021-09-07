@@ -116,7 +116,7 @@ end
 
 local set_root_dir = function(fname)
   local util = require 'lspconfig.util'
-  return util.root_pattern(unpack(config.get('system', 'root_dir')))(fname) or util.path.dirname(fname)
+  return util.root_pattern(unpack(config.lsp_root_dir()))(fname) or util.path.dirname(fname)
 end
 
 M.autoconfig_is_on = config.autoconfig_is_on

@@ -12,7 +12,7 @@ function M.run(cmd, ...)
     return 'cmd: ' .. vim.inspect(cmd)
   end)
   log.debug('Job', function()
-    return 'opts: ' .. vim.inspect({opts})
+    return 'opts: ' .. vim.inspect(opts)
   end)
   local job
   if opts['terminal'] then
