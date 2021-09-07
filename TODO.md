@@ -1,18 +1,28 @@
+- [x] go list
+  - [x] currently requires downloading missing packages to cache (when -json ./...)
+  - [x] root of project may not always contain needed info
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-- [ ] start a new project
+- [ ] start a new go project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (using plenary?)
+- [ ] testing improvements
+  - [ ] killing off long running tests if user deletes window/buffer?
+  - [ ] prevent / allow user to start new testing in window currently running tests
+  - [ ] some kind of spinner for long running tests?  maybe in statusline?
 - [ ] testing
   - [ ] benchmarking
   - [ ] coverage
   - [ ] ultest integration
+- [ ] mod
+  - [ ] 'exclude' support
+  - [ ] 'retract' support
 - [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)

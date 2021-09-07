@@ -278,8 +278,7 @@ do
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
               return
             end
-            local details = go.list()
-            local module = details[1].ImportPath
+            local module = go.module_path()
             if module == nil then
               log.warn('Testing', 'Cannot determine import path for current project.')
               module = ''

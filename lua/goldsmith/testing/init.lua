@@ -14,7 +14,10 @@ goldsmith_test_package_complete = function()
 end
 
 function M.package_complete()
-  local l = go.list './...' -- potentially expensive?
+  local ok, l = go.list(false, './...') -- potentially expensive?
+  if not ok then
+    log.error('Testing', 'Failed to find all packages for current module/project.')
+  end
   local pkgs = {}
   for _, p in ipairs(l) do
     local d = vim.fn.fnamemodify(p.Dir, ':.')
@@ -30,7 +33,10 @@ end
 
 function M.test_complete()
   local cp = fs.relative_to_cwd(vim.fn.expand '%')
-  local list = go.list(cp)
+  local ok, list = go.list(false, cp)
+  if not ok then
+    log.error('Testing', 'Failed to find all test files for current package.')
+  end
   local test_files = list[1]['TestGoFiles'] or {}
   local dir = list[1]['Dir']
   local tests = {}
