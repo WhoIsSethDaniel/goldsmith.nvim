@@ -21,6 +21,7 @@ command! -nargs=0 GoModCheck lua require'goldsmith.mod'.check_for_upgrades()
 command! -nargs=0 GoModTidy lua require'goldsmith.mod'.tidy()
 command! -nargs=0 GoModFmt lua require'goldsmith.mod'.format()
 command! -nargs=+ GoModReplace lua require'goldsmith.mod'.replace({<f-args>})
+command! -nargs=+ GoModRetract lua require'goldsmith.mod'.retract({<f-args>})
 
 " codelens
 command! -nargs=0 GoCodeLensRun lua require'goldsmith.cmds.lsp'.run_codelens()

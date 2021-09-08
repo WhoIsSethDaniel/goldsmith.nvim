@@ -15,25 +15,51 @@ function M.tidy()
   cmds.tidy()
 end
 
+function M.retract(args)
+  local cmd = {'go', 'mod', 'edit'}
+  for _, vr in ipairs(args) do
+    if string.match(vr, ',') then
+      table.insert(cmd, '-retract=[' .. vr .. ']')
+    else
+      table.insert(cmd, '-retract='..vr)
+    end
+  end
+  vim.cmd [[ silent! wall ]]
+  local b = vim.api.nvim_get_current_buf()
+  print(vim.inspect(cmd))
+  job.run(cmd, {
+    stdout_buffered = true,
+    stderr_buffered = true,
+    on_stderr = function(id, data)
+      log.error('Mod', data[1])
+    end,
+    on_exit = function(id, code)
+      if code > 0 then
+        return
+      end
+      vim.api.nvim_buf_call(b, function()
+        vim.cmd [[ silent! e! ]]
+      end)
+      log.info('Mod', 'Retraction(s) added')
+    end,
+  })
+end
+
 function M.replace(args)
   local replace, mod
-  if #args < 1 then
-    log.error(nil, 'Too few arguments to :GoModReplace')
-    return
-  end
   if #args == 1 then
     replace = args[1]
   elseif #args == 2 then
     mod = args[1]
     replace = args[2]
   else
-    log.error(nil, 'Too many arguments to :GoModReplace')
+    log.error('Mod', 'Too many arguments to :GoModReplace')
     return
   end
   if mod == nil then
     mod = ts.get_module_at_cursor()
     if mod == nil then
-      log.error(nil, 'There is no module at the current position')
+      log.error('Mod', 'There is no module at the current position')
       return
     end
   end
@@ -49,7 +75,7 @@ function M.replace(args)
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      log.error(nil, data[1])
+      log.error('Mod', data[1])
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then
@@ -70,7 +96,7 @@ function M.format()
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      log.error(nil, data[1])
+      log.error('Mod', data[1])
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then

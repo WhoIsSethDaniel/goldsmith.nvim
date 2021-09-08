@@ -9,6 +9,9 @@
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+- [ ] mod
+  - [x] 'retract' support
+  - [ ] 'exclude' support
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] start a new go project
@@ -20,9 +23,6 @@
   - [ ] benchmarking
   - [ ] coverage
   - [ ] ultest integration
-- [ ] mod
-  - [ ] 'exclude' support
-  - [ ] 'retract' support
 - [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
