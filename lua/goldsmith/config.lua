@@ -173,6 +173,12 @@ local SPEC = {
     ['alt-file'] = { {}, 't' },
     ['alt-file-force'] = { {}, 't' },
     ['fillstruct'] = { {}, 't' },
+    ['codelens-on'] = { {}, 't' },
+    ['codelens-off'] = { {}, 't' },
+    ['codelens-run'] = { {}, 't' },
+    ['sym-highlight-on'] = { {}, 't' },
+    ['sym-highlight-off'] = { {}, 't' },
+    ['sym-highlight'] = { {}, 't' },
   }),
   goimports = {
     run_on_save = { true, 'b' },

@@ -8,6 +8,7 @@
 - [x] mod
   - [x] 'retract' support
   - [x] 'exclude' support
+- [ ] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands

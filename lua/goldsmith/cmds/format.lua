@@ -1,11 +1,23 @@
 local config = require 'goldsmith.config'
 local format = require 'goldsmith.format'
+local mod = require 'goldsmith.mod'
 
 local M = {}
 
 function M.run(uncond)
-  M.run_lsp_format(uncond)
-  M.run_organize_imports(uncond)
+  local ft = vim.opt.filetype:get()
+  if ft == 'go' then
+    M.run_lsp_format(uncond)
+    M.run_organize_imports(uncond)
+  elseif ft == 'gomod' then
+    M.run_mod_format(uncond)
+  end
+end
+
+function M.run_mod_format(uncond)
+  if uncond == 1 or config.get('format', 'run_on_save') then
+    mod.format()
+  end
 end
 
 function M.run_lsp_format(uncond)
