@@ -16,17 +16,16 @@ function M.tidy()
 end
 
 function M.retract(args)
-  local cmd = {'go', 'mod', 'edit'}
+  local cmd = { 'go', 'mod', 'edit' }
   for _, vr in ipairs(args) do
     if string.match(vr, ',') then
       table.insert(cmd, '-retract=[' .. vr .. ']')
     else
-      table.insert(cmd, '-retract='..vr)
+      table.insert(cmd, '-retract=' .. vr)
     end
   end
   vim.cmd [[ silent! wall ]]
   local b = vim.api.nvim_get_current_buf()
-  print(vim.inspect(cmd))
   job.run(cmd, {
     stdout_buffered = true,
     stderr_buffered = true,
@@ -41,6 +40,44 @@ function M.retract(args)
         vim.cmd [[ silent! e! ]]
       end)
       log.info('Mod', 'Retraction(s) added')
+    end,
+  })
+end
+
+function M.exclude(args)
+  local cmd = { 'go', 'mod', 'edit' }
+  if #args > 0 then
+    for _, mod in ipairs(args) do
+      if not string.match(mod, '@') then
+        log.error('Mod', 'Module name must include a version.')
+        return
+      end
+      table.insert(cmd, '-exclude=' .. mod)
+    end
+  else
+    local mod = ts.get_module_at_cursor()
+    if mod == nil then
+      log.error('Mod', 'There is no module at the current position')
+      return
+    end
+    table.insert(cmd, string.format('-exclude=%s@%s', mod.name, mod.version))
+  end
+  vim.cmd [[ silent! wall ]]
+  local b = vim.api.nvim_get_current_buf()
+  job.run(cmd, {
+    stdout_buffered = true,
+    stderr_buffered = true,
+    on_stderr = function(chan, data, name)
+      log.error('Mod', data[1])
+    end,
+    on_exit = function(jobid, code, event)
+      if code > 0 then
+        return
+      end
+      vim.api.nvim_buf_call(b, function()
+        vim.cmd [[ silent! e! ]]
+      end)
+      log.info('Mod', 'Excluded module')
     end,
   })
 end

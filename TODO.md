@@ -5,13 +5,13 @@
   - [x] need to decouple from lsp root dir
 - [x] testing improvements
   - [x] prevent / allow user to start new testing in window currently running tests
+- [x] mod
+  - [x] 'retract' support
+  - [x] 'exclude' support
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-- [ ] mod
-  - [x] 'retract' support
-  - [ ] 'exclude' support
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] start a new go project

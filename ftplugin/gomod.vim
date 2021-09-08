@@ -22,6 +22,7 @@ command! -nargs=0 GoModTidy lua require'goldsmith.mod'.tidy()
 command! -nargs=0 GoModFmt lua require'goldsmith.mod'.format()
 command! -nargs=+ GoModReplace lua require'goldsmith.mod'.replace({<f-args>})
 command! -nargs=+ GoModRetract lua require'goldsmith.mod'.retract({<f-args>})
+command! -nargs=* GoModExclude lua require'goldsmith.mod'.exclude({<f-args>})
 
 " codelens
 command! -nargs=0 GoCodeLensRun lua require'goldsmith.cmds.lsp'.run_codelens()
@@ -32,6 +33,8 @@ augroup goldsmith_ft_gomod
   autocmd! * <buffer>
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END
+
+lua require'goldsmith.buffer'.setup()
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
