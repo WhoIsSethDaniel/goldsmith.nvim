@@ -17,10 +17,10 @@ CONTENTS                                                    *goldsmith-contents*
   4. Configuration................................|goldsmith-configuration|
   5. Settings.....................................|goldsmith-settings|
   6. Commands.....................................|goldsmith-commands|
-  7. Mappings.....................................|goldsmith-mappings|
-  8. Text Objects.................................|goldsmith-text-objects|
-  9. Functions....................................|goldsmith-functions|
- 10. Testing......................................|goldsmith-testing|
+  7. Testing......................................|goldsmith-testing|
+  9. Mappings.....................................|goldsmith-mappings|
+  9. Text Objects.................................|goldsmith-text-objects|
+ 10. Functions....................................|goldsmith-functions|
  11. Health Check.................................|goldsmith-healthcheck|
  12. Help.........................................|goldsmith-help|
  13. Resources....................................|goldsmith-resources|
@@ -249,8 +249,8 @@ for Go-related things, you will need to pass the non-Go portion of your null-ls
 configuration to Goldsmith.
 
 *goldsmith-configuration-all-defaults*
-A configuration that sets settings to the defaults (not guaranteed to
-be entirely up-to-date):
+A configuration that sets settings to the defaults (this example is not
+guaranteed to be entirely up-to-date):
 >
     require("goldsmith").config({
       codelens = {
@@ -290,8 +290,14 @@ be entirely up-to-date):
       },
       mappings = {
         ["add-ws-folder"] = { "<leader>wa" },
+        ["alt-file"] = {},
+        ["alt-file-force"] = {},
         codeaction = { "<leader>ca" },
+        ["codelens-off"] = {},
+        ["codelens-on"] = {},
+        ["codelens-run"] = {},
         enable = true,
+        fillstruct = {},
         format = { "<leader>f" },
         godef = { "gd", "<C-]>" },
         goimplementation = { "gi" },
@@ -305,6 +311,9 @@ be entirely up-to-date):
         setloclist = { "<leader>q" },
         showdiag = { "<leader>e" },
         sighelp = { "<C-k>" },
+        ["sym-highlight"] = {},
+        ["sym-highlight-off"] = {},
+        ["sym-highlight-on"] = {},
         ["test-close-window"] = { "<leader>tc" },
         ["test-last"] = { "<leader>tl" },
         ["test-nearest"] = { "<leader>tn" },
@@ -326,7 +335,7 @@ be entirely up-to-date):
       revive = {},
       system = {
         debug = false,
-        root_dir = { ".git", "go.mod", "go.work" },
+        root_dir = { ".git", "go.mod", "go.work" }
       },
       tags = {
         default_tag = "json",
@@ -402,8 +411,8 @@ details on each mapping setting and its default key mapping.
 `mappings.enable`                                    *goldsmith-mappings.enable*
 
 Default: true
-When set to false the default key mappings are used. When set to true the user
-must specify the mappings wanted.
+When set to true the default key mappings are used. When set to false the user
+must explicitly setup mappings.
 
 For more information about this setting and key mappings please see 
 |goldsmith-mappings|.
@@ -723,7 +732,7 @@ and |:GoSymHighlightOff|.
 
 Default: true
 Show `codelens` items from `gopls`. When this is turned on *and* you have 
-configured `gopls` to show various codelenses you will see, in-line via virtual
+configured `gopls` to show various codelenses you will see in-line, via virtual
 text, various code lenses. You can then use |:GoCodeLensRun| on the line
 where the codelens appears to see the results of that codelens.
 
@@ -1267,13 +1276,169 @@ Cleanup the go.mod file. See ':GoHelp mod tidy' for more information on what
 this does.
 
 ================================================================================
+TESTING                                                      *goldsmith-testing*
+
+INTRODUCTION
+
+By default Goldsmith uses its 'native' testing framework. 'native' testing does 
+a number of things that may be surprising. All test commands run with '-json', 
+however the output (if you are using the 'display' strategy) is just like '-v'.
+Currently there is no way to see the actual JSON output unless you use |:GoTest|. 
+There is also no way to see the non-verbose output due to how the JSON output 
+works. This method was chosen due to an issue with finding the specific file that 
+produced the error when using traditional Vim means (i.e. using |errorformat|).
+Using the JSON output allows for correct reporting of which file produced the 
+error, if any. The author has also seen this file-identification problem using
+`vim-test` and also `vim-go`. Since this method is novel it may well have 
+problems, particularly at the edges. Please report any problems you find using 
+|goldsmith-help|.
+
+Goldsmith can integrate with `vim-test` for the running of tests. It does so by 
+having similar commands to `vim-test`, but with enhanced capabilities. All of
+the `vim-test` commands remain available to use. See |goldsmith-resources| for 
+where `vim-test` can be found.
+
+Goldsmith also integrates with the `gotests` test generation tool. See
+|goldsmith-resources| for where this tool can be found. To install `gotests` you 
+can use |:GoInstallBinaries|.
+
+Goldsmith can work fine without `gotests` or `vim-test`. If you don't want to
+install `vim-test` the Goldsmith 'native' testing is quite good. If you don't want
+to install `gotests` all test-generation (|:GoAddTests| and |:GoAddTest|) will 
+fail to work.
+
+SETTINGS
+
+If you have installed `vim-test` and/or `gotests`, but have yet to configure
+them, you can still use Goldsmith. Goldsmith will detect when required `vim-test`
+or `gotests` variables are unset and will set them to reasonable defaults. See 
+|goldsmith-testing-settings| for what settings can be set.
+
+If you are using 'native' testing it will work fine right away. It is also
+configured via |goldsmith-testing-settings|.
+
+COMMANDS
+
+                                                                  *:GoTestSuite*
+:GoTestSuite [args]
+
+Run all tests for the current project. This command acts the same if it is run
+from a code file or a test file.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                   *:GoTestLast*
+:GoTestLast [args]
+
+Run the previous test command. Both `vim-test` and the 'native' Goldsmith testing
+commands keep track of the last test command that was run and this command will
+run it again.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                    *:GoTestPkg*
+:GoTestPkg [args]
+
+Run the tests for the current package, or, pass the paths for directories where
+tests should be run.
+
+Command completion can be used to pass directories within the current project
+to the command. The list of directories are those that contain packages.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                *:GoTestNearest*
+:GoTestNearest [args]
+
+Within a code file this command will identify the function your cursor is 
+currently in, match that function's name to a test routine in your test file, 
+and will run that test. If your cursor is not within a function, or if there is 
+no matching test routine a warning will be printed.
+
+Within a test file this command will identify the function your cursor is 
+currently in and will attempt to run it as a test.
+
+The function test matching works as follows: it searches for two different
+function names within your test file, Test<funcname> and Test_<funcname>. The
+matching is case sensitive.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                  *:GoTestVisit*
+:GoTestVisit[!]
+
+When run, and if you have not previously run a test, this command will take you 
+to the test/code file for the current code/test file (essentially acting like 
+|:GoAlt|.) If you have previously run a test this command will take you to the 
+file for that test. Note that not all test commands operate on a single file, 
+and therefore do not affect what is considered the 'last test file'. Commands
+that do affect the 'last test file' are :GoTestRun, and :GoTestNearest.
+
+This command will honor your |goldsmith-window-settings| and your "gotestvisit"
+window settings.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                    *:GoTestRun*
+:GoTestRun [tests]
+
+With 'native' testing there are two scenarios: 1) if arguments are passed in 
+they are assumed to be names of tests to run. You can use command-completion to 
+see the names of all tests for the current package (this has the potential to be
+slow if you have many test files in a package) 2) if no arguments are passed 
+in this acts just like |:GoTestNearest|.
+
+With `vim-test` testing there are also two scenarios: 1) the same as with 'native'
+testing, 2) if no arguments are passed in it acts just like |:GoTestPkg|.
+
+Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
+
+                                                                       *:GoTest*
+:GoTest [args]
+
+This command simply runs 'go test' with the arguments that are passed to it. This 
+command will not populate the quickfix list. By default it runs in a terminal. If 
+you pass '!' it will run in the background. This command does not interact with 
+the quickfix or location list in any way and does not honor the
+|goldsmith-testing-settings| except for terminal-related settings (see
+|goldsmith-terminal-settings|). It is intended to be a bare proxy to `go test`.
+
+Arguments to `go test` may only be passed via the command.
+
+                                                                   *:GoAddTests*
+:GoAddTests [options]
+
+Generate tests for all functions/methods in the current Go file. This does not
+overwrite any tests that already exist, but it may make new stub tests. 
+
+The only options are -p and -e. -p means generate parallel subtests. -e means
+to only generate tests for exported functions/methods.
+
+                                                                    *:GoAddTest*
+:GoAddTest [options] [function_name]
+
+Generate a stub test for either the function/method passed to the command or 
+generate a stub test for the current function/method the cursor is currently
+in. If the given [function_name] does not exist no test is created.
+
+The only option is -p. -p means generate parallel subtests.
+
+You can use command completion to see all available functions in the current
+file.
+
+================================================================================
 MAPPINGS                                                    *goldsmith-mappings*
 
 INTRODUCTION                                   *goldsmith-mappings-introduction*
 
 There are a set of <Plug> actions which can be used to create your own mappings.
-Many of these have a default mapping. You can turn off all default mappings
-by setting |goldsmith-mappings.enable| to false.
+Many of these have a default mapping. You can turn off all default mappings by 
+setting |goldsmith-mappings.enable| to false.
 
 You can also change the mapping for each <Plug> key or disable a <Plug> key in
 the configuration settings. e.g.:
@@ -1565,162 +1730,6 @@ passed-in the function returns true. Otherwise false. This is useful when
 creating a configuration for many LSP servers. See the wiki for a detailed look 
 at needed():
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
-
-================================================================================
-TESTING                                                      *goldsmith-testing*
-
-INTRODUCTION
-
-By default Goldsmith uses its 'native' testing framework. 'native' testing does 
-a number of things that may be surprising. All test commands run with '-json', 
-however the output (if you are using the 'display' strategy) is just like '-v'.
-Currently there is no way to see the actual JSON output unless you use |:GoTest|. 
-There is also no way to see the non-verbose output due to how the JSON output 
-works. This method was chosen due to an issue with finding the specific file that 
-produced the error when using traditional Vim means (i.e. using |errorformat|).
-Using the JSON output allows for correct reporting of which file produced the 
-error, if any. The author has also seen this file-identification problem using
-`vim-test` and also `vim-go`. Since this method is novel it may well have 
-problems, particularly at the edges. Please report any problems you find using 
-|goldsmith-help|.
-
-Goldsmith can integrate with `vim-test` for the running of tests. It does so by 
-having similar commands to `vim-test`, but with enhanced capabilities. All of
-the `vim-test` commands remain available to use. See |goldsmith-resources| for 
-where `vim-test` can be found.
-
-Goldsmith also integrates with the `gotests` test generation tool. See
-|goldsmith-resources| for where this tool can be found. To install `gotests` you 
-can use |:GoInstallBinaries|.
-
-Goldsmith can work fine without `gotests` or `vim-test`. If you don't want to
-install `vim-test` the Goldsmith 'native' testing is quite good. If you don't want
-to install `gotests` all test-generation (|:GoAddTests| and |:GoAddTest|) will 
-fail to work.
-
-SETTINGS
-
-If you have installed `vim-test` and/or `gotests`, but have yet to configure
-them, you can still use Goldsmith. Goldsmith will detect when required `vim-test`
-or `gotests` variables are unset and will set them to reasonable defaults. See 
-|goldsmith-testing-settings| for what settings can be set.
-
-If you are using 'native' testing it will work fine right away. It is also
-configured via |goldsmith-testing-settings|.
-
-COMMANDS
-
-                                                                  *:GoTestSuite*
-:GoTestSuite [args]
-
-Run all tests for the current project. This command acts the same if it is run
-from a code file or a test file.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
-                                                                   *:GoTestLast*
-:GoTestLast [args]
-
-Run the previous test command. Both `vim-test` and the 'native' Goldsmith testing
-commands keep track of the last test command that was run and this command will
-run it again.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
-                                                                    *:GoTestPkg*
-:GoTestPkg [args]
-
-Run the tests for the current package, or, pass the paths for directories where
-tests should be run.
-
-Command completion can be used to pass directories within the current project
-to the command. The list of directories are those that contain packages.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
-                                                                *:GoTestNearest*
-:GoTestNearest [args]
-
-Within a code file this command will identify the function your cursor is 
-currently in, match that function's name to a test routine in your test file, 
-and will run that test. If your cursor is not within a function, or if there is 
-no matching test routine a warning will be printed.
-
-Within a test file this command will identify the function your cursor is 
-currently in and will attempt to run it as a test.
-
-The function test matching works as follows: it searches for two different
-function names within your test file, Test<funcname> and Test_<funcname>. The
-matching is case sensitive.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
-                                                                  *:GoTestVisit*
-:GoTestVisit[!]
-
-When run, and if you have not previously run a test, this command will take you 
-to the test/code file for the current code/test file (essentially acting like 
-|:GoAlt|.) If you have previously run a test this command will take you to the 
-file for that test. Note that not all test commands operate on a single file, 
-and therefore do not affect what is considered the 'last test file'. Commands
-that do affect the 'last test file' are :GoTest, :GoTestRun, and :GoTestNearest.
-
-This command will honor your |goldsmith-window-settings| and your "gotestvisit"
-window settings.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
-                                                                    *:GoTestRun*
-:GoTestRun [tests]
-
-With 'native' testing there are two scenarios: 1) if arguments are passed in 
-they are assumed to be names of tests to run. You can use command-completion to 
-see the names of all tests for the current package (this has the potential to be
-slow if you have many test files in a package) 2) if no arguments are passed 
-in this acts just like |:GoTestNearest|.
-
-With `vim-test` testing there are also two scenarios: 1) the same as with 'native'
-testing, 2) if no arguments are passed in it acts just like |:GoTestPkg|.
-
-Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
-
-                                                                       *:GoTest*
-:GoTest [args]
-
-This command simply runs 'go test' with the arguments that are passed to it. This 
-command will not populate the quickfix list. By default it runs in a terminal. If 
-you pass '!' it will run in the background. This command does not interact with 
-the quickfix or location list in any way and does not honor the
-|goldsmith-testing-settings| except for terminal-related settings (see
-|goldsmith-terminal-settings|). It is intended to be a bare proxy to `go test`.
-
-Arguments to `go test` may only be passed via the command.
-
-                                                                   *:GoAddTests*
-:GoAddTests [options]
-
-Generate tests for all functions/methods in the current Go file. This does not
-overwrite any tests that already exist, but it may make new stub tests. 
-
-The only options are -p and -e. -p means generate parallel subtests. -e means
-to only generate tests for exported functions/methods.
-
-                                                                    *:GoAddTest*
-:GoAddTest [options] [function_name]
-
-Generate a stub test for either the function/method passed to the command or 
-generate a stub test for the current function/method the cursor is currently
-in. If the given [function_name] does not exist no test is created.
-
-The only option is -p. -p means generate parallel subtests.
-
-You can use command completion to see all available functions in the current
-file.
 
 ================================================================================
 HEALTHCHECK                                              *goldsmith-healthcheck*
