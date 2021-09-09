@@ -8,13 +8,12 @@
 - [x] mod
   - [x] 'retract' support
   - [x] 'exclude' support
+- [x] if jumping to the same file, do not open a new window
 - [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
 - [ ] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-- [ ] if jumping to the same file, do not open a new window
-- [ ] does null-ls actually need to call lspconfig.setup()?
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] start a new go project

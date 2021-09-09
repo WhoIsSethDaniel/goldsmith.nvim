@@ -16,20 +16,25 @@ local function jump(m)
       return nil
     end
 
+    local r
+    if vim.tbl_islist(result) then
+      r = result[1]
+    else
+      r = result
+    end
+
+    local b = vim.uri_to_bufnr(r.uri)
     local c = config.window_opts 'jump'
-    if not c['use_current_window'] then
+    if b ~= vim.fn.bufnr('%') and not c['use_current_window'] then
+      c['reuse'] = b
       wb.create_winbuf(c)
     end
 
-    if vim.tbl_islist(result) then
-      vim.lsp.util.jump_to_location(result[1])
+    vim.lsp.util.jump_to_location(r)
 
-      if #result > 1 then
-        vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(result))
-        vim.api.nvim_command 'copen'
-      end
-    else
-      vim.lsp.util.jump_to_location(result)
+    if #result > 1 then
+      vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(result))
+      vim.api.nvim_command 'copen'
     end
   end)
 end
