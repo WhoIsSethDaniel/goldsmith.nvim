@@ -120,9 +120,11 @@ function M.toggle_debug_console(wb, opts)
 end
 
 function M.append_to_buffer(b, output)
-  vim.api.nvim_buf_set_option(b, 'modifiable', true)
-  vim.api.nvim_buf_set_lines(b, -1, -1, true, output)
-  vim.api.nvim_buf_set_option(b, 'modifiable', false)
+  if vim.api.nvim_buf_is_loaded(b) then
+    vim.api.nvim_buf_set_option(b, 'modifiable', true)
+    vim.api.nvim_buf_set_lines(b, -1, -1, true, output)
+    vim.api.nvim_buf_set_option(b, 'modifiable', false)
+  end
 end
 
 function M.clear_buffer(b)
@@ -131,13 +133,24 @@ function M.clear_buffer(b)
   vim.api.nvim_buf_set_option(b, 'modifiable', false)
 end
 
+function M.follow_buffer(b)
+  vim.api.nvim_buf_call(b, function()
+    vim.cmd [[
+      augroup goldsmith-follow-buffer
+      autocmd! *
+      autocmd TextChanged <buffer> normal! G
+      augroup END
+    ]]
+  end)
+end
+
 function M.make_buffer_plain(b, w, opts)
   if b ~= nil then
     if opts['ft'] ~= nil then
       vim.api.nvim_buf_set_option(b, 'filetype', opts['ft'])
     end
     if opts['bufhidden'] == nil then
-      vim.api.nvim_buf_set_option(b, 'bufhidden', 'delete')
+      vim.api.nvim_buf_set_option(b, 'bufhidden', 'wipe')
     else
       vim.api.nvim_buf_set_option(b, 'bufhidden', opts['bufhidden'])
     end
