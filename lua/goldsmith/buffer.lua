@@ -23,7 +23,7 @@ local default_action_map = {
   prevdiag = { act = "<cmd>lua require'goldsmith.cmds.lsp'.goto_previous_diagnostic()<cr>", ft = '*' },
   nextdiag = { act = "<cmd>lua require'goldsmith.cmds.lsp'.goto_next_diagnostic()<cr>", ft = '*' },
   setloclist = { act = "<cmd>lua require'goldsmith.cmds.lsp'.diagnostic_set_loclist()<cr>", ft = '*' },
-  format = { act = "<cmd>lua require'goldsmith.cmds.format'.run(1)", ft = '*' },
+  format = { act = "<cmd>lua require'goldsmith.cmds.format'.run(1)<cr>", ft = '*' },
   ['toggle-debug-console'] = { act = "<cmd>lua require'goldsmith.log'.toggle_debug_console()<cr>", ft = '*' },
   ['test-close-window'] = { act = "<cmd>lua require'goldsmith.testing'.close_window()<cr>", ft = { 'go' } },
   ['test-last'] = { act = "<cmd>lua require'goldsmith.testing'.last()<cr>", ft = { 'go' } },
@@ -32,8 +32,8 @@ local default_action_map = {
   ['test-suite'] = { act = "<cmd>lua require'goldsmith.testing'.suite()<cr>", ft = { 'go' } },
   ['test-pkg'] = { act = "<cmd>lua require'goldsmith.testing'.pkg()<cr>", ft = { 'go' } },
   ['alt-file'] = { act = "<cmd>lua require'goldsmith.cmds.alt'.run()<cr>", ft = { 'go' } },
-  ['alt-file-force'] = { act = "<cmd>lua require'goldsmith.cmds.alt'.run('!')", ft = { 'go' } },
-  ['fillstruct'] = { act = "<cmd>lua require'goldsmith.cmds.fillstruct'.run(1000)", ft = { 'go' } },
+  ['alt-file-force'] = { act = "<cmd>lua require'goldsmith.cmds.alt'.run('!')<cr>", ft = { 'go' } },
+  ['fillstruct'] = { act = "<cmd>lua require'goldsmith.cmds.fillstruct'.run(1000)<cr>", ft = { 'go' } },
   ['codelens-on'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_on_codelens()<cr>", ft = '*' },
   ['codelens-off'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_off_codelens()<cr>", ft = '*' },
   ['codelens-run'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.run_codelens()<cr>", ft = '*' },
@@ -80,13 +80,13 @@ end
 -- for use in non-go related buffers
 function M.set_buffer_map(buf, mode, name, user_act, opts)
   local act = user_act or default_action_map[name].act
-  local maps = config.get('mappings', name)
+  local maps = config.get_mapping(name)
   for _, km in ipairs(maps) do
     vim.api.nvim_buf_set_keymap(buf, mode, km, act, opts or {})
   end
 end
 
-function M.set_buffer_keymaps(buf, use_defaults)
+function M.set_buffer_keymaps(buf)
   local function set_map(name, mode, maps, action, opts)
     local plug = string.format('<Plug>(goldsmith-%s)', name)
     vim.api.nvim_buf_set_keymap(buf, mode, plug, action, opts)
@@ -96,11 +96,11 @@ function M.set_buffer_keymaps(buf, use_defaults)
   end
 
   local ft = vim.opt.filetype:get()
-  local user_maps = config.get 'mappings'
   local opts = { noremap = true, silent = true }
   for name, d in pairs(default_action_map) do
+    local maps = config.get_mapping(name)
     if d.ft and (d.ft == '*' or vim.tbl_contains(d.ft, ft)) then
-      set_map(name, 'n', user_maps[name], d.act, opts)
+      set_map(name, 'n', maps, d.act, opts)
     end
   end
 
@@ -121,7 +121,7 @@ function M.setup()
     M.set_omnifunc(b)
   end
 
-  M.set_buffer_keymaps(b, config.get('mappings', 'enable'))
+  M.set_buffer_keymaps(b)
 end
 
 return M

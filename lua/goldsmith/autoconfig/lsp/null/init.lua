@@ -47,7 +47,7 @@ function M.running_services()
 end
 
 function M.is_disabled(service)
-  if config.get('null', 'disabled') == true then
+  if config.get('null', 'enabled') == false then
     return true
   end
   if service ~= nil then

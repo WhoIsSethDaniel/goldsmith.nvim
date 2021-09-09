@@ -296,7 +296,7 @@ guaranteed to be entirely up-to-date):
         ["codelens-off"] = {},
         ["codelens-on"] = {},
         ["codelens-run"] = {},
-        enable = true,
+        enabled = true,
         fillstruct = {},
         format = { "<leader>f" },
         godef = { "gd", "<C-]>" },
@@ -311,8 +311,8 @@ guaranteed to be entirely up-to-date):
         setloclist = { "<leader>q" },
         showdiag = { "<leader>e" },
         sighelp = { "<C-k>" },
-        ["start-follow"] = { "f" },
-        ["stop-follow"] = { "s" },
+        ["start-follow"] = { "F" },
+        ["stop-follow"] = { "S" },
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},
@@ -326,7 +326,7 @@ guaranteed to be entirely up-to-date):
         typedef = { "<leader>D" }
       },
       null = {
-        disabled = false,
+        enabled = true,
         gofmt = false,
         gofumpt = false,
         ["golangci-lint"] = true,
@@ -410,11 +410,11 @@ MAPPINGS                                           *goldsmith-mappings-settings*
 There are many mappings settings that you can use. See |goldsmith-mappings| for
 details on each mapping setting and its default key mapping.
 
-`mappings.enable`                                    *goldsmith-mappings.enable*
+`mappings.enabled`                                  *goldsmith-mappings.enabled*
 
-Default: true
-When set to true the default key mappings are used. When set to false the user
-must explicitly setup mappings.
+Default: tru
+When set to true the default key mappings are used. When set to false no mapping
+defaults are used, and the user is expected to define all desired mappings.
 
 For more information about this setting and key mappings please see 
 |goldsmith-mappings|.
@@ -594,10 +594,10 @@ should read |ins-completion|.
 
 LSP SERVERS                                              *goldsmith-lsp-servers*
 
-`null.disabled`                                        *goldsmith-null.disabled*
+`null.enabled`                                          *goldsmith-null.enabled*
 
-Default: false
-If this setting is set to "true" it means that no Go-related services will be run
+Default: true
+If this setting is set to "false" it means that no Go-related services will be run
 by null-ls.
 
 `null.revive`                                            *goldsmith-null.revive*
@@ -1472,7 +1472,7 @@ must assign the action an empty table and not nil. Assigning to nil instructs
 Goldsmith to use the default value for that action.
 >
     mappings = {
-      enable = false,
+      enabled = false,
       hover = { 'K' },
     } 
 <
@@ -1677,14 +1677,14 @@ The same as |:GoSymHighlight|. Highlight all references to the current symbol
 beneath the cursor.
 
 *(goldsmith-start-follow)*
-Default: f
+Default: F
 
 For some special buffers/windows (such as the |:GoDebugConsole| or the 'native' 
 runner's test output) this map turns on automatic scrolling of the output to
 this buffer/window.
 
 *(goldsmith-stop-follow)*
-Default: s
+Default: S
 
 For some special buffers/windows (such as the |:GoDebugConsole| or the 'native' 
 runner's test output) this map turns off automatic scrolling of the output to

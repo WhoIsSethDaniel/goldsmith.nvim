@@ -1,6 +1,7 @@
 local M = {}
 
 local _config = {}
+local _user_config = {}
 local _defaults = {}
 
 local autoconfig = true
@@ -30,12 +31,13 @@ local function set_autoconfig(uc)
   local ac = uc['autoconfig']
   if ac ~= nil and type(ac) ~= 'boolean' then
     log_error('Config', "Key 'autoconfig' must be a boolean value.")
-    return
+    return false
   end
   if ac ~= nil and ac == false then
     autoconfig = false
   end
   uc['autoconfig'] = nil
+  return true
 end
 
 local function is_type(allow_nil, ...)
@@ -102,7 +104,7 @@ end
 function M.lsp_root_dir()
   local lrd = M.get('system', 'lsp_root_dir')
   if lrd == nil then
-    return M .get('system', 'root_dir')
+    return M.get('system', 'root_dir')
   end
   return lrd
 end
@@ -146,7 +148,8 @@ local SPEC = {
   completion = {
     omni = { false, 'b' },
   },
-  mappings = vim.tbl_deep_extend('error', { enable = { true, 'b' } }, {
+  mappings = {
+    enabled = { true, 'b' },
     godef = { { 'gd', '<C-]>' }, 't' },
     hover = { { 'K' }, 't' },
     goimplementation = { { 'gi' }, 't' },
@@ -179,9 +182,9 @@ local SPEC = {
     ['sym-highlight-on'] = { {}, 't' },
     ['sym-highlight-off'] = { {}, 't' },
     ['sym-highlight'] = { {}, 't' },
-    ['start-follow'] = { { 'f' }, 't' },
-    ['stop-follow'] = { { 's' }, 't' },
-  }),
+    ['start-follow'] = { { 'F' }, 't' },
+    ['stop-follow'] = { { 'S' }, 't' },
+  },
   goimports = {
     run_on_save = { true, 'b' },
     timeout = { 1000, 'n' },
@@ -241,7 +244,7 @@ local SPEC = {
   null = vim.tbl_deep_extend(
     'error',
     { config = { nil, is_type(true, 'table', 'function'), 'expected table or function' } },
-    { disabled = { false, 'b' } },
+    { enabled = { true, 'b' } },
     services()
   ),
 }
@@ -364,7 +367,9 @@ local function all_config_keys()
   return vim.tbl_keys(defaults(SPEC))
 end
 
-local function validate_config()
+local function validate_config(user_config)
+  _defaults = defaults(SPEC)
+  _config = vim.tbl_deep_extend('force', _defaults, user_config)
   local ok, bad = check_only_valid_keys(all_config_keys(), vim.tbl_keys(_config))
   if not ok then
     log_error('Config', string.format("Unknown name '%s' in configuration.", bad))
@@ -396,11 +401,25 @@ function M.setup(user_config)
   if M.config_is_ok() ~= nil then
     return M.config_is_ok()
   end
-  user_config = user_config or {}
-  set_autoconfig(user_config)
-  _defaults = defaults(SPEC)
-  _config = vim.tbl_deep_extend('force', defaults(SPEC), user_config)
-  return validate_config()
+  _user_config = user_config or {}
+  if not set_autoconfig(_user_config) then
+    return false
+  end
+  return validate_config(_user_config)
+end
+
+function M.get_mapping(key)
+  if key == 'enabled' then
+    return M.get('mappings', 'enabled')
+  end
+  if _config['mappings']['enabled'] then
+    return M.get('mappings', key)
+  else
+    if _user_config['mappings'][key] ~= nil then
+      return M.get('mappings', key)
+    end
+    return {}
+  end
 end
 
 function M.get(grp, key, other)
