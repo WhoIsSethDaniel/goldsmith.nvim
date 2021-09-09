@@ -94,7 +94,7 @@ command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
-  autocmd BufWritePre,InsertLeave <buffer> lua require'goldsmith.cmds.format'.run(0)
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)
   autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END

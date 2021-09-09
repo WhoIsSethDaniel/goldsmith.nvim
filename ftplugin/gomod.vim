@@ -33,7 +33,7 @@ command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelen
 augroup goldsmith_ft_gomod
   autocmd! * <buffer>
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
-  autocmd BufWritePre,InsertLeave <buffer> lua require'goldsmith.cmds.format'.run(0)
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)
 augroup END
 
 lua require'goldsmith.buffer'.setup()
