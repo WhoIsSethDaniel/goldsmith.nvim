@@ -179,6 +179,8 @@ local SPEC = {
     ['sym-highlight-on'] = { {}, 't' },
     ['sym-highlight-off'] = { {}, 't' },
     ['sym-highlight'] = { {}, 't' },
+    ['start-follow'] = { { 'f' }, 't' },
+    ['stop-follow'] = { { 's' }, 't' },
   }),
   goimports = {
     run_on_save = { true, 'b' },

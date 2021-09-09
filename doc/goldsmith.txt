@@ -1674,6 +1674,20 @@ Default: none
 The same as |:GoSymHighlight|. Highlight all references to the current symbol 
 beneath the cursor.
 
+*(goldsmith-start-follow)*
+Default: f
+
+For some special buffers/windows (such as the |:GoDebugConsole| or the 'native' 
+runner's test output) this map turns on automatic scrolling of the output to
+this buffer/window.
+
+*(goldsmith-stop-follow)*
+Default: s
+
+For some special buffers/windows (such as the |:GoDebugConsole| or the 'native' 
+runner's test output) this map turns off automatic scrolling of the output to
+this buffer/window.
+
 MAPPING MANUALLY                                     *goldsmith-mappings-manual*
 
 It is much easier to use the |goldsmith-mappings| configuration to set <Plug> 

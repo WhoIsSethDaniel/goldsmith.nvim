@@ -133,23 +133,13 @@ function M.clear_buffer(b)
   vim.api.nvim_buf_set_option(b, 'modifiable', false)
 end
 
+-- function M.set_buffer_map(buf, mode, name, act, opts)
 function M.setup_follow_buffer(b)
-  vim.api.nvim_buf_set_keymap(
-    b,
-    'n',
-    'f',
-    "<cmd>lua require'goldsmith.winbuf'.follow_buffer()<cr>",
-    { silent = true, noremap = true }
-  )
-  vim.api.nvim_buf_set_keymap(
-    b,
-    'n',
-    's',
-    "<cmd>lua require'goldsmith.winbuf'.stop_follow_buffer()<cr>",
-    { silent = true, noremap = true }
-  )
+  local set_buffer_map = require 'goldsmith.buffer'.set_buffer_map
+  set_buffer_map(b, 'n', 'start-follow', nil, { silent = true, noremap = true })
+  set_buffer_map(b, 'n', 'stop-follow', nil, { silent = true, noremap = true })
   vim.api.nvim_buf_call(b, function()
-    M.follow_buffer()
+    M.start_follow_buffer()
   end)
 end
 
@@ -164,7 +154,7 @@ function M.stop_follow_buffer()
   end)
 end
 
-function M.follow_buffer()
+function M.start_follow_buffer()
   local b = vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_call(b, function()
     vim.cmd [[
