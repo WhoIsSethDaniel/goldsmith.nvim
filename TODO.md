@@ -8,14 +8,15 @@
 - [x] mod
   - [x] 'retract' support
   - [x] 'exclude' support
-- [x] if jumping to the same file, do not open a new window
-- [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
-- [ ] testing
+- [x] testing
   - [x] split certain settings up instead of overloading (primarily 'strategy')
   - [x] maps for all testing commands
-  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+- [x] if jumping to the same file, do not open a new window
+- [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
 - [ ] lots more debug logging
   - [ ] review all logging
+- [ ] docs
+  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)

@@ -311,6 +311,8 @@ guaranteed to be entirely up-to-date):
         setloclist = { "<leader>q" },
         showdiag = { "<leader>e" },
         sighelp = { "<C-k>" },
+        ["start-follow"] = { "f" },
+        ["stop-follow"] = { "s" },
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},

@@ -135,7 +135,7 @@ end
 
 -- function M.set_buffer_map(buf, mode, name, act, opts)
 function M.setup_follow_buffer(b)
-  local set_buffer_map = require 'goldsmith.buffer'.set_buffer_map
+  local set_buffer_map = require('goldsmith.buffer').set_buffer_map
   set_buffer_map(b, 'n', 'start-follow', nil, { silent = true, noremap = true })
   set_buffer_map(b, 'n', 'stop-follow', nil, { silent = true, noremap = true })
   vim.api.nvim_buf_call(b, function()
