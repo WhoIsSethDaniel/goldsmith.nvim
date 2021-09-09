@@ -72,7 +72,7 @@ function M.setup()
 
   if d then
     debug_wb = wb.create_debug_buffer()
-    wb.follow_buffer(debug_wb.buf)
+    wb.setup_follow_buffer(debug_wb.buf)
     require('goldsmith.tools').dump()
     require('goldsmith.config').dump()
   end

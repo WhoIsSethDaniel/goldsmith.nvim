@@ -248,7 +248,7 @@ do
           vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', '<cmd>close<cr>', { silent = true, noremap = true })
           vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', '<cmd>close<cr>', { silent = true, noremap = true })
           buffer.set_buffer_map(last_win.buf, '', 'test-close-window', '<cmd>close<cr>', { silent = true })
-          wb.follow_buffer(last_win.buf)
+          wb.setup_follow_buffer(last_win.buf)
         end
         table.insert(cmd, '-json')
         current_job = job.run(cmd, opts, {

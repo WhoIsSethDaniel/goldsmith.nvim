@@ -1209,8 +1209,12 @@ visibility of the debug console. By default the console is hidden.
 The debug console displays the output of all Goldsmith logging. Some output may 
 be very large. Turning on debugging can impose a performance cost on Goldsmith.
 
-If the buffer associated with the debug console is deleted, or otherwise removed,
+If the buffer associated with the debug console is wiped, deleted, or unloaded
 the console becomes useless and all logging is lost.
+
+When you are using the debug console the output shows up in a window. If you are 
+in this window you can use 'f' to 'follow' the output of the debug logging. To 
+stop following you can press 's'. By default the debug console is in follow mode.
 
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
@@ -1316,6 +1320,13 @@ or `gotests` variables are unset and will set them to reasonable defaults. See
 
 If you are using 'native' testing it will work fine right away. It is also
 configured via |goldsmith-testing-settings|.
+
+WINDOW
+
+When you are using the 'native' test runner and the 'display' strategy the test 
+output shows up in a window. By default, if you are in this window, the output of
+the test will scroll. If you are in this window you can use 's' to to stop this
+scrolling. Press 'f' to start the scrolling again.
 
 COMMANDS
 
