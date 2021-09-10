@@ -288,10 +288,12 @@ do
             if strategy == 'display' then
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
             end
+            table.remove(cmd)
             if code == 0 then
-              table.remove(cmd)
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
               return
+            else
+              log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
             local module = go.module_path()
             if module == nil then
@@ -302,23 +304,34 @@ do
             for _, jd in ipairs(decoded) do
               if jd.Action == 'output' then
                 local fail_file, fail_line, fail_mess = string.match(jd.Output, '^%s+([^%s]+%.go):(%d+):%s*(.*)$')
-                local fail_rel_path = string.sub(jd.Package, string.len(module) + 2)
-                if fail_rel_path ~= '' then
-                  fail_rel_path = fail_rel_path .. '/'
+                if fail_file ~= nil then
+                  local fail_rel_path = string.sub(jd.Package, string.len(module) + 2)
+                  if fail_rel_path ~= '' then
+                    fail_file = fail_rel_path .. '/' .. fail_file
+                  end
+                else
+                  fail_mess = 'panic'
+                  fail_file, fail_line = string.match(jd.Output, '^\t(/[^%s]+%.go):(%d+) %+0x.*$')
+                  if fail_file ~= nil then
+                    fail_file = string.sub(fail_file, string.len(vim.fn.getcwd()) + 2)
+                  end
                 end
                 if fail_file ~= nil then
-                  table.insert(qflist, {
-                    filename = vim.fn.fnamemodify(fail_rel_path .. fail_file, ':p'),
-                    lnum = fail_line,
-                    col = 1,
-                    text = fail_mess,
-                    type = 'E',
-                  })
+                  local f = vim.fn.fnamemodify(fail_file, ':p')
+                  if vim.fn.filereadable(f) ~= 0 then
+                    table.insert(qflist, {
+                      filename = f,
+                      lnum = fail_line,
+                      col = 1,
+                      text = fail_mess,
+                      type = 'E',
+                    })
+                  end
                 end
               end
             end
             if #qflist > 0 then
-              vim.fn.setqflist(qflist, 'r')
+              vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
               vim.cmd [[ copen ]]
             end
           end,

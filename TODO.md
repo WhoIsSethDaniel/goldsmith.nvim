@@ -13,6 +13,7 @@
   - [x] maps for all testing commands
 - [x] if jumping to the same file, do not open a new window
 - [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
+- [ ] need to cleanup native on_exit handler
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] docs
