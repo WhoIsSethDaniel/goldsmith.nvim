@@ -326,8 +326,6 @@ do
         end
         last_cmd = cmd
         local opts = {}
-        local decoded = {}
-        local unjson = {}
         local strategy = config.get('testing', 'native', 'strategy')
         if strategy == 'display' then
           opts = config.window_opts(
@@ -343,54 +341,44 @@ do
           wb.setup_follow_buffer(last_win.buf)
         end
         table.insert(cmd, '-json')
-        current_job = job.run(cmd, opts, {
-          stderr_buffered = true,
-          on_stderr = function(id, data)
-            if data[1] ~= '' then
-              table.insert(unjson, 1, data)
-            end
-          end,
-          on_stdout = (function()
-            local out = {}
-            return function(id, data)
-              if id == last_job then
-                return
-              end
-              if data then
-                vim.list_extend(out, data)
-                local last = table.remove(data)
-                if #out > 1 then
-                  for _, l in ipairs(out) do
-                    if l ~= '' then
-                      local ok, jd = pcall(vim.fn.json_decode, l)
-                      if not ok then
-                        table.insert(unjson, l)
-                      else
-                        table.insert(decoded, jd)
-                        if strategy == 'display' and jd.Action == 'output' then
-                          wb.append_to_buffer(last_win.buf, { (vim.split(jd.Output, '\n'))[1] })
-                        end
-                      end
+        local out = {}
+        local decoded = {}
+        local on_output = function(id, data, name)
+          if id == last_job then
+            return
+          end
+          if data then
+            vim.list_extend(out, data)
+            local last = table.remove(data)
+            if #out > 1 then
+              for _, l in ipairs(out) do
+                if l ~= '' then
+                  local ok, jd = pcall(vim.fn.json_decode, l)
+                  if not ok then
+                    table.insert(decoded, { Action = 'stderr_output', Output = l })
+                    if strategy == 'display' then
+                      wb.append_to_buffer(last_win.buf, { l })
+                    end
+                  else
+                    table.insert(decoded, jd)
+                    if strategy == 'display' and jd.Action == 'output' then
+                      wb.append_to_buffer(last_win.buf, { (vim.split(jd.Output, '\n'))[1] })
                     end
                   end
                 end
-                out = { last }
               end
             end
-          end)(),
+            out = { last }
+          end
+        end
+        current_job = job.run(cmd, opts, {
+          on_stderr = on_output,
+          on_stdout = on_output,
           on_exit = function(id, code)
             -- if this is a job that has been killed and superseded, move on
             if id == last_job then
               last_job = nil
               return
-            end
-            -- this occurs when 'go test -json' does not return json
-            if #unjson > 0 then
-              unjson = vim.tbl_flatten(unjson)
-              wb.append_to_buffer(last_win.buf, unjson)
-              decoded = vim.tbl_map(function(e)
-                return { Action = 'stderr_output', Output = e }
-              end, unjson)
             end
             if strategy == 'display' then
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })

@@ -14,6 +14,8 @@
 - [x] if jumping to the same file, do not open a new window
 - [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
 - [x] need to cleanup native on_exit handler
+- [ ] native testing improvements
+  - [ ] what happens when a test w/i a suite fails to compile? (and it's not the only test file)
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] docs
