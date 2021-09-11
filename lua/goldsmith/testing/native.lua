@@ -84,6 +84,7 @@ local function set_last_file(f)
 end
 
 local test_acts = {
+  -- grab the panic description; should come before matching the file and line number
   {
     on = 'output',
     match = '^\tpanic: (.*)$',
@@ -91,9 +92,10 @@ local test_acts = {
       state['last_panic'] = args.matches[1]
     end,
   },
+  -- standard file, line number, error message output
   {
     on = 'output',
-    match = '^%s+([^%s]+%.go):(%d+):%s*(.*)$',
+    match = '^%s+(.+%.go):(%d+):%s*(.*)$',
     act = function(state, args)
       local m = {
         file = args.matches[1],
@@ -107,9 +109,10 @@ local test_acts = {
       return m
     end,
   },
+  -- a panic; the file and line number
   {
     on = 'output',
-    match = '^\t(/[^%s]+%.go):(%d+) %+0x.*$',
+    match = '^\t(/.+%.go):(%d+) %+0x.*$',
     act = function(state, args)
       local m = {
         mess = state['last_panic'] or 'panic',
@@ -118,6 +121,19 @@ local test_acts = {
       }
       m.file = string.sub(m.file, string.len(vim.fn.getcwd()) + 2)
       return m
+    end,
+  },
+  -- sometimes 'go test -json' does not actually return json. Instead it prints (most)
+  -- of its output to stderr. This deals with that case.
+  {
+    on = 'stderr_output',
+    match = '^(.+%.go):(%d+):%d+: (.*)$',
+    act = function(state, args)
+      return {
+        file = args.matches[1],
+        line = args.matches[2],
+        mess = args.matches[3],
+      }
     end,
   },
 }
@@ -132,7 +148,7 @@ local function process_test_results(output)
   local state = {}
   for _, j in ipairs(output) do
     for _, ta in ipairs(test_acts) do
-      if ta.on == j.Action and ta.on == 'output' then
+      if ta.on == j.Action then
         local matches = { string.match(j.Output, ta.match) }
         if #matches > 0 then
           local m = ta.act(state, { j = j, module = mod, matches = matches })
@@ -311,6 +327,7 @@ do
         last_cmd = cmd
         local opts = {}
         local decoded = {}
+        local unjson = {}
         local strategy = config.get('testing', 'native', 'strategy')
         if strategy == 'display' then
           opts = config.window_opts(
@@ -328,8 +345,10 @@ do
         table.insert(cmd, '-json')
         current_job = job.run(cmd, opts, {
           stderr_buffered = true,
-          on_error = function(id, data)
-            log.error('Testing', string.format("Test cmd '%s' failed with: %s", table.concat(cmd, ' '), data))
+          on_stderr = function(id, data)
+            if data[1] ~= '' then
+              table.insert(unjson, 1, data)
+            end
           end,
           on_stdout = (function()
             local out = {}
@@ -343,10 +362,14 @@ do
                 if #out > 1 then
                   for _, l in ipairs(out) do
                     if l ~= '' then
-                      local jd = vim.fn.json_decode(l)
-                      table.insert(decoded, jd)
-                      if strategy == 'display' and jd.Action == 'output' then
-                        wb.append_to_buffer(last_win.buf, { (vim.split(jd.Output, '\n'))[1] })
+                      local ok, jd = pcall(vim.fn.json_decode, l)
+                      if not ok then
+                        table.insert(unjson, l)
+                      else
+                        table.insert(decoded, jd)
+                        if strategy == 'display' and jd.Action == 'output' then
+                          wb.append_to_buffer(last_win.buf, { (vim.split(jd.Output, '\n'))[1] })
+                        end
                       end
                     end
                   end
@@ -360,6 +383,14 @@ do
             if id == last_job then
               last_job = nil
               return
+            end
+            -- this occurs when 'go test -json' does not return json
+            if #unjson > 0 then
+              unjson = vim.tbl_flatten(unjson)
+              wb.append_to_buffer(last_win.buf, unjson)
+              decoded = vim.tbl_map(function(e)
+                return { Action = 'stderr_output', Output = e }
+              end, unjson)
             end
             if strategy == 'display' then
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
