@@ -27,8 +27,8 @@ function M.module_path()
     return m[1].Path
   end
   ok, m = M.list(false)
-  if ok and m['ImportPath'] then
-    return m.ImportPath
+  if ok and m[1]['ImportPath'] then
+    return m[1].ImportPath
   end
   return
 end
