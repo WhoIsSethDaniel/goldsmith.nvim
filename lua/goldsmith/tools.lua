@@ -65,11 +65,11 @@ local TOOLS = {
   },
   gofmt = {
     required = false,
-    location = "in your Go distribution.",
+    location = 'in your Go distribution.',
     tag = 'latest',
     exe = 'gofmt',
     null = true,
-    not_found = { 'This is the standard code formatter for Go.' }
+    not_found = { 'This is the standard code formatter for Go.' },
   },
   gofumpt = {
     status = 'install',
@@ -78,7 +78,7 @@ local TOOLS = {
     tag = 'latest',
     exe = 'gofumpt',
     null = true,
-    not_found = { 'This formats Go code the standard way, but a little more strictly.'  },
+    not_found = { 'This formats Go code the standard way, but a little more strictly.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' -version')
       return string.match(out, 'v([%d%.]+)')
@@ -93,6 +93,17 @@ local TOOLS = {
     not_found = {
       'This is used to generate a stub implementation of an interface.',
       'It is required if you want to use the :GoImpl command.',
+    },
+  },
+  gocmt = {
+    status = 'install',
+    location = 'github.com/cuonglm/gocmt',
+    tag = 'latest',
+    required = false,
+    null = true,
+    exe = 'gocmt',
+    not_found = {
+      'This is used to generate stub comments for exported types.',
     },
   },
   revive = {
@@ -201,7 +212,7 @@ local TOOLS = {
     weight = 1,
     not_found = {
       'This plugin can be used for running tests.',
-      'It is highly recommended that you install this plugin.'
+      'It is highly recommended that you install this plugin.',
     },
     check_installed = function()
       return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
@@ -268,7 +279,7 @@ local TOOLS = {
     not_found = {
       'Much of Goldsmith may fail to work without this plugin.',
       'It is required to fix a bug with the CursorHold event in Neovim.',
-      'This bug may not affect everyone.'
+      'This bug may not affect everyone.',
     },
     check_installed = function()
       return vim.fn.exists 'g:loaded_fix_cursorhold_nvim' > 0
@@ -295,8 +306,8 @@ function M.find_bin(program, info)
         return cmd
       end
     end
-    if plugins.is_installed('lspinstaller') then
-      local _, s = require'nvim-lsp-installer'.get_server(program)
+    if plugins.is_installed 'lspinstaller' then
+      local _, s = require('nvim-lsp-installer').get_server(program)
       local cmd = s._default_options.cmd[1]
       if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
         TOOLS[program].via = 'lsp-installer'

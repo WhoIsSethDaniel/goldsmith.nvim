@@ -82,6 +82,7 @@ local function service_defaults()
     { 'revive', true },
     { 'gofmt', false },
     { 'gofumpt', false },
+    { 'gocmt', false },
   }
 end
 

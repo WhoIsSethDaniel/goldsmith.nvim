@@ -14,15 +14,15 @@
 - [x] if jumping to the same file, do not open a new window
 - [x] buffer setup should be aware of type of buffer (go v gomod) and setup appropriately
 - [x] need to cleanup native on_exit handler
-- [ ] native testing improvements
-  - [ ] what happens when a test w/i a suite fails to compile? (and it's not the only test file)
+- [x] native testing improvements
+  - [x] what happens when a test w/i a suite fails to compile? (and it's not the only test file)
+- [x] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
-- [ ] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [ ] snippets?
 - [ ] tests (using plenary?)
 - [ ] testing
