@@ -83,6 +83,85 @@ local function set_last_file(f)
   end
 end
 
+local test_acts = {
+  {
+    on = 'output',
+    match = '^\tpanic: (.*)$',
+    act = function(state, args)
+      state['last_panic'] = args.matches[1]
+    end,
+  },
+  {
+    on = 'output',
+    match = '^%s+([^%s]+%.go):(%d+):%s*(.*)$',
+    act = function(state, args)
+      local m = {
+        file = args.matches[1],
+        line = args.matches[2],
+        mess = args.matches[3],
+      }
+      if m.file ~= nil then
+        local fail_rel_path = string.sub(args.j.Package, string.len(args.module) + 2)
+        if fail_rel_path ~= '' then
+          m.file = fail_rel_path .. '/' .. m.file
+        end
+      end
+      return m
+    end,
+  },
+  {
+    on = 'output',
+    match = '^\t(/[^%s]+%.go):(%d+) %+0x.*$',
+    act = function(state, args)
+      local m = {
+        mess = state['last_panic'] or 'panic',
+        file = args.matches[1],
+        line = args.matches[2],
+      }
+      if m.file ~= nil then
+        m.file = string.sub(m.file, string.len(vim.fn.getcwd()) + 2)
+      end
+      return m
+    end,
+  },
+}
+
+local function process_test_results(output)
+  local mod = go.module_path()
+  if mod == nil then
+    log.warn('Testing', 'Cannot determine import path for current project.')
+    mod = ''
+  end
+  local qflist = {}
+  local state = {}
+  for _, j in ipairs(output) do
+    for _, ta in ipairs(test_acts) do
+      if ta.on == j.Action and ta.on == 'output' then
+        local matches = { string.match(j.Output, ta.match) }
+        if #matches > 0 then
+          local m = ta.act(state, { j = j, module = mod, matches = matches })
+          if m ~= nil and m.file ~= nil then
+            local f = vim.fn.fnamemodify(m.file, ':p')
+            if vim.fn.filereadable(f) ~= 0 then
+              table.insert(qflist, {
+                filename = f,
+                lnum = m.line,
+                col = 1,
+                text = m.mess,
+                type = 'E',
+              })
+            end
+          end
+        end
+      end
+    end
+  end
+  table.sort(qflist, function(a, b)
+    return a.filename < b.filename
+  end)
+  return qflist
+end
+
 do
   local args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
   function M.close_window()
@@ -295,44 +374,12 @@ do
             else
               log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
-            local module = go.module_path()
-            if module == nil then
-              log.warn('Testing', 'Cannot determine import path for current project.')
-              module = ''
-            end
-            local qflist = {}
-            for _, jd in ipairs(decoded) do
-              if jd.Action == 'output' then
-                local fail_file, fail_line, fail_mess = string.match(jd.Output, '^%s+([^%s]+%.go):(%d+):%s*(.*)$')
-                if fail_file ~= nil then
-                  local fail_rel_path = string.sub(jd.Package, string.len(module) + 2)
-                  if fail_rel_path ~= '' then
-                    fail_file = fail_rel_path .. '/' .. fail_file
-                  end
-                else
-                  fail_mess = 'panic'
-                  fail_file, fail_line = string.match(jd.Output, '^\t(/[^%s]+%.go):(%d+) %+0x.*$')
-                  if fail_file ~= nil then
-                    fail_file = string.sub(fail_file, string.len(vim.fn.getcwd()) + 2)
-                  end
-                end
-                if fail_file ~= nil then
-                  local f = vim.fn.fnamemodify(fail_file, ':p')
-                  if vim.fn.filereadable(f) ~= 0 then
-                    table.insert(qflist, {
-                      filename = f,
-                      lnum = fail_line,
-                      col = 1,
-                      text = fail_mess,
-                      type = 'E',
-                    })
-                  end
-                end
-              end
-            end
+            local qflist = process_test_results(decoded)
             if #qflist > 0 then
               vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
+              local w = vim.api.nvim_get_current_win()
               vim.cmd [[ copen ]]
+              vim.api.nvim_set_current_win(w)
             end
           end,
         })
