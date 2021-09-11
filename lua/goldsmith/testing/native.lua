@@ -100,11 +100,9 @@ local test_acts = {
         line = args.matches[2],
         mess = args.matches[3],
       }
-      if m.file ~= nil then
-        local fail_rel_path = string.sub(args.j.Package, string.len(args.module) + 2)
-        if fail_rel_path ~= '' then
-          m.file = fail_rel_path .. '/' .. m.file
-        end
+      local fail_rel_path = string.sub(args.j.Package, string.len(args.module) + 2)
+      if fail_rel_path ~= '' then
+        m.file = fail_rel_path .. '/' .. m.file
       end
       return m
     end,
@@ -118,9 +116,7 @@ local test_acts = {
         file = args.matches[1],
         line = args.matches[2],
       }
-      if m.file ~= nil then
-        m.file = string.sub(m.file, string.len(vim.fn.getcwd()) + 2)
-      end
+      m.file = string.sub(m.file, string.len(vim.fn.getcwd()) + 2)
       return m
     end,
   },
@@ -360,6 +356,7 @@ do
             end
           end)(),
           on_exit = function(id, code)
+            -- if this is a job that has been killed and superseded, move on
             if id == last_job then
               last_job = nil
               return
@@ -367,6 +364,7 @@ do
             if strategy == 'display' then
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
             end
+            -- get rid of -json
             table.remove(cmd)
             if code == 0 then
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
