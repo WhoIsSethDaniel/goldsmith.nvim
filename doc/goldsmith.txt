@@ -352,17 +352,13 @@ guaranteed to be entirely up-to-date):
       },
       testing = {
         arguments = {},
-        focus = false,
-        height = 20,
         native = {
           strategy = "display"
         },
-        pos = "right",
         runner = "native",
         ["vim-test"] = {
           strategy = "neovim"
         },
-        width = 80
       },
       window = {
         focus = true,
@@ -487,7 +483,16 @@ strategies when using the 'native' test runner are: 'background' and 'display'.
 The latter shows the complete output of the test in a window. The former
 runs the tests in the background. Both strategies will bring up the quickfix 
 window if there are errors. The 'display' strategy honors your
-|goldsmith-window-settings|.
+|goldsmith-window-settings|. You can override the default window settings by
+placing window settings within the 'testing' config key, e.g.:
+>
+    testing = {
+      focus = false,
+      pos = 'left'
+    }
+<
+The above overrides the window defaults by turning off focus and placing the
+window to the left of the screen.
 
 See |goldsmith-testing| for much more information about testing in Goldsmith.
 

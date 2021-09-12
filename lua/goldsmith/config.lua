@@ -229,7 +229,7 @@ local SPEC = {
   revive = {
     config_file = { nil, 's' },
   },
-  testing = vim.tbl_deep_extend('error', window_validate(false, false, false), {
+  testing = vim.tbl_deep_extend('error', window_spec, {
     ['vim-test'] = { strategy = { 'neovim', 's' } },
     native = { strategy = { 'display', in_set(false, 'display', 'background'), 'valid strategies: display, background' } },
     runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },

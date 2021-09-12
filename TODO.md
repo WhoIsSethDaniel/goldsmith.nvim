@@ -17,6 +17,7 @@
 - [x] native testing improvements
   - [x] what happens when a test w/i a suite fails to compile? (and it's not the only test file)
 - [x] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
+- [ ] with null services maybe make my own and deal with errors differently than provided services
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] docs
