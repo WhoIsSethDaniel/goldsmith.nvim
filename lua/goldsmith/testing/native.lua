@@ -168,10 +168,26 @@ local function process_test_results(output)
       end
     end
   end
+  -- sort and uniq
   table.sort(qflist, function(a, b)
+    if a.filename == b.filename then
+      return a.lnum < b.lnum
+    end
     return a.filename < b.filename
   end)
-  return qflist
+  local prev
+  return vim.tbl_filter(function(e)
+    if prev == nil then
+      prev = e
+      return true
+    end
+    if prev.filename == e.filename and prev.lnum == e.lnum and prev.text == e.text then
+      prev = e
+      return false
+    end
+    prev = e
+    return true
+  end, qflist)
 end
 
 do
