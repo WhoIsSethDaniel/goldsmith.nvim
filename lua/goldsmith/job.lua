@@ -33,4 +33,10 @@ function M.run(cmd, ...)
   return job
 end
 
+function M.close_terminal()
+  if last_terminal ~= nil and vim.api.nvim_win_is_valid(last_terminal.win) then
+    vim.api.nvim_win_close(last_terminal.win, true)
+  end
+end
+
 return M

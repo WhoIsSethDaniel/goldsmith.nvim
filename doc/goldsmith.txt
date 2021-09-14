@@ -1633,43 +1633,66 @@ See |goldsmith-debug-settings| for more information on debug mode.
 
 See the documentation for |:GoDebugConsole| for more information about it.
 
+*(goldsmith-close-terminal)*
+Default: none
+
+For any command that opens a terminal this command will close said terminal.
+
+*(goldsmith-close-any-window)*
+Default: none
+
+This will close any (or all) testing windows or terminals that have been opened by
+Goldsmith.
+
+This command will not close the Goldsmith debug console.
+
+*(goldsmith-build)*
+Default: none
+
+Just like |:GoBuild|. Run 'go build' with no arguments.
+
+*(goldsmith-run)*
+Default: none
+
+Just like |:GoRun|. Run 'go run' with no arguments.
+
 *(goldsmith-test-last)*
-Default: <leader>tl
+Default: none
 
 The same as |:GoTestLast|. Run the most recent test command again.
 
 See |goldsmith-testing| for more information.
 
 *(goldsmith-test-nearest)*
-Default: <leader>tn
+Default: none
 
 The same as |:GoTestNearest|. Run the nearest test to the cursor.
 
 See |goldsmith-testing| for more information.
 
 *(goldsmith-test-visit)*
-Default: <leader>tv
+Default: none
 
 The same as |:GoTestVisit|. View the file with the last test that ran.
 
 See |goldsmith-testing| for more information.
 
 *(goldsmith-test-suite)*
-Default: <leader>ts
+Default: none
 
 The same as |:GoTestSuite|. Run all tests for the current project.
 
 See |goldsmith-testing| for more information.
 
 *(goldsmith-test-pkg)*
-Default: <leader>tp
+Default: none
 
 The same as |:GoTestPkg|. Run all tests for the current package.
 
 See |goldsmith-testing| for more information.
 
 *(goldsmith-test-close-window)*
-Default: <leader>tc
+Default: none
 
 Close the window for the currently running test(s). This effectively turns the
 currently running test job into a background job. This is not a toggle. Once the
