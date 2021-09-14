@@ -1638,7 +1638,7 @@ Default: none
 
 For any command that opens a terminal this command will close said terminal.
 
-*(goldsmith-close-any-window)*
+*(goldsmith-close-any)*
 Default: none
 
 This will close any (or all) testing windows or terminals that have been opened by

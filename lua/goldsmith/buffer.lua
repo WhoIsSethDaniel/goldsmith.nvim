@@ -48,7 +48,7 @@ local default_action_map = {
   ['close-terminal'] = { act = "<cmd>lua require'goldsmith.job'.close_terminal()<cr>", ft = '*' },
   ['build'] = { act = "<cmd>lua require'goldsmith.cmds.build'.run({})<cr>", ft = '*' },
   ['run'] = { act = "<cmd>lua require'goldsmith.cmds.run'.run({})<cr>", ft = '*' },
-  ['close-any-window'] = { act = "<cmd>lua require'goldsmith.buffer'.close_any_window()<cr>", ft = '*' },
+  ['close-any'] = { act = "<cmd>lua require'goldsmith.buffer'.close_any_window()<cr>", ft = '*' },
 }
 
 function M.checkin(b)

@@ -188,7 +188,7 @@ local SPEC = {
     ['start-follow'] = { { 'F' }, 't' },
     ['stop-follow'] = { { 'S' }, 't' },
     ['close-terminal'] = { {}, 't' },
-    ['close-any-window'] = { {}, 't' },
+    ['close-any'] = { {}, 't' },
   },
   goimports = {
     run_on_save = { true, 'b' },
