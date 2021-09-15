@@ -30,11 +30,10 @@
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets?
 - [ ] tests (using plenary?)
-- [ ] testing
-  - [ ] commands that try to detect benchmark vs test
+- [ ] native testing
+  - [x] commands that try to detect benchmark vs test
   - [x] benchmarking
   - [ ] coverage
-  - [ ] ultest integration
 - [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
