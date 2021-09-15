@@ -1388,6 +1388,11 @@ output shows up in a window. By default, if you are in this window, the output o
 the test will scroll. If you are in this window you can use 's' to to stop this
 scrolling. Press 'f' to start the scrolling again.
 
+QUICKFIX
+
+When test failures occur they are placed in the quickfix list and the list is
+opened. Focus remains on the current working window.
+
 COMMANDS
 
                                                                   *:GoTestSuite*
