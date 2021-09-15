@@ -16,12 +16,12 @@
 - [x] need to cleanup native on_exit handler
 - [x] native testing improvements
   - [x] what happens when a test w/i a suite fails to compile? (and it's not the only test file)
+  - [x] commands that try to detect benchmark vs test
+  - [x] benchmarking
 - [x] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [x] GoTest
   - [x] test-close-window should, perhaps, work for this too? or maybe a more generic close terminal window that works for all terminal commands
-- [x] native testing
-  - [x] benchmarking
-- [ ] with null services maybe make custom services and deal with errors differently than builtin services
+- [ ] coverage cmds
 - [ ] lots more debug logging
   - [ ] review all logging
 - [ ] docs
@@ -30,10 +30,6 @@
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets?
 - [ ] tests (using plenary?)
-- [ ] native testing
-  - [x] commands that try to detect benchmark vs test
-  - [x] benchmarking
-  - [ ] coverage
 - [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)

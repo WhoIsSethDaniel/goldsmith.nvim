@@ -313,9 +313,9 @@ do
                   table.insert(any_matches, test.name)
                 elseif is_bench() then
                   table.insert(args, '-run=#')
-                  table.insert(args, string.format('-bench=%s', test.name))
+                  table.insert(args, string.format('-bench=%s$', test.name))
                 elseif is_test() then
-                  table.insert(args, string.format('-run=%s', test.name))
+                  table.insert(args, string.format('-run=%s$', test.name))
                 end
                 if not is_any() then
                   break
@@ -339,12 +339,12 @@ do
           local cfunc = ts.get_current_function_name()
           if cfunc ~= nil then
             if is_any() then
-              table.insert(args, string.format('-bench=%s', cfunc))
-              table.insert(args, string.format('-run=%s', cfunc))
+              table.insert(args, string.format('-bench=%s$', cfunc))
+              table.insert(args, string.format('-run=%s$', cfunc))
             elseif is_bench() then
               if string.match(cfunc, '^Benchmark') ~= nil then
                 table.insert(args, '-run=#')
-                table.insert(args, string.format('-bench=%s', cfunc))
+                table.insert(args, string.format('-bench=%s$', cfunc))
               else
                 log.warn('Test', string.format("Current function '%s' does not look like a benchmark", cfunc))
                 return false
@@ -411,7 +411,7 @@ do
       else
         test_type = args.type
       end
-      if args[1] ~= nil then
+      if args[1] ~= nil and type(args[1]) == 'table' then
         args = args[1]
       end
       cmd = nil
