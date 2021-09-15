@@ -49,10 +49,14 @@ function M.test_complete(c)
     else
       for line in f:lines() do
         local fname
-        if c == 'GoTestRun' then
+        if string.match(c, '^GoTestRun') ~= nil then
           fname = string.match(line, 'func%s+(Test.*)%(') or string.match(line, 'func%s+(Example.*)%(')
-        else
+        elseif string.match(c, '^GoTestBRun') ~= nil then
           fname = string.match(line, 'func%s+(Benchmark.*)%(')
+        elseif string.match(c, '^GoTestARun') ~= nil then
+          fname = string.match(line, 'func%s+(Test.*)%(')
+            or string.match(line, 'func%s+(Example.*)%(')
+            or string.match(line, 'func%s+(Benchmark.*)%(')
         end
         table.insert(tests, fname)
       end

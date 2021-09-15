@@ -191,11 +191,20 @@ local function process_test_results(output)
 end
 
 do
-  local args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
+  local test_type, args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
   function M.close_window()
     if last_win ~= nil and vim.api.nvim_win_is_valid(last_win.win) then
       vim.api.nvim_win_hide(last_win.win)
     end
+  end
+  local function is_bench()
+    return test_type == 'bench'
+  end
+  local function is_test()
+    return test_type == 'test'
+  end
+  local function is_any()
+    return test_type == 'any'
   end
   local dispatch = {
     last = {
@@ -240,29 +249,28 @@ do
     },
     run = {
       function()
-        local bench = table.remove(args, 1)
-        args = args[1]
         last_file = set_last_file(cf)
         if #args > 0 then
           local new = {}
-          if bench then
+          if is_any() then
+            table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
+            table.insert(new, '-bench=' .. table.concat(args, '$|') .. '$')
+          elseif is_bench() then
             table.insert(new, '-run=#')
             table.insert(new, '-bench=' .. table.concat(args, '$|') .. '$')
-          else
+          elseif is_test() then
             table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
           end
           table.insert(new, fs.relative_to_cwd(cf) .. '/...')
           args = new
           return true
         else
-          return true, 'nearest'
+          return true, 'pkg'
         end
       end,
     },
     nearest = {
       function()
-        local bench = table.remove(args, 1)
-        args = args[1]
         if fs.is_code_file(cf) then
           local tf = fs.test_file_name(cf)
           if vim.fn.filereadable(tf) == 0 then
@@ -276,36 +284,53 @@ do
               return ts.get_all_functions()
             end)
             local possible_test_names
-            if bench then
+            if is_bench() then
               possible_test_names = {
                 string.format('Benchmark%s', cfunc),
                 string.format('Benchmark_%s', cfunc),
               }
-            else
+            elseif is_test() then
               possible_test_names = {
+                string.format('Test_%s', cfunc),
+                string.format('Test%s', cfunc),
+                string.format('Example%s', cfunc),
+              }
+            elseif is_any() then
+              possible_test_names = {
+                string.format('Benchmark%s', cfunc),
+                string.format('Benchmark_%s', cfunc),
                 string.format('Test_%s', cfunc),
                 string.format('Test%s', cfunc),
                 string.format('Example%s', cfunc),
               }
             end
             local match = false
+            local any_matches = {}
             for _, test in ipairs(tests) do
               if vim.tbl_contains(possible_test_names, test.name) then
                 match = true
-                if bench then
+                if is_any() then
+                  table.insert(any_matches, test.name)
+                elseif is_bench() then
                   table.insert(args, '-run=#')
                   table.insert(args, string.format('-bench=%s', test.name))
-                else
+                elseif is_test() then
                   table.insert(args, string.format('-run=%s', test.name))
                 end
-                table.insert(args, fs.relative_to_cwd(cf))
-                break
+                if not is_any() then
+                  break
+                end
               end
             end
             if match == false then
               log.warn('Test', string.format("Cannot find matching test for function '%s'", cfunc))
               return false
             end
+            if is_any() then
+              table.insert(args, '-run=' .. table.concat(any_matches, '$|') .. '$')
+              table.insert(args, '-bench=' .. table.concat(any_matches, '$|') .. '$')
+            end
+            table.insert(args, fs.relative_to_cwd(cf))
           else
             log.warn('Test', 'Cannot determine current function.')
             return false
@@ -313,7 +338,10 @@ do
         elseif fs.is_test_file(cf) then
           local cfunc = ts.get_current_function_name()
           if cfunc ~= nil then
-            if bench then
+            if is_any() then
+              table.insert(args, string.format('-bench=%s', cfunc))
+              table.insert(args, string.format('-run=%s', cfunc))
+            elseif is_bench() then
               if string.match(cfunc, '^Benchmark') ~= nil then
                 table.insert(args, '-run=#')
                 table.insert(args, string.format('-bench=%s', cfunc))
@@ -321,7 +349,7 @@ do
                 log.warn('Test', string.format("Current function '%s' does not look like a benchmark", cfunc))
                 return false
               end
-            else
+            elseif is_test() then
               if string.match(cfunc, '^Test') ~= nil or string.match(cfunc, '^Example') ~= nil then
                 table.insert(args, string.format('-run=%s', cfunc))
               else
@@ -344,9 +372,9 @@ do
     },
     suite = {
       function()
-        local bench = table.remove(args, 1)
-        args = args[1]
-        if bench then
+        if is_any() then
+          table.insert(args, '-bench=.')
+        elseif is_bench() then
           table.insert(args, '-run=#')
           table.insert(args, '-bench=.')
         end
@@ -356,9 +384,9 @@ do
     },
     pkg = {
       function()
-        local bench = table.remove(args, 1)
-        args = args[1]
-        if bench then
+        if is_any() then
+          table.insert(args, '-bench=.')
+        elseif is_bench() then
           table.insert(args, '-run=#')
           table.insert(args, '-bench=.')
         end
@@ -372,6 +400,20 @@ do
   for act, d in pairs(dispatch) do
     M[act] = function(...)
       args = ...
+      if args == nil then
+        args = {}
+      elseif type(args) ~= 'table' then
+        log.error('Test', 'Testing commands require a table as argument')
+        return
+      end
+      if args['type'] == nil then
+        test_type = 'test'
+      else
+        test_type = args.type
+      end
+      if args[1] ~= nil then
+        args = args[1]
+      end
       cmd = nil
       cf = vim.fn.expand '%'
       M.setup_command(args)
@@ -474,14 +516,22 @@ end
 function M.create_commands()
   vim.api.nvim_exec(
     [[
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({false, {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({true, {<f-args>}})
-      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({false, {<f-args>}})
-      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({true, {<f-args>}})
-      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({false, {<f-args>}})
-      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({true, {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({false, {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({true, {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({type='test', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({type='bench', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any', {<f-args>}})
+
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({type='test', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any', {<f-args>}})
+
+      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({type='test', {<f-args>}})
+      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({type='bench', {<f-args>}})
+      command! -nargs=* -bar                GoTestANearest lua require'goldsmith.testing.native'.nearest({type='any', {<f-args>}})
+
+      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({type='test', {<f-args>}})
+      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({type='bench', {<f-args>}})
+      command! -nargs=* -bar                GoTestASuite  lua require'goldsmith.testing.native'.suite({type='any', {<f-args>}})
+
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
       command!          -bar -bang          GoTestVisit   lua require'goldsmith.testing.native'.visit({'<bang>'})
     ]],
