@@ -125,6 +125,9 @@ do
             local possible_test_names = {
               string.format('Test_%s', cfunc),
               string.format('Test%s', cfunc),
+              string.format('Benchmark%s', cfunc),
+              string.format('Benchmark_%s', cfunc),
+              string.format('Example%s', cfunc),
             }
             for _, test in ipairs(tests) do
               if vim.tbl_contains(possible_test_names, test.name) then

@@ -198,6 +198,7 @@ local SPEC = {
   gorun = terminal_spec,
   goget = terminal_spec,
   goinstall = terminal_spec,
+  gotest = terminal_spec,
   godoc = window_spec,
   goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),

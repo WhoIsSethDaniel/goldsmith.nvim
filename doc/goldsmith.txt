@@ -17,7 +17,7 @@ CONTENTS                                                    *goldsmith-contents*
   4. Configuration................................|goldsmith-configuration|
   5. Settings.....................................|goldsmith-settings|
   6. Commands.....................................|goldsmith-commands|
-  7. Testing......................................|goldsmith-testing|
+  7. Testing and Benchmarking.....................|goldsmith-testing-and-benchmarking|
   9. Mappings.....................................|goldsmith-mappings|
   9. Text Objects.................................|goldsmith-text-objects|
  10. Functions....................................|goldsmith-functions|
@@ -279,6 +279,7 @@ guaranteed to be entirely up-to-date):
         options = { "-remote=auto" }
       },
       gorun = {},
+      gotest = {},
       gotestvisit = {
         use_current_window = false
       },
@@ -292,6 +293,9 @@ guaranteed to be entirely up-to-date):
         ["add-ws-folder"] = { "<leader>wa" },
         ["alt-file"] = {},
         ["alt-file-force"] = {},
+        build = {},
+        ["close-any"] = {},
+        ["close-terminal"] = {},
         codeaction = { "<leader>ca" },
         ["codelens-off"] = {},
         ["codelens-on"] = {},
@@ -308,6 +312,7 @@ guaranteed to be entirely up-to-date):
         prevdiag = { "[d" },
         rename = { "<leader>rn" },
         ["rm-ws-folder"] = { "<leader>wr" },
+        run = {},
         setloclist = { "<leader>q" },
         showdiag = { "<leader>e" },
         sighelp = { "<C-k>" },
@@ -316,17 +321,18 @@ guaranteed to be entirely up-to-date):
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},
-        ["test-close-window"] = { "<leader>tc" },
-        ["test-last"] = { "<leader>tl" },
-        ["test-nearest"] = { "<leader>tn" },
-        ["test-pkg"] = { "<leader>tp" },
-        ["test-suite"] = { "<leader>ts" },
-        ["test-visit"] = { "<leader>tv" },
+        ["test-close-window"] = {},
+        ["test-last"] = {},
+        ["test-nearest"] = {},
+        ["test-pkg"] = {},
+        ["test-suite"] = {},
+        ["test-visit"] = {},
         ["toggle-debug-console"] = {},
         typedef = { "<leader>D" }
       },
       null = {
         enabled = true,
+        gocmt = false,
         gofmt = false,
         gofumpt = false,
         ["golangci-lint"] = true,
@@ -358,7 +364,7 @@ guaranteed to be entirely up-to-date):
         runner = "native",
         ["vim-test"] = {
           strategy = "neovim"
-        },
+        }
       },
       window = {
         focus = true,
@@ -1331,7 +1337,9 @@ Cleanup the go.mod file. See ':GoHelp mod tidy' for more information on what
 this does.
 
 ================================================================================
-TESTING                                                      *goldsmith-testing*
+TESTING AND BENCHMARKING                                     *goldsmith-testing*
+                                                        *goldsmith-benchmarking*
+                                            *goldsmith-testing-and-benchmarking*
 
 INTRODUCTION
 
@@ -1370,7 +1378,8 @@ or `gotests` variables are unset and will set them to reasonable defaults. See
 |goldsmith-testing-settings| for what settings can be set.
 
 If you are using 'native' testing it will work fine right away. It is also
-configured via |goldsmith-testing-settings|.
+configured via |goldsmith-testing-settings|. Currently only 'native' testing
+supports benchmarking commands (see below for more information on that).
 
 WINDOW
 
@@ -1390,12 +1399,13 @@ from a code file or a test file.
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
-                                                                   *:GoTestLast*
-:GoTestLast [args]
+                                                                 *:GoTestBSuite*
+:GoTestBSuite [args]
 
-Run the previous test command. Both `vim-test` and the 'native' Goldsmith testing
-commands keep track of the last test command that was run and this command will
-run it again.
+Run all benchmarks for the current project. This command acts the same if it is
+run from a code file or a test file.
+
+Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
@@ -1412,20 +1422,16 @@ to the command. The list of directories are those that contain packages.
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
-                                                                *:GoTestNearest*
-:GoTestNearest [args]
+                                                                   *:GoTestBPkg*
+:GoTestBPkg [args]
 
-Within a code file this command will identify the function your cursor is 
-currently in, match that function's name to a test routine in your test file, 
-and will run that test. If your cursor is not within a function, or if there is 
-no matching test routine a warning will be printed.
+Run the benchmarks for the current package, or, pass the paths for directories
+where benchmarks should be run.
 
-Within a test file this command will identify the function your cursor is 
-currently in and will attempt to run it as a test.
+Command completion can be used to pass directories within the current project
+to the command. The list of directories are those that contain packages.
 
-The function test matching works as follows: it searches for two different
-function names within your test file, Test<funcname> and Test_<funcname>. The
-matching is case sensitive.
+Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
@@ -1451,8 +1457,7 @@ Arguments to `go test` may be passed via the command and via
 
 With 'native' testing there are two scenarios: 1) if arguments are passed in 
 they are assumed to be names of tests to run. You can use command-completion to 
-see the names of all tests for the current package (this has the potential to be
-slow if you have many test files in a package) 2) if no arguments are passed 
+see the names of all tests for the current package 2) if no arguments are passed 
 in this acts just like |:GoTestNearest|.
 
 With `vim-test` testing there are also two scenarios: 1) the same as with 'native'
@@ -1460,15 +1465,56 @@ testing, 2) if no arguments are passed in it acts just like |:GoTestPkg|.
 
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 
+                                                                   *:GoTestBRun*
+:GoTestBRun [tests]
+
+With 'native' testing there are two scenarios: 1) if arguments are passed in 
+they are assumed to be names of benchmarks to run. You can use command-completion
+to see the names of all benchmarks for the current package 2) if no arguments are
+passed in this acts just like |:GoTestNearest|.
+
+Currently this command is not supported with the `vim-test` integration.
+
+Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
+
+                                                                *:GoTestNearest*
+:GoTestNearest [args]
+
+Within a code file this command will identify the function your cursor is 
+currently in, match that function's name to a test routine in your test file, 
+and will run that test. If your cursor is not within a function, or if there is 
+no matching test routine a warning will be printed.
+
+Within a test file this command will identify the function your cursor is 
+currently in and will attempt to run it as a test.
+
+The function test matching works as follows: it searches for two different
+function names within your test file, Test<funcname> and Test_<funcname>. The
+matching is case sensitive.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                   *:GoTestLast*
+:GoTestLast [args]
+
+Run the previous test command. Both `vim-test` and the 'native' Goldsmith testing
+commands keep track of the last test command that was run and this command will
+run it again.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
                                                                        *:GoTest*
 :GoTest [args]
 
-This command simply runs 'go test' with the arguments that are passed to it. This 
-command will not populate the quickfix list. By default it runs in a terminal. If 
-you pass '!' it will run in the background. This command does not interact with 
-the quickfix or location list in any way and does not honor the
-|goldsmith-testing-settings| except for terminal-related settings (see
-|goldsmith-terminal-settings|). It is intended to be a bare proxy to `go test`.
+This command simply runs 'go test' with the arguments that are passed to it. By 
+default it runs in a terminal. If you pass '!' it will run in the background. 
+This command does not interact with the quickfix or location list in any way and
+does not honor the |goldsmith-testing-settings|. Instead it honors settings in
+the 'gotest' config key, including |goldsmith-terminal-settings|. It is intended
+to be a bare proxy to `go test` and is separate from any of the Goldsmith test
+runners.
 
 Arguments to `go test` may only be passed via the command.
 

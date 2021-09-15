@@ -240,10 +240,17 @@ do
     },
     run = {
       function()
+        local bench = table.remove(args, 1)
+        args = args[1]
         last_file = set_last_file(cf)
         if #args > 0 then
           local new = {}
-          table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
+          if bench then
+            table.insert(new, '-run=#')
+            table.insert(new, '-bench=' .. table.concat(args, '$|') .. '$')
+          else
+            table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
+          end
           table.insert(new, fs.relative_to_cwd(cf) .. '/...')
           args = new
           return true
@@ -269,6 +276,9 @@ do
             local possible_test_names = {
               string.format('Test_%s', cfunc),
               string.format('Test%s', cfunc),
+              string.format('Benchmark%s', cfunc),
+              string.format('Benchmark_%s', cfunc),
+              string.format('Example%s', cfunc),
             }
             local match = false
             for _, test in ipairs(tests) do
@@ -306,12 +316,24 @@ do
     },
     suite = {
       function()
+        local bench = table.remove(args, 1)
+        args = args[1]
+        if bench then
+          table.insert(args, '-run=#')
+          table.insert(args, '-bench=.')
+        end
         table.insert(args, './...')
         return true
       end,
     },
     pkg = {
       function()
+        local bench = table.remove(args, 1)
+        args = args[1]
+        if bench then
+          table.insert(args, '-run=#')
+          table.insert(args, '-bench=.')
+        end
         if #args == 0 then
           table.insert(args, fs.relative_to_cwd(cf))
         end
@@ -321,7 +343,7 @@ do
   }
   for act, d in pairs(dispatch) do
     M[act] = function(...)
-      args = ... or {}
+      args = ...
       cmd = nil
       cf = vim.fn.expand '%'
       M.setup_command(args)
@@ -424,11 +446,14 @@ end
 function M.create_commands()
   vim.api.nvim_exec(
     [[
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({ false, {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({ true, {<f-args>}})
       command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({<f-args>})
-      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({<f-args>})
+      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({ false, {<f-args>}})
+      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({ true, {<f-args>}})
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({false, {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({true, {<f-args>}})
       command!          -bar -bang          GoTestVisit   lua require'goldsmith.testing.native'.visit({'<bang>'})
     ]],
     false

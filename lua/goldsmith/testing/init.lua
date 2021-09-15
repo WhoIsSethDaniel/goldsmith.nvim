@@ -5,8 +5,9 @@ local log = require 'goldsmith.log'
 
 local M = {}
 
-goldsmith_test_complete = function()
-  return M.test_complete()
+goldsmith_test_complete = function(...)
+  local _, c = ...
+  return M.test_complete(c)
 end
 
 goldsmith_test_package_complete = function()
@@ -31,7 +32,7 @@ function M.package_complete()
   return table.concat(pkgs, '\n')
 end
 
-function M.test_complete()
+function M.test_complete(c)
   local cp = fs.relative_to_cwd(vim.fn.expand '%')
   local ok, list = go.list(false, cp)
   if not ok then
@@ -47,7 +48,12 @@ function M.test_complete()
       log.warn('Testing', string.format("Cannot open file '%s' for reading: %s", fp, err))
     else
       for line in f:lines() do
-        local fname = string.match(line, 'func%s+(Test.*)%(')
+        local fname
+        if c == 'GoTestRun' then
+          fname = string.match(line, 'func%s+(Test.*)%(') or string.match(line, 'func%s+(Example.*)%(')
+        else
+          fname = string.match(line, 'func%s+(Benchmark.*)%(')
+        end
         table.insert(tests, fname)
       end
     end

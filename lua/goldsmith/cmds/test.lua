@@ -8,7 +8,7 @@ function M.run(bang, args)
   local cmd = vim.list_extend({ 'go', 'test' }, args)
   local opts = {}
   if bang == '' then
-    opts = config.terminal_opts('testing', { title = table.concat(cmd, ' ') })
+    opts = config.terminal_opts('gotest', { title = table.concat(cmd, ' ') })
   end
   job.run(cmd, opts, {
     on_exit = function(id, code)
