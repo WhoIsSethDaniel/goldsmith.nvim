@@ -261,6 +261,8 @@ do
     },
     nearest = {
       function()
+        local bench = table.remove(args, 1)
+        args = args[1]
         if fs.is_code_file(cf) then
           local tf = fs.test_file_name(cf)
           if vim.fn.filereadable(tf) == 0 then
@@ -273,18 +275,29 @@ do
             local tests = vim.api.nvim_buf_call(b, function()
               return ts.get_all_functions()
             end)
-            local possible_test_names = {
-              string.format('Test_%s', cfunc),
-              string.format('Test%s', cfunc),
-              string.format('Benchmark%s', cfunc),
-              string.format('Benchmark_%s', cfunc),
-              string.format('Example%s', cfunc),
-            }
+            local possible_test_names
+            if bench then
+              possible_test_names = {
+                string.format('Benchmark%s', cfunc),
+                string.format('Benchmark_%s', cfunc),
+              }
+            else
+              possible_test_names = {
+                string.format('Test_%s', cfunc),
+                string.format('Test%s', cfunc),
+                string.format('Example%s', cfunc),
+              }
+            end
             local match = false
             for _, test in ipairs(tests) do
               if vim.tbl_contains(possible_test_names, test.name) then
                 match = true
-                table.insert(args, string.format('-run=%s', test.name))
+                if bench then
+                  table.insert(args, '-run=#')
+                  table.insert(args, string.format('-bench=%s', test.name))
+                else
+                  table.insert(args, string.format('-run=%s', test.name))
+                end
                 table.insert(args, fs.relative_to_cwd(cf))
                 break
               end
@@ -300,7 +313,22 @@ do
         elseif fs.is_test_file(cf) then
           local cfunc = ts.get_current_function_name()
           if cfunc ~= nil then
-            table.insert(args, string.format('-run=%s', cfunc))
+            if bench then
+              if string.match(cfunc, '^Benchmark') ~= nil then
+                table.insert(args, '-run=#')
+                table.insert(args, string.format('-bench=%s', cfunc))
+              else
+                log.warn('Test', string.format("Current function '%s' does not look like a benchmark", cfunc))
+                return false
+              end
+            else
+              if string.match(cfunc, '^Test') ~= nil or string.match(cfunc, '^Example') ~= nil then
+                table.insert(args, string.format('-run=%s', cfunc))
+              else
+                log.warn('Test', string.format("Current function '%s' does not look like a test", cfunc))
+                return false
+              end
+            end
             table.insert(args, fs.relative_to_cwd(cf))
           else
             log.warn('Test', 'Cannot determine current function.')
@@ -448,7 +476,8 @@ function M.create_commands()
     [[
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({ false, {<f-args>}})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({ true, {<f-args>}})
-      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({<f-args>})
+      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({ false, {<f-args>}})
+      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({ true, {<f-args>}})
       command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({ false, {<f-args>}})
       command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({ true, {<f-args>}})
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})

@@ -1436,22 +1436,6 @@ Currently this command is not supported with the `vim-test` integration.
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
-                                                                  *:GoTestVisit*
-:GoTestVisit[!]
-
-When run, and if you have not previously run a test, this command will take you 
-to the test/code file for the current code/test file (essentially acting like 
-|:GoAlt|.) If you have previously run a test this command will take you to the 
-file for that test. Note that not all test commands operate on a single file, 
-and therefore do not affect what is considered the 'last test file'. Commands
-that do affect the 'last test file' are :GoTestRun, and :GoTestNearest.
-
-This command will honor your |goldsmith-window-settings| and your "gotestvisit"
-window settings.
-
-Arguments to `go test` may be passed via the command and via 
-|goldsmith-testing.arguments|.
-
                                                                     *:GoTestRun*
 :GoTestRun [tests]
 
@@ -1490,7 +1474,43 @@ currently in and will attempt to run it as a test.
 
 The function test matching works as follows: it searches for two different
 function names within your test file, Test<funcname> and Test_<funcname>. The
-matching is case sensitive.
+matching is case sensitive (it also will match Examples in a similar way).
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                               *:GoTestBNearest*
+:GoTestBNearest [args]
+
+Within a code file this command will identify the function your cursor is 
+currently in, match that function's name to a benchmark routine in your test
+file, and will run that benchmark. If your cursor is not within a function, or 
+if there is no matching benchmark routine a warning will be printed.
+
+Within a test file this command will identify the function your cursor is 
+currently in and will attempt to run it as a benchmark.
+
+The function benchmark matching works as follows: it searches for two different
+function names within your test file, Benchmark<funcname> and 
+Benchmark_<funcname>. The matching is case sensitive.
+
+Currently this command is not supported with the `vim-test` integration.
+
+Arguments to `go test` may be passed via the command and via 
+|goldsmith-testing.arguments|.
+
+                                                                  *:GoTestVisit*
+:GoTestVisit[!]
+
+When run, and if you have not previously run a test, this command will take you 
+to the test/code file for the current code/test file (essentially acting like 
+|:GoAlt|.) If you have previously run a test this command will take you to the 
+file for that test. Note that not all test commands operate on a single file, 
+and therefore do not affect what is considered the 'last test file'. Commands
+that do affect the 'last test file' are :GoTestRun, and :GoTestNearest.
+
+This command will honor your |goldsmith-window-settings| and your "gotestvisit"
+window settings.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
