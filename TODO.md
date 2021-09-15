@@ -19,8 +19,8 @@
 - [x] generate skeleton code documentation / comments (gocmt? - https://github.com/cuonglm/gocmt)
 - [x] GoTest
   - [x] test-close-window should, perhaps, work for this too? or maybe a more generic close terminal window that works for all terminal commands
-- [ ] native testing
-  - [ ] automatically detect benchmark tests and run 
+- [x] native testing
+  - [x] benchmarking
 - [ ] with null services maybe make custom services and deal with errors differently than builtin services
 - [ ] lots more debug logging
   - [ ] review all logging
@@ -31,7 +31,8 @@
 - [ ] snippets?
 - [ ] tests (using plenary?)
 - [ ] testing
-  - [ ] benchmarking
+  - [ ] commands that try to detect benchmark vs test
+  - [x] benchmarking
   - [ ] coverage
   - [ ] ultest integration
 - [ ] build tag editing

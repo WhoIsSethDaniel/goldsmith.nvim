@@ -474,15 +474,15 @@ end
 function M.create_commands()
   vim.api.nvim_exec(
     [[
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({ false, {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({ true, {<f-args>}})
-      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({ false, {<f-args>}})
-      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({ true, {<f-args>}})
-      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({ false, {<f-args>}})
-      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({ true, {<f-args>}})
-      command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({false, {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({true, {<f-args>}})
+      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({false, {<f-args>}})
+      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({true, {<f-args>}})
+      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({false, {<f-args>}})
+      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({true, {<f-args>}})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({false, {<f-args>}})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({true, {<f-args>}})
+      command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
       command!          -bar -bang          GoTestVisit   lua require'goldsmith.testing.native'.visit({'<bang>'})
     ]],
     false

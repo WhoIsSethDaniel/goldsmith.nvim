@@ -1729,17 +1729,17 @@ The same as |:GoTestLast|. Run the most recent test command again.
 
 See |goldsmith-testing| for more information.
 
-*(goldsmith-test-nearest)*
-Default: none
-
-The same as |:GoTestNearest|. Run the nearest test to the cursor.
-
-See |goldsmith-testing| for more information.
-
 *(goldsmith-test-visit)*
 Default: none
 
 The same as |:GoTestVisit|. View the file with the last test that ran.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-nearest)*
+Default: none
+
+The same as |:GoTestNearest|. Run the nearest test to the cursor.
 
 See |goldsmith-testing| for more information.
 
@@ -1754,6 +1754,27 @@ See |goldsmith-testing| for more information.
 Default: none
 
 The same as |:GoTestPkg|. Run all tests for the current package.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-b-nearest)*
+Default: none
+
+The same as |:GoTestBNearest|. Run the nearest benchmark to the cursor.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-b-suite)*
+Default: none
+
+The same as |:GoTestBSuite|. Run all benchmarks for the current project.
+
+See |goldsmith-testing| for more information.
+
+*(goldsmith-test-b-pkg)*
+Default: none
+
+The same as |:GoTestBPkg|. Run all tests for the current package.
 
 See |goldsmith-testing| for more information.
 
