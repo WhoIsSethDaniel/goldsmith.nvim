@@ -1507,7 +1507,8 @@ to the test/code file for the current code/test file (essentially acting like
 |:GoAlt|.) If you have previously run a test this command will take you to the 
 file for that test. Note that not all test commands operate on a single file, 
 and therefore do not affect what is considered the 'last test file'. Commands
-that do affect the 'last test file' are :GoTestRun, and :GoTestNearest.
+that do affect the 'last test file' are :GoTestRun, :GoTestNearest, :GoTestBRun,
+and :GoTestBNearest.
 
 This command will honor your |goldsmith-window-settings| and your "gotestvisit"
 window settings.
@@ -1518,9 +1519,9 @@ Arguments to `go test` may be passed via the command and via
                                                                    *:GoTestLast*
 :GoTestLast [args]
 
-Run the previous test command. Both `vim-test` and the 'native' Goldsmith testing
-commands keep track of the last test command that was run and this command will
-run it again.
+Run the previous test/benchmark command. Both `vim-test` and the 'native' 
+Goldsmith testing commands keep track of the last test command that was run and
+this command will run it again.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
