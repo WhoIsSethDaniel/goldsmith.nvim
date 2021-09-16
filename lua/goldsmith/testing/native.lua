@@ -210,7 +210,7 @@ do
     last = {
       function()
         if last_cmd == nil then
-          log.warn('Test', 'There is no last test command to run.')
+          log.warn('Testing', 'There is no last test command to run.')
           return false
         else
           cmd = last_cmd
@@ -323,7 +323,7 @@ do
               end
             end
             if match == false then
-              log.warn('Test', string.format("Cannot find matching test for function '%s'", cfunc))
+              log.warn('Testing', string.format("Cannot find matching test for function '%s'", cfunc))
               return false
             end
             if is_any() then
@@ -332,7 +332,7 @@ do
             end
             table.insert(args, fs.relative_to_cwd(cf))
           else
-            log.warn('Test', 'Cannot determine current function.')
+            log.warn('Testing', 'Cannot determine current function.')
             return false
           end
         elseif fs.is_test_file(cf) then
@@ -346,24 +346,24 @@ do
                 table.insert(args, '-run=#')
                 table.insert(args, string.format('-bench=%s$', cfunc))
               else
-                log.warn('Test', string.format("Current function '%s' does not look like a benchmark", cfunc))
+                log.warn('Testing', string.format("Current function '%s' does not look like a benchmark", cfunc))
                 return false
               end
             elseif is_test() then
               if string.match(cfunc, '^Test') ~= nil or string.match(cfunc, '^Example') ~= nil then
                 table.insert(args, string.format('-run=%s', cfunc))
               else
-                log.warn('Test', string.format("Current function '%s' does not look like a test", cfunc))
+                log.warn('Testing', string.format("Current function '%s' does not look like a test", cfunc))
                 return false
               end
             end
             table.insert(args, fs.relative_to_cwd(cf))
           else
-            log.warn('Test', 'Cannot determine current function.')
+            log.warn('Testing', 'Cannot determine current function.')
             return false
           end
         else
-          log.warn('Test', 'Cannot determine type of file.')
+          log.warn('Testing', 'Cannot determine type of file.')
           return false
         end
         last_file = set_last_file(cf)
@@ -403,7 +403,7 @@ do
       if args == nil then
         args = {}
       elseif type(args) ~= 'table' then
-        log.error('Test', 'Testing commands require a table as argument')
+        log.error('Testing', 'Testing commands require a table as argument')
         return
       end
       if args['type'] == nil then
