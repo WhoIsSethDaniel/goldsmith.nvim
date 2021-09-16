@@ -1,3 +1,7 @@
+- [ ] close-any does not work if in a test window
+- [ ] check for all needed servers/plugins and warn/error if one or more don't start
+  - [ ] if null-ls fails to come up codelens should still appear, but currently doesn't
+  - [ ] null does not start with 'bad' repo; figure out why
 - [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)

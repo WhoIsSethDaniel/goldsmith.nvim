@@ -57,12 +57,11 @@ function M.is_disabled(service)
 end
 
 function M.setup(cf)
-  local null
+  local null = require 'null-ls'
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
     if not M.is_disabled(service) then
       if m.has_requirements() then
-        null = require 'null-ls'
         local setup
         local user_args = config.get('null', service)
         if type(user_args) == 'table' then
@@ -83,9 +82,7 @@ function M.setup(cf)
       end
     end
   end
-  if null then
-    null.config(cf)
-  end
+  null.config(cf)
   return cf
 end
 
