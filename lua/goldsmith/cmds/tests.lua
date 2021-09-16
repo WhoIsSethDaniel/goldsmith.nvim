@@ -117,7 +117,7 @@ function M.run(...)
     end,
     on_exit = function(jobid, code, event)
       if ok then
-        log.info('Test', 'Test(s) generated.')
+        log.info('Tests', 'Test(s) generated.')
       else
         log.error('Tests', string.format('Failed to generate tests. %s (code %d)', vim.inspect(out), code))
       end

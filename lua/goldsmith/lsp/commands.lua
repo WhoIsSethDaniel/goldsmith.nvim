@@ -21,7 +21,7 @@ local function check_for_error(msg)
   if msg ~= nil and type(msg[1]) == 'table' then
     for k, v in pairs(msg[1]) do
       if k == 'error' then
-        log.error(nil, v.message)
+        log.error('LSP', v.message)
         break
       end
     end
