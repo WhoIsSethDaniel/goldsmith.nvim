@@ -1773,7 +1773,7 @@ Default: none
 This will close any (or all) testing windows or terminals that have been opened by
 Goldsmith.
 
-This command will not close the Goldsmith debug console.
+This command will not close the Goldsmith debug console or help windows.
 
 *(goldsmith-build)*
 Default: none

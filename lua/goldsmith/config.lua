@@ -421,9 +421,6 @@ function M.setup(user_config)
 end
 
 function M.get_mapping(key)
-  if key == 'enabled' then
-    return M.get('mappings', 'enabled')
-  end
   if _config['mappings']['enabled'] then
     return M.get('mappings', key)
   else

@@ -58,6 +58,7 @@ end
 
 function M.setup(cf)
   local null = require 'null-ls'
+  local enabled_services = 0
   for _, service in ipairs(M.services()) do
     local m = service_module(service)
     if not M.is_disabled(service) then
@@ -71,6 +72,7 @@ function M.setup(cf)
         end
         table.insert(running_services, setup)
         null.register(setup)
+        enabled_services = enabled_services + 1
       else
         log.warn(
           'Null',
@@ -81,6 +83,9 @@ function M.setup(cf)
         )
       end
     end
+  end
+  if enabled_services == 0 then
+    M.is_disabled = function() return true end
   end
   null.config(cf)
   return cf

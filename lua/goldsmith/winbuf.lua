@@ -52,6 +52,10 @@ function M.create_winbuf(opts)
     vim.api.nvim_set_current_win(lw)
   end
 
+  if opts['keymap'] ~= nil then
+    M.create_keymaps(b, opts['keymap'])
+  end
+
   return { win = w, buf = b }
 end
 
@@ -164,6 +168,16 @@ function M.start_follow_buffer()
       augroup END
     ]]
   end)
+end
+
+function M.create_keymaps(buf, type)
+  local buffer = require 'goldsmith.buffer'
+  if type == 'terminal' then
+    buffer.set_buffer_map(buf, '', 'close-terminal', nil, { silent = true })
+  elseif type == 'testing' then
+    buffer.set_buffer_map(buf, '', 'test-close-window', nil, { silent = true })
+  end
+  buffer.set_buffer_map(buf, '', 'close-any', nil, { silent = true })
 end
 
 function M.make_buffer_plain(b, w, opts)

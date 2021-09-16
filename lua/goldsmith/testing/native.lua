@@ -194,7 +194,7 @@ do
   local test_type, args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
   function M.close_window()
     if last_win ~= nil and vim.api.nvim_win_is_valid(last_win.win) then
-      vim.api.nvim_win_hide(last_win.win)
+      vim.api.nvim_win_close(last_win.win, true)
     end
   end
   local function is_bench()
@@ -399,20 +399,15 @@ do
   }
   for act, d in pairs(dispatch) do
     M[act] = function(...)
-      args = ...
-      if args == nil then
-        args = {}
-      elseif type(args) ~= 'table' then
-        log.error('Testing', 'Testing commands require a table as argument')
-        return
-      end
-      if args['type'] == nil then
+      args = { ... }
+      if args[2] ~= nil then
+        test_type = args[1]['type'] or 'test'
+        args = args[2]
+      elseif args[1] ~= nil then
         test_type = 'test'
-      else
-        test_type = args.type
-      end
-      if args[1] ~= nil and type(args[1]) == 'table' then
         args = args[1]
+      else
+        test_type = 'test'
       end
       cmd = nil
       cf = vim.fn.expand '%'
@@ -438,14 +433,13 @@ do
         if strategy == 'display' then
           opts = config.window_opts(
             'testing',
-            { create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
+            { keymap = 'testing', create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
           )
           last_win = wb.create_winbuf(opts)
           wb.clear_buffer(last_win.buf)
           wb.make_buffer_plain(last_win.buf, last_win.win, { ft = 'gotest' })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', '<cmd>close<cr>', { silent = true, noremap = true })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', '<cmd>close<cr>', { silent = true, noremap = true })
-          buffer.set_buffer_map(last_win.buf, '', 'test-close-window', '<cmd>close<cr>', { silent = true })
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', '<cmd>close!<cr>', { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', '<cmd>close!<cr>', { silent = true, noremap = true })
           wb.setup_follow_buffer(last_win.buf)
         end
         table.insert(cmd, '-json')
@@ -516,21 +510,21 @@ end
 function M.create_commands()
   vim.api.nvim_exec(
     [[
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({type='test', {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({type='bench', {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({type='test'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({type='bench'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any'}, {<f-args>})
 
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({type='test', {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench', {<f-args>}})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any', {<f-args>}})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({type='test'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any'}, {<f-args>})
 
-      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({type='test', {<f-args>}})
-      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({type='bench', {<f-args>}})
-      command! -nargs=* -bar                GoTestANearest lua require'goldsmith.testing.native'.nearest({type='any', {<f-args>}})
+      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({type='test'}, {<f-args>})
+      command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({type='bench'}, {<f-args>})
+      command! -nargs=* -bar                GoTestANearest lua require'goldsmith.testing.native'.nearest({type='any'}, {<f-args>})
 
-      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({type='test', {<f-args>}})
-      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({type='bench', {<f-args>}})
-      command! -nargs=* -bar                GoTestASuite  lua require'goldsmith.testing.native'.suite({type='any', {<f-args>}})
+      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({type='test'}, {<f-args>})
+      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({type='bench'}, {<f-args>})
+      command! -nargs=* -bar                GoTestASuite  lua require'goldsmith.testing.native'.suite({type='any'}, {<f-args>})
 
       command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
       command!          -bar -bang          GoTestVisit   lua require'goldsmith.testing.native'.visit({'<bang>'})

@@ -1,5 +1,6 @@
 local log = require 'goldsmith.log'
 local wb = require 'goldsmith.winbuf'
+local buffer = require 'goldsmith.buffer'
 
 local M = {}
 
@@ -21,7 +22,7 @@ function M.run(cmd, ...)
         vim.api.nvim_buf_delete(last_terminal.buf, { force = true })
       end
     end
-    local winbuf = wb.create_winbuf(vim.tbl_deep_extend('force', opts, { create = true }))
+    local winbuf = wb.create_winbuf(vim.tbl_deep_extend('force', opts, { keymap = 'terminal', create = true }))
     last_terminal = winbuf
     local w = vim.api.nvim_get_current_win()
     vim.api.nvim_set_current_win(winbuf.win)
@@ -34,8 +35,8 @@ function M.run(cmd, ...)
 end
 
 function M.close_terminal()
-  if last_terminal ~= nil and vim.api.nvim_win_is_valid(last_terminal.win) then
-    vim.api.nvim_win_close(last_terminal.win, true)
+  if last_terminal ~= nil and vim.api.nvim_buf_is_loaded(last_terminal.buf) then
+    vim.api.nvim_buf_delete(last_terminal.buf, { force = true })
   end
 end
 
