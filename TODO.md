@@ -1,6 +1,7 @@
 - [x] close-any does not work if in a test window
-- [ ] perhaps close-any should close help/doc windows too
-  - [ ] window mgmt should be more centralized, perhaps
+- [x] window mgmt
+  - [x] both test and help windows use q/cr for closing window
+  - [x] window mgmt should be more centralized, perhaps
 - [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)

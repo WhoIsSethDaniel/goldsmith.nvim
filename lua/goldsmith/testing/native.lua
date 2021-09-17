@@ -192,11 +192,6 @@ end
 
 do
   local test_type, args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
-  function M.close_window()
-    if last_win ~= nil and vim.api.nvim_win_is_valid(last_win.win) then
-      vim.api.nvim_win_close(last_win.win, true)
-    end
-  end
   local function is_bench()
     return test_type == 'bench'
   end
@@ -433,13 +428,12 @@ do
         if strategy == 'display' then
           opts = config.window_opts(
             'testing',
-            { keymap = 'testing', create = true, title = table.concat(cmd, ' '), reuse = last_win and last_win.buf or -1 }
+            { keymap = 'testing', create = true, title = table.concat(cmd, ' '), reuse = 'test_native' }
           )
           last_win = wb.create_winbuf(opts)
           wb.clear_buffer(last_win.buf)
           wb.make_buffer_plain(last_win.buf, last_win.win, { ft = 'gotest' })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', 'q', '<cmd>close!<cr>', { silent = true, noremap = true })
-          vim.api.nvim_buf_set_keymap(last_win.buf, '', '<Esc>', '<cmd>close!<cr>', { silent = true, noremap = true })
+          wb.set_close_keys(last_win.buf)
           wb.setup_follow_buffer(last_win.buf)
         end
         table.insert(cmd, '-json')

@@ -25,7 +25,7 @@ local default_action_map = {
   setloclist = { act = "<cmd>lua require'goldsmith.cmds.lsp'.diagnostic_set_loclist()<cr>", ft = '*' },
   format = { act = "<cmd>lua require'goldsmith.cmds.format'.run(1)<cr>", ft = '*' },
   ['toggle-debug-console'] = { act = "<cmd>lua require'goldsmith.log'.toggle_debug_console()<cr>", ft = '*' },
-  ['test-close-window'] = { act = "<cmd>lua require'goldsmith.testing'.close_window()<cr>", ft = { 'go' } },
+  ['test-close-window'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_window('test')<cr>", ft = { 'go' } },
   ['test-last'] = { act = "<cmd>lua require'goldsmith.testing'.last()<cr>", ft = { 'go' } },
   ['test-visit'] = { act = "<cmd>lua require'goldsmith.testing'.visit()<cr>", ft = { 'go' } },
   ['test-nearest'] = { act = "<cmd>lua require'goldsmith.testing'.nearest()<cr>", ft = { 'go' } },
@@ -51,10 +51,10 @@ local default_action_map = {
   ['sym-highlight'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.highlight_current_symbol()<cr>", ft = { 'go' } },
   ['start-follow'] = { act = "<cmd>lua require'goldsmith.winbuf'.start_follow_buffer()<cr>" },
   ['stop-follow'] = { act = "<cmd>lua require'goldsmith.winbuf'.stop_follow_buffer()<cr>" },
-  ['close-terminal'] = { act = "<cmd>lua require'goldsmith.job'.close_terminal()<cr>", ft = '*' },
+  ['close-terminal'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_window('job_terminal')<cr>", ft = '*' },
   ['build'] = { act = "<cmd>lua require'goldsmith.cmds.build'.run({})<cr>", ft = '*' },
   ['run'] = { act = "<cmd>lua require'goldsmith.cmds.run'.run({})<cr>", ft = '*' },
-  ['close-any'] = { act = "<cmd>lua require'goldsmith.buffer'.close_any_window()<cr>", ft = '*' },
+  ['close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window()<cr>", ft = '*' },
 }
 
 function M.checkin(b)
@@ -118,11 +118,6 @@ function M.set_buffer_keymaps(buf)
   end
 
   return true
-end
-
-function M.close_any_window()
-  require'goldsmith.job'.close_terminal()
-  require'goldsmith.testing'.close_window()
 end
 
 function M.setup()

@@ -4,7 +4,7 @@ local wb = require 'goldsmith.winbuf'
 local job = require 'goldsmith.job'
 local cmds = require 'goldsmith.lsp.commands'
 
-local M = { buf_nr = -1 }
+local M = { }
 
 function M.help_complete(arglead, cmdline, cursorPos)
   local doc = vim.fn.systemlist 'go help'
@@ -58,7 +58,7 @@ function M.doc_complete(arglead, cmdline, cursorPos)
 end
 
 function M.run(type, args)
-  local cfg = config.window_opts('godoc', { create = true, title = '[Go Documentation]', reuse = M.buf_nr })
+  local cfg = config.window_opts('godoc', { create = true, title = '[Go Documentation]', reuse = 'godoc' })
   local out = ''
   job.run(string.format('go %s %s', type, table.concat(args, ' ')), cfg, {
     stderr_buffered = true,
@@ -80,14 +80,11 @@ function M.run(type, args)
       end
 
       local winbuf = wb.create_winbuf(cfg)
-      M.buf_nr = winbuf.buf
 
       wb.make_buffer_plain(winbuf.buf, winbuf.win, { ft = 'godoc' })
+      wb.set_close_keys(winbuf.buf)
       wb.clear_buffer(winbuf.buf)
       wb.append_to_buffer(winbuf.buf, out)
-
-      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close!<CR>', { silent = true, noremap = true })
-      vim.api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close!<CR>', { silent = true, noremap = true })
     end,
   })
 end

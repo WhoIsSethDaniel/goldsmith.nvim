@@ -88,13 +88,6 @@ function M.setup()
   M.suite = f.suite
   M.pkg = f.pkg
 
-  M.close_window = function()
-    if mod_name == 'native' then
-      return require('goldsmith.testing.native').close_window()
-    end
-    log.warn('Testing', "close_window not available for '%s' test runner", mod_name)
-  end
-
   M.testing_module = function()
     return m
   end

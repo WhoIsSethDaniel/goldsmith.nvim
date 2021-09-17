@@ -1,5 +1,7 @@
 local M = {}
 
+local winstash = {}
+
 function M.determine_window(opts)
   local pos = opts['pos']
   local width = opts['width']
@@ -29,7 +31,20 @@ function M.create_winbuf(opts)
     action = 'new'
   end
 
-  local reuse = opts['reuse'] or -1
+  local reuse = -1
+  local ns = opts['reuse']
+  if type(ns) == 'number' then
+    reuse = ns
+  elseif ns ~= nil and winstash[ns] ~= nil then
+    if opts['destroy'] == true then
+      if vim.api.nvim_buf_is_loaded(winstash[ns]) then
+        vim.api.nvim_buf_delete(winstash[ns], { force = true })
+      end
+    else
+      reuse = winstash[ns]
+    end
+  end
+
   local wn = vim.fn.bufwinid(reuse)
   if reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) and wn ~= -1 then
     vim.fn.win_gotoid(wn)
@@ -43,6 +58,9 @@ function M.create_winbuf(opts)
 
   local w = vim.api.nvim_get_current_win()
   local b = vim.api.nvim_get_current_buf()
+  if ns ~= nil then
+    winstash[ns] = b
+  end
 
   if opts['title'] ~= nil then
     vim.api.nvim_buf_set_name(b, opts['title'])
@@ -113,6 +131,7 @@ function M.toggle_debug_console(wb, opts)
       return wb
     else
       if vim.api.nvim_buf_is_loaded(wb.buf) then
+        print(wb)
         local nwb = M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
         M.make_buffer_plain(nil, nwb.win)
         return nwb
@@ -200,6 +219,29 @@ function M.make_buffer_plain(b, w, opts)
     vim.api.nvim_win_set_option(w, 'number', false)
     vim.api.nvim_win_set_option(w, 'signcolumn', 'no')
     vim.api.nvim_win_set_option(w, 'relativenumber', false)
+  end
+end
+
+function M.set_close_keys(b)
+  vim.api.nvim_buf_set_keymap(b, '', 'q', '<cmd>close!<cr>', { silent = true, noremap = true })
+  vim.api.nvim_buf_set_keymap(b, '', '<Esc>', '<cmd>close!<cr>', { silent = true, noremap = true })
+end
+
+function M.close_any_window()
+  for _, ns in ipairs { 'test_native', 'job_terminal' } do
+    M.close_window(ns)
+  end
+end
+
+function M.close_window(ns)
+  local b = winstash[ns]
+  if b == nil then
+    return
+  end
+  if vim.api.nvim_buf_is_loaded(b) then
+    vim.api.nvim_buf_delete(b, { force = true })
+  else
+    winstash[ns] = nil
   end
 end
 
