@@ -86,10 +86,8 @@ function M.run(type, args)
       wb.clear_buffer(winbuf.buf)
       wb.append_to_buffer(winbuf.buf, out)
 
-      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close<CR>', { silent = true, noremap = true })
-      vim.api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close<CR>', { silent = true, noremap = true })
-      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<Esc>', ':<C-U>close<CR>', { silent = true, noremap = true })
-      vim.api.nvim_buf_set_keymap(winbuf.buf, 'n', '<Esc>[', '<Esc>[', { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(winbuf.buf, '', '<CR>', ':<C-U>close!<CR>', { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(winbuf.buf, '', 'q', ':<C-U>close!<CR>', { silent = true, noremap = true })
     end,
   })
 end
