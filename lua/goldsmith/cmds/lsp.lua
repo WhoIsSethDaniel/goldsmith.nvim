@@ -1,6 +1,7 @@
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 local wb = require 'goldsmith.winbuf'
+local diagnostic = require 'goldsmith.diagnostic'
 
 local M = {}
 
@@ -82,13 +83,13 @@ end
 -- :GoDiagShow
 function M.show_diagnostics()
   -- takes many optional args
-  vim.lsp.diagnostic.show_line_diagnostics()
+  diagnostic.show_line_diagnostics()
 end
 
 -- :GoDiagList
 function M.diag_set_loclist()
   -- takes optional args
-  vim.lsp.diagnostic.set_loclist()
+  diagnostic.setloclist()
 end
 
 -- :GoSymHighlight
@@ -150,11 +151,11 @@ function M.list_workspace_folders()
 end
 
 function M.goto_previous_diagnostic()
-  vim.lsp.diagnostic.goto_prev()
+  diagnostic.goto_prev()
 end
 
 function M.goto_next_diagnostic()
-  vim.lsp.diagnostic.goto_next()
+  diagnostic.goto_next()
 end
 
 return M

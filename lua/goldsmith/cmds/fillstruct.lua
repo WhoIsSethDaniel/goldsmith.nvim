@@ -1,3 +1,5 @@
+local diagnostic = require 'goldsmith.diagnostic'
+
 local M = {}
 
 -- { {
@@ -26,7 +28,7 @@ local M = {}
 --       } }
 --   } }
 function M.run(timeout_ms)
-  local context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+  local context = { diagnostics = diagnostic.get() }
   local params = vim.lsp.util.make_range_params()
   params.context = context
   local results = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
