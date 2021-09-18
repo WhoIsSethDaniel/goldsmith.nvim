@@ -1029,7 +1029,6 @@ Will receive a comment that looks like the following (with the default settings)
       ...
     }
 <
-
                                                                     *:GoAddTags*
 :[range]GoAddTags [key[,option]] [key[,option]] ...
 
