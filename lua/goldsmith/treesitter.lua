@@ -44,6 +44,33 @@ local function find_all_modules(root, mods)
   end
 end
 
+local function find_all_types(root, types)
+  if root:child_count() == 0 then
+    return
+  end
+  for node in root:iter_children() do
+    local ntype = node:type()
+    if ntype == 'type_declaration' or ntype == 'var_declaration' then
+      local line, col = ts_utils.get_node_range(node)
+      local f = {
+        -- node = node,
+        name = (ts_utils.get_node_text(node:child(1)))[1],
+        line = line,
+        col = col,
+      }
+      table.insert(types, f)
+    end
+    find_all_functions(node, types)
+  end
+end
+
+function M.get_all_types()
+  local trees = parsers.get_parser():parse()
+  local types = {}
+  find_all_types(trees[1]:root(), types)
+  return types
+end
+
 function M.get_all_modules()
   local trees = parsers.get_parser():parse()
   local mods = {}

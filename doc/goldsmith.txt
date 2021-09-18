@@ -332,7 +332,6 @@ guaranteed to be entirely up-to-date):
       },
       null = {
         enabled = true,
-        gocmt = false,
         gofmt = false,
         gofumpt = false,
         ["golangci-lint"] = true,
@@ -441,6 +440,30 @@ Behind the scenes this controls the configuration of `golines`.
 See |goldsmith-resources| for where `golines` can be found.
 
 To install `golines` you can use |:GoInstallBinaries|.
+
+`format.comments`                                    *goldsmith-format.comments*
+
+Default: false
+Currently does nothing. May eventually be used to add commenting as a feature
+that can run on save and be part of |:GoFormat|.
+
+See |:GoComments| for more information on commenting.
+
+`format.comments_template`                  *goldsmith-format.comments_template*
+
+Default: '%s ....'
+Template for commenting when using |:GoComments|. The template must include a
+"%s" which is used to substitute the name of the thing being commented.
+
+See |:GoComments| for more information on commenting.
+
+`format.comments_all`                            *goldsmith-format.comments_all*
+
+Default: false
+If set to true non-public types/functions that can be given a comment will be 
+given a comment. By default only public types/functions will be given a comment.
+
+See |:GoComments| for more information on commenting.
 
 `goimports.run_on_save`                        *goldsmith-goimports.run_on_save*
 
@@ -695,28 +718,6 @@ where each element in the list is a valid argument to `gofumpt`.
 See |goldsmith-resources| for where `gofumpt` can be found.
 
 To install `gofumpt` you can use |:GoInstallBinaries|.
-
-`null.gocmt`                                              *goldsmith-null.gocmt*
-
-Default: false
-By default `gocmt` is not run by null-ls. When set to true `gocmt` will be run
-whenever formatting is requested. `gocmt` simply adds a stub comment to exported
-types.
-
-You can pass extra arguments to `gocmt` by setting this variable to a list 
-where each element in the list is a valid argument to `gocmt`. One example that
-helps suppress linters complaining about a lack of comments for exported types:
->
-    null = {
-      gocmt = { '-t', '....' },
-    }
-<
-Note that, by default, `gocmt` inserts three dots, but this does not suppress
-the linter's complaints. Inserting four dots suppresses the complaints.
-
-See |goldsmith-resources| for where `gocmt` can be found.
-
-To install `gocmt` you can use |:GoInstallBinaries|.
 
 `null.config`                                            *goldsmith-null.config*
 
@@ -1003,6 +1004,17 @@ Run `go install` to add new tools to use. Takes the same arguments as
 Tell gopls and null-ls to format the current Go buffer immediately. 
 
 This command also will format go.mod files.
+
+                                                                   *:GoComments*
+:GoComments
+
+By default will find all public types/functions that do not currently have a
+comment and will give them a stub comment (see the various formatting options
+for how to adjust how this works, including changing the look of the comment and
+commenting on non-public types/functions):
+|goldsmith-format.comments|
+|goldsmith-format.comments_all|
+|goldsmith-format.comments_template|
 
                                                                     *:GoAddTags*
 :[range]GoAddTags [key[,option]] [key[,option]] ...
@@ -2049,4 +2061,3 @@ the plugins that can be utilized by Goldsmith.
   `revive`                        https://github.com/mgechev/revive
   `golangci-lint`                 https://github.com/golangci/golangci-lint/cmd/golangci-lint
   `staticcheck`                   https://honnef.co/go/tools/cmd/staticcheck
-  `gocmt`                         https://github.com/cuonglm/gocmt

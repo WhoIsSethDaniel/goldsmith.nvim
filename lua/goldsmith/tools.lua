@@ -95,17 +95,6 @@ local TOOLS = {
       'It is required if you want to use the :GoImpl command.',
     },
   },
-  gocmt = {
-    status = 'install',
-    location = 'github.com/cuonglm/gocmt',
-    tag = 'latest',
-    required = false,
-    null = true,
-    exe = 'gocmt',
-    not_found = {
-      'This is used to generate stub comments for exported types.',
-    },
-  },
   revive = {
     status = 'install',
     location = 'github.com/mgechev/revive',

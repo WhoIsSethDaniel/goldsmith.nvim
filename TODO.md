@@ -2,6 +2,7 @@
 - [x] window mgmt
   - [x] both test and help windows use q/cr for closing window
   - [x] window mgmt should be more centralized, perhaps
+- [ ] gocmt replacement using ts
 - [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)

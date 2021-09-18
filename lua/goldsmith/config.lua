@@ -82,7 +82,6 @@ local function service_defaults()
     { 'revive', true },
     { 'gofmt', false },
     { 'gofumpt', false },
-    { 'gocmt', false },
   }
 end
 
@@ -230,6 +229,22 @@ local SPEC = {
       'positive integer',
     },
     run_on_save = { true, 'b' },
+    comments = { false, 'b' },
+    comments_all = { false, 'b' },
+    comments_template = {
+      '%s ....',
+      function(t)
+        if not type(t) == 'string' then
+          return false
+        end
+        if not string.match(t, '(%%s)') then
+          return false
+        else
+          return true
+        end
+      end,
+      "string with '%s' in it",
+    },
   },
   highlight = {
     current_symbol = { true, 'b' },

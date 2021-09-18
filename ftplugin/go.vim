@@ -63,6 +63,7 @@ command! -nargs=* -range GoRemoveTags lua require'goldsmith.cmds.tags'.run('remo
 command! -nargs=* -range GoClearTags lua require'goldsmith.cmds.tags'.run('remove', {line1=<line1>, line2=<line2>, count=<count>}, {})
 command! -nargs=* -complete=custom,s:GoImplComplete GoImpl lua require'goldsmith.cmds.impl'.run({<f-args>})
 command! -nargs=0 GoFillStruct lua require'goldsmith.cmds.fillstruct'.run(1000)
+command! -nargs=0 GoComments lua require'goldsmith.cmds.comment'.run()
 
 " navigation
 command! -nargs=0 GoDef lua require'goldsmith.cmds.lsp'.goto_definition()
