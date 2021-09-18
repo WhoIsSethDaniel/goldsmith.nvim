@@ -451,9 +451,9 @@ See |:GoComments| for more information on commenting.
 
 `format.comments_template`                  *goldsmith-format.comments_template*
 
-Default: '%s ....'
-Template for commenting when using |:GoComments|. The template must include a
-"%s" which is used to substitute the name of the thing being commented.
+Default: '....'
+Template for commenting when using |:GoComments|. The template is the part of the
+comment that comes after the name of the thing being documented.
 
 See |:GoComments| for more information on commenting.
 
@@ -1015,6 +1015,20 @@ commenting on non-public types/functions):
 |goldsmith-format.comments|
 |goldsmith-format.comments_all|
 |goldsmith-format.comments_template|
+
+e.g., the following:
+>
+    func ExportedThing() {
+      ...
+    }
+<
+Will receive a comment that looks like the following (with the default settings):
+>
+    // ExportedThing ....
+    func ExportedThing() {
+      ...
+    }
+<
 
                                                                     *:GoAddTags*
 :[range]GoAddTags [key[,option]] [key[,option]] ...

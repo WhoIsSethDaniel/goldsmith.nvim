@@ -29,7 +29,7 @@ function M.make_comments(template, all)
     local is_public = string.match(name, '^(%u)') and true or false
     if all or is_public then
       if not already_has_comment(ndx, name) then
-        vim.api.nvim_buf_set_lines(0, ndx, ndx, true, { string.format('// ' .. template, name) })
+        vim.api.nvim_buf_set_lines(0, ndx, ndx, true, { string.format('// %s %s', name, template) })
         i = i + 1
       end
     end
