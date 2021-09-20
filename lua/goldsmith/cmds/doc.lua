@@ -32,7 +32,7 @@ local function match_partial_item_name(pkg, part)
 
   local items = {}
   for _, lead in ipairs { 'type', 'func', 'var', 'const' } do
-    local pat = string.format('^%s (%s%%w+)', lead, part)
+    local pat = string.format('^%%s*%s (%s%%w+)', lead, part)
     for _, line in ipairs(doc) do
       local m = string.match(line, pat)
       if m ~= nil then
