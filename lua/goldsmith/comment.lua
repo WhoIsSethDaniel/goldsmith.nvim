@@ -21,6 +21,9 @@ function M.make_comments(template, all)
   local items = {}
   vim.list_extend(items, ts.get_all_types())
   vim.list_extend(items, ts.get_all_functions())
+  table.sort(items, function(a, b)
+    return a.line < b.line
+  end)
 
   local i = 0
   for _, tf in ipairs(items) do
