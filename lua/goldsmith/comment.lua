@@ -28,7 +28,7 @@ function M.make_comments(template, all)
   local i = 0
   for _, tf in ipairs(items) do
     local ndx = tf.line + i
-    local name = string.match(tf.name, '^([^%s]+)')
+    local name = tf.name
     local is_public = string.match(name, '^(%u)') and true or false
     if all or is_public then
       if not already_has_comment(ndx, name) then

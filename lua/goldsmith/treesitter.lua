@@ -11,11 +11,18 @@ local function find_all_functions(root, funcs)
     local ntype = node:type()
     if ntype == 'function_declaration' or ntype == 'method_declaration' then
       local line, col = ts_utils.get_node_range(node)
+      local name
+      if ntype == 'method_declaration' then
+        name = ts_utils.get_node_text(node:child(2))[1]
+      else
+        name = (ts_utils.get_node_text(node:child(1)))[1]
+      end
       local f = {
         -- node = node,
-        name = (ts_utils.get_node_text(node:child(1)))[1],
+        name = name,
         line = line,
         col = col,
+        type = ntype,
       }
       table.insert(funcs, f)
     end
@@ -52,9 +59,11 @@ local function find_all_types(root, types)
     local ntype = node:type()
     if ntype == 'type_declaration' or ntype == 'var_declaration' then
       local line, col = ts_utils.get_node_range(node)
+      local name = (ts_utils.get_node_text(node:child(1)))[1]
+      name = string.match(name, '^([^%s]+)')
       local f = {
         -- node = node,
-        name = (ts_utils.get_node_text(node:child(1)))[1],
+        name = name,
         line = line,
         col = col,
       }
