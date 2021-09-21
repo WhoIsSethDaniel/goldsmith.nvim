@@ -263,7 +263,7 @@ guaranteed to be entirely up-to-date):
         comments = false,
         comments_all = false,
         comments_template = "....",
-        goimports = false,
+        goimports = true,
         goimports_timeout = 1000,
         max_line_length = 120,
         run_on_save = true

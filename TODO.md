@@ -4,7 +4,6 @@
   - [x] window mgmt should be more centralized, perhaps
 - [x] gocmt replacement using ts
 - [x] reorg format
-- [ ] lua api for things
 - [ ] coverage cmds
 - [ ] download / update go?
 - [ ] docs
