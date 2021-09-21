@@ -195,10 +195,6 @@ local SPEC = {
     ['close-terminal'] = { {}, 't' },
     ['close-any'] = { {}, 't' },
   },
-  goimports = {
-    run_on_save = { true, 'b' },
-    timeout = { 1000, 'n' },
-  },
   gobuild = terminal_spec,
   gorun = terminal_spec,
   goget = terminal_spec,
@@ -232,6 +228,8 @@ local SPEC = {
     comments = { false, 'b' },
     comments_all = { false, 'b' },
     comments_template = { '....', 's' },
+    goimports = { true, 'b' },
+    goimports_timeout = { 1000, 'n' },
   },
   highlight = {
     current_symbol = { true, 'b' },

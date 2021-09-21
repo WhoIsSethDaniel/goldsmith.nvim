@@ -1,12 +1,13 @@
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
+local mod = require 'goldsmith.mod'
 
 local M = {}
 
 function M.configure(client)
   local caps = client.resolved_capabilities
-  local gofmt = not config.service_is_disabled('gofmt')
-  local gofumpt = not config.service_is_disabled('gofumpt')
+  local gofmt = not config.service_is_disabled 'gofmt'
+  local gofumpt = not config.service_is_disabled 'gofumpt'
 
   if gofmt == true or gofumpt == true then
     if client.name == 'gopls' then
@@ -19,8 +20,15 @@ function M.configure(client)
   end
 end
 
+M.mod_format = mod.format
+
+function M.lsp_format()
+  vim.lsp.buf.formatting_seq_sync()
+end
+
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
 function M.organize_imports(wait_ms)
+  wait_ms = wait_ms or config.get('format', 'goimports_timeout')
   local params = vim.lsp.util.make_range_params()
   params.context = { only = { 'source.organizeImports' } }
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)

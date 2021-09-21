@@ -48,8 +48,8 @@ command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run({<f-args>})
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run({<f-args>})
 command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
 
-command! -nargs=0 GoImports lua require'goldsmith.cmds.format'.run_goimports(1)
-command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(1)
+command! -nargs=0 GoImports lua require'goldsmith.cmds.format'.organize_imports()
+command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(true)
 
 " creating/editing tests
 lua require'goldsmith.testing'.setup()
@@ -95,7 +95,7 @@ command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
 
 augroup goldsmith_ft_go
   autocmd! * <buffer>
-  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
   autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
 augroup END

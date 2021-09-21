@@ -1,35 +1,35 @@
+local fmt = require 'goldsmith.format'
 local config = require 'goldsmith.config'
-local format = require 'goldsmith.format'
-local mod = require 'goldsmith.mod'
 
 local M = {}
 
+function M.format_go_file()
+  fmt.lsp_format()
+  if config.get('format', 'goimports') then
+    M.organize_imports()
+  end
+end
+
+function M.format_gomod_file()
+  fmt.mod_format()
+end
+
+M.organize_imports = fmt.organize_imports
+
 function M.run(uncond)
+  local ros = config.get('format', 'run_on_save')
+  if not uncond and not ros then
+    return false
+  end
   local ft = vim.opt.filetype:get()
-  if ft == 'go' then
-    M.run_lsp_format(uncond)
-    M.run_organize_imports(uncond)
-  elseif ft == 'gomod' then
-    M.run_mod_format(uncond)
+  if uncond or (not uncond and ros) then
+    if ft == 'go' then
+      M.format_go_file()
+    elseif ft == 'gomod' then
+      M.format_gomod_file()
+    end
   end
-end
-
-function M.run_mod_format(uncond)
-  if uncond == 1 or config.get('format', 'run_on_save') then
-    mod.format()
-  end
-end
-
-function M.run_lsp_format(uncond)
-  if uncond == 1 or config.get('format', 'run_on_save') then
-    vim.lsp.buf.formatting_seq_sync()
-  end
-end
-
-function M.run_organize_imports(uncond)
-  if uncond == 1 or config.get('goimports', 'run_on_save') then
-    format.organize_imports(config.get('goimports', 'timeout'))
-  end
+  return true
 end
 
 return M

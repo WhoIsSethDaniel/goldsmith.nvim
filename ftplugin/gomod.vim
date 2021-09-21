@@ -22,7 +22,7 @@ command! -nargs=0 GoModTidy lua require'goldsmith.cmds.mod'.tidy()
 command! -nargs=+ GoModReplace lua require'goldsmith.cmds.mod'.replace({<f-args>})
 command! -nargs=+ GoModRetract lua require'goldsmith.cmds.mod'.retract({<f-args>})
 command! -nargs=* GoModExclude lua require'goldsmith.cmds.mod'.exclude({<f-args>})
-command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(1)
+command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(true)
 cabbrev GoModFmt GoFormat
 
 " codelens
@@ -33,7 +33,7 @@ command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelen
 augroup goldsmith_ft_gomod
   autocmd! * <buffer>
   autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
-  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(0)
+  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
 augroup END
 
 lua require'goldsmith.buffer'.setup()

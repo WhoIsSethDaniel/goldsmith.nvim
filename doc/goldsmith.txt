@@ -263,6 +263,8 @@ guaranteed to be entirely up-to-date):
         comments = false,
         comments_all = false,
         comments_template = "....",
+        goimports = false,
+        goimports_timeout = 1000,
         max_line_length = 120,
         run_on_save = true
       },
@@ -272,10 +274,6 @@ guaranteed to be entirely up-to-date):
       gobuild = {},
       godoc = {},
       goget = {},
-      goimports = {
-        run_on_save = true,
-        timeout = 1000
-      },
       goinstall = {},
       ["golangci-lint"] = {},
       gopls = {
@@ -436,8 +434,9 @@ FORMATTING                                       *goldsmith-formatting-settings*
 Default: true
 When you save your current document formatting should be applied. 
 
-This will apply all formatting except for `goimports` formatting. `goimports` 
-formatting is conditional on the setting of |goimports.run_on_save|.
+This will apply all formatting that you have asked Goldsmith to perform. This may 
+include: formatting the code, adding missing imports, removing un-needed imports,
+shortening lines that are too long, and possibly other things.
 
 `format.max_line_length`                      *goldsmith-format.max_line_length*
 
@@ -474,18 +473,19 @@ given a comment. By default only public types/functions will be given a comment.
 
 See |:GoComments| for more information on commenting.
 
-`goimports.run_on_save`                        *goldsmith-goimports.run_on_save*
+`format.goimports`                                  *goldsmith-format.goimports*
 
 Default: true
-When you save Go program source have gopls run `goimports` to arrange and fix 
-the import section. If you set this to false you can run |:GoImports| manually
-to arrange the imports in your code.
+When set to true |:GoFormat| will request, from gopls, that the imports section of 
+the code be organized and that any missing imports should be inserted. When false
+|:GoFormat| will not do this. You can manually request this at any time using
+|:GoImports|.
 
-`goimports.timeout`                                *goldsmith-goimports.timeout*
+`format.goimports_timeout`                  *goldsmith-format.goimports_timeout*
 
 Default: 1000
-How long to wait for a response from gopls when requesting that goimports be 
-run. The units are milliseconds, so 1000 = 1 second.
+How long to wait for a response from gopls when requesting that it organizes the
+imports in the current file. The units are milliseconds, so 1000 = 1 second.
 
 ALTERNATE FILE                               *goldsmith-alternate-file-settings*
 
@@ -1010,9 +1010,15 @@ Run `go install` to add new tools to use. Takes the same arguments as
                                                                      *:GoFormat*
 :GoFormat
 
-Tell gopls and null-ls to format the current Go buffer immediately. 
+Tell gopls and null-ls to format the current Go buffer immediately. Depending on
+how you have configured Goldsmith this may do any or all of: format the code, 
+organize the imports, fill-in missing imports, shorten lines that are too long,
+and possibly other things.
 
 This command also will format go.mod files.
+
+See |goldsmith-formatting-settings| for information on settings that apply to 
+formatting.
 
                                                                    *:GoComments*
 :GoComments
