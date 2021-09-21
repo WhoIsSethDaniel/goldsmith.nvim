@@ -260,6 +260,9 @@ guaranteed to be entirely up-to-date):
         omni = false
       },
       format = {
+        comments = false,
+        comments_all = false,
+        comments_template = "....",
         max_line_length = 120,
         run_on_save = true
       },
@@ -321,6 +324,12 @@ guaranteed to be entirely up-to-date):
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},
+        ["test-a-nearest"] = {},
+        ["test-a-pkg"] = {},
+        ["test-a-suite"] = {},
+        ["test-b-nearest"] = {},
+        ["test-b-pkg"] = {},
+        ["test-b-suite"] = {},
         ["test-close-window"] = {},
         ["test-last"] = {},
         ["test-nearest"] = {},
