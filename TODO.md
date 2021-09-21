@@ -3,6 +3,7 @@
   - [x] both test and help windows use q/cr for closing window
   - [x] window mgmt should be more centralized, perhaps
 - [x] gocmt replacement using ts
+- [ ] lua api for things
 - [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)

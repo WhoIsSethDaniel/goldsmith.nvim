@@ -17,11 +17,11 @@ setlocal formatoptions-=t
 setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
-command! -nargs=0 GoModCheck lua require'goldsmith.mod'.check_for_upgrades()
-command! -nargs=0 GoModTidy lua require'goldsmith.mod'.tidy()
-command! -nargs=+ GoModReplace lua require'goldsmith.mod'.replace({<f-args>})
-command! -nargs=+ GoModRetract lua require'goldsmith.mod'.retract({<f-args>})
-command! -nargs=* GoModExclude lua require'goldsmith.mod'.exclude({<f-args>})
+command! -nargs=0 GoModCheck lua require'goldsmith.cmds.mod'.check_for_upgrades()
+command! -nargs=0 GoModTidy lua require'goldsmith.cmds.mod'.tidy()
+command! -nargs=+ GoModReplace lua require'goldsmith.cmds.mod'.replace({<f-args>})
+command! -nargs=+ GoModRetract lua require'goldsmith.cmds.mod'.retract({<f-args>})
+command! -nargs=* GoModExclude lua require'goldsmith.cmds.mod'.exclude({<f-args>})
 command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(1)
 cabbrev GoModFmt GoFormat
 
