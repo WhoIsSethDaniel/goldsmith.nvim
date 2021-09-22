@@ -50,11 +50,11 @@ function M.alternate_file_name(name)
 end
 
 function M.relative_to_cwd(name)
-  local rel = vim.fn.fnamemodify(name, ':h:.')
+  local rel = vim.fn.isdirectory(name) == 0 and vim.fn.fnamemodify(name, ':h:.') or vim.fn.fnamemodify(name, ':.')
   if rel == '.' then
     return '.'
   else
-    return './' .. vim.fn.fnamemodify(name, ':h:.')
+    return './' .. rel
   end
 end
 

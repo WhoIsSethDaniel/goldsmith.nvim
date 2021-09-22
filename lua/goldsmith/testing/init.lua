@@ -23,7 +23,7 @@ function M.package_complete()
   for _, p in ipairs(l) do
     local d = vim.fn.fnamemodify(p.Dir, ':.')
     if d ~= vim.fn.getcwd() then
-      table.insert(pkgs, './' .. d)
+      table.insert(pkgs, fs.relative_to_cwd(d))
     end
   end
   table.sort(pkgs)
