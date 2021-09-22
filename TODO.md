@@ -5,7 +5,6 @@
 - [x] gocmt replacement using ts
 - [x] reorg format
 - [x] comments on save
-- [ ] download / update go?
 - [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
@@ -13,6 +12,5 @@
   - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets?
 - [ ] tests (using plenary?)
-- [ ] build tag editing
 - [ ] workspaces / multiple workspaces
   - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
