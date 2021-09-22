@@ -71,10 +71,6 @@ function M.has_requirements()
   return true
 end
 
-function M.setup_command(args)
-  -- for future use
-end
-
 local function set_last_file(f)
   if fs.is_test_file(f) then
     return f
@@ -406,7 +402,6 @@ do
       end
       cmd = nil
       cf = vim.fn.expand '%'
-      M.setup_command(args)
       local ok, next = d[1]()
       if next ~= nil then
         return M[next] {}
