@@ -228,6 +228,7 @@ local SPEC = {
     comments = { false, 'b' },
     comments_all = { false, 'b' },
     comments_template = { '....', 's' },
+    comments_test_files = { false, 'b' },
     goimports = { true, 'b' },
     goimports_timeout = { 1000, 'n' },
   },

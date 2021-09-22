@@ -1,6 +1,7 @@
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 local mod = require 'goldsmith.mod'
+local fs = require 'goldsmith.fs'
 
 local M = {}
 
@@ -21,6 +22,14 @@ function M.configure(client)
 end
 
 M.mod_format = mod.format
+M.make_comments = function()
+  if fs.is_code_file(vim.fn.expand '%') or config.get('format', 'comments_test_files') then
+    require('goldsmith.comment').make_comments(
+      config.get('format', 'comments_template'),
+      config.get('format', 'comments_all')
+    )
+  end
+end
 
 function M.lsp_format()
   vim.lsp.buf.formatting_seq_sync()

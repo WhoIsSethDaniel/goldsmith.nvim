@@ -4,8 +4,9 @@
   - [x] window mgmt should be more centralized, perhaps
 - [x] gocmt replacement using ts
 - [x] reorg format
-- [ ] coverage cmds
+- [x] comments on save
 - [ ] download / update go?
+- [ ] coverage cmds
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

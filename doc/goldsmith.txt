@@ -452,8 +452,7 @@ To install `golines` you can use |:GoInstallBinaries|.
 `format.comments`                                    *goldsmith-format.comments*
 
 Default: false
-Currently does nothing. May eventually be used to add commenting as a feature
-that can run on save and be part of |:GoFormat|.
+If set to true will add comments, like |:GoComments|, on save. 
 
 See |:GoComments| for more information on commenting.
 
@@ -473,6 +472,14 @@ given a comment. By default only public types/functions will be given a comment.
 
 See |:GoComments| for more information on commenting.
 
+`format.comments_test_files`              *goldsmith-format.comments_test_files*
+
+Default: false
+If set to true will also comment test files and not just code files. This does not
+affect |:GoComments|, only |:GoFormat| and formatting-on-save.
+
+See |:GoComments| for more information on commenting.
+
 `format.goimports`                                  *goldsmith-format.goimports*
 
 Default: true
@@ -485,7 +492,7 @@ the code be organized and that any missing imports should be inserted. When fals
 
 Default: 1000
 How long to wait for a response from gopls when requesting that it organizes the
-imports in the current file. The units are milliseconds, so 1000 = 1 second.
+txtimports in the current file. The units are milliseconds, so 1000 = 1 second.
 
 ALTERNATE FILE                               *goldsmith-alternate-file-settings*
 

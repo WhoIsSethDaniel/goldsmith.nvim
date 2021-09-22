@@ -6,15 +6,16 @@ local M = {}
 function M.format_go_file()
   fmt.lsp_format()
   if config.get('format', 'goimports') then
-    M.organize_imports()
+    fmt.organize_imports()
+  end
+  if config.get('format', 'comments') then
+    fmt.make_comments()
   end
 end
 
 function M.format_gomod_file()
   fmt.mod_format()
 end
-
-M.organize_imports = fmt.organize_imports
 
 function M.run(uncond)
   local ros = config.get('format', 'run_on_save')
