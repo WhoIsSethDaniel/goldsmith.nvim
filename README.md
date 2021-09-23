@@ -22,7 +22,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * :GoFillStruct utilizes LSP to fill the current struct
 * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
 * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
-* use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, :GoRun, and others
+* use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, :GoRun, and others [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#using-gobuild-and-gorun)
 * edit the go.mod file from within Neovim with: :GoModFmt, :GoModTidy, :GoModCheck, :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package tests, or all your tests, or use the integrated and enhanced testing with [vim-test](https://github.com/vim-test/vim-test)
 * all the great Neovim LSP functions are available as Vim commands
