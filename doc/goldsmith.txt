@@ -205,8 +205,8 @@ nearly all of Goldsmith will not work. It is recommended to use Goldsmith to
 help manage your servers.
 
 *goldsmith-configuration-explicit*
-You can explicitly configure servers in two different ways. The first way is 
-by passing the configuration for each server to goldsmith.config():
+You can explicitly configure servers by passing the configuration for each 
+server to goldsmith.config():
 >
     require("goldsmith").config({
         gopls = {

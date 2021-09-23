@@ -6,6 +6,7 @@
 - [x] reorg format
 - [x] comments on save
 - [ ] coverage cmds
+- [ ] experiment with more / different textobjects
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

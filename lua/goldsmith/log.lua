@@ -73,6 +73,8 @@ function M.setup()
   if d then
     debug_wb = wb.create_debug_buffer()
     wb.setup_follow_buffer(debug_wb.buf)
+    M.debug('Version', function() return vim.api.nvim_exec('version', true) end)
+    M.debug('Version', function() return vim.inspect(vim.version()) end)
     require('goldsmith.tools').dump()
     require('goldsmith.config').dump()
   end
