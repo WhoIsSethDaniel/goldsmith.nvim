@@ -30,7 +30,9 @@ function M.retract(args)
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(id, data)
-      log.error('Mod', data[1])
+      if data[1] ~= '' then
+        log.error('Mod', data[1])
+      end
     end,
     on_exit = function(id, code)
       if code > 0 then
@@ -68,7 +70,9 @@ function M.exclude(args)
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      log.error('Mod', data[1])
+      if data[1] ~= '' then
+        log.error('Mod', data[1])
+      end
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then
@@ -112,7 +116,9 @@ function M.replace(args)
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
-      log.error('Mod', data[1])
+      if data[1] ~= '' then
+        log.error('Mod', data[1])
+      end
     end,
     on_exit = function(jobid, code, event)
       if code > 0 then
