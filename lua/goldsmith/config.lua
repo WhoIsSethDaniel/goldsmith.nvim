@@ -78,7 +78,7 @@ local function service_defaults()
   return {
     { 'staticcheck', false },
     { 'golines', true },
-    { 'golangci-lint', true },
+    { 'golangci-lint', false },
     { 'revive', true },
     { 'gofmt', false },
     { 'gofumpt', false },

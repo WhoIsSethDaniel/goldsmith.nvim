@@ -342,7 +342,7 @@ guaranteed to be entirely up-to-date):
         enabled = true,
         gofmt = false,
         gofumpt = false,
-        ["golangci-lint"] = true,
+        ["golangci-lint"] = false,
         golines = true,
         revive = true,
         staticcheck = false
@@ -611,7 +611,7 @@ LINTING                                             *goldsmith-linting-settings*
 Default: nil
 The configuration file for `golangci-lint`. If golangci-lint has been configured 
 to run, and you explicitly specify a config file, then that file is required to 
-exist. Otherwise golangci-lint uses its normal means to find its configuration 
+exist. Otherwise `golangci-lint` uses its normal means to find its configuration 
 file.
 
 See |goldsmith-resources| for where `golangci-lint` can be found.
@@ -669,7 +669,7 @@ To install `revive` you can use |:GoInstallBinaries|.
 
 `null.golangci-lint`                              *goldsmith-null.golangci-lint*
 
-Default: true
+Default: false
 If `golangci-lint` is configured to run it will use a configuration file if one
 exists, but will happily run without one. If you have specified a configuration
 file using |golangci-lint.config_file| this file must exist otherwise 
@@ -686,9 +686,9 @@ To install `golangci-lint` you can use |:GoInstallBinaries|.
 `null.staticcheck`                                  *goldsmith-null.staticcheck*
 
 Default: false
-By default `staticcheck` does not run. `staticcheck` already runs as a
-service within `gopls` so having it also run as a separate linter seems redundant
-and it is not recommended. 
+By default `staticcheck` does not run. `staticcheck` already runs as a service 
+within `gopls` so having it also run as a separate linter seems redundant and it
+is not recommended. 
 
 You can pass extra arguments to `staticcheck` by setting this variable to a list 
 where each element in the list is a valid argument to `staticcheck`.
