@@ -67,26 +67,26 @@ function M.run(args)
 
   local out = ''
   local b = vim.api.nvim_get_current_buf()
-  job.run(
-    string.format("impl '%s' %s", recv, iface),
-    cfg, {
-      stderr_buffered = true,
-      stdout_buffered = true,
-      on_stdout = function(id, data, name)
-        out = data
-      end,
-      on_stderr = function(id, data, name)
+  job.run(string.format("impl '%s' %s", recv, iface), cfg, {
+    stderr_buffered = true,
+    stdout_buffered = true,
+    on_stdout = function(id, data, name)
+      out = data
+    end,
+    on_stderr = function(id, data, name)
+      if data[1] ~= '' then
         local err = table.concat(data, '\n')
         log.error('Impl', err)
-      end,
-      on_exit = function(id, code, event)
-        if code > 0 then
-          return
-        end
-        local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
-        vim.api.nvim_buf_set_lines(b, r, r, false, out)
-      end,
-    })
+      end
+    end,
+    on_exit = function(id, code, event)
+      if code > 0 then
+        return
+      end
+      local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+      vim.api.nvim_buf_set_lines(b, r, r, false, out)
+    end,
+  })
 end
 
 return M
