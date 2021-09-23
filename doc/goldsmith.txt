@@ -103,8 +103,8 @@ Features currently included:
 * struct tag editing: add / remove / update struct tags and options
 * use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, 
   :GoRun, and others
-* edit the go.mod file from within Neovim with: :GoModFmt, :GoModTidy, 
-  :GoModCheck, :GoModRetract, :GoModReplace, and others
+* edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, 
+  :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package 
   tests, or all your tests
 * all the great Neovim LSP functions are available as Vim commands
