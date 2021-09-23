@@ -106,7 +106,7 @@ Features currently included:
 * edit the go.mod file from within Neovim with: :GoModFmt, :GoModTidy, 
   :GoModCheck, :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package 
-  tests, or all your tests, or use the integrated and enhanced testing with vim-test
+  tests, or all your tests
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
 * support for lspinstall and nvim-lsp-installer
@@ -2085,7 +2085,6 @@ the plugins that can be utilized by Goldsmith.
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   `null-ls`                       https://github.com/jose-elias-alvarez/null-ls.nvim
-  `vim-test`                      https://github.com/vim-test/vim-test
 
 * 3rd-party tools
   `gopls`                         https://golang.org/x/tools/gopls
