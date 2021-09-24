@@ -225,10 +225,12 @@ local SPEC = {
       'positive integer',
     },
     run_on_save = { true, 'b' },
-    comments = { false, 'b' },
-    comments_all = { false, 'b' },
-    comments_template = { '....', 's' },
-    comments_test_files = { false, 'b' },
+    comments = {
+      enabled = { false, 'b' },
+      private = { false, 'b' },
+      template = { '....', 's' },
+      test_files = { false, 'b' },
+    },
     goimports = { true, 'b' },
     goimports_timeout = { 1000, 'n' },
   },
@@ -303,7 +305,15 @@ local function build_validation(spec, uc)
     for k, v in pairs(val) do
       if not vim.tbl_islist(v) then
         local key = grp .. '.' .. k
-        validate = vim.tbl_deep_extend('force', validate, build_validation({ [key] = v }, { [key] = uc[grp][k] or {} }))
+        if type(uc[grp][k]) ~= 'table' then
+          log_error('Config', string.format("Config key '%s' must be a table", key))
+          return false
+        end
+        local ok, bv = build_validation({ [key] = v }, { [key] = uc[grp][k] or {} })
+        if not ok then
+          return false
+        end
+        validate = vim.tbl_deep_extend('force', validate, bv)
       else
         local vkey = grp .. '.' .. k
         local default = v[1]
@@ -321,7 +331,7 @@ local function build_validation(spec, uc)
       end
     end
   end
-  return validate
+  return true, validate
 end
 
 local function validate(v)
@@ -389,9 +399,13 @@ local function validate_config(user_config)
     return
   end
 
-  config_is_ok = validate(build_validation(SPEC, _config))
-  if M.config_is_ok() then
-    config_is_ok = post_validate()
+  local valid
+  config_is_ok, valid = build_validation(SPEC, _config)
+  if config_is_ok then
+    config_is_ok = validate(valid)
+    if config_is_ok then
+      config_is_ok = post_validate()
+    end
   end
   return config_is_ok
 end

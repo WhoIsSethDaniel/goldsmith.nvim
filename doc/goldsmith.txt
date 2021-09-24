@@ -450,14 +450,15 @@ See |goldsmith-resources| for where `golines` can be found.
 
 To install `golines` you can use |:GoInstallBinaries|.
 
-`format.comments`                                    *goldsmith-format.comments*
+`format.comments.enabled`                    *goldsmith-format.comments.enabled*
 
 Default: false
-If set to true will add comments, like |:GoComments|, on save. 
+If set to true will add comments, like |:GoComments|, on save (assuming 
+|goldsmith-format.run_on_save| is set to true).
 
 See |:GoComments| for more information on commenting.
 
-`format.comments_template`                  *goldsmith-format.comments_template*
+`format.comments.template`                  *goldsmith-format.comments.template*
 
 Default: '....'
 Template for commenting when using |:GoComments|. The template is the part of the
@@ -465,7 +466,7 @@ comment that comes after the name of the thing being documented.
 
 See |:GoComments| for more information on commenting.
 
-`format.comments_all`                            *goldsmith-format.comments_all*
+`format.comments.private`                    *goldsmith-format.comments.private*
 
 Default: false
 If set to true non-public types/functions that can be given a comment will be 
@@ -473,7 +474,7 @@ given a comment. By default only public types/functions will be given a comment.
 
 See |:GoComments| for more information on commenting.
 
-`format.comments_test_files`              *goldsmith-format.comments_test_files*
+`format.comments.test_files`              *goldsmith-format.comments.test_files*
 
 Default: false
 If set to true will also comment test files and not just code files. This does not
@@ -1035,9 +1036,8 @@ By default will find all public types/functions that do not currently have a
 comment and will give them a stub comment (see the various formatting options
 for how to adjust how this works, including changing the look of the comment and
 commenting on non-public types/functions):
-|goldsmith-format.comments|
-|goldsmith-format.comments_all|
-|goldsmith-format.comments_template|
+|goldsmith-format.comments.private|
+|goldsmith-format.comments.template|
 
 e.g., the following:
 >

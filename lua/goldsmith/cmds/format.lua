@@ -8,7 +8,7 @@ function M.format_go_file()
   if config.get('format', 'goimports') then
     fmt.organize_imports()
   end
-  if config.get('format', 'comments') then
+  if config.get('format', 'comments', 'enabled') then
     fmt.make_comments()
   end
 end

@@ -23,10 +23,10 @@ end
 
 M.mod_format = mod.format
 M.make_comments = function()
-  if fs.is_code_file(vim.fn.expand '%') or config.get('format', 'comments_test_files') then
+  if fs.is_code_file(vim.fn.expand '%') or config.get('format', 'comments', 'test_files') then
     require('goldsmith.comment').make_comments(
-      config.get('format', 'comments_template'),
-      config.get('format', 'comments_all')
+      config.get('format', 'comments', 'template'),
+      config.get('format', 'comments', 'private')
     )
   end
 end
