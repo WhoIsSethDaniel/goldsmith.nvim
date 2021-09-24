@@ -260,10 +260,12 @@ guaranteed to be entirely up-to-date):
         omni = false
       },
       format = {
-        comments = false,
-        comments_all = false,
-        comments_template = "....",
-        comments_test_files = false,
+        comments = {
+          enabled = false,
+          private = false,
+          template = "....",
+          test_files = false
+        },
         goimports = true,
         goimports_timeout = 1000,
         max_line_length = 120,
