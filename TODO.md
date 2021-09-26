@@ -6,7 +6,11 @@
 - [x] reorg format
 - [x] comments on save
 - [ ] coverage cmds
-- [ ] experiment with more / different textobjects
+  - [x] need to match to file
+  - [x] if test file highlights for actual code
+  - [x] does this need a named ns?
+  - [x] define highlights
+  - [ ] run coverage and switch to browser (go tool cover etc....)
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

@@ -796,7 +796,7 @@ The above instructs Goldsmith to not use the current window when jumping. Instea
 it should open a new window and that window should be on the left side of the
 screen. Every jump will open a new window.
 
-HIGHLIGHTING AND CODE LENS           *goldsmith-highlighting-code-lens-settings*
+HIGHLIGHTING                                   *goldsmith-highlighting-settings*
 
 `highlight.current_symbol`                  *goldsmith-highlight.current_symbol*
 
@@ -805,6 +805,8 @@ Highlight the current symbol the cursor is over throughout the current document.
 
 This setting can be changed from within Goldsmith by using |:GoSymHighlightOn|
 and |:GoSymHighlightOff|.
+
+CODE LENS                                         *goldsmith-code-lens-settings*
 
 `codelens.show`                                        *goldsmith-codelens.show*
 
@@ -1282,6 +1284,46 @@ See also |codelens.show|
 :GoCodeLensRun
 
 Run the current codelens that is displaying on the current line.
+
+                                                                    *:GoCoverage*
+:GoCoverage[!] ...
+
+Run `go test` in the background and generate a coverage profile. When the profile
+has been completed, which requires the `go test` to end successfully, annotate
+the current buffer to show what is covered and what is not. If the current buffer
+is a test file, switch the buffer to the corresponding code file (if any) and 
+annotate that buffer.
+
+This command runs asynchronously and, at times, can take awhile. If you run this
+command while another coverage job is running Goldsmith will disallow the new
+job from continuing. If you use '!' the currently running job will be killed 
+and a new one will start. This restriction is not per-buffer but global.
+
+The annotation only affects the current buffer. 
+
+The annotation colors showing the coverage can be modified by the user using 
+typical highlighting commands. e.g.
+>
+	hi goCoverageNormal ctermfg=white guifg=#FFFFFF
+    hi goCoverageCovered ctermfg=blue guifg=#0000FF
+	hi goCoverageNotCovered ctermfg=red guifg=#FF0000
+<
+The three group names given above are the only three names used when annotating a 
+file for code coverage. By default the three groups are assigned to typical
+colorscheme highlight groups:
+>
+	hi def link goCoverageNormal Comment
+	hi def link goCoverageCovered MoreMsg
+	hi def link goCoverageNotCovered ErrorMsg
+<
+
+You can pass arguments to `go test` on the command-line. 
+
+                                                                *:GoCoverageOff*
+:GoCoverageOff
+
+Kill any currently running coverage job, and also turn off the annotation for the
+current buffer, if any.
 
                                                               *:GoCreateConfigs*
 :GoCreateConfigs[!] [service] ...
