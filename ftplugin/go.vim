@@ -58,10 +58,11 @@ command! -nargs=? GoAddTests lua require'goldsmith.cmds.tests'.generate({<f-args
 command! -nargs=* -complete=custom,s:GoAddTestComplete GoAddTest lua require'goldsmith.cmds.tests'.add({<f-args>})
 
 " coverage
-command! -nargs=* -bang GoCoverage lua require'goldsmith.cmds.coverage'.run('<bang>', {<f-args>})
+command! -nargs=* -bang GoCoverage lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='job'}, {<f-args>})
+command! -nargs=* -bang GoCoverageBrowser lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='web'}, {<f-args>})
 command! -nargs=0 GoCoverageFiles lua require'goldsmith.cmds.coverage'.show_files()
-command! -nargs=0 GoCoverageOn lua require'goldsmith.cmds.coverage'.start()
-command! -nargs=0 GoCoverageOff lua require'goldsmith.cmds.coverage'.stop()
+command! -nargs=0 GoCoverageOn lua require'goldsmith.cmds.coverage'.on()
+command! -nargs=0 GoCoverageOff lua require'goldsmith.cmds.coverage'.off()
 
 " code editing
 command! -nargs=* -range GoAddTags lua require'goldsmith.cmds.tags'.run('add', {line1=<line1>, line2=<line2>, count=<count>}, {<f-args>})

@@ -5,12 +5,13 @@
 - [x] gocmt replacement using ts
 - [x] reorg format
 - [x] comments on save
-- [ ] coverage cmds
+- [x] coverage cmds
   - [x] need to match to file
   - [x] if test file highlights for actual code
   - [x] does this need a named ns?
   - [x] define highlights
-  - [ ] run coverage and switch to browser (go tool cover etc....)
+  - [x] keymaps
+  - [x] run coverage and switch to browser (go tool cover etc....)
 - [ ] statusline
   - [ ] coverage info available
   - [ ] running jobs

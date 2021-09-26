@@ -4,6 +4,7 @@ local config = require 'goldsmith.config'
 local M = {}
 
 function M.run(args)
+  args = args or {}
   if #args == 0 then
     args = { '.' }
   end

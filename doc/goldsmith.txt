@@ -1274,7 +1274,7 @@ https://github.com/golang/tools/blob/master/gopls/doc/settings.md#ui
 
 See also |codelens.show|
 
-                                                                 *:GoCodeLensOff*
+                                                                *:GoCodeLensOff*
 :GoCodeLensOff
 
 Turn codelens information off. This turns off codelens information for all 
@@ -1282,12 +1282,12 @@ buffers.
 
 See also |codelens.show|
 
-                                                                 *:GoCodeLensRun*
+                                                                *:GoCodeLensRun*
 :GoCodeLensRun
 
 Run the current codelens that is displaying on the current line.
 
-                                                                    *:GoCoverage*
+                                                                   *:GoCoverage*
 :GoCoverage[!] ...
 
 Run `go test` in the background and generate a coverage profile. When the profile
@@ -1329,6 +1329,17 @@ colorscheme highlight groups:
   hi def link goCoverageNotCovered ErrorMsg
 <
 You can pass arguments to `go test` on the command-line. 
+
+                                                            *:GoCoverageBrowser*
+:GoCoverageBrowser[!] ...
+
+Exactly like |:GoCoverage| except, instead of annotating the current buffer, 
+launch a web browser (or use an existing web browser instance) and display the 
+coverage data there.
+
+Like |:GoCoverage| this will store the coverage data and you can use
+|:GoCoverageOn| and |:GoCoverageOff| to toggle annotations within the editor.
+Unlike |:GoCoverage| annotations are not shown by default in the current buffer.
 
                                                                  *:GoCoverageOn*
 :GoCoverageOn
@@ -2036,6 +2047,32 @@ Default: none
 
 The same as |:GoSymHighlight|. Highlight all references to the current symbol 
 beneath the cursor.
+
+*(goldsmith-coverage)*
+Default: none
+
+The same as |:GoCoverage|. Generate coverage information for the current package.
+
+*(goldsmith-coverage-browser)*
+Default: none
+
+The same as |:GoCoverageBrowser|. Generate coverage information for the current
+package and launch a browser to show it.
+
+*(goldsmith-coverage-on)*
+Default: none
+
+The same as |:GoCoverageOn|. Turn on coverage annotation for the current buffer.
+
+*(goldsmith-coverage-off)*
+Default: none
+
+The same as |:GoCoverageOn|. Turn off coverage annotation for the current buffer.
+
+*(goldsmith-coverage-files)*
+Default: none
+
+The same as |:GoCoverageFiles|. Show all files with coverage data.
 
 *(goldsmith-start-follow)*
 Default: F

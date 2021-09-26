@@ -52,9 +52,17 @@ local default_action_map = {
   ['start-follow'] = { act = "<cmd>lua require'goldsmith.winbuf'.start_follow_buffer()<cr>" },
   ['stop-follow'] = { act = "<cmd>lua require'goldsmith.winbuf'.stop_follow_buffer()<cr>" },
   ['close-terminal'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_window('job_terminal')<cr>", ft = '*' },
-  ['build'] = { act = "<cmd>lua require'goldsmith.cmds.build'.run({})<cr>", ft = '*' },
-  ['run'] = { act = "<cmd>lua require'goldsmith.cmds.run'.run({})<cr>", ft = '*' },
+  ['build'] = { act = "<cmd>lua require'goldsmith.cmds.build'.run()<cr>", ft = '*' },
+  ['run'] = { act = "<cmd>lua require'goldsmith.cmds.run'.run()<cr>", ft = '*' },
   ['close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window()<cr>", ft = '*' },
+  ['coverage'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='job'})<cr>", ft = { 'go' } },
+  ['coverage-browser'] = {
+    act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='web'})<cr>",
+    ft = { 'go' },
+  },
+  ['coverage-on'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.on()<cr>", ft = { 'go' } },
+  ['coverage-off'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.off()<cr>", ft = { 'go' } },
+  ['coverage-files'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.show_files()<cr>", ft = { 'go' } },
 }
 
 function M.checkin(b)

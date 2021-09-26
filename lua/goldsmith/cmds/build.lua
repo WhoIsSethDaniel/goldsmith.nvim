@@ -4,6 +4,7 @@ local config = require 'goldsmith.config'
 local M = {}
 
 function M.run(args)
+  args = args or {}
   local b = vim.api.nvim_get_current_buf()
 
   local makeprg = vim.api.nvim_buf_get_option(b, 'makeprg')
