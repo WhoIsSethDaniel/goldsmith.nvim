@@ -103,7 +103,7 @@ Features currently included:
 * struct tag editing: add / remove / update struct tags and options
 * use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, 
   :GoRun, and others
-* coverage support: annotate the current buffer or relavent code file
+* coverage support: annotate the current buffer or relevant code file
 * edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, 
   :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package 
