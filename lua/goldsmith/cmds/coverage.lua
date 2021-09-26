@@ -1,4 +1,3 @@
-local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 local job = require 'goldsmith.job'
 local coverage = require 'goldsmith.coverage'
@@ -11,16 +10,24 @@ local profile_files = {}
 
 function M.stop()
   if current_job ~= nil then
-    os.remove(profile_files[current_job])
     if vim.fn.jobwait({ current_job }, 0)[1] == -1 then
       log.warn('Testing', 'Killing currently running profile job')
       vim.fn.jobstop(current_job)
+      current_job = nil
     end
   end
   for _, f in pairs(profile_files) do
     os.remove(f)
   end
   coverage.highlight_off()
+end
+
+function M.start()
+  coverage.highlight_on(vim.api.nvim_get_current_buf())
+end
+
+function M.show_files()
+  coverage.show_coverage_files()
 end
 
 function M.run(bang, args)
@@ -38,10 +45,18 @@ function M.run(bang, args)
   local b = vim.api.nvim_get_current_buf()
   local buf_name = vim.api.nvim_buf_get_name(b)
   local profile_file = os.tmpname()
-  local cmd = vim.list_extend(
-    { 'go', 'test', string.format('-coverprofile=%s', profile_file), vim.fn.fnamemodify(buf_name, ':p:h') },
-    args
-  )
+  local path = vim.fn.fnamemodify(buf_name, ':p:h')
+  local newargs = {}
+  for _, arg in ipairs(args) do
+    if arg == '...' then
+      path = vim.fn.fnamemodify(buf_name, ':p:h') .. '/...'
+    elseif arg == './...' then
+      path = './...'
+    else
+      table.insert(newargs, arg)
+    end
+  end
+  local cmd = vim.list_extend({ 'go', 'test', string.format('-coverprofile=%s', profile_file), path }, newargs)
   local opts = {}
   current_job = job.run(cmd, opts, {
     on_stderr = function(id, data)
@@ -51,14 +66,11 @@ function M.run(bang, args)
     end,
     on_exit = function(id, code)
       local pf = profile_files[id]
-      -- if id is not current_job then this job has been canceled
       if id ~= current_job then
-        os.remove(pf)
         return
       end
       log.info('Testing', string.format('Running profile finished with code %d', code))
       if code ~= 0 then
-        os.remove(pf)
         return
       end
       if fs.is_test_file(buf_name) then
@@ -67,14 +79,10 @@ function M.run(bang, args)
           vim.api.nvim_buf_call(b, function()
             vim.cmd(string.format('silent! e! %s', cf))
           end)
-        else
-          log.warn('Coverage', string.format('Cannot show coverage for non-existent file "%s".', cf))
-          os.remove(pf)
-          return
         end
       end
-      coverage.highlight_on(b, pf)
-      os.remove(pf)
+      coverage.add_coverage_file(pf)
+      coverage.highlight_on(b)
     end,
   })
   profile_files[current_job] = profile_file

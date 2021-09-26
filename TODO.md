@@ -11,6 +11,9 @@
   - [x] does this need a named ns?
   - [x] define highlights
   - [ ] run coverage and switch to browser (go tool cover etc....)
+- [ ] statusline
+  - [ ] coverage info available
+  - [ ] running jobs
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

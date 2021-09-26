@@ -103,7 +103,8 @@ Features currently included:
 * struct tag editing: add / remove / update struct tags and options
 * use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, 
   :GoRun, and others
-* coverage support: annotate the current buffer or relevant code file
+* coverage support: annotate the current buffer and store coverage data for all 
+  files affected
 * edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, 
   :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package 
@@ -1298,33 +1299,57 @@ annotate that buffer.
 This command runs asynchronously and, at times, can take awhile. If you run this
 command while another coverage job is running Goldsmith will disallow the new
 job from continuing. If you use '!' the currently running job will be killed 
-and a new one will start. This restriction is not per-buffer but global.
+and a new one will start. This restriction is not per-buffer or per-package but
+global.
 
-The annotation only affects the current buffer. 
-
+Once you have run this command you can load other buffers with files that were
+involved in the coverage profile. Once loaded you can run |:GoCoverageOn| to 
+see the annotations. By default only files in the current package are involved.
+If you wish to run the profile for the entire suite you can run:
+>
+  :GoCoverage ./...
+<
+Or, if you wish to run for the current package and all packages below:
+>
+  :GoCoverage ...
+<
 The annotation colors showing the coverage can be modified by the user using 
 typical highlighting commands. e.g.
 >
-	hi goCoverageNormal ctermfg=white guifg=#FFFFFF
-    hi goCoverageCovered ctermfg=blue guifg=#0000FF
-	hi goCoverageNotCovered ctermfg=red guifg=#FF0000
+  hi goCoverageNormal ctermfg=white guifg=#FFFFFF
+  hi goCoverageCovered ctermfg=blue guifg=#0000FF
+  hi goCoverageNotCovered ctermfg=red guifg=#FF0000
 <
 The three group names given above are the only three names used when annotating a 
 file for code coverage. By default the three groups are assigned to typical
 colorscheme highlight groups:
 >
-	hi def link goCoverageNormal Comment
-	hi def link goCoverageCovered MoreMsg
-	hi def link goCoverageNotCovered ErrorMsg
+  hi def link goCoverageNormal Comment
+  hi def link goCoverageCovered MoreMsg
+  hi def link goCoverageNotCovered ErrorMsg
 <
-
 You can pass arguments to `go test` on the command-line. 
+
+                                                                 *:GoCoverageOn*
+:GoCoverageOn
+
+Turn on coverage annotation for the current buffer. If the buffer has coverage
+data available the annotations will be shown. If the buffer does not have coverage
+data available it will notify the user with a warning.
+
+If the current buffer is a test file this command does not switch to the 
+corresponding code file. Use |:GoAlt| for that purpose or simply edit the file.
 
                                                                 *:GoCoverageOff*
 :GoCoverageOff
 
 Kill any currently running coverage job, and also turn off the annotation for the
 current buffer, if any.
+
+                                                              *:GoCoverageFiles*
+:GoCoverageFiles
+
+List all the files that currently have coverage data.
 
                                                               *:GoCreateConfigs*
 :GoCreateConfigs[!] [service] ...

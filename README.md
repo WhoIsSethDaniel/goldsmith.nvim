@@ -23,7 +23,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * switch to the 'alternate' file quickly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#switch-to-alternate-file--generate-stub-tests)
 * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
 * use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, :GoRun, and others [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#using-gobuild-and-gorun)
-* coverage support: annotate the current buffer or relevant code file [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-5#coverage-report)
+* coverage support: annotate the current buffer and store coverage data for all files affected [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-5#coverage-report)
 * edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package tests, or all your tests
 * all the great Neovim LSP functions are available as Vim commands
