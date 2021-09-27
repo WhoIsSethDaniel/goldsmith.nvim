@@ -2155,19 +2155,22 @@ For example, in lualine, the following works fine:
     }
   }
 <
-The status indicates three things: 
+The status indicates the following things: 
 1) If the Goldsmith 🇬 is present it indicates that the current buffer is managed 
    by Goldsmith.
-2) Directly after the 🇬 there is an indication of whether the current 
+2) Directly after the 🇬 there is an indication of whether all needed services
+   are running (typically this means gopls and null-ls). If all services are 
+   running then 🌞 appears. Otherwise ❗ appears.
+3) Directly after the server status there is an indication of whether the current
    buffer has coverage data (if so, the coverage annotations may be toggled using
-   |:GoCoverageOn| and |:GoCoverageOff|). If there are two dashes following the 🇬
-   (🇬 ╌) this indicates that there is no coverage data. If there is a circle-
-   plus sign (🇬 ⨁ ) this indicates that coverage data is available. For more on
-   coverage see |goldsmith-coverage|.
-3) If Goldsmith jobs are running it will indicate how many are running and a short
-   description of each job. This description is currently capped at 40 characters 
-   so it is possible to not have a description for every running job, if there are
-   many running jobs.
+   |:GoCoverageOn| and |:GoCoverageOff|). If there are two dashes following the
+   service indicator (🇬 🌞╌) this indicates that there is no coverage data. If
+   there is a circle-plus sign (🇬 🌞⨁ ) this indicates that coverage data is
+   available. For more on coverage see |goldsmith-coverage|.
+4) If Goldsmith jobs are running it will indicate how many are running and a short
+   description of each job. 
+
+See |goldsmith-statusline| for configuration items related to the statusline.
 
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*
