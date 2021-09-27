@@ -1,12 +1,12 @@
 local coverage = require 'goldsmith.coverage'
 local job = require 'goldsmith.job'
 local buffer = require 'goldsmith.buffer'
+local config = require 'goldsmith.config'
 
 local M = {}
 
 local prefix = '🇬 '
-local coverage_indicators = { '⨁', '╌' }
-local max_length = 40
+local coverage_indicators = { '⨁ ', '╌' }
 
 local count_sym = {
   '①',
@@ -28,21 +28,24 @@ local count_sym = {
 local too_many_jobs = '∞'
 
 function M.status()
-  if not buffer.is_goldsmith_buffer() then
+  if not buffer.is_managed_buffer() then
     return
   end
+  local max_length = config.get('status', 'max_length')
   local line = { prefix }
+  local len = #prefix
   if coverage.has_coverage(vim.api.nvim_buf_get_name(0)) then
     table.insert(line, coverage_indicators[1])
+    len = len + #coverage_indicators[1]
   else
     table.insert(line, coverage_indicators[2])
+    len = len + #coverage_indicators[2]
   end
   local running_jobs = job.running_jobs()
   if not vim.tbl_isempty(running_jobs) then
     table.insert(line, count_sym[vim.tbl_count(running_jobs)] or too_many_jobs)
     local j = {}
     if j ~= nil then
-      local len = 0
       for _, cmd in pairs(running_jobs) do
         local i
         if len > max_length then

@@ -194,12 +194,12 @@ local SPEC = {
     ['stop-follow'] = { { 'S' }, 't' },
     ['close-terminal'] = { {}, 't' },
     ['close-any'] = { {}, 't' },
-    ['coverage'] = { {}, 't'},
-    ['coverage-browser'] = { {}, 't'},
-    ['coverage-on'] = { {}, 't'},
-    ['coverage-off'] =  { {}, 't'},
-    ['coverage-files'] = { {}, 't'},
-    ['coverage-stop'] = { {}, 't'},
+    ['coverage'] = { {}, 't' },
+    ['coverage-browser'] = { {}, 't' },
+    ['coverage-on'] = { {}, 't' },
+    ['coverage-off'] = { {}, 't' },
+    ['coverage-files'] = { {}, 't' },
+    ['coverage-stop'] = { {}, 't' },
   },
   gobuild = terminal_spec,
   gorun = terminal_spec,
@@ -223,6 +223,9 @@ local SPEC = {
   },
   ['golangci-lint'] = {
     config_file = { nil, 's' },
+  },
+  status = {
+    max_length = { 40, 'n' },
   },
   format = {
     max_line_length = {

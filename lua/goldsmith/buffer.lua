@@ -129,9 +129,9 @@ function M.set_buffer_keymaps(buf)
   return true
 end
 
-function M.is_goldsmith_buffer()
-  local ft = vim.opt.filetype:get()
-  if ft == 'go' or ft == 'gomod' then
+function M.is_managed_buffer()
+  local b = vim.api.nvim_get_current_buf()
+  if all[b] ~= nil then
     return true
   end
   return false

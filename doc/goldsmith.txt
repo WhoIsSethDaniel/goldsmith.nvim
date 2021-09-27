@@ -651,6 +651,14 @@ This simply sets 'omnifunc' to |vim.lsp.omnifunc()|.
 If you are unfamiliar with how completion works, by default, in Neovim you
 should read |ins-completion|.
 
+STATUSLINE                                                *goldsmith-statusline*
+
+`status.max_length`                                *goldsmith-status.max_length*
+
+Default: 40
+The maximum length the Goldsmith statusline integration will use. The length is a
+bit fuzzy so the maximum may be exceeded by a small amount.
+
 LSP SERVERS                                              *goldsmith-lsp-servers*
 
 `null.enabled`                                          *goldsmith-null.enabled*
@@ -2148,13 +2156,14 @@ For example, in lualine, the following works fine:
   }
 <
 The status indicates three things: 
-1) If the Goldsmith 'G' is present it indicates that the current buffer is managed 
+1) If the Goldsmith 🇬 is present it indicates that the current buffer is managed 
    by Goldsmith.
-2) Directly after the 'G' there is an indication of whether the current buffer has 
-   coverage data that may be toggled using |:GoCoverageOn| and |:GoCoverageOff|.
-   If there are two dashes following the 'G' this indicates that there is no 
-   coverage data. If there is a circle-plus sign this indicates that coverage data
-   is available. For more on coverage see |goldsmith-coverage|.
+2) Directly after the 🇬 there is an indication of whether the current 
+   buffer has coverage data (if so, the coverage annotations may be toggled using
+   |:GoCoverageOn| and |:GoCoverageOff|). If there are two dashes following the 🇬
+   (🇬 ╌) this indicates that there is no coverage data. If there is a circle-
+   plus sign (🇬 ⨁ ) this indicates that coverage data is available. For more on
+   coverage see |goldsmith-coverage|.
 3) If Goldsmith jobs are running it will indicate how many are running and a short
    description of each job. This description is currently capped at 40 characters 
    so it is possible to not have a description for every running job, if there are
