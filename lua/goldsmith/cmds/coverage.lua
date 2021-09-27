@@ -52,10 +52,10 @@ function M.run(attr, args)
   if current_job ~= nil then
     if vim.fn.jobwait({ current_job }, 0)[1] == -1 then
       if attr.bang == '!' then
-        log.warn('Coverage', 'Killing currently running profile job')
+        log.warn('Coverage', 'Killing currently running coverage job')
         vim.fn.jobstop(current_job)
       else
-        log.warn('Coverage', 'There is a currently running profile job. Add "!" to kill current job.')
+        log.warn('Coverage', 'There is a currently running coverage job. Add "!" to kill current job.')
         return
       end
     end
@@ -87,7 +87,7 @@ function M.run(attr, args)
       if id ~= current_job then
         return
       end
-      log.info('Coverage', string.format('Running profile finished with code %d', code))
+      log.info('Coverage', string.format('Running coverage finished with code %d', code))
       if code ~= 0 then
         return
       end
