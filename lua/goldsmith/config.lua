@@ -199,6 +199,7 @@ local SPEC = {
     ['coverage-on'] = { {}, 't'},
     ['coverage-off'] =  { {}, 't'},
     ['coverage-files'] = { {}, 't'},
+    ['coverage-stop'] = { {}, 't'},
   },
   gobuild = terminal_spec,
   gorun = terminal_spec,

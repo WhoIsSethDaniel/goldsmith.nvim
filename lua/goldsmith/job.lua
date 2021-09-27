@@ -3,6 +3,8 @@ local wb = require 'goldsmith.winbuf'
 
 local M = {}
 
+local running_jobs = {}
+
 function M.run(cmd, ...)
   local opts = vim.tbl_deep_extend('force', {}, ...)
 
@@ -22,9 +24,21 @@ function M.run(cmd, ...)
     job = vim.fn.termopen(cmd, vim.tbl_deep_extend('force', {}, opts))
     vim.api.nvim_set_current_win(w)
   else
+    local exit = opts['on_exit']
+    opts['on_exit'] = function(id, code, type)
+      running_jobs[id] = nil
+      if exit ~= nil then
+        exit(id, code, type)
+      end
+    end
     job = vim.fn.jobstart(cmd, opts)
+    running_jobs[job] = cmd
   end
   return job
+end
+
+function M.running_jobs()
+  return running_jobs
 end
 
 return M

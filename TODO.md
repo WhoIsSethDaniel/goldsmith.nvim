@@ -12,9 +12,10 @@
   - [x] define highlights
   - [x] keymaps
   - [x] run coverage and switch to browser (go tool cover etc....)
-- [ ] statusline
-  - [ ] coverage info available
-  - [ ] running jobs
+- [x] statusline
+  - [x] coverage info available
+  - [x] running jobs
+  - [x] should only appear if goldsmith managed file
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

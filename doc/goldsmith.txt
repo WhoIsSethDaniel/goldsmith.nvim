@@ -18,12 +18,13 @@ CONTENTS                                                    *goldsmith-contents*
   5. Settings.....................................|goldsmith-settings|
   6. Commands.....................................|goldsmith-commands|
   7. Testing and Benchmarking.....................|goldsmith-testing-and-benchmarking|
-  9. Mappings.....................................|goldsmith-mappings|
-  9. Text Objects.................................|goldsmith-text-objects|
- 10. Functions....................................|goldsmith-functions|
- 11. Health Check.................................|goldsmith-healthcheck|
- 12. Help.........................................|goldsmith-help|
- 13. Resources....................................|goldsmith-resources|
+  8. Mappings.....................................|goldsmith-mappings|
+  9. Status.......................................|goldsmith-status|
+ 10. Text Objects.................................|goldsmith-text-objects|
+ 11. Functions....................................|goldsmith-functions|
+ 12. Health Check.................................|goldsmith-healthcheck|
+ 13. Help.........................................|goldsmith-help|
+ 14. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -105,6 +106,8 @@ Features currently included:
   :GoRun, and others
 * coverage support: annotate the current buffer and store coverage data for all 
   files affected
+* statusline integration: see the status of running jobs and of coverage data for 
+  the current buffer
 * edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, 
   :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package 
@@ -1354,8 +1357,12 @@ corresponding code file. Use |:GoAlt| for that purpose or simply edit the file.
                                                                 *:GoCoverageOff*
 :GoCoverageOff
 
-Kill any currently running coverage job, and also turn off the annotation for the
-current buffer, if any.
+Turn off the annotation for the current buffer, if any.
+
+                                                               *:GoCoverageStop*
+:GoCoverageStop
+
+Kill any currently running coverage job.
 
                                                               *:GoCoverageFiles*
 :GoCoverageFiles
@@ -2067,7 +2074,12 @@ The same as |:GoCoverageOn|. Turn on coverage annotation for the current buffer.
 *(goldsmith-coverage-off)*
 Default: none
 
-The same as |:GoCoverageOn|. Turn off coverage annotation for the current buffer.
+The same as |:GoCoverageOff|. Turn off coverage annotation for the current buffer.
+
+*(goldsmith-coverage-stop)*
+Default: none
+
+The same as |:GoCoverageStop|. Stop the currently running coverage job.
 
 *(goldsmith-coverage-files)*
 Default: none
@@ -2112,6 +2124,41 @@ vim.api.nvim_buf_set_keymap(0, 'n', '[d', '<Plug>(goldsmith-prevdiag)', opts)
 vim.api.nvim_buf_set_keymap(0, 'n', ']d', '<Plug>(goldsmith-nextdiag)', opts)
 vim.api.nvim_buf_set_keymap(0, 'n', '<space>q', '<Plug>(goldsmith-setloc)', opts)
 vim.api.nvim_buf_set_keymap(0, 'n', '<space>f', '<Plug>(goldsmith-format)', opts)
+
+================================================================================
+STATUS                                                        *goldsmith-status*
+
+Goldsmith has the ability to integrate with your status line. Goldsmith exposes
+one simple function that may be placed in any status line:
+>
+  require 'goldsmith'.status()
+<
+For example, in lualine, the following works fine:
+>
+  require 'lualine'.setup {
+    ...
+    sections = {
+      ...
+      lualine_c = {
+        ...
+        { "require 'goldmsith.status()" },
+      }
+      ...
+    }
+  }
+<
+The status indicates three things: 
+1) If the Goldsmith 'G' is present it indicates that the current buffer is managed 
+   by Goldsmith.
+2) Directly after the 'G' there is an indication of whether the current buffer has 
+   coverage data that may be toggled using |:GoCoverageOn| and |:GoCoverageOff|.
+   If there are two dashes following the 'G' this indicates that there is no 
+   coverage data. If there is a circle-plus sign this indicates that coverage data
+   is available. For more on coverage see |goldsmith-coverage|.
+3) If Goldsmith jobs are running it will indicate how many are running and a short
+   description of each job. This description is currently capped at 40 characters 
+   so it is possible to not have a description for every running job, if there are
+   many running jobs.
 
 ================================================================================
 TEXT OBJECTS                                            *goldsmith-text-objects*

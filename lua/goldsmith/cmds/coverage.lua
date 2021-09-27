@@ -8,7 +8,7 @@ local M = {}
 local current_job
 local profile_files = {}
 
-function M.off()
+function M.stop()
   if current_job ~= nil then
     if vim.fn.jobwait({ current_job }, 0)[1] == -1 then
       log.warn('Coverage', 'Killing currently running profile job')
@@ -19,6 +19,9 @@ function M.off()
   for _, f in pairs(profile_files) do
     os.remove(f)
   end
+end
+
+function M.off()
   coverage.highlight_off()
 end
 

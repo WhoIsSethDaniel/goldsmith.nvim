@@ -63,6 +63,7 @@ command! -nargs=* -bang GoCoverageBrowser lua require'goldsmith.cmds.coverage'.r
 command! -nargs=0 GoCoverageFiles lua require'goldsmith.cmds.coverage'.show_files()
 command! -nargs=0 GoCoverageOn lua require'goldsmith.cmds.coverage'.on()
 command! -nargs=0 GoCoverageOff lua require'goldsmith.cmds.coverage'.off()
+command! -nargs=0 GoCoverageStop lua require'goldsmith.cmds.coverage'.stop()
 
 " code editing
 command! -nargs=* -range GoAddTags lua require'goldsmith.cmds.tags'.run('add', {line1=<line1>, line2=<line2>, count=<count>}, {<f-args>})
