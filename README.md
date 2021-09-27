@@ -24,7 +24,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * struct tag editing: add / remove / update struct tags and options [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#struct-tag-editing)
 * use common go subcommands from within Neovim with: :GoBuild, :GoInstall, :GoGet, :GoRun, and others [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-4#using-gobuild-and-gorun)
 * coverage support: annotate the current buffer and store coverage data for all files affected [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-5#coverage-report)
-* statusline integration: see the status of running jobs and of coverage data for the current buffer [screencast](https://github.com/WhoIsSethDaniel/public-assets/blob/main/goldsmith-statusline-1.gif)
+* statusline integration: see the status of running jobs and of coverage data for the current buffer [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-5#statusline-integration)
 * edit the go.mod file from within Neovim with: :GoModTidy, :GoModCheck, :GoModRetract, :GoModReplace, and others
 * use the excellent builtin testing framework to run individual tests, package tests, or all your tests
 * all the great Neovim LSP functions are available as Vim commands
