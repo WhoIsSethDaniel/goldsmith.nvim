@@ -1315,14 +1315,15 @@ global.
 
 Once you have run this command you can load other buffers with files that were
 involved in the coverage profile. Once loaded you can run |:GoCoverageOn| to 
-see the annotations. By default only files in the current package are involved.
+see the annotations. 
+
+If given no arguments this command acts on the current package. If arguments 
+are given it is up to the user to provide the correct path(s). You can use 
+comand-completion to get the correct package path(s).
+
 If you wish to run the profile for the entire suite you can run:
 >
   :GoCoverage ./...
-<
-Or, if you wish to run for the current package and all packages below:
->
-  :GoCoverage ...
 <
 The annotation colors showing the coverage can be modified by the user using 
 typical highlighting commands. e.g.
@@ -1366,11 +1367,6 @@ corresponding code file. Use |:GoAlt| for that purpose or simply edit the file.
 :GoCoverageOff
 
 Turn off the annotation for the current buffer, if any.
-
-                                                               *:GoCoverageStop*
-:GoCoverageStop
-
-Kill any currently running coverage job.
 
                                                               *:GoCoverageFiles*
 :GoCoverageFiles
@@ -2091,11 +2087,6 @@ The same as |:GoCoverageOn|. Turn on coverage annotation for the current buffer.
 Default: none
 
 The same as |:GoCoverageOff|. Turn off coverage annotation for the current buffer.
-
-*(goldsmith-coverage-stop)*
-Default: none
-
-The same as |:GoCoverageStop|. Stop the currently running coverage job.
 
 *(goldsmith-coverage-files)*
 Default: none
