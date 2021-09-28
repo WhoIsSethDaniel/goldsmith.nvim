@@ -48,6 +48,7 @@ command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run({<f-args>})
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run({<f-args>})
 command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')
 
+" formatting
 command! -nargs=0 GoImports lua require'goldsmith.cmds.format'.organize_imports()
 command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(true)
 
@@ -71,6 +72,8 @@ command! -nargs=* -range GoClearTags lua require'goldsmith.cmds.tags'.run('remov
 command! -nargs=* -complete=custom,s:GoImplComplete GoImpl lua require'goldsmith.cmds.impl'.run({<f-args>})
 command! -nargs=0 GoFillStruct lua require'goldsmith.cmds.fillstruct'.run(1000)
 command! -nargs=0 GoComments lua require'goldsmith.cmds.comment'.run()
+command! -nargs=? -range GoToStruct lua require'goldsmith.cmds.tostruct'.run({line1=<line1>, line2=<line2>, count=<count>, type='paste'}, {<f-args>})
+command! -nargs=? -range GoToStructReg lua require'goldsmith.cmds.tostruct'.run({line1=<line1>, line2=<line2>, count=<count>, type='register'}, {<f-args>})
 
 " navigation
 command! -nargs=0 GoDef lua require'goldsmith.cmds.lsp'.goto_definition()

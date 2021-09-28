@@ -39,6 +39,16 @@ local TOOLS = {
       'It is required if you want to use the :GoAddTags, :GoRemoveTags, ... commands.',
     },
   },
+  jsontostruct = {
+    status = 'install',
+    location = 'github.com/tmc/json-to-struct',
+    tag = 'latest',
+    required = false,
+    exe = 'json-to-struct',
+    not_found = {
+      'This is used to convert JSON to Go structs',
+    },
+  },
   gotests = {
     status = 'install',
     location = 'github.com/cweill/gotests/gotests',
@@ -207,22 +217,6 @@ local TOOLS = {
       return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
     end,
   },
-  -- ultest = {
-  --   name = 'vim-ultest',
-  --   required = false,
-  --   installed = false,
-  --   plugin = true,
-  --   location = 'https://github.com/rcarriga/vim-ultest',
-  --   testing = true,
-  --   weight = 10,
-  --   not_found = {
-  --     'This plugin is not currently used by Goldsmith.',
-  --   },
-  --   check_installed = function()
-  --     local ok, _ = pcall(require, 'ultest')
-  --     return ok
-  --   end,
-  -- },
   treesitter = {
     name = 'nvim-treesitter',
     required = true,

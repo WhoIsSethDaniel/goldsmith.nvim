@@ -499,24 +499,24 @@ end
 function M.create_commands()
   vim.api.nvim_exec(
     [[
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun lua require'goldsmith.testing.native'.run({type='test'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestRun  lua require'goldsmith.testing.native'.run({type='test'},  {<f-args>})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({type='bench'}, {<f-args>})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any'},   {<f-args>})
 
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg lua require'goldsmith.testing.native'.pkg({type='test'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg  lua require'goldsmith.testing.native'.pkg({type='test'},  {<f-args>})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench'}, {<f-args>})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any'},   {<f-args>})
 
-      command! -nargs=* -bar                GoTestNearest lua require'goldsmith.testing.native'.nearest({type='test'}, {<f-args>})
+      command! -nargs=* -bar                GoTestNearest  lua require'goldsmith.testing.native'.nearest({type='test'},  {<f-args>})
       command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({type='bench'}, {<f-args>})
-      command! -nargs=* -bar                GoTestANearest lua require'goldsmith.testing.native'.nearest({type='any'}, {<f-args>})
+      command! -nargs=* -bar                GoTestANearest lua require'goldsmith.testing.native'.nearest({type='any'},   {<f-args>})
 
-      command! -nargs=* -bar                GoTestSuite   lua require'goldsmith.testing.native'.suite({type='test'}, {<f-args>})
-      command! -nargs=* -bar                GoTestBSuite  lua require'goldsmith.testing.native'.suite({type='bench'}, {<f-args>})
-      command! -nargs=* -bar                GoTestASuite  lua require'goldsmith.testing.native'.suite({type='any'}, {<f-args>})
+      command! -nargs=* -bar                GoTestSuite    lua require'goldsmith.testing.native'.suite({type='test'},  {<f-args>})
+      command! -nargs=* -bar                GoTestBSuite   lua require'goldsmith.testing.native'.suite({type='bench'}, {<f-args>})
+      command! -nargs=* -bar                GoTestASuite   lua require'goldsmith.testing.native'.suite({type='any'},   {<f-args>})
 
-      command! -nargs=* -bar                GoTestLast    lua require'goldsmith.testing.native'.last({<f-args>})
-      command!          -bar -bang          GoTestVisit   lua require'goldsmith.testing.native'.visit({'<bang>'})
+      command! -nargs=* -bar                GoTestLast     lua require'goldsmith.testing.native'.last({<f-args>})
+      command!          -bar -bang          GoTestVisit    lua require'goldsmith.testing.native'.visit({'<bang>'})
     ]],
     false
   )

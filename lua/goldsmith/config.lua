@@ -200,7 +200,6 @@ local SPEC = {
     ['coverage-on'] = { {}, 't' },
     ['coverage-off'] = { {}, 't' },
     ['coverage-files'] = { {}, 't' },
-    ['coverage-stop'] = { {}, 't' },
   },
   gobuild = terminal_spec,
   gorun = terminal_spec,
@@ -213,6 +212,11 @@ local SPEC = {
   jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
   terminal = window_validate(false, false, false),
   window = window_validate(false, false, true),
+  gotostruct = {
+    fetch_register = { '+', 's' },
+    put_register = { '*', 's' },
+    struct_name = { 'Foo', 's' },
+  },
   tags = {
     default_tag = { 'json', 's' },
     transform = {

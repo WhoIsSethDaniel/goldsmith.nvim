@@ -97,9 +97,9 @@ function M.tool_check()
         vim.list_extend(not_found, ti.not_found)
         table.insert(not_found, string.format("It may be installed by running ':GoInstallBinaries %s'", tool))
       end
-      health_warn(string.format('%s: MISSING', tool), not_found)
+      health_warn(string.format('%s: MISSING', ti.exe), not_found)
     else
-      health_ok(string.format('%s: FOUND at %s (%s)', tool, ti.cmd, ti.version))
+      health_ok(string.format('%s: FOUND at %s (%s)', ti.exe, ti.cmd, ti.version))
     end
   end
 end

@@ -61,7 +61,6 @@ local default_action_map = {
     act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='web'})<cr>",
     ft = { 'go' },
   },
-  ['coverage-stop'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.stop()<cr>", ft = { 'go' } },
   ['coverage-on'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.on()<cr>", ft = { 'go' } },
   ['coverage-off'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.off()<cr>", ft = { 'go' } },
   ['coverage-files'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.show_files()<cr>", ft = { 'go' } },

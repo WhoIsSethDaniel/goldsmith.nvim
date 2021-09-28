@@ -292,6 +292,11 @@ guaranteed to be entirely up-to-date):
       gotestvisit = {
         use_current_window = false
       },
+      gotostruct = {
+        fetch_register = "+",
+        put_register = "*",
+        struct_name = "Foo"
+      },
       highlight = {
         current_symbol = true
       },
@@ -309,6 +314,11 @@ guaranteed to be entirely up-to-date):
         ["codelens-off"] = {},
         ["codelens-on"] = {},
         ["codelens-run"] = {},
+        coverage = {},
+        ["coverage-browser"] = {},
+        ["coverage-files"] = {},
+        ["coverage-off"] = {},
+        ["coverage-on"] = {},
         enabled = true,
         fillstruct = {},
         format = { "<leader>f" },
@@ -327,6 +337,7 @@ guaranteed to be entirely up-to-date):
         sighelp = { "<C-k>" },
         ["start-follow"] = { "F" },
         ["stop-follow"] = { "S" },
+        ["super-close-any"] = {},
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},
@@ -355,6 +366,9 @@ guaranteed to be entirely up-to-date):
         staticcheck = false
       },
       revive = {},
+      status = {
+        max_length = 40
+      },
       system = {
         debug = false,
         root_dir = { ".git", "go.mod", "go.work" }
@@ -658,6 +672,25 @@ STATUSLINE                                                *goldsmith-statusline*
 Default: 40
 The maximum length the Goldsmith statusline integration will use. The length is a
 bit fuzzy so the maximum may be exceeded by a small amount.
+
+JSON TO STRUCT                                        *goldsmith-json-to-struct*
+
+`gotostruct.store_register`                *goldsmith-gotostruct.store_register*
+
+Default: *
+The register to write the generated Go struct to when using |:GoToStructReg|.
+
+`gotostruct.fetch_register`                *goldsmith-gotostruct.fetch_register*
+
+Default: +
+The register to retrieve JSON from when no range or visual selection has been 
+made when using |:GoToStruct| or |:GoToStructReg|.
+
+`gotostruct.struct_name`                      *goldsmith-gotostruct.struct_name*
+
+Default: Foo
+The default name of the struct created when using |:GoToStruct| or 
+|:GoToStructReg|. Both commands accept a different name as an argument.
 
 LSP SERVERS                                              *goldsmith-lsp-servers*
 
@@ -1298,6 +1331,66 @@ See also |codelens.show|
 
 Run the current codelens that is displaying on the current line.
 
+                                                                   *:GoToStruct*
+:[range]GoToStruct [name]
+
+Converts JSON to Go structs. 
+
+If a range is given (or a visual selection is made) this command will convert 
+the selected JSON to a Go struct. The contents of the struct are immediately 
+pasted to the current buffer and replaces the range or visual selection.
+
+If no visual selection is made and no range is given the command will look in
+the plus register ("+) for JSON to convert (the register may be changed by 
+setting |goldsmith-gotostruct.fetch_register|). If the register is empty an 
+error will be displayed.
+
+The encompassing structure will be named 'Foo' by default. The user may pass
+a name as the only argument to the command to name it something else.
+>
+    :GoToStruct AwesomeStruct
+<
+The above will name the struct 'AwesomeStruct' instead of 'Foo'.
+
+When processing the given JSON all leading comments will be stripped. This 
+allows the visual selection (or register) to contain a commented-out JSON 
+structure. Comments are considered to be either leading '//' or '#'. Comments 
+may be preceded by whitespace. The following will correctly convert to a Go 
+struct:
+>
+    ///// [
+    ///// {
+    ////  "versions": "go1.17.1",
+      //  "stable": true,
+      //  "files": [
+      //   {
+      //    "filenames": "go1.17.1.src.tar.gz",
+      //    "os": "",
+    ///    "arch": "",
+    //    "version": "go1.17.1",
+    //    "size": 22181735,
+    //    "kind": "source"
+    //   }
+    //  ]
+    // }
+    // ]
+<
+If both acceptable types of comments are used on the same line the JSON decoding
+will fail.
+
+Behind the scenes this uses the `json-to-struct` tool. See |goldsmith-resources|
+for where this tool can be found.
+
+To install `json-to-struct` you can use |:GoInstallBinaries|.
+
+                                                                *:GoToStructReg*
+:[range]GoToStructReg [name]
+
+Exactly like |:GoToStruct| but, instead of immediately pasting the struct to the
+current buffer, it will by default place the struct in the star register ("*). 
+Use |goldsmith-gotostruct.store_register| to change the register that this 
+command uses to store the struct.
+
                                                                    *:GoCoverage*
 :GoCoverage[!] ...
 
@@ -1317,7 +1410,7 @@ Once you have run this command you can load other buffers with files that were
 involved in the coverage profile. Once loaded you can run |:GoCoverageOn| to 
 see the annotations. 
 
-If given no arguments this command acts on the current package. If arguments 
+If given no arguments this command acts on the current package. If arguments
 are given it is up to the user to provide the correct path(s). You can use 
 comand-completion to get the correct package path(s).
 
@@ -2261,3 +2354,4 @@ the plugins that can be utilized by Goldsmith.
   `revive`                        https://github.com/mgechev/revive
   `golangci-lint`                 https://github.com/golangci/golangci-lint/cmd/golangci-lint
   `staticcheck`                   https://honnef.co/go/tools/cmd/staticcheck
+  `json-to-struct`                https://github.com/tmc/json-to-struct
