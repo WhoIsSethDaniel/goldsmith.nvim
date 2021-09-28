@@ -227,9 +227,12 @@ function M.set_close_keys(b)
   vim.api.nvim_buf_set_keymap(b, '', '<Esc>', '<cmd>close!<cr>', { silent = true, noremap = true })
 end
 
-function M.close_any_window()
+function M.close_any_window(extra)
   for _, ns in ipairs { 'test_native', 'job_terminal' } do
     M.close_window(ns)
+  end
+  if extra then
+    vim.cmd[[ cclose ]]
   end
 end
 

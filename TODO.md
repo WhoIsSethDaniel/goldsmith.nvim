@@ -16,6 +16,9 @@
   - [x] coverage info available
   - [x] running jobs
   - [x] should only appear if goldsmith managed file
+- [ ] testing
+  - [ ] feature to allow for continuous (timed) looping of test(s)
+- [ ] linters w/config perhaps can have better way to error about config
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

@@ -1919,6 +1919,14 @@ Goldsmith.
 
 This command will not close the Goldsmith debug console or help windows.
 
+*(goldsmith-super-close-any)*
+Default: none
+
+This will close any (or all) testing windows or terminals that have been opened by
+Goldsmith. It will also close the quickfix list if it is open.
+
+This command will not close the Goldsmith debug console or help windows.
+
 *(goldsmith-build)*
 Default: none
 

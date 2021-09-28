@@ -54,7 +54,8 @@ local default_action_map = {
   ['close-terminal'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_window('job_terminal')<cr>", ft = '*' },
   ['build'] = { act = "<cmd>lua require'goldsmith.cmds.build'.run()<cr>", ft = '*' },
   ['run'] = { act = "<cmd>lua require'goldsmith.cmds.run'.run()<cr>", ft = '*' },
-  ['close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window()<cr>", ft = '*' },
+  ['close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window(false)<cr>", ft = '*' },
+  ['super-close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window(true)<cr>", ft = '*' },
   ['coverage'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='job'})<cr>", ft = { 'go' } },
   ['coverage-browser'] = {
     act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='web'})<cr>",

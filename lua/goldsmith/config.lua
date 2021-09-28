@@ -194,6 +194,7 @@ local SPEC = {
     ['stop-follow'] = { { 'S' }, 't' },
     ['close-terminal'] = { {}, 't' },
     ['close-any'] = { {}, 't' },
+    ['super-close-any'] = { {}, 't' },
     ['coverage'] = { {}, 't' },
     ['coverage-browser'] = { {}, 't' },
     ['coverage-on'] = { {}, 't' },
