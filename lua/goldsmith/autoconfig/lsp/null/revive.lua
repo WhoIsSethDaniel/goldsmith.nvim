@@ -7,23 +7,40 @@ local help = require 'null-ls.helpers'
 
 local M = {}
 
+local err_map = {
+  {
+    pat = 'cannot read',
+    msg = "'revive' is not able to read its configuration file. You can use :GoCreateConfigs to create a working one.",
+  },
+  { pat = 'cannot parse', msg = "'revive' is not able to parse its configuration file: %s" },
+}
+local max_errs = 10
+
 local function parse_messages()
   local severities = { error = 1, warning = 2, information = 3, hint = 4 }
   local config_warning = false
+  local unknown_errs = 0
   return function(params, done)
-    if string.match(params.err or '', 'cannot read') ~= nil then
+    if params['err'] ~= nil then
       done()
-      if config_warning then
-        return
+      for _, err in ipairs(err_map) do
+        if string.match(params.err, err.pat) ~= nil then
+          if config_warning then
+            return
+          end
+          config_warning = true
+          log.error('Lint', string.format(err.msg, params.err))
+          return
+        end
       end
-      config_warning = true
-      log.error(
-        'Lint',
-        "'revive' must have a configuration file and one does not currently exist. You can use :GoCreateConfigs to create one."
-      )
+      unknown_errs = unknown_errs + 1
+      if unknown_errs == max_errs then
+        log.error('Lint', string.format("'golangci-lint' unknown error: %s", params.err))
+      end
       return
     end
     config_warning = false
+    unknown_errs = 0
     local ok, msgs = pcall(vim.fn.json_decode, params.output)
     if not ok or type(msgs) ~= 'table' then
       done()
