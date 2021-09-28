@@ -18,7 +18,6 @@
   - [x] should only appear if goldsmith managed file
 - [x] linters w/config perhaps can have better way to error about config
 - [x] json-to-struct
-- [ ] feature to allow for continuous (timed) looping of test(s)
 - [ ] docs
   - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] start a new go project

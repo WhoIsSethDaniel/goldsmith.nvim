@@ -88,6 +88,8 @@ Features currently included:
 * auto-highlight the current symbol under the cursor throughout the current buffer
 * treesitter navigation utilizing the nvim-treesitter-textobjects plugin
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
+* convert JSON to Go structs directly in your code, or paste from outside the 
+  editor
 * view Go documentation using the :GoDoc command and Go help with :GoHelp
 * manually update imports using the :GoImports command
 * use :checkhealth to see if your Goldsmith setup should work correctly
