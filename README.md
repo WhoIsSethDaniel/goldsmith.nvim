@@ -48,16 +48,16 @@ git clone https://github.com/WhoIsSethDaniel/goldsmith.nvim
 # Quickstart
 1. Install Goldsmith, [lspconfig](https://github.com/neovim/nvim-lspconfig), and [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim).
 1. Install required external programs: 
-```
-    vim +GoInstallBinaries
-```
-You may recevie some warnings from Goldsmith about missing programs. These can be ignored since you are now installing those programs.
+    ```
+        vim +GoInstallBinaries
+    ```
+    You may recevie some warnings from Goldsmith about missing programs. These can be ignored since you are now installing those programs.
 
-After the installation completes (usually within a minute or so) run 
-```
-    :checkhealth goldsmith
-```
-Make certain everything looks okay. If any optional dependencies are not installed that is okay and can be ignored.
+    After the installation completes (usually within a minute or so) run 
+    ```
+        :checkhealth goldsmith
+    ```
+    Make certain everything looks okay. If any optional dependencies are not installed that is okay and can be ignored.
 1. Restart Neovim.  
 1. Start editing Go code.
 1. Currently you are running with Goldsmith defaults. So take a look at the documentation and tweak your configuration.
