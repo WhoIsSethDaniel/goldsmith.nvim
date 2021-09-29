@@ -395,7 +395,8 @@ do
         test_type = args[1]['type'] or 'test'
         args = args[2]
       elseif args[1] ~= nil then
-        test_type = 'test'
+        test_type = args[1]['type'] or 'test'
+        args[1]['type'] = nil
         args = args[1]
       else
         test_type = 'test'
