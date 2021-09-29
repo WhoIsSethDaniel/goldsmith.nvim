@@ -1,6 +1,7 @@
 local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local config = require 'goldsmith.config'
+local tools = require 'goldsmith.tools'
 local log
 
 local M = {}
@@ -58,6 +59,10 @@ local function has_requirements()
       )
       ok = false
     end
+  end
+  if not tools.is_installed('go') then
+    log.error('Config', "go is not installed, or cannot be found in your PATH. Goldsmith will not work without 'go' installed.")
+    ok = false
   end
   return ok
 end
