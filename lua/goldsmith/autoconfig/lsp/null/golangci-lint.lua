@@ -24,7 +24,7 @@ local function parse_messages()
   local config_warning = false
   local unknown_errs = 0
   return function(params, done)
-    local errmsg = string.match(params.err, '^level=.*%s+msg=(.*)$')
+    local errmsg = string.match(params.err or '', '^level=.*%s+msg=(.*)$')
     if errmsg ~= nil then
       done()
       for _, err in ipairs(err_map) do

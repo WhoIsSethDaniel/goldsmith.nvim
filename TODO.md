@@ -18,11 +18,7 @@
   - [x] should only appear if goldsmith managed file
 - [x] linters w/config perhaps can have better way to error about config
 - [x] json-to-struct
-- [ ] docs
-  - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
-- [ ] start a new go project
-  - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
-- [ ] snippets?
+- [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+- [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
+- [ ] snippets
 - [ ] tests (using plenary?)
-- [ ] workspaces / multiple workspaces
-  - [ ] perhaps go.work support (https://github.com/golang/go/issues/45713) (0.7.1 introduces initial support)
