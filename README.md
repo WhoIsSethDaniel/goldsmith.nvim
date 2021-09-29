@@ -47,7 +47,7 @@ git clone https://github.com/WhoIsSethDaniel/goldsmith.nvim
 
 # Quickstart
 1. Install [Go](https://golang.org/dl/).
-1. Install Goldsmith, [lspconfig](https://github.com/neovim/nvim-lspconfig), and [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim).
+1. Install Goldsmith, [lspconfig](https://github.com/neovim/nvim-lspconfig), [treesitter](https://github.com/nvim-treesitter/nvim-treesitter) and [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim).
 1. Install required external programs: 
     ```bash
     vim +GoInstallBinaries
