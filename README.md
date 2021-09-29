@@ -51,13 +51,13 @@ git clone https://github.com/WhoIsSethDaniel/goldsmith.nvim
 ```
     vim +GoInstallBinaries
 ```
-You may recevie some warnings from Goldsmith about missing programs. These can be ignored since you are now installing those programs.
+    You may recevie some warnings from Goldsmith about missing programs. These can be ignored since you are now installing those programs.
 
-After the installation completes (usually within a minute or so) run 
+    After the installation completes (usually within a minute or so) run 
 ```
     :checkhealth goldsmith
 ```
-Make certain everything looks okay. If any optional dependencies are not installed that is okay and can be ignored.
+    Make certain everything looks okay. If any optional dependencies are not installed that is okay and can be ignored.
 1. Restart Neovim.  
 1. Start editing Go code.
 1. Currently you are running with Goldsmith defaults. So take a look at the documentation and tweak your configuration.
