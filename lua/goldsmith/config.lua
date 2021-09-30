@@ -200,6 +200,8 @@ local SPEC = {
     ['coverage-on'] = { {}, 't' },
     ['coverage-off'] = { {}, 't' },
     ['coverage-files'] = { {}, 't' },
+    ['tostruct'] = { {}, 't' },
+    ['tostructreg'] = { {}, 't' },
   },
   gobuild = terminal_spec,
   gorun = terminal_spec,
@@ -214,7 +216,7 @@ local SPEC = {
   window = window_validate(false, false, true),
   gotostruct = {
     fetch_register = { '+', 's' },
-    put_register = { '*', 's' },
+    store_register = { '*', 's' },
     struct_name = { 'Foo', 's' },
   },
   tags = {

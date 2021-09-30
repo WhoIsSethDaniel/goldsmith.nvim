@@ -64,6 +64,8 @@ local default_action_map = {
   ['coverage-on'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.on()<cr>", ft = { 'go' } },
   ['coverage-off'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.off()<cr>", ft = { 'go' } },
   ['coverage-files'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.show_files()<cr>", ft = { 'go' } },
+  ['tostruct'] = { act = ':GoToStruct<cr>', ft = { 'go' }, m = { 'v', 'n' } },
+  ['tostructreg'] = { act = ':GoToStructReg<cr>', ft = { 'go' }, m = { 'v', 'n' } },
 }
 
 function M.checkin(b)
@@ -109,11 +111,15 @@ function M.set_buffer_map(buf, mode, name, user_act, opts)
 end
 
 function M.set_buffer_keymaps(buf)
-  local function set_map(name, mode, maps, action, opts)
+  local function set_map(name, modes, maps, action, opts)
     local plug = string.format('<Plug>(goldsmith-%s)', name)
-    vim.api.nvim_buf_set_keymap(buf, mode, plug, action, opts)
+    for _, mode in ipairs(modes) do
+      vim.api.nvim_buf_set_keymap(buf, mode, plug, action, opts)
+    end
     for _, km in ipairs(maps) do
-      vim.api.nvim_buf_set_keymap(buf, mode, km, plug, {})
+      for _, mode in ipairs(modes) do
+        vim.api.nvim_buf_set_keymap(buf, mode, km, plug, {})
+      end
     end
   end
 
@@ -122,7 +128,7 @@ function M.set_buffer_keymaps(buf)
   for name, d in pairs(default_action_map) do
     local maps = config.get_mapping(name)
     if d.ft and (d.ft == '*' or vim.tbl_contains(d.ft, ft)) then
-      set_map(name, 'n', maps, d.act, opts)
+      set_map(name, d.m or { 'n' }, maps, d.act, opts)
     end
   end
 

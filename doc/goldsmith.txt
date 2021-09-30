@@ -296,7 +296,7 @@ guaranteed to be entirely up-to-date):
       },
       gotostruct = {
         fetch_register = "+",
-        put_register = "*",
+        store_register = "*",
         struct_name = "Foo"
       },
       highlight = {
@@ -2187,6 +2187,18 @@ The same as |:GoCoverageOff|. Turn off coverage annotation for the current buffe
 Default: none
 
 The same as |:GoCoverageFiles|. Show all files with coverage data.
+
+*(goldsmith-tostruct)*
+Default: none
+
+The same as |:GoToStruct|. Convert JSON objects to Go structs and write the
+struct to the current buffer.
+
+*(goldsmith-tostructreg)*
+Default: none
+
+The same as |:GoToStructReg|. Convert JSON objects to Go structs and place the 
+result in a register.
 
 *(goldsmith-start-follow)*
 Default: F
