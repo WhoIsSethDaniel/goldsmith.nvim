@@ -50,7 +50,7 @@ git clone https://github.com/WhoIsSethDaniel/goldsmith.nvim
 1. Install Goldsmith, [lspconfig](https://github.com/neovim/nvim-lspconfig), [treesitter](https://github.com/nvim-treesitter/nvim-treesitter) and [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim).
 1. Install required external programs: 
     ```bash
-    vim +GoInstallBinaries
+    nvim +GoInstallBinaries
     ```
     You may receive some warnings from Goldsmith about missing programs. These can be ignored since you are now installing those programs.
 
