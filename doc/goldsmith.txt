@@ -310,6 +310,7 @@ guaranteed to be entirely up-to-date):
         ["alt-file"] = {},
         ["alt-file-force"] = {},
         build = {},
+        ["build-last"] = {},
         ["close-any"] = {},
         ["close-terminal"] = {},
         codeaction = { "<leader>ca" },
@@ -334,6 +335,7 @@ guaranteed to be entirely up-to-date):
         rename = { "<leader>rn" },
         ["rm-ws-folder"] = { "<leader>wr" },
         run = {},
+        ["run-last"] = {},
         setloclist = { "<leader>q" },
         showdiag = { "<leader>e" },
         sighelp = { "<C-k>" },
@@ -356,6 +358,8 @@ guaranteed to be entirely up-to-date):
         ["test-suite"] = {},
         ["test-visit"] = {},
         ["toggle-debug-console"] = {},
+        tostruct = {},
+        tostructreg = {},
         typedef = { "<leader>D" }
       },
       null = {
@@ -1045,6 +1049,14 @@ When running `go build` it takes the same arguments as `go build`. e.g.:
 >
     :GoBuild -race
 <
+If no arguments are passed the package of the current buffer will be used.
+
+Command completion may be used to find the name of the package(s) to build.
+
+                                                                  *:GoBuildLast*
+:GoBuildLast [args]
+
+Run the previous :GoBuild command and append any arguments.
 
                                                                         *:GoRun*
 :GoRun [args]
@@ -1054,7 +1066,14 @@ as `go run`. e.g., the following runs the main package in the current directory:
 >
     :GoRun .
 <
-If no arguments are passed a '.' will be inserted at the end of the command.
+If no arguments are passed the package of the current buffer will be used.
+
+Command completion may be used to find the name of the package to run.
+
+                                                                    *:GoRunLast*
+:GoRunLast [args]
+
+Run the previous :GoRun command and append any arguments.
 
                                                                         *:GoGet*
 :GoGet [packages]
@@ -2023,10 +2042,20 @@ Default: none
 
 Just like |:GoBuild|. Run 'go build' with no arguments.
 
+*(goldsmith-build-last)*
+Default: none
+
+Just like |:GoBuildLast|. Run the previous |:GoBuild|.
+
 *(goldsmith-run)*
 Default: none
 
 Just like |:GoRun|. Run 'go run' with no arguments.
+
+*(goldsmith-run-last)*
+Default: none
+
+Just like |:GoRunLast|. Run the previous |:GoRun|.
 
 *(goldsmith-test-last)*
 Default: none

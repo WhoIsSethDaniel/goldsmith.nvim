@@ -18,6 +18,8 @@
   - [x] should only appear if goldsmith managed file
 - [x] linters w/config perhaps can have better way to error about config
 - [x] json-to-struct
+- [x] godoc: should work with . notation too
+- [ ] improve gorun / gobuild somehow; they seem rather simple
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets

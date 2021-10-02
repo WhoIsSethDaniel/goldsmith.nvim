@@ -42,8 +42,10 @@ endfunction
 " terminal/window commands
 command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run('doc', {<f-args>})
 command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith.cmds.doc'.run('help', {<f-args>})
-command! -nargs=* GoBuild lua require'goldsmith.cmds.build'.run({<f-args>})
-command! -nargs=* GoRun lua require'goldsmith.cmds.run'.run({<f-args>})
+command! -nargs=* -complete=custom,v:lua.goldsmith_test_package_complete GoBuild lua require'goldsmith.cmds.build'.run({<f-args>})
+command! -nargs=* -complete=custom,v:lua.goldsmith_test_package_complete GoRun lua require'goldsmith.cmds.run'.run({<f-args>})
+command! -nargs=* GoBuildLast lua require'goldsmith.cmds.build'.last({<f-args>})
+command! -nargs=* GoRunLast lua require'goldsmith.cmds.run'.last({<f-args>})
 command! -nargs=* GoGet lua require'goldsmith.cmds.get'.run({<f-args>})
 command! -nargs=* GoInstall lua require'goldsmith.cmds.install'.run({<f-args>})
 command! -nargs=0 -bang GoAlt lua require'goldsmith.cmds.alt'.run('<bang>')

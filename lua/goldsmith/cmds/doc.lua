@@ -41,15 +41,22 @@ local function match_partial_item_name(pkg, part)
     end
   end
   table.sort(items)
-  return table.concat(items, '\n')
+  return items
 end
 
 function M.doc_complete(arglead, cmdline, cursorPos)
   local words = vim.split(cmdline, '%s+')
-  if #words > 2 and string.match(words[#words - 1], '^-') == nil then
+  if #words > 1 and string.match(words[#words], '^[^-].+%..*') ~= nil then
+    local pkg, item = unpack(vim.split(words[#words], '%.'))
+    local comps = match_partial_item_name(pkg, item)
+    for i, comp in ipairs(comps) do
+      comps[i] = string.format("%s.%s", pkg, comp)
+    end
+    return table.concat(comps, "\n")
+  elseif #words > 2 and string.match(words[#words - 1], '^-') == nil then
     local pkg = words[#words - 1]
     local item = words[#words]
-    return match_partial_item_name(pkg, item)
+    return table.concat(match_partial_item_name(pkg, item), "\n")
   elseif #words > 1 and string.match(words[#words], '^-') == nil then
     local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
     local pkgs = cmds.list_known_packages(bnum)

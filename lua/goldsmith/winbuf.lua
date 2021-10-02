@@ -233,6 +233,7 @@ function M.close_any_window(extra)
   end
   if extra then
     vim.cmd[[ cclose ]]
+    vim.cmd[[ lclose ]]
   end
 end
 
