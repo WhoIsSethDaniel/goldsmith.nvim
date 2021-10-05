@@ -1748,6 +1748,33 @@ names of tests to run. You can use command-completion to see the names of all
 tests for the current package 2) if no arguments are passed in this acts just 
 like |:GoTestPkg|.
 
+By default the tests to run are looked for in the current package. However, if 
+you pass './...', the tests will be looked for throughout the entire project.
+Or, if you pass '...' the tests will be looked for in the current package and
+all packages below it. e.g.:
+>
+    :GoTestRun TestSomeTest 
+<
+Will run the equivalent of:
+>
+    go test -run='^TestSomeTest$' <current package>
+<
+However,
+>
+    :GoTestRun TestSomeTest ./...
+<
+will run the equivalent of:
+>
+    go test -run='^TestSomeTest$' ./...
+<
+and,
+>
+    :GoTestRun TestSomeTest ...
+<
+will run the equivalent of:
+>
+    go test -run='^TestSomeTest$' <current package>/...
+<
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 
                                                                    *:GoTestBRun*

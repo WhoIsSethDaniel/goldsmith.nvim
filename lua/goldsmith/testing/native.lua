@@ -242,6 +242,16 @@ do
       function()
         last_file = set_last_file(cf)
         if #args > 0 then
+          local scope = fs.relative_to_cwd(cf)
+          for i, arg in ipairs(args) do
+            if arg == './...' then
+              table.remove(args, i)
+              scope = './...'
+            elseif arg == '...' then
+              table.remove(args, i)
+              scope = scope .. '/...'
+            end
+          end
           local new = {}
           if is_any() then
             table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
@@ -252,8 +262,9 @@ do
           elseif is_test() then
             table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
           end
-          table.insert(new, fs.relative_to_cwd(cf) .. '/...')
+          table.insert(new, scope)
           args = new
+          print(vim.inspect(args))
           return true
         else
           return true, 'pkg'
@@ -432,7 +443,7 @@ do
           wb.set_close_keys(last_win.buf)
           wb.setup_follow_buffer(last_win.buf)
         end
-        table.insert(cmd, '-json')
+        table.insert(cmd, 3, '-json')
         local out = {}
         local decoded = {}
         local on_output = function(id, data, name)
@@ -463,6 +474,7 @@ do
             out = { last }
           end
         end
+        print(vim.inspect(cmd))
         current_job = job.run(cmd, opts, {
           on_stderr = on_output,
           on_stdout = on_output,
@@ -476,7 +488,7 @@ do
               wb.append_to_buffer(last_win.buf, { '', "[Press 'q' or '<Esc>' to close window]" })
             end
             -- get rid of -json
-            table.remove(cmd)
+            table.remove(cmd, 3)
             if code == 0 then
               log.info('Testing', string.format("Command '%s' ran successfully.", table.concat(cmd, ' ')))
               return
