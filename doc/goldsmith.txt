@@ -990,11 +990,15 @@ Use tab-completion to see all available packages.
 View the documentation for a particular function/constant/variable/type within
 a particular package:
 >
-    :GoDoc io Reader
+    :GoDoc io Read<tab>
 <
 Use tab-completion to see all available packages and then all available types/
 functions/variables/constants within that package.
 
+You can also use dot notation with the same result:
+>
+    :GoDoc io.Read<tab>
+<
 :GoDoc and :GoHelp share the same window. Settings for that window are controlled
 via the godoc.* settings. See |goldsmith-settings-per-command| for more 
 information.

@@ -264,7 +264,6 @@ do
           end
           table.insert(new, scope)
           args = new
-          print(vim.inspect(args))
           return true
         else
           return true, 'pkg'
@@ -474,7 +473,6 @@ do
             out = { last }
           end
         end
-        print(vim.inspect(cmd))
         current_job = job.run(cmd, opts, {
           on_stderr = on_output,
           on_stdout = on_output,
