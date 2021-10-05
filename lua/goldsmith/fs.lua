@@ -58,4 +58,9 @@ function M.relative_to_cwd(name)
   end
 end
 
+function M.is_valid_package(name)
+  return vim.fn.filereadable(name) > 0 or vim.fn.isdirectory(name) > 0 or string.match(name, '^.+/%.%.%.$') ~= nil
+end
+
+
 return M

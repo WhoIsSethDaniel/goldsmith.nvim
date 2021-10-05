@@ -1020,8 +1020,8 @@ Manually request that `gopls` arrange and fix the import section of your code.
                                                                       *:GoBuild*
 :GoBuild[!] [args]
 
-Run `go build` or `make` on the current working directory. It will use `make` if 
-the project root directory contains a Makefile (or makefile). See
+Run `go build` on the current working directory, or run `make`. It will use 
+`make` if the project root directory contains a Makefile (or makefile). See
 |goldsmith-gobuild.use_makefile| to change this behavior.
 
 When running `go build` it takes the same arguments as `go build`. e.g.:
@@ -1880,13 +1880,13 @@ Arguments to `go test` may be passed via the command and via
                                                                        *:GoTest*
 :GoTest[!] [args]
 
-This command simply runs 'go test' with the arguments that are passed to it. By 
-default it runs in a terminal. If you pass '!' it will run in the background. 
-This command does not interact with the quickfix or location list in any way and
-does not honor the |goldsmith-testing-settings|. Instead it honors settings in
-the 'gotest' config key, including |goldsmith-terminal-settings|. It is intended
-to be a bare proxy to `go test` and is separate from any of the Goldsmith test
-runners.
+This command simply runs 'go test' with the arguments that are passed to it 
+(with some minor exceptions explained below). By default it runs in a terminal. 
+If you pass '!' it will run in the background. This command does not interact 
+with the quickfix or location list in any way and does not honor the 
+|goldsmith-testing-settings|. Instead it honors settings in the 'gotest' config 
+key, including |goldsmith-terminal-settings|. It is intended to be a (mostly) 
+bare proxy to `go test` and is separate from any of the Goldsmith test runners.
 
 If no file/package arguments are passed to this command the package of the
 current buffer will be inserted at the end of the command. e.g.:
@@ -1909,6 +1909,8 @@ will translate to:
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
+
+Command completion may be used to discover all packages for the current project.
 
 Arguments to `go test` may only be passed via the command.
 

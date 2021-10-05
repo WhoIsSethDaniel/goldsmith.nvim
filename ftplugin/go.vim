@@ -56,7 +56,7 @@ command! -nargs=0 GoFormat lua require'goldsmith.cmds.format'.run(true)
 
 " creating/editing tests
 lua require'goldsmith.testing'.setup()
-command! -nargs=* -bang GoTest lua require'goldsmith.cmds.test'.run('<bang>', {<f-args>})
+command! -nargs=* -bang -complete=custom,v:lua.goldsmith_package_complete GoTest lua require'goldsmith.cmds.test'.run('<bang>', {<f-args>})
 command! -nargs=? GoAddTests lua require'goldsmith.cmds.tests'.generate({<f-args>})
 command! -nargs=* -complete=custom,s:GoAddTestComplete GoAddTest lua require'goldsmith.cmds.tests'.add({<f-args>})
 

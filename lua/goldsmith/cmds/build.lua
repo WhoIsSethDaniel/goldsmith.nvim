@@ -23,7 +23,7 @@ function M.run(bang, args)
   if makeprg ~= 'make' then
     local has_file_arg = false
     for _, arg in ipairs(args) do
-      if vim.fn.filereadable(arg) > 0 or vim.fn.isdirectory(arg) > 0 or arg == './...' then
+      if fs.is_valid_package(arg) then
         has_file_arg = true
         break
       end
