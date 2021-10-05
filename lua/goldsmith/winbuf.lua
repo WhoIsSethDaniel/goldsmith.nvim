@@ -45,7 +45,15 @@ function M.create_winbuf(opts)
     end
   end
 
-  local wn = vim.fn.bufwinid(reuse)
+  local title = opts['title']
+  local bufexists = title ~= nil and vim.fn.bufnr(title)
+  local wn
+  if bufexists then
+    wn = vim.fn.bufwinid(bufexists)
+    reuse = bufexists
+  else
+    wn = vim.fn.bufwinid(reuse)
+  end
   if reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) and wn ~= -1 then
     vim.fn.win_gotoid(wn)
   elseif reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) then
@@ -62,7 +70,7 @@ function M.create_winbuf(opts)
     winstash[ns] = b
   end
 
-  if opts['title'] ~= nil then
+  if title ~= nil then
     vim.api.nvim_buf_set_name(b, opts['title'])
   end
 

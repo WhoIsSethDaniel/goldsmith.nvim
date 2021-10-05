@@ -21,8 +21,8 @@
 - [x] godoc: should work with . notation too
 - [ ] improve gorun / gobuild somehow; they seem rather simple
   - [x] friendlier default -- probably for GoTest also and gocoverage
-  - [ ] will open qf on errors
-- [ ] issue with godoc when old window from previous session exists
+  - [ ] will open qf on errors - gorun / gobuild / gocoverage
+- [x] issue with godoc when old window from previous session exists
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets
