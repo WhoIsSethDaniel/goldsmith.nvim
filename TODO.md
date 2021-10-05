@@ -19,10 +19,11 @@
 - [x] linters w/config perhaps can have better way to error about config
 - [x] json-to-struct
 - [x] godoc: should work with . notation too
+- [x] issue with godoc when old window from previous session exists
 - [ ] improve gorun / gobuild somehow; they seem rather simple
   - [x] friendlier default -- probably for GoTest also and gocoverage
   - [ ] will open qf on errors - gorun / gobuild / gocoverage
-- [x] issue with godoc when old window from previous session exists
+- [ ] gotestrun should be able to take ./... and possibly package names
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets

@@ -10,28 +10,6 @@ goldsmith_test_complete = function(...)
   return M.test_complete(c)
 end
 
-goldsmith_test_package_complete = function()
-  return M.package_complete()
-end
-
-function M.package_complete()
-  local ok, l = go.list(false, './...') -- potentially expensive?
-  if not ok then
-    log.error('Testing', 'Failed to find all packages for current module/project.')
-  end
-  local pkgs = {}
-  for _, p in ipairs(l) do
-    local d = vim.fn.fnamemodify(p.Dir, ':.')
-    if d ~= vim.fn.getcwd() then
-      table.insert(pkgs, fs.relative_to_cwd(d))
-    end
-  end
-  table.sort(pkgs)
-  table.insert(pkgs, './...')
-  table.insert(pkgs, '.')
-  return table.concat(pkgs, '\n')
-end
-
 function M.test_complete(c)
   local cp = fs.relative_to_cwd(vim.fn.expand '%')
   local ok, list = go.list(false, cp)

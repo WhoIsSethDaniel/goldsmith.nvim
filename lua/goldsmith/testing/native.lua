@@ -504,9 +504,9 @@ function M.create_commands()
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestBRun lua require'goldsmith.testing.native'.run({type='bench'}, {<f-args>})
       command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_complete GoTestARun lua require'goldsmith.testing.native'.run({type='any'},   {<f-args>})
 
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestPkg  lua require'goldsmith.testing.native'.pkg({type='test'},  {<f-args>})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench'}, {<f-args>})
-      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_test_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any'},   {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_package_complete GoTestPkg  lua require'goldsmith.testing.native'.pkg({type='test'},  {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_package_complete GoTestBPkg lua require'goldsmith.testing.native'.pkg({type='bench'}, {<f-args>})
+      command! -nargs=* -bar -complete=custom,v:lua.goldsmith_package_complete GoTestAPkg lua require'goldsmith.testing.native'.pkg({type='any'},   {<f-args>})
 
       command! -nargs=* -bar                GoTestNearest  lua require'goldsmith.testing.native'.nearest({type='test'},  {<f-args>})
       command! -nargs=* -bar                GoTestBNearest lua require'goldsmith.testing.native'.nearest({type='bench'}, {<f-args>})
