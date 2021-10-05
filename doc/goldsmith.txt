@@ -394,13 +394,7 @@ guaranteed to be entirely up-to-date):
       },
       testing = {
         arguments = {},
-        native = {
-          strategy = "display"
-        },
-        runner = "native",
-        ["vim-test"] = {
-          strategy = "neovim"
-        }
+        strategy = "display"
       },
       window = {
         focus = true,
@@ -536,29 +530,14 @@ Set to "true" to use the current window when loading the alternate file. If
 
 TESTING                                             *goldsmith-testing-settings*
 
-`testing.runner`                                      *goldsmith-testing.runner*
-
-Default: native
-This variable may either be set to 'native' or to 'vim-test'. When set to 
-'native' the various :GoTest\* commands use the 'native' Goldsmith test runner.
-This is the default.
-
-When set to 'vim-test' the various :GoTest\* commands use the `vim-test`
-test runner. `vim-test` must be installed for it to function properly.
-
-See |goldsmith-testing| for a lot more on what the various test comamnds can do.
-
-See |goldsmith-resources| for where you can find `vim-test`.
-
-`testing.native.strategy`                    *goldsmith-testing.native.strategy*
+`testing.strategy`                                  *goldsmith-testing.strategy*
 
 Default: display
-When using the 'native' test runner this is used to set whether the test output 
-should be displayed or if tests should always be run in the background. Valid 
-strategies when using the 'native' test runner are: 'background' and 'display'.
-The latter shows the complete output of the test in a window. The former
-runs the tests in the background. Both strategies will bring up the quickfix 
-window if there are errors. The 'display' strategy honors your
+This is used to set whether the test output should be displayed or if tests 
+should always be run in the background. Valid strategies are: 'background' and
+'display'. The latter shows the complete output of the test in a window. The 
+former runs the tests in the background. Both strategies will bring up the
+quickfix window if there are errors. The 'display' strategy honors your
 |goldsmith-window-settings|. You can override the default window settings by
 placing window settings within the 'testing' config key, e.g.:
 >
@@ -569,17 +548,6 @@ placing window settings within the 'testing' config key, e.g.:
 <
 The above overrides the window defaults by turning off focus and placing the
 window to the left of the screen.
-
-See |goldsmith-testing| for much more information about testing in Goldsmith.
-
-`testing.vim-test.strategy`                *goldsmith-testing.vim-test.strategy*
-
-Default: neovim
-When `vim-test` has been selected as the test runner this variable can be used 
-to set the default test#strategy (see |test-strategies| if you have `vim-test` 
-installed) if you have not already set it. Valid strategies when using the
-`vim-test` runner are documented in |test-strategies| (if you have `vim-test`
-installed).
 
 See |goldsmith-testing| for much more information about testing in Goldsmith.
 
@@ -1669,53 +1637,38 @@ TESTING AND BENCHMARKING                                     *goldsmith-testing*
 
 INTRODUCTION
 
-It is not recommended to use the `vim-test` integration anymore. It has a number
-of problems that are unlikely to be resolved.
+All test commands run with '-json', however the output (if you are using the 
+'display' strategy) is just like '-v'. Currently there is no way to see the 
+actual JSON output unless you use |:GoTest|. There is also no way to see the 
+non-verbose output due to how the JSON output works. This method was chosen due
+to an issue with finding the specific file that produced the error when using 
+traditional Vim means (i.e. using |errorformat|). Using the JSON output allows 
+for correct reporting of which file produced the error, if any. The author has 
+also seen this file-identification problem using `vim-test` and also `vim-go`.
+Since this method is novel it may well have problems, particularly at the edges.
+Please report any problems you find using |goldsmith-help|.
 
-By default Goldsmith uses its 'native' testing framework. 'native' testing does 
-a number of things that may be surprising. All test commands run with '-json', 
-however the output (if you are using the 'display' strategy) is just like '-v'.
-Currently there is no way to see the actual JSON output unless you use |:GoTest|. 
-There is also no way to see the non-verbose output due to how the JSON output 
-works. This method was chosen due to an issue with finding the specific file that 
-produced the error when using traditional Vim means (i.e. using |errorformat|).
-Using the JSON output allows for correct reporting of which file produced the 
-error, if any. The author has also seen this file-identification problem using
-`vim-test` and also `vim-go`. Since this method is novel it may well have 
-problems, particularly at the edges. Please report any problems you find using 
-|goldsmith-help|.
-
-Goldsmith can integrate with `vim-test` for the running of tests. It does so by 
-having similar commands to `vim-test`, but with enhanced capabilities. All of
-the `vim-test` commands remain available to use. See |goldsmith-resources| for 
-where `vim-test` can be found.
-
-Goldsmith also integrates with the `gotests` test generation tool. See
+Goldsmith integrates with the `gotests` test generation tool. See
 |goldsmith-resources| for where this tool can be found. To install `gotests` you 
-can use |:GoInstallBinaries|.
-
-Goldsmith can work fine without `gotests` or `vim-test`. If you don't want to
-install `vim-test` the Goldsmith 'native' testing is quite good. If you don't want
-to install `gotests` all test-generation (|:GoAddTests| and |:GoAddTest|) will 
-fail to work.
+can use |:GoInstallBinaries|. Goldsmith can work fine without `gotests`. If you 
+don't want to install `gotests` all test-generation (|:GoAddTests| and 
+|:GoAddTest|) will fail to work.
 
 SETTINGS
 
-If you have installed `vim-test` and/or `gotests`, but have yet to configure
-them, you can still use Goldsmith. Goldsmith will detect when required `vim-test`
-or `gotests` variables are unset and will set them to reasonable defaults. See 
-|goldsmith-testing-settings| for what settings can be set.
+If you have installed `gotests`, but have yet to configure them, you can still 
+use Goldsmith. Goldsmith will detect when required `gotests` variables are unset
+and will set them to reasonable defaults. See |goldsmith-testing-settings| for
+what settings can be set.
 
-If you are using 'native' testing it will work fine right away. It is also
-configured via |goldsmith-testing-settings|. Currently only 'native' testing
-supports benchmarking commands (see below for more information on that).
+Test running is configured via |goldsmith-testing-settings|.
 
 WINDOW
 
-When you are using the 'native' test runner and the 'display' strategy the test 
-output shows up in a window. By default, if you are in this window, the output of
-the test will scroll. If you are in this window you can use 's' to to stop this
-scrolling. Press 'f' to start the scrolling again.
+When you are using the 'display' strategy the test output shows up in a window. 
+By default, if you are in this window, the output of the test will scroll. If
+you are in this window you can use 's' to to stop this scrolling. Press 'f' to
+start the scrolling again.
 
 QUICKFIX
 
@@ -1739,8 +1692,6 @@ Arguments to `go test` may be passed via the command and via
 Run all benchmarks for the current project. This command acts the same if it is
 run from a code file or a test file.
 
-Currently this command is not supported with the `vim-test` integration.
-
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
@@ -1749,8 +1700,6 @@ Arguments to `go test` may be passed via the command and via
 
 Run all tests and benchmarks for the current project. This command acts the same 
 if it is run from a code file or a test file.
-
-Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
@@ -1776,8 +1725,6 @@ where benchmarks should be run.
 Command completion can be used to pass directories within the current project
 to the command. The list of directories are those that contain packages.
 
-Currently this command is not supported with the `vim-test` integration.
-
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
@@ -1789,8 +1736,6 @@ directories where tests and benchmarks should be run.
 
 Command completion can be used to pass directories within the current project
 to the command. The list of directories are those that contain packages.
-
-Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
@@ -1813,8 +1758,6 @@ names of benchmarks to run. You can use command-completion to see the names of
 all benchmarks for the current package 2) if no arguments are passed in this 
 acts just like |:GoTestPkg|.
 
-Currently this command is not supported with the `vim-test` integration.
-
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 
                                                                    *:GoTestARun*
@@ -1824,8 +1767,6 @@ There are two scenarios: 1) if arguments are passed in they are assumed to be
 names of tests and/or benchmarks to run. You can use command-completion to see
 the names of all tests and benchmarks for the current package 2) if no arguments 
 are passed in this acts just like |:GoTestPkg|.
-
-Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 
@@ -1862,8 +1803,6 @@ The function benchmark matching works as follows: it searches for two different
 function names within your test file, Benchmark<funcname> and 
 Benchmark_<funcname>. The matching is case sensitive.
 
-Currently this command is not supported with the `vim-test` integration.
-
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
 
@@ -1881,8 +1820,6 @@ currently in and will attempt to run it as a test and/or benchmark.
 
 If the current function in a code file has all of an example, benchmark, and
 test all three will be run.
-
-Currently this command is not supported with the `vim-test` integration.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.
@@ -1907,9 +1844,8 @@ Arguments to `go test` may be passed via the command and via
                                                                    *:GoTestLast*
 :GoTestLast [args]
 
-Run the previous test/benchmark command. Both `vim-test` and the 'native' 
-Goldsmith testing commands keep track of the last test command that was run and
-this command will run it again.
+Run the previous test/benchmark command. The test framework keeps track of the 
+last test command that was run and this command will run it again.
 
 Arguments to `go test` may be passed via the command and via 
 |goldsmith-testing.arguments|.

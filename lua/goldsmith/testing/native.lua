@@ -420,7 +420,7 @@ do
         end
         last_cmd = cmd
         local opts = {}
-        local strategy = config.get('testing', 'native', 'strategy')
+        local strategy = config.get('testing', 'strategy')
         if strategy == 'display' then
           opts = config.window_opts(
             'testing',

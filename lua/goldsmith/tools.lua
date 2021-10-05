@@ -201,22 +201,6 @@ local TOOLS = {
       return ok
     end,
   },
-  test = {
-    name = 'vim-test',
-    required = false,
-    installed = false,
-    plugin = true,
-    location = 'https://github.com/vim-test/vim-test',
-    testing = true,
-    weight = 1,
-    not_found = {
-      'This plugin can be used for running tests.',
-      'It is highly recommended that you install this plugin.',
-    },
-    check_installed = function()
-      return vim.fn.exists ':TestFile' == 2 and vim.fn.exists '*test#default_runners'
-    end,
-  },
   treesitter = {
     name = 'nvim-treesitter',
     required = true,

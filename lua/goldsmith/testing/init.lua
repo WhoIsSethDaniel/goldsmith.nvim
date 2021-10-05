@@ -71,15 +71,9 @@ function M.setup()
     return
   end
 
-  local mod_name = config.get('testing', 'runner')
+  local mod_name = 'native'
   local mod_path = string.format('goldsmith.testing.%s', mod_name)
   local m = require(mod_path)
-  if not m.has_requirements() then
-    log.warn('Testing', string.format("Requirements for %s are not met. Setting testing to 'native'.", mod_name))
-    mod_name = 'native'
-    mod_path = string.format('goldsmith.testing.%s', mod_name)
-    m = require(mod_path)
-  end
 
   local _, f = pcall(require, mod_path)
   M.last = f.last

@@ -262,9 +262,7 @@ local SPEC = {
     config_file = { nil, 's' },
   },
   testing = vim.tbl_deep_extend('error', window_spec, {
-    ['vim-test'] = { strategy = { 'neovim', 's' } },
-    native = { strategy = { 'display', in_set(false, 'display', 'background'), 'valid strategies: display, background' } },
-    runner = { 'native', in_set(false, 'native', 'vim-test'), 'valid testing.runner: native, vim-test' },
+    strategy = { 'display', in_set(false, 'display', 'background'), 'valid strategies: display, background' },
     arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
