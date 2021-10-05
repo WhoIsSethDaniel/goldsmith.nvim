@@ -281,7 +281,9 @@ guaranteed to be entirely up-to-date):
       goalt = {
         use_current_window = false
       },
-      gobuild = {},
+      gobuild = {
+        use_makefile = true
+      },
       godoc = {},
       goget = {},
       goinstall = {},
@@ -874,6 +876,15 @@ https://github.com/golang/tools/blob/master/gopls/doc/settings.md#ui
 This setting can be changed from within Goldsmith by using |:GoCodeLensOn|
 and |:GoCodeLensOff|.
 
+GO BUILD                                                    *goldsmith-go-build*
+
+`gobuild.use_makefile`                          *goldsmith-gobuild.use_makefile*
+
+Default: true
+By default Goldsmith will use any makefile in your project root directory when
+you use |:GoBuild|. If no makefile exists it will use `go build`. By setting
+this to false it will instead always use `go build`.
+
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
 `tags.default_tag`                                  *goldsmith-tags.default_tag*
@@ -1039,17 +1050,33 @@ information.
 Manually request that `gopls` arrange and fix the import section of your code.
 
                                                                       *:GoBuild*
-:GoBuild [args]
+:GoBuild[!] [args]
 
-Run `go build` or `make` in the current working directory. 
-
-Will use `make` if the project root directory contains a Makefile (or makefile).
+Run `go build` or `make` on the current working directory. It will use `make` if 
+the project root directory contains a Makefile (or makefile). See
+|goldsmith-gobuild.use_makefile| to change this behavior.
 
 When running `go build` it takes the same arguments as `go build`. e.g.:
 >
     :GoBuild -race
 <
-If no arguments are passed the package of the current buffer will be used.
+If no file/package arguments are passed to this command the package of the
+current buffer will be inserted at the end of the command. e.g.:
+>
+    :GoBuild -n 
+< 
+will translate to:
+>
+    go build -n <current package>
+<
+If you have a package or file in the command then no insertion of the current
+package occurs.
+
+The insertion of the current package only occurs if you are using `go build`.
+This does not occur with `make`.
+
+If you pass "!" the command will run in the background. No output will be shown.
+Only the exit code of the job will be shown.
 
 Command completion may be used to find the name of the package(s) to build.
 
@@ -1059,14 +1086,37 @@ Command completion may be used to find the name of the package(s) to build.
 Run the previous :GoBuild command and append any arguments.
 
                                                                         *:GoRun*
-:GoRun [args]
+:GoRun[!] [args]
 
-Run `go run` in the current working directory. Takes the same arguments
-as `go run`. e.g., the following runs the main package in the current directory:
+Takes the same arguments as `go run`. e.g., the following runs the package in 
+the root of the project:
 >
     :GoRun .
 <
-If no arguments are passed the package of the current buffer will be used.
+If no file/package arguments are passed to this command the package of the
+current buffer will be inserted at the end of the command. e.g.:
+>
+    :GoRun -n 
+< 
+will translate to:
+>
+    go run -n <current package>
+<
+If you place two dashes in the command-line the current package will replace the
+two dashes in the command line. Any arguments following the two dashes will be
+inserted after the current package. e.g.:
+>
+    :GoRun -n -- -z
+<
+will translate to:
+>
+    go run -n <current package> -z
+<
+If you have a package or file in the command then no insertion of the current
+package occurs.
+
+If you pass "!" the command will run in the background. No output will be shown.
+Only the exit code of the job will be shown.
 
 Command completion may be used to find the name of the package to run.
 
@@ -1439,6 +1489,28 @@ If you wish to run the profile for the entire suite you can run:
 >
   :GoCoverage ./...
 <
+If no file/package arguments are passed to this command the package of the
+current buffer will be inserted at the end of the command. e.g.:
+>
+    :GoCoverage -n 
+< 
+will translate to (something like):
+>
+    go test -n -coverprofile=<profile> <current package>
+<
+If you place two dashes in the command-line the current package will replace the
+two dashes in the command line. Any arguments following the two dashes will be
+inserted after the current package. e.g.:
+>
+    :GoCoverage -n -- -z
+<
+will translate to (something like):
+>
+    go test -n -coverprofile=<profile> <current package> -z
+<
+If you have a package or file in the command then no insertion of the current
+package occurs.
+
 The annotation colors showing the coverage can be modified by the user using 
 typical highlighting commands. e.g.
 >
@@ -1843,7 +1915,7 @@ Arguments to `go test` may be passed via the command and via
 |goldsmith-testing.arguments|.
 
                                                                        *:GoTest*
-:GoTest [args]
+:GoTest[!] [args]
 
 This command simply runs 'go test' with the arguments that are passed to it. By 
 default it runs in a terminal. If you pass '!' it will run in the background. 
@@ -1852,6 +1924,28 @@ does not honor the |goldsmith-testing-settings|. Instead it honors settings in
 the 'gotest' config key, including |goldsmith-terminal-settings|. It is intended
 to be a bare proxy to `go test` and is separate from any of the Goldsmith test
 runners.
+
+If no file/package arguments are passed to this command the package of the
+current buffer will be inserted at the end of the command. e.g.:
+>
+    :GoTest -n 
+< 
+will translate to:
+>
+    go test -n <current package>
+<
+If you place two dashes in the command-line the current package will replace the
+two dashes in the command line. Any arguments following the two dashes will be
+inserted after the current package. e.g.:
+>
+    :GoTest -n -- -z
+<
+will translate to:
+>
+    go test -n <current package> -z
+<
+If you have a package or file in the command then no insertion of the current
+package occurs.
 
 Arguments to `go test` may only be passed via the command.
 

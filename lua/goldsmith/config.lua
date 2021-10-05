@@ -205,7 +205,7 @@ local SPEC = {
     ['tostruct'] = { {}, 't' },
     ['tostructreg'] = { {}, 't' },
   },
-  gobuild = terminal_spec,
+  gobuild = vim.tbl_deep_extend('error', terminal_spec, { use_makefile = { true, 'b' } }),
   gorun = terminal_spec,
   goget = terminal_spec,
   goinstall = terminal_spec,

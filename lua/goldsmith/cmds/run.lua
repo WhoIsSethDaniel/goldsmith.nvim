@@ -1,20 +1,44 @@
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
+local fs = require 'goldsmith.fs'
+local log = require 'goldsmith.log'
 
 local M = {}
 
 local last = {}
 
-function M.run(args)
+function M.run(bang, args)
   args = args or {}
-  if #args == 0 then
-    table.insert(args, vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'))
-  end
-  local cmd = { 'go', 'run'}
 
+  local has_file_arg = false
+  for i, arg in ipairs(args) do
+    if arg == '--' then
+      table.remove(args, i)
+      table.insert(args, i, fs.relative_to_cwd(vim.fn.expand '%'))
+      has_file_arg = true
+      break
+    end
+    if vim.fn.filereadable(arg) > 0 or vim.fn.isdirectory(arg) > 0 or arg == './...' then
+      has_file_arg = true
+      break
+    end
+  end
+  if not has_file_arg then
+    table.insert(args, fs.relative_to_cwd(vim.fn.expand '%'))
+  end
+
+  local cmd = { 'go', 'run' }
   vim.list_extend(cmd, args)
 
-  last = { cmd, config.terminal_opts 'gorun' }
+  if bang == '' then
+    last = { cmd, config.terminal_opts 'gorun' }
+  else
+    last = { cmd, {
+      on_exit = function(id, code)
+        log.info('Run', string.format('Job finished with code %d', code))
+      end,
+    } }
+  end
   job.run(unpack(last))
 end
 

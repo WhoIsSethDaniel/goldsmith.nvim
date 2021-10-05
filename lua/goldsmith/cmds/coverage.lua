@@ -63,11 +63,25 @@ function M.run(attr, args)
   local b = vim.api.nvim_get_current_buf()
   local buf_name = vim.api.nvim_buf_get_name(b)
   local profile_file = os.tmpname()
-  local path
-  if #args == 0 then
-    path = vim.fn.fnamemodify(buf_name, ':p:h')
+
+  local has_file_arg = false
+  for i, arg in ipairs(args) do
+    if arg == '--' then
+      table.remove(args, i)
+      table.insert(args, i, fs.relative_to_cwd(vim.fn.expand '%'))
+      has_file_arg = true
+      break
+    end
+    if vim.fn.filereadable(arg) > 0 or vim.fn.isdirectory(arg) > 0 or arg == './...' then
+      has_file_arg = true
+      break
+    end
   end
-  local cmd = vim.list_extend({ 'go', 'test', string.format('-coverprofile=%s', profile_file), path }, args)
+  if not has_file_arg then
+    table.insert(args, fs.relative_to_cwd(vim.fn.expand '%'))
+  end
+
+  local cmd = vim.list_extend({ 'go', 'test', string.format('-coverprofile=%s', profile_file) }, args)
   local opts = {}
   current_job = job.run(cmd, opts, {
     on_stderr = function(id, data)
