@@ -134,7 +134,7 @@ local test_acts = {
   },
 }
 
-local function process_test_results(output)
+local function process_test_results(test_actions, output)
   local mod = go.module_path()
   if mod == nil then
     log.warn('Testing', 'Cannot determine import path for current project.')
@@ -143,7 +143,7 @@ local function process_test_results(output)
   local qflist = {}
   local state = {}
   for _, j in ipairs(output) do
-    for _, ta in ipairs(test_acts) do
+    for _, ta in ipairs(test_actions) do
       if ta.on == j.Action then
         local matches = { string.match(j.Output, ta.match) }
         if #matches > 0 then
@@ -493,7 +493,7 @@ do
             else
               log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
-            local qflist = process_test_results(decoded)
+            local qflist = process_test_results(test_acts, decoded)
             if #qflist > 0 then
               vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
               local w = vim.api.nvim_get_current_win()

@@ -2,6 +2,7 @@ local log = require 'goldsmith.log'
 local job = require 'goldsmith.job'
 local coverage = require 'goldsmith.coverage'
 local fs = require 'goldsmith.fs'
+local cmds = require 'goldsmith.cmds'
 
 local M = {}
 
@@ -48,7 +49,8 @@ function M.open_browser(pf)
 end
 
 function M.run(attr, args)
-  args = args or {}
+  args = cmds.process_args(args)
+
   if current_job ~= nil then
     if vim.fn.jobwait({ current_job }, 0)[1] == -1 then
       if attr.bang == '!' then
@@ -60,26 +62,10 @@ function M.run(attr, args)
       end
     end
   end
+
   local b = vim.api.nvim_get_current_buf()
   local buf_name = vim.api.nvim_buf_get_name(b)
   local profile_file = os.tmpname()
-
-  local has_file_arg = false
-  for i, arg in ipairs(args) do
-    if arg == '--' then
-      table.remove(args, i)
-      table.insert(args, i, fs.relative_to_cwd(vim.fn.expand '%'))
-      has_file_arg = true
-      break
-    end
-    if fs.is_valid_package(arg) then
-      has_file_arg = true
-      break
-    end
-  end
-  if not has_file_arg then
-    table.insert(args, fs.relative_to_cwd(vim.fn.expand '%'))
-  end
 
   local cmd = vim.list_extend({ 'go', 'test', string.format('-coverprofile=%s', profile_file) }, args)
   local opts = {}

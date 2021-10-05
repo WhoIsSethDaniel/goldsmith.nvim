@@ -1,7 +1,7 @@
 local job = require 'goldsmith.job'
 local config = require 'goldsmith.config'
-local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
+local cmds = require 'goldsmith.cmds'
 
 local M = {}
 
@@ -21,18 +21,8 @@ function M.run(bang, args)
   end
 
   if makeprg ~= 'make' then
-    local has_file_arg = false
-    for _, arg in ipairs(args) do
-      if fs.is_valid_package(arg) then
-        has_file_arg = true
-        break
-      end
-    end
-    if not has_file_arg then
-      table.insert(args, fs.relative_to_cwd(vim.fn.expand '%'))
-    end
+    args = cmds.process_args(args)
   end
-
 
   local cmd = vim.split(vim.fn.expandcmd(makeprg), '%s')
   vim.list_extend(cmd, args)
