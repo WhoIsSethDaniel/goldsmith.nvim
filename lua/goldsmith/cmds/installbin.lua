@@ -6,8 +6,13 @@ local M = {}
 
 function M.complete(arglead, cmdline, cursorPos)
   local names = tools.names { status = 'install' }
-  table.sort(names)
-  return table.concat(names, '\n')
+  local exes = {}
+  for _, name in ipairs(names) do
+    local info = tools.info(name)
+    table.insert(exes, info.exe)
+  end
+  table.sort(exes)
+  return table.concat(exes, '\n')
 end
 
 function M.run(args)
@@ -36,9 +41,9 @@ function M.run(args)
     job.run(cmd, {
       on_exit = function(jobid, code, event)
         if code > 0 then
-          log.error('GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', name, code))
+          log.error('GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', info.exe, code))
         else
-          log.info('GoInstallBinaries', string.format('SUCCESS in retrieval of %s', name, code))
+          log.info('GoInstallBinaries', string.format('SUCCESS in retrieval of %s', info.exe, code))
         end
       end,
     })

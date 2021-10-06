@@ -4,68 +4,8 @@ local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
-local go = require 'goldsmith.go'
-local buffer = require 'goldsmith.buffer'
 
 local M = {}
-
--- save for posterity
--- local function errorformat()
---   local goroot = go.env 'goroot'
---   local indent = '%\\\\%(    %\\\\)'
---   local format = {}
-
---   -- this entire errorformat is a shameless steal from vim-go;
---   -- it has taken me many weeks to figure out what it is doing and
---   -- why it does it
---   table.insert(format, '%-G=== RUN   %.%#')
---   table.insert(format, ',%-G' .. indent .. '%#--- PASS: %.%#')
---   table.insert(format, ',%G--- FAIL: %\\\\%(Example%\\\\)%\\\\@=%m (%.%#)')
-
---   table.insert(format, ',%G' .. indent .. '%#--- FAIL: %m (%.%#)')
---   table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: %m')
-
---   table.insert(format, ',%A' .. indent .. '%#%\\t%\\+%f:%l: ')
-
---   table.insert(format, ',%G' .. indent .. '%#%\\t%\\{2}%m')
---   table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: %m')
---   table.insert(format, ',%A' .. indent .. '%\\+%[%^:]%\\+: %f:%l: ')
-
---   table.insert(format, ',%A' .. indent .. '%\\+%f:%l: %m')
---   table.insert(format, ',%A' .. indent .. '%\\+%f:%l: ')
---   table.insert(format, ',%G' .. indent .. '%\\{2\\,}%m')
-
---   table.insert(format, ',%+Gpanic: test timed out after %.%\\+')
-
---   table.insert(format, ',%+Afatal error: %.%# [recovered]')
---   table.insert(format, ',%+Apanic: %.%# [recovered]')
---   table.insert(format, ',%+Afatal error: %.%#')
---   table.insert(format, ',%+Apanic: %.%#')
-
---   table.insert(format, ',%-Cgoroutine %\\d%\\+ [running]:')
---   table.insert(format, ',%-C%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
---   table.insert(format, ',%Z%\\t%f:%l +0x%[0-9A-Fa-f]%\\+')
-
---   table.insert(format, ',%-Gruntime.goparkunlock(%.%#')
---   table.insert(format, ',%-G%\\t' .. goroot .. '%\\f%\\+:%\\d%\\+')
-
---   table.insert(format, ',%-G%\\t%\\f%\\+:%\\d%\\+ +0x%[0-9A-Fa-f]%\\+')
-
---   table.insert(format, ',%-Cexit status %[0-9]%\\+')
-
---   table.insert(format, ',%-CFAIL%\\t%.%#')
-
---   table.insert(format, ',%A%f:%l:%c: %m')
---   table.insert(format, ',%A%f:%l: %m')
-
---   table.insert(format, ',%-C%\\tpanic: %.%#')
---   table.insert(format, ',%G%\\t%m')
-
---   table.insert(format, ',%-C%.%#')
---   table.insert(format, ',%-G%.%#')
-
---   return format
--- end
 
 function M.has_requirements()
   return true
@@ -133,58 +73,6 @@ local test_acts = {
     end,
   },
 }
-
-local function process_test_results(test_actions, output)
-  local mod = go.module_path()
-  if mod == nil then
-    log.warn('Testing', 'Cannot determine import path for current project.')
-    mod = ''
-  end
-  local qflist = {}
-  local state = {}
-  for _, j in ipairs(output) do
-    for _, ta in ipairs(test_actions) do
-      if ta.on == j.Action then
-        local matches = { string.match(j.Output, ta.match) }
-        if #matches > 0 then
-          local m = ta.act(state, { j = j, module = mod, matches = matches })
-          if m ~= nil and m.file ~= nil then
-            local f = vim.fn.fnamemodify(m.file, ':p')
-            if vim.fn.filereadable(f) ~= 0 then
-              table.insert(qflist, {
-                filename = f,
-                lnum = m.line,
-                col = 1,
-                text = m.mess,
-                type = 'E',
-              })
-            end
-          end
-        end
-      end
-    end
-  end
-  -- sort and uniq
-  table.sort(qflist, function(a, b)
-    if a.filename == b.filename then
-      return a.lnum < b.lnum
-    end
-    return a.filename < b.filename
-  end)
-  local prev
-  return vim.tbl_filter(function(e)
-    if prev == nil then
-      prev = e
-      return true
-    end
-    if prev.filename == e.filename and prev.lnum == e.lnum and prev.text == e.text then
-      prev = e
-      return false
-    end
-    prev = e
-    return true
-  end, qflist)
-end
 
 do
   local test_type, args, cmd, cf, last_file, last_cmd, last_win, current_job, last_job
@@ -493,7 +381,7 @@ do
             else
               log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
-            local qflist = process_test_results(test_acts, decoded)
+            local qflist = job.check_for_errors(test_acts, decoded)
             if #qflist > 0 then
               vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
               local w = vim.api.nvim_get_current_win()

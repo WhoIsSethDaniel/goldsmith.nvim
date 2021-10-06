@@ -27,48 +27,20 @@ function M.run(bang, args)
   local cmd = vim.split(vim.fn.expandcmd(makeprg), '%s')
   vim.list_extend(cmd, args)
 
-  local lines = {}
-  local on_event = function(id, data, event)
-    if event == 'stdout' or event == 'stderr' then
-      if data then
-        vim.list_extend(lines, data)
-      end
-    end
-
-    if event == 'exit' then
-      vim.fn.setqflist({}, ' ', {
-        title = cmd,
-        lines = lines,
-        efm = vim.api.nvim_buf_get_option(b, 'errorformat'),
-      })
-      vim.api.nvim_command 'doautocmd QuickFixCmdPost'
-    end
-  end
-
+  local opts
   if bang == '' then
-    last = {
-      cmd,
-      config.terminal_opts 'gobuild',
-      {
-        terminal = true,
-        stdout_buffered = true,
-        stderr_buffered = true,
-        on_stdout = on_event,
-        on_stderr = on_event,
-        on_exit = on_event,
-      },
-    }
+    opts = config.terminal_opts('gobuild', { terminal = true })
   else
-    last = {
-      cmd,
-      {
-        on_exit = function(id, code)
-          log.info('Build', string.format('Job finished with code %d', code))
-        end,
-      },
+    opts = {
+      on_exit = function(id, code)
+        log.info('Build', string.format('Job finished with code %d', code))
+      end,
     }
   end
 
+  opts = vim.tbl_deep_extend('force', opts, { check_for_errors = true })
+
+  last = { cmd, opts }
   job.run(unpack(last))
 end
 

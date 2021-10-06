@@ -21,9 +21,9 @@
 - [x] godoc: should work with . notation too
 - [x] issue with godoc when old window from previous session exists
 - [x] gotestrun should be able to take ./... and possibly package names
-- [ ] improve gorun / gobuild
+- [x] improve gorun / gobuild
   - [x] friendlier default -- probably for GoTest also and gocoverage
-  - [ ] will open qf on errors - gorun / gobuild / gocoverage
+  - [x] will open qf on errors - gorun / gobuild / gocoverage
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets

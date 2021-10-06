@@ -13,15 +13,20 @@ function M.run(bang, args)
   local cmd = { 'go', 'run' }
   vim.list_extend(cmd, args)
 
+  local opts
   if bang == '' then
-    last = { cmd, config.terminal_opts 'gorun' }
+    opts = config.terminal_opts 'gorun'
   else
-    last = { cmd, {
+    opts = {
       on_exit = function(id, code)
         log.info('Run', string.format('Job finished with code %d', code))
       end,
-    } }
+    }
   end
+
+  opts = vim.tbl_extend('force', opts, { check_for_errors = true })
+
+  last = { cmd, opts }
   job.run(unpack(last))
 end
 

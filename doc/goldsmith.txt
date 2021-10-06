@@ -1050,6 +1050,9 @@ This does not occur with `make`.
 If you pass "!" the command will run in the background. No output will be shown.
 Only the exit code of the job will be shown.
 
+If errors are encountered during compilation, or if the running program panics,
+the quickfix list will be opened with the details.
+
 Command completion may be used to find the name of the package(s) to build.
 
                                                                   *:GoBuildLast*
@@ -1089,6 +1092,9 @@ package occurs.
 
 If you pass "!" the command will run in the background. No output will be shown.
 Only the exit code of the job will be shown.
+
+If errors are encountered during compilation, or if the running program panics,
+the quickfix list will be opened with the details.
 
 Command completion may be used to find the name of the package to run.
 
