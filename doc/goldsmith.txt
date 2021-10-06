@@ -1041,6 +1041,15 @@ will translate to:
 >
     go build -n <current package>
 <
+If you place three dots in the command-line it is similar to two dashes except
+it is now the current package and all below it. e.g.:
+>
+    :GoBuild -n ... -z
+<
+will translate to:
+>
+    go build -n <current package>/... -z
+<
 If you have a package or file in the command then no insertion of the current
 package occurs.
 
@@ -1086,6 +1095,15 @@ inserted after the current package. e.g.:
 will translate to:
 >
     go run -n <current package> -z
+<
+If you place three dots in the command-line it is similar to two dashes except
+it is now the current package and all below it. e.g.:
+>
+    :GoRun -n ... -z
+<
+will translate to:
+>
+    go run -n <current package>/... -z
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
@@ -1485,6 +1503,15 @@ inserted after the current package. e.g.:
 will translate to (something like):
 >
     go test -n -coverprofile=<profile> <current package> -z
+<
+If you place three dots in the command-line it is similar to two dashes except
+it is now the current package and all below it. e.g.:
+>
+    :GoCoverage -n ... -z
+<
+will translate to:
+>
+    go test -n -coverprofile=<profile> <current package>/... -z
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
@@ -1916,6 +1943,15 @@ inserted after the current package. e.g.:
 will translate to:
 >
     go test -n <current package> -z
+<
+If you place three dots in the command-line it is similar to two dashes except
+it is now the current package and all below it. e.g.:
+>
+    :GoTest -n ... -z
+<
+will translate to:
+>
+    go test -n <current package>/... -z
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
