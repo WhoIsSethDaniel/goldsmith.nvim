@@ -25,7 +25,12 @@
   - [x] friendlier default -- probably for GoTest also and gocoverage
   - [x] will open qf on errors - gorun / gobuild / gocoverage
 - [x] need way to specify "current package, and all below"
-- [ ] telescope integration
+- [ ] telescope extension(s)
+  - [ ] files with coverage data
+  - [ ] go files; test + code
+  - [ ] non-test go files
+  - [ ] non-code go files
+  - [ ] non-go files
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets

@@ -1,6 +1,5 @@
 local fs = require 'goldsmith.fs'
 local go = require 'goldsmith.go'
-local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 
 local M = {}

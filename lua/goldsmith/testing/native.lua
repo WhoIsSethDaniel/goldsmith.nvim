@@ -8,10 +8,6 @@ local cmds = require 'goldsmith.cmds'
 
 local M = {}
 
-function M.has_requirements()
-  return true
-end
-
 local function set_last_file(f)
   if fs.is_test_file(f) then
     return f
