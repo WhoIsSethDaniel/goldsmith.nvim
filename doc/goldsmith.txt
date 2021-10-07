@@ -1747,6 +1747,34 @@ Arguments to `go test` may be passed via the command and via
 Run the tests for the current package, or, pass the paths for directories where
 tests should be run.
 
+If no file/package arguments are passed to this command the package of the
+current buffer will be inserted at the end of the command. e.g.:
+>
+    :GoTestPkg
+< 
+will translate to:
+>
+    go test <current package>
+<
+If you place two dashes in the command-line the current package will replace the
+two dashes in the command line. Any arguments following the two dashes will be
+inserted after the current package. e.g.:
+>
+    :GoTestPkg -n -- -z
+<
+will translate to:
+>
+    go test -n <current package> -z
+<
+If you place three dots in the command-line it is similar to two dashes except
+it is now the current package and all below it. e.g.:
+>
+    :GoTestPkg -n ... -z
+<
+will translate to:
+>
+    go test -n <current package>/... -z
+<
 Command completion can be used to pass directories within the current project
 to the command. The list of directories are those that contain packages.
 
@@ -1804,7 +1832,7 @@ will run the equivalent of:
 >
     go test -run='^TestSomeTest$' ./...
 <
-and,
+and
 >
     :GoTestRun TestSomeTest ...
 <
@@ -1822,6 +1850,8 @@ names of benchmarks to run. You can use command-completion to see the names of
 all benchmarks for the current package 2) if no arguments are passed in this 
 acts just like |:GoTestPkg|.
 
+Argument processing is just like |:GoTestRun|.
+
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 
                                                                    *:GoTestARun*
@@ -1831,6 +1861,8 @@ There are two scenarios: 1) if arguments are passed in they are assumed to be
 names of tests and/or benchmarks to run. You can use command-completion to see
 the names of all tests and benchmarks for the current package 2) if no arguments 
 are passed in this acts just like |:GoTestPkg|.
+
+Argument processing is just like |:GoTestRun|.
 
 Arguments to `go test` may only be passed via |goldsmith-testing.arguments|.
 

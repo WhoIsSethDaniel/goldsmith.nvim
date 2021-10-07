@@ -4,6 +4,7 @@ local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
+local cmds = require 'goldsmith.cmds'
 
 local M = {}
 
@@ -142,13 +143,13 @@ do
           end
           local new = {}
           if is_any() then
-            table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
-            table.insert(new, '-bench=' .. table.concat(args, '$|') .. '$')
+            table.insert(new, 1, '-run=' .. table.concat(args, '$|') .. '$')
+            table.insert(new, 1, '-bench=' .. table.concat(args, '$|') .. '$')
           elseif is_bench() then
-            table.insert(new, '-run=#')
-            table.insert(new, '-bench=' .. table.concat(args, '$|') .. '$')
+            table.insert(new, 1, '-run=#')
+            table.insert(new, 1, '-bench=' .. table.concat(args, '$|') .. '$')
           elseif is_test() then
-            table.insert(new, '-run=' .. table.concat(args, '$|') .. '$')
+            table.insert(new, 1, '-run=' .. table.concat(args, '$|') .. '$')
           end
           table.insert(new, scope)
           args = new
@@ -201,10 +202,10 @@ do
                 if is_any() then
                   table.insert(any_matches, test.name)
                 elseif is_bench() then
-                  table.insert(args, '-run=#')
-                  table.insert(args, string.format('-bench=%s$', test.name))
+                  table.insert(args, 1, '-run=#')
+                  table.insert(args, 1, string.format('-bench=%s$', test.name))
                 elseif is_test() then
-                  table.insert(args, string.format('-run=%s$', test.name))
+                  table.insert(args, 1, string.format('-run=%s$', test.name))
                 end
                 if not is_any() then
                   break
@@ -216,8 +217,8 @@ do
               return false
             end
             if is_any() then
-              table.insert(args, '-run=' .. table.concat(any_matches, '$|') .. '$')
-              table.insert(args, '-bench=' .. table.concat(any_matches, '$|') .. '$')
+              table.insert(args, 1, '-run=' .. table.concat(any_matches, '$|') .. '$')
+              table.insert(args, 1, '-bench=' .. table.concat(any_matches, '$|') .. '$')
             end
             table.insert(args, fs.relative_to_cwd(cf))
           else
@@ -228,19 +229,19 @@ do
           local cfunc = ts.get_current_function_name()
           if cfunc ~= nil then
             if is_any() then
-              table.insert(args, string.format('-bench=%s$', cfunc))
-              table.insert(args, string.format('-run=%s$', cfunc))
+              table.insert(args, 1, string.format('-bench=%s$', cfunc))
+              table.insert(args, 1, string.format('-run=%s$', cfunc))
             elseif is_bench() then
               if string.match(cfunc, '^Benchmark') ~= nil then
-                table.insert(args, '-run=#')
-                table.insert(args, string.format('-bench=%s$', cfunc))
+                table.insert(args, 1, '-run=#')
+                table.insert(args, 1, string.format('-bench=%s$', cfunc))
               else
                 log.warn('Testing', string.format("Current function '%s' does not look like a benchmark", cfunc))
                 return false
               end
             elseif is_test() then
               if string.match(cfunc, '^Test') ~= nil or string.match(cfunc, '^Example') ~= nil then
-                table.insert(args, string.format('-run=%s', cfunc))
+                table.insert(args, 1, string.format('-run=%s', cfunc))
               else
                 log.warn('Testing', string.format("Current function '%s' does not look like a test", cfunc))
                 return false
@@ -262,10 +263,10 @@ do
     suite = {
       function()
         if is_any() then
-          table.insert(args, '-bench=.')
+          table.insert(args, 1, '-bench=.')
         elseif is_bench() then
-          table.insert(args, '-run=#')
-          table.insert(args, '-bench=.')
+          table.insert(args, 1, '-run=#')
+          table.insert(args, 1, '-bench=.')
         end
         table.insert(args, './...')
         return true
@@ -273,14 +274,12 @@ do
     },
     pkg = {
       function()
+        args = cmds.process_args(args)
         if is_any() then
-          table.insert(args, '-bench=.')
+          table.insert(args, 1, '-bench=.')
         elseif is_bench() then
-          table.insert(args, '-run=#')
-          table.insert(args, '-bench=.')
-        end
-        if #args == 0 then
-          table.insert(args, fs.relative_to_cwd(cf))
+          table.insert(args, 1, '-run=#')
+          table.insert(args, 1, '-bench=.')
         end
         return true
       end,
