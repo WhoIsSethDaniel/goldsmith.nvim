@@ -4,7 +4,7 @@ local log = require 'goldsmith.log'
 
 local M = {}
 
-goldsmith_test_complete = function(...)
+_G.goldsmith_test_complete = function(...)
   local _, c = ...
   return M.test_complete(c)
 end

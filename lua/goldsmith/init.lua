@@ -5,7 +5,7 @@ local fs = require 'goldsmith.fs'
 local log = require 'goldsmith.log'
 local go = require 'goldsmith.go'
 
-goldsmith_package_complete = function()
+_G.goldsmith_package_complete = function()
   local ok, l = go.list(false, './...')
   if not ok then
     log.error('Testing', 'Failed to find all packages for current module/project.')
