@@ -49,10 +49,10 @@ function M.doc_complete(arglead, cmdline, cursorPos)
   if #words > 1 and string.match(words[#words], '^[^-].+%..*') ~= nil then
     local pkg, item = unpack(vim.split(words[#words], '%.'))
     local comps = match_partial_item_name(pkg, item)
-    for i, comp in ipairs(comps) do
+    for i, comp in ipairs(comps or {}) do
       comps[i] = string.format("%s.%s", pkg, comp)
     end
-    return table.concat(comps, "\n")
+    return table.concat(comps or {}, "\n")
   elseif #words > 2 and string.match(words[#words - 1], '^-') == nil then
     local pkg = words[#words - 1]
     local item = words[#words]
@@ -60,7 +60,7 @@ function M.doc_complete(arglead, cmdline, cursorPos)
   elseif #words > 1 and string.match(words[#words], '^-') == nil then
     local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
     local pkgs = cmds.list_known_packages(bnum)
-    return table.concat(pkgs, '\n')
+    return table.concat(pkgs or {}, '\n')
   end
 end
 
