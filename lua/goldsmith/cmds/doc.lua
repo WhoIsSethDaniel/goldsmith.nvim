@@ -32,9 +32,15 @@ local function match_partial_item_name(pkg, part)
 
   local items = {}
   for _, lead in ipairs { 'type', 'func', 'var', 'const' } do
-    local pat = string.format('^%%s*%s (%s%%w+)', lead, part)
+    local pats = { string.format('^%%s*%s (%s%%w+)', lead, part), string.format('^%%s*%s %%(.-%%) (%s%%w+)', lead, part) }
     for _, line in ipairs(doc) do
-      local m = string.match(line, pat)
+      local m
+      for _, pat in ipairs(pats) do
+        m = string.match(line, pat)
+        if m then
+          break
+        end
+      end
       if m ~= nil then
         table.insert(items, m)
       end
@@ -47,7 +53,11 @@ end
 function M.doc_complete(arglead, cmdline, cursorPos)
   local words = vim.split(cmdline, '%s+')
   if #words > 1 and string.match(words[#words], '^[^-].+%..*') ~= nil then
-    local pkg, item = unpack(vim.split(words[#words], '%.'))
+    local pkg, item, method = unpack(vim.split(words[#words], '%.'))
+    if method then
+      pkg = string.format("%s.%s", pkg, item)
+      item = method
+    end
     local comps = match_partial_item_name(pkg, item)
     for i, comp in ipairs(comps or {}) do
       comps[i] = string.format("%s.%s", pkg, comp)
