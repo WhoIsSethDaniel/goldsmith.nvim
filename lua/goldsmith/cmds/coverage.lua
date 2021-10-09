@@ -85,16 +85,11 @@ function M.run(attr, args)
         return
       end
       if attr.type == 'job' then
-        if fs.is_test_file(buf_name) then
-          local cf = fs.code_file_name(vim.fn.expand(buf_name))
-          if vim.fn.filereadable(cf) > 0 then
-            vim.api.nvim_buf_call(b, function()
-              vim.cmd(string.format('silent! e! %s', cf))
-            end)
-          end
-        end
         coverage.add_coverage_file(pf)
-        coverage.highlight_on(b)
+        if fs.is_code_file(buf_name) then
+          coverage.highlight_on(b)
+        end
+        log.warn("Coverage", "Turn on coverage in code files using :GoCoverageOn. See all files with coverage data using :GoCoverageFiles.")
       elseif attr.type == 'web' then
         M.open_browser(pf)
         coverage.add_coverage_file(pf)

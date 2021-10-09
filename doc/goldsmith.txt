@@ -1464,8 +1464,10 @@ command uses to store the struct.
 Run `go test` in the background and generate a coverage profile. When the profile
 has been completed, which requires the `go test` to end successfully, annotate
 the current buffer to show what is covered and what is not. If the current buffer
-is a test file, switch the buffer to the corresponding code file (if any) and 
-annotate that buffer.
+is a test file nothing will appear to happen. You can navigate to any file that
+has had coverage data created for it (to see a list of such files use
+|:GoCoverageFiles|) and type |:GoCoverageOn| to see the coverage annotations.
+Use |:GoCoverageOff| to turn off the coverage annotations for the current buffer.
 
 This command runs asynchronously and, at times, can take awhile. If you run this
 command while another coverage job is running Goldsmith will disallow the new
@@ -1481,7 +1483,7 @@ If given no arguments this command acts on the current package. If arguments
 are given it is up to the user to provide the correct path(s). You can use 
 comand-completion to get the correct package path(s).
 
-If you wish to run the profile for the entire suite you can run:
+If you wish to run the profile for the entire project you can run:
 >
   :GoCoverage ./...
 <

@@ -27,7 +27,7 @@
 - [x] need way to specify "current package, and all below"
 - [x] add third dot completion for godoc (methods)
 - [x] sometimes testing doesn't reuse last window
-- [ ] weird behavior of qf when help is open
+- [x] do something different when gocoverage run in a test file
 - [ ] telescope extension(s)
   - [ ] files with coverage data
   - [ ] go files; test + code
