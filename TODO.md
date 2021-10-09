@@ -26,7 +26,7 @@
   - [x] will open qf on errors - gorun / gobuild / gocoverage
 - [x] need way to specify "current package, and all below"
 - [x] add third dot completion for godoc (methods)
-- [ ] sometimes testing doesn't reuse last window
+- [x] sometimes testing doesn't reuse last window
 - [ ] weird behavior of qf when help is open
 - [ ] telescope extension(s)
   - [ ] files with coverage data

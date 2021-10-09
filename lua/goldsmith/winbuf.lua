@@ -46,20 +46,19 @@ function M.create_winbuf(opts)
   end
 
   local title = opts['title']
-  local bufexists = title ~= nil and vim.fn.bufnr(title)
-  local wn
-  if bufexists then
-    wn = vim.fn.bufwinid(bufexists)
-    reuse = bufexists
-  else
-    wn = vim.fn.bufwinid(reuse)
-  end
+  local wn = vim.fn.bufwinid(reuse)
   if reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) and wn ~= -1 then
     vim.fn.win_gotoid(wn)
   elseif reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) then
     vim.cmd(string.format('%s %s %d%s', dim.orient, dim.place, dim.n, action))
     vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), reuse)
   else
+    if title ~= nil then
+      local bnr = vim.fn.bufnr(title)
+      if bnr > -1 then
+        vim.api.nvim_buf_delete(bnr, { force = true })
+      end
+    end
     local file = opts['file'] or ''
     vim.cmd(string.format('%s %s %d%s %s', dim.orient, dim.place, dim.n, action, file))
   end
