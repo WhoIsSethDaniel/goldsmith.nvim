@@ -136,7 +136,6 @@ function M.toggle_debug_console(wb, opts)
       return wb
     else
       if vim.api.nvim_buf_is_loaded(wb.buf) then
-        print(wb)
         local nwb = M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
         M.make_buffer_plain(nil, nwb.win)
         return nwb
