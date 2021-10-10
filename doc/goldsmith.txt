@@ -2518,7 +2518,7 @@ none of them take any Goldsmith specific options.
 Currently no previewer, but should be coming soon.
 
 Each telescope function can be mapped to a keyboard shortcut using 
-|:goldsmith-mappings|.
+|goldsmith-mappings|.
 
 *goldsmith-telescope-go-files*
 Picker that only lists Go files. Includes all test files and all code files.

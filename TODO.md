@@ -36,6 +36,7 @@
   - [x] non-code go files
   - [ ] need previewer
   - [ ] should probably verify the existence of telescope
+  - [ ] place in Telescope auto-complete
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets
