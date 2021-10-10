@@ -30,11 +30,12 @@
 - [x] do something different when gocoverage run in a test file
 - [x] when using GoGet remove any leading http[s]://
 - [ ] telescope extension(s)
-  - [ ] files with coverage data
-  - [ ] go files; test + code
-  - [ ] non-test go files
-  - [ ] non-code go files
-  - [ ] non-go files
+  - [x] files with coverage data
+  - [x] go files; test + code
+  - [x] non-test go files
+  - [x] non-code go files
+  - [ ] need previewer
+  - [ ] should probably verify the existence of telescope
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets

@@ -22,9 +22,10 @@ CONTENTS                                                    *goldsmith-contents*
   9. Status.......................................|goldsmith-status|
  10. Text Objects.................................|goldsmith-text-objects|
  11. Functions....................................|goldsmith-functions|
- 12. Health Check.................................|goldsmith-healthcheck|
- 13. Help.........................................|goldsmith-help|
- 14. Resources....................................|goldsmith-resources|
+ 12. Telescope Integration........................|goldsmith-telescope|
+ 13. Health Check.................................|goldsmith-healthcheck|
+ 14. Help.........................................|goldsmith-help|
+ 15. Resources....................................|goldsmith-resources|
 
 ================================================================================
 INTRO                                                          *goldsmith-intro*
@@ -95,6 +96,7 @@ Features currently included:
 * use :checkhealth to see if your Goldsmith setup should work correctly
 * format your code on demand using :GoFormat or have Goldsmith automatically 
   format your code on save
+* integration with Telescope for a number of file picking needs
 * run extra linters and/or formatters using null-ls: currently has support for 
   golines, gofmt, gofumpt, revive, golangci-lint, and staticcheck
 * see the source of the diagnostic when running extra linters
@@ -1127,11 +1129,17 @@ Run the previous :GoRun command and append any arguments.
 Run `go get` to add new libraries to use. Takes the same arguments as
 `go get`.
 
+You can pass arguments that are complete URLs (i.e. with https://) and this
+command will deal with that properly.
+
                                                                     *:GoInstall*
 :GoInstall [tools]
 
 Run `go install` to add new tools to use. Takes the same arguments as
 `go install`.
+
+You can pass arguments that are complete URLs (i.e. with https://) and this
+command will deal with that properly.
 
                                                                      *:GoFormat*
 :GoFormat
@@ -2356,17 +2364,26 @@ Default: none
 
 The same as |:GoCoverageFiles|. Show all files with coverage data.
 
-*(goldsmith-tostruct)*
+*(goldsmith-telescope-go-files)*
 Default: none
 
-The same as |:GoToStruct|. Convert JSON objects to Go structs and write the
-struct to the current buffer.
+Open Telescope with all of the Go files (test and code) for the current project.
 
-*(goldsmith-tostructreg)*
+*(goldsmith-telescope-go-test-files)*
 Default: none
 
-The same as |:GoToStructReg|. Convert JSON objects to Go structs and place the 
-result in a register.
+Open Telescope with all of the Go test files for the current project.
+
+*(goldsmith-telescope-go-code-files)*
+Default: none
+
+Open Telescope with all of the Go code files for the current project.
+
+*(goldsmith-telescope-go-covered-files)*
+Default: none
+
+Open Telescope with all of the currently covered files. See |:GoCoverage| for more 
+information on coverage.
 
 *(goldsmith-start-follow)*
 Default: F
@@ -2488,6 +2505,42 @@ passed-in the function returns true. Otherwise false. This is useful when
 creating a configuration for many LSP servers. See the wiki for a detailed look 
 at needed():
 https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations
+
+================================================================================
+TELESCOPE INTEGRATION                                      *goldsmith-telescope*
+
+Any of the telescope functions can take typical Telescope options. As of now
+none of them take any Goldsmith specific options.
+
+Currently no previewer, but should be coming soon.
+
+Each telescope function can be mapped to a keyboard shortcut using 
+|:goldsmith-mappings|.
+
+*goldsmith-telescope-go-files*
+Picker that only lists Go files. Includes all test files and all code files.
+>
+    require'goldsmith.telescope'.go_files()
+<
+
+*goldsmith-telescope-go-test-files*
+Picker that only lists Go test files.
+>
+    require'goldsmith.telescope'.go_test_files()
+<
+
+*goldsmith-telescope-go-code-files*
+Picker that only lists Go code files.
+>
+    require'goldsmith.telescope'.go_code_files()
+<
+
+*goldsmith-telescope-go-covered-files*
+Picker that only lists Go files with coverage data. See |:GoCoverage| for more
+information.
+>
+    require'goldsmith.telescope'.go_covered_files()
+<
 
 ================================================================================
 HEALTHCHECK                                              *goldsmith-healthcheck*

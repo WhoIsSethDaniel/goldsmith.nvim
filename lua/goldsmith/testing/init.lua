@@ -11,7 +11,7 @@ end
 
 function M.test_complete(c)
   local cp = fs.relative_to_cwd(vim.fn.expand '%')
-  local ok, list = go.list(false, cp)
+  local ok, list = go.list(false, { cp })
   if not ok then
     log.error('Testing', 'Failed to find all test files for current package.')
   end

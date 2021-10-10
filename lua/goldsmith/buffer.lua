@@ -66,8 +66,10 @@ local default_action_map = {
   ['coverage-on'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.on()<cr>", ft = { 'go' } },
   ['coverage-off'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.off()<cr>", ft = { 'go' } },
   ['coverage-files'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.show_files()<cr>", ft = { 'go' } },
-  ['tostruct'] = { act = ':GoToStruct<cr>', ft = { 'go' }, m = { 'v', 'n' } },
-  ['tostructreg'] = { act = ':GoToStructReg<cr>', ft = { 'go' }, m = { 'v', 'n' } },
+  ['telescope-go-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_files()<cr>", ft = '*' },
+  ['telescope-go-test-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_test_files()<cr>", ft = '*' },
+  ['telescope-go-code-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_code_files()<cr>", ft = '*' },
+  ['telescope-go-covered-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_covered_files()<cr>", ft = '*' },
 }
 
 function M.checkin(b)

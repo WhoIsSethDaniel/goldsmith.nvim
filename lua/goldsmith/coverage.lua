@@ -33,6 +33,16 @@ function M.has_coverage(f)
   return coverage_files[f]
 end
 
+function M.files()
+  local rel_files = vim.tbl_keys(coverage_files)
+  table.sort(rel_files)
+  local files = {}
+  for _, f in ipairs(rel_files) do
+    table.insert(files, vim.fn.fnamemodify(f, ':p:.'))
+  end
+  return files
+end
+
 function M.show_coverage_files()
   if vim.tbl_isempty(coverage_files) then
     log.warn('Coverage', 'No coverage files currently available.')
