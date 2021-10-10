@@ -28,6 +28,7 @@
 - [x] add third dot completion for godoc (methods)
 - [x] sometimes testing doesn't reuse last window
 - [x] do something different when gocoverage run in a test file
+- [x] when using GoGet remove any leading http[s]://
 - [ ] telescope extension(s)
   - [ ] files with coverage data
   - [ ] go files; test + code
