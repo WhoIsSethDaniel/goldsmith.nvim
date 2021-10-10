@@ -1574,6 +1574,9 @@ Turn off the annotation for the current buffer, if any.
 
 List all the files that currently have coverage data.
 
+If you have Telescope installed you can use the 
+|(goldsmith-telescope-go-covered-files)| mapping instead.
+
                                                               *:GoCreateConfigs*
 :GoCreateConfigs[!] [service] ...
 
