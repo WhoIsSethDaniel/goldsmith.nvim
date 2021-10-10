@@ -65,7 +65,7 @@ function M.check_for_errors(actions, output)
             if vim.fn.filereadable(vim.fn.escape(f, ' *?')) ~= 0 then
               table.insert(qflist, {
                 filename = f,
-                lnum = m.line,
+                lnum = tonumber(m.line),
                 col = 1,
                 text = m.mess,
                 type = 'E',
@@ -118,6 +118,7 @@ function M.run(cmd, ...)
     return 'opts: ' .. vim.inspect(opts)
   end)
 
+  local string_cmd = table.concat(cmd, ' ')
   if opts['check_for_errors'] then
     local stderr, stdout = { '' }, { '' }
     wrap('on_stderr', opts, function(id, d)
@@ -144,7 +145,7 @@ function M.run(cmd, ...)
       end
       local qflist = M.check_for_errors(process_acts, out)
       if #qflist > 0 then
-        vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
+        vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = string_cmd })
         local w = vim.api.nvim_get_current_win()
         vim.cmd [[ copen ]]
         vim.api.nvim_set_current_win(w)
@@ -161,13 +162,13 @@ function M.run(cmd, ...)
     local w = vim.api.nvim_get_current_win()
 
     vim.api.nvim_set_current_win(winbuf.win)
-    job = vim.fn.termopen(cmd, opts)
+    job = vim.fn.termopen(string_cmd, opts)
     vim.api.nvim_set_current_win(w)
   else
     wrap('on_exit', opts, function(id, code, type)
       running_jobs[id] = nil
     end)
-    job = vim.fn.jobstart(cmd, opts)
+    job = vim.fn.jobstart(string_cmd, opts)
     running_jobs[job] = cmd
   end
 

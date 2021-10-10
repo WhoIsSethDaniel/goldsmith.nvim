@@ -9,7 +9,9 @@ function M.determine_window(opts)
   local orient = ''
   local n = height
   local place
+  local action = opts['create'] and 'new' or 'split'
   if pos == 'right' or pos == 'left' then
+    action = opts['create'] and 'vnew' or 'vsplit'
     orient = 'vertical'
     n = width
   end
@@ -18,18 +20,13 @@ function M.determine_window(opts)
   elseif pos == 'left' or pos == 'top' then
     place = 'leftabove'
   end
-  return { orient = orient, place = place, n = n }
+  return { action = action, orient = orient, place = place, n = n }
 end
 
 function M.create_winbuf(opts)
   local dim = M.determine_window(opts)
 
   local lw = vim.api.nvim_get_current_win()
-
-  local action = 'split'
-  if opts['create'] then
-    action = 'new'
-  end
 
   local reuse = -1
   local ns = opts['reuse']
@@ -50,7 +47,7 @@ function M.create_winbuf(opts)
   if reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) and wn ~= -1 then
     vim.fn.win_gotoid(wn)
   elseif reuse > 0 and vim.api.nvim_buf_is_loaded(reuse) then
-    vim.cmd(string.format('%s %s %d%s', dim.orient, dim.place, dim.n, action))
+    vim.cmd(string.format('%s %s %d%s', dim.orient, dim.place, dim.n, dim.action))
     vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), reuse)
   else
     if title ~= nil then
@@ -60,11 +57,12 @@ function M.create_winbuf(opts)
       end
     end
     local file = opts['file'] or ''
-    vim.cmd(string.format('%s %s %d%s %s', dim.orient, dim.place, dim.n, action, file))
+    vim.cmd(string.format('%s %s %d%s %s', dim.orient, dim.place, dim.n, dim.action, file))
   end
 
   local w = vim.api.nvim_get_current_win()
   local b = vim.api.nvim_get_current_buf()
+
   if ns ~= nil then
     winstash[ns] = b
   end
@@ -239,8 +237,8 @@ function M.close_any_window(extra)
     M.close_window(ns)
   end
   if extra then
-    vim.cmd[[ cclose ]]
-    vim.cmd[[ lclose ]]
+    vim.cmd [[ cclose ]]
+    vim.cmd [[ lclose ]]
   end
 end
 
