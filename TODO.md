@@ -30,12 +30,12 @@
 - [x] do something different when gocoverage run in a test file
 - [x] when using GoGet remove any leading http[s]://
 - [x] gobuild, probably others, problems with spaces: e.g. :GoBuild -gcflags="-m -m" fails
-- [ ] telescope extension(s)
+- [x] telescope extension(s)
   - [x] files with coverage data
   - [x] go files; test + code
   - [x] non-test go files
   - [x] non-code go files
-  - [ ] need previewer
+  - [x] need previewer
 - [ ] checkhealth - sort
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones

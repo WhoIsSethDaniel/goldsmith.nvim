@@ -354,6 +354,7 @@ function M.names(attrs)
       end
     end
   end
+  table.sort(names)
   return names
 end
 
