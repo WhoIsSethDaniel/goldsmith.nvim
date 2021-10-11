@@ -25,7 +25,6 @@ end
 
 function M.create_winbuf(opts)
   local dim = M.determine_window(opts)
-  print(vim.inspect(dim))
 
   local lw = vim.api.nvim_get_current_win()
 
