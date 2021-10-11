@@ -100,7 +100,7 @@ function M.run(...)
   if extra['template_params_file'] ~= nil and extra['template_params_file'] ~= '' then
     args = string.format('%s -template_params_file %s', args, extra['template_params_file'])
   end
-  local cmd = string.format('gotests -w %s %s', args, fp)
+  local cmd = vim.split(string.format('gotests -w %s %s', args, fp), ' ')
   local ok = false
   local out = ''
   job.run(cmd, {

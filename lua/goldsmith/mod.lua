@@ -106,11 +106,11 @@ function M.replace(args)
   end
   vim.cmd [[ silent! wall ]]
   local b = vim.api.nvim_get_current_buf()
-  local cmd
+  local cmd = { 'go', 'mod', 'edit' }
   if type(mod) == 'table' then
-    cmd = string.format('go mod edit -replace %s@%s=%s', mod.name, mod.version, replace)
+    vim.list_extend(cmd, { '-replace', string.format('%s@%s=%s', mod.name, mod.version, replace) })
   else
-    cmd = string.format('go mod edit -replace %s=%s', mod, replace)
+    vim.list_extend(cmd, { '-replace', string.format('%s@%s=%s', mod.name, mod, replace) })
   end
   job.run(cmd, {
     stdout_buffered = true,
@@ -135,7 +135,7 @@ end
 function M.format()
   vim.cmd [[ silent! wall ]]
   local b = vim.api.nvim_get_current_buf()
-  job.run('go mod edit -fmt', {
+  job.run({ 'go', 'mod', 'edit', '-fmt' }, {
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(id, data)

@@ -67,7 +67,8 @@ function M.run(args)
 
   local out = ''
   local b = vim.api.nvim_get_current_buf()
-  job.run(string.format("impl '%s' %s", recv, iface), cfg, {
+  local cmd = { 'impl', "'" .. recv .. "'", iface }
+  job.run(cmd, cfg, {
     stderr_buffered = true,
     stdout_buffered = true,
     on_stdout = function(id, data, name)

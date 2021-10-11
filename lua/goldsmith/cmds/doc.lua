@@ -4,7 +4,7 @@ local wb = require 'goldsmith.winbuf'
 local job = require 'goldsmith.job'
 local cmds = require 'goldsmith.lsp.commands'
 
-local M = { }
+local M = {}
 
 function M.help_complete(arglead, cmdline, cursorPos)
   local doc = vim.fn.systemlist 'go help'
@@ -32,7 +32,11 @@ local function match_partial_item_name(pkg, part)
 
   local items = {}
   for _, lead in ipairs { 'type', 'func', 'var', 'const' } do
-    local pats = { string.format('^%%s*%s (%s%%w+)', lead, part), string.format('^%%s*%s %%(.-%%) (%s%%w+)', lead, part) }
+    local pats =
+      {
+        string.format('^%%s*%s (%s%%w+)', lead, part),
+        string.format('^%%s*%s %%(.-%%) (%s%%w+)', lead, part),
+      }
     for _, line in ipairs(doc) do
       local m
       for _, pat in ipairs(pats) do
@@ -55,18 +59,18 @@ function M.doc_complete(arglead, cmdline, cursorPos)
   if #words > 1 and string.match(words[#words], '^[^-].+%..*') ~= nil then
     local pkg, item, method = unpack(vim.split(words[#words], '%.'))
     if method then
-      pkg = string.format("%s.%s", pkg, item)
+      pkg = string.format('%s.%s', pkg, item)
       item = method
     end
     local comps = match_partial_item_name(pkg, item)
     for i, comp in ipairs(comps or {}) do
-      comps[i] = string.format("%s.%s", pkg, comp)
+      comps[i] = string.format('%s.%s', pkg, comp)
     end
-    return table.concat(comps or {}, "\n")
+    return table.concat(comps or {}, '\n')
   elseif #words > 2 and string.match(words[#words - 1], '^-') == nil then
     local pkg = words[#words - 1]
     local item = words[#words]
-    return table.concat(match_partial_item_name(pkg, item), "\n")
+    return table.concat(match_partial_item_name(pkg, item), '\n')
   elseif #words > 1 and string.match(words[#words], '^-') == nil then
     local bnum = buffer.get_valid_buffer() or vim.api.nvim_get_current_buf()
     local pkgs = cmds.list_known_packages(bnum)
@@ -77,7 +81,9 @@ end
 function M.run(type, args)
   local cfg = config.window_opts('godoc', { create = true, title = '[Go Documentation]', reuse = 'godoc' })
   local out = ''
-  job.run(string.format('go %s %s', type, table.concat(args, ' ')), cfg, {
+  local cmd = { 'go', type }
+  vim.list_extend(cmd, args)
+  job.run(cmd, cfg, {
     stderr_buffered = true,
     stdout_buffered = true,
     on_stdout = function(id, data, name)

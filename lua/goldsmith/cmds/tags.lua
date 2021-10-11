@@ -47,7 +47,7 @@ function M.run(action, location, args)
     cmd = string.format('%s --add-tags %s', cmd, config.default_tag)
   end
   local b = vim.api.nvim_get_current_buf()
-  local ret = job.run(cmd, {
+  job.run(vim.split(cmd, ' '), {
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(jobid, data)
