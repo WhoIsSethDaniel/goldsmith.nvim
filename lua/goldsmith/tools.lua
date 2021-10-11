@@ -252,6 +252,20 @@ local TOOLS = {
       return vim.fn.exists 'g:loaded_fix_cursorhold_nvim' > 0
     end,
   },
+  telescope = {
+    name = 'telescope.nvim',
+    required = false,
+    installed = false,
+    plugin = true,
+    location = 'https://github.com/nvim-telescope/telescope.nvim',
+    not_found = {
+      'Helpful fuzzy finder used by Goldsmith to help with project management and navigation.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'telescope')
+      return ok
+    end,
+  },
 }
 
 function M.find_bin(program, info)

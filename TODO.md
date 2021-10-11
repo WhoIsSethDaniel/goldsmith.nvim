@@ -36,6 +36,7 @@
   - [x] non-test go files
   - [x] non-code go files
   - [ ] need previewer
+- [ ] checkhealth - sort
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] snippets
