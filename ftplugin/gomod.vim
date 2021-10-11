@@ -17,6 +17,14 @@ setlocal formatoptions-=t
 setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
+function s:GoDocComplete(A,C,P) abort
+	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+endfunction
+
+function s:GoHelpComplete(A,C,P) abort
+	return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+endfunction
+
 command! -nargs=0 GoModCheck lua require'goldsmith.cmds.mod'.check_for_upgrades()
 command! -nargs=0 GoModTidy lua require'goldsmith.cmds.mod'.tidy()
 command! -nargs=+ GoModReplace lua require'goldsmith.cmds.mod'.replace({<f-args>})
@@ -29,6 +37,10 @@ cabbrev GoModFmt GoFormat
 command! -nargs=0 GoCodeLensRun lua require'goldsmith.cmds.lsp'.run_codelens()
 command! -nargs=0 GoCodeLensOn lua require'goldsmith.cmds.lsp'.turn_on_codelens()
 command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelens()
+
+" documentation
+command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run('doc', {<f-args>})
+command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith.cmds.doc'.run('help', {<f-args>})
 
 augroup goldsmith_ft_gomod
   autocmd! * <buffer>

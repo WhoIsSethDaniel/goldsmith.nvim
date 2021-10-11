@@ -25,6 +25,7 @@ end
 
 function M.create_winbuf(opts)
   local dim = M.determine_window(opts)
+  print(vim.inspect(dim))
 
   local lw = vim.api.nvim_get_current_win()
 
@@ -51,7 +52,7 @@ function M.create_winbuf(opts)
     vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), reuse)
   else
     if title ~= nil then
-      local bnr = vim.fn.bufnr(title)
+      local bnr = vim.fn.bufnr(vim.fn.fnameescape(title))
       if bnr > -1 then
         vim.api.nvim_buf_delete(bnr, { force = true })
       end
