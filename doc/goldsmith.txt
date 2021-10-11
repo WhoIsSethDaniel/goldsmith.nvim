@@ -2515,8 +2515,6 @@ TELESCOPE INTEGRATION                                      *goldsmith-telescope*
 Any of the telescope functions can take typical Telescope options. As of now
 none of them take any Goldsmith specific options.
 
-Currently no previewer, but should be coming soon.
-
 Each telescope function can be mapped to a keyboard shortcut using 
 |goldsmith-mappings|.
 
