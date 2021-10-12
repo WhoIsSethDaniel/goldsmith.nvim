@@ -2532,6 +2532,12 @@ none of them take any Goldsmith specific options.
 Each telescope function can be mapped to a keyboard shortcut using 
 |goldsmith-mappings|.
 
+For Goldsmith's pickers to show up in Telescope command completion you must 
+register the Goldsmith Telescope extension somewhere in your config:
+>
+    require('telescope').load_extension 'goldsmith'
+<
+
 *goldsmith-telescope-go-files*
 Picker that only lists Go files. Includes all test files and all code files.
 >
