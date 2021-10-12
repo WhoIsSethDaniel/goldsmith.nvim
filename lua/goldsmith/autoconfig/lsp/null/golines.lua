@@ -1,6 +1,5 @@
 local tools = require 'goldsmith.tools'
 local config = require 'goldsmith.config'
-local log = require 'goldsmith.log'
 
 local null = require 'null-ls'
 local help = require 'null-ls.helpers'
