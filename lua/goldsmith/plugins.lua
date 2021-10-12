@@ -3,7 +3,11 @@ local tools = require 'goldsmith.tools'
 local M = {}
 
 function M.names()
-  return tools.names { plugin = true }
+  local names = tools.names { plugin = true }
+  table.sort(names, function(a, b)
+    return M.info(a).name < M.info(b).name
+  end)
+  return names
 end
 
 function M.check()
