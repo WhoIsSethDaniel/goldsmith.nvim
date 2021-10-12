@@ -7,21 +7,18 @@ function M.process_args(args)
   local current_pkg = fs.relative_to_cwd(vim.fn.expand '%')
   local has_file_arg = false
   for i, arg in ipairs(args) do
-    if arg == '--' then
-      table.remove(args, i)
-      table.insert(args, i, current_pkg)
+    local before = args[i]
+    args[i] = vim.fn.expand(arg)
+    if before ~= args[i] then
       has_file_arg = true
-      break
-    end
-    if arg == '...' then
-      table.remove(args, i)
-      table.insert(args, i, current_pkg .. '/...')
+    elseif arg == '--' then
+      args[i] = current_pkg
       has_file_arg = true
-      break
-    end
-    if fs.is_valid_package(arg) then
+    elseif arg == '...' then
+      args[i] = current_pkg .. '/...'
       has_file_arg = true
-      break
+    elseif fs.is_valid_package(arg) then
+      has_file_arg = true
     end
   end
   if not has_file_arg then

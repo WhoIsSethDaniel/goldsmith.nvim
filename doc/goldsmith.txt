@@ -1057,6 +1057,9 @@ will translate to:
 If you have a package or file in the command then no insertion of the current
 package occurs.
 
+Typical vim special characters, such as % and #, along with environment 
+variables will be expanded as documented in |expand()|.
+
 The insertion of the current package only occurs if you are using `go build`.
 This does not occur with `make`.
 
@@ -1111,6 +1114,9 @@ will translate to:
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
+
+Typical vim special characters, such as % and #, along with environment 
+variables will be expanded as documented in |expand()|.
 
 If you pass "!" the command will run in the background. No output will be shown.
 Only the exit code of the job will be shown.
@@ -1527,6 +1533,9 @@ will translate to:
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
+
+Typical vim special characters, such as % and #, along with environment 
+variables will be expanded as documented in |expand()|.
 
 The annotation colors showing the coverage can be modified by the user using 
 typical highlighting commands. e.g.
@@ -2002,6 +2011,9 @@ will translate to:
 <
 If you have a package or file in the command then no insertion of the current
 package occurs.
+
+Typical vim special characters, such as % and #, along with environment 
+variables will be expanded as documented in |expand()|.
 
 Command completion may be used to discover all packages for the current project.
 
