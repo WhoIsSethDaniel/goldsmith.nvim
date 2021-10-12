@@ -349,6 +349,10 @@ guaranteed to be entirely up-to-date):
         ["sym-highlight"] = {},
         ["sym-highlight-off"] = {},
         ["sym-highlight-on"] = {},
+        ["telescope-go-code-files"] = {},
+        ["telescope-go-covered-files"] = {},
+        ["telescope-go-files"] = {},
+        ["telescope-go-test-files"] = {},
         ["test-a-nearest"] = {},
         ["test-a-pkg"] = {},
         ["test-a-suite"] = {},
@@ -362,8 +366,6 @@ guaranteed to be entirely up-to-date):
         ["test-suite"] = {},
         ["test-visit"] = {},
         ["toggle-debug-console"] = {},
-        tostruct = {},
-        tostructreg = {},
         typedef = { "<leader>D" }
       },
       null = {

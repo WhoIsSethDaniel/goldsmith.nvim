@@ -1,9 +1,10 @@
-- [x] telescope extension(s)
+- [ ] telescope extension(s)
   - [x] files with coverage data
   - [x] go files; test + code
   - [x] non-test go files
   - [x] non-code go files
   - [x] need previewer
+  - [ ] register
 - [ ] checkhealth - sort
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
