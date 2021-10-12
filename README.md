@@ -15,7 +15,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * manually update imports using the :GoImports command [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-goimports-support)
 * use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#use-checkhealth-to-check-goldsmith-setup)
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#manual-formatting-using-goformat)
-* integration with [Telescope](https://github.com/nvim-telescope/telescope.nvim) for a number of file picking needs
+* integration with [Telescope](https://github.com/nvim-telescope/telescope.nvim) for a number of file picking needs [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-6#telescope-integration)
 * run extra linters and/or formatters using null-ls: currently has support for golines, gofmt, gofumpt, revive, golangci-lint, and staticcheck
 * see the source of the diagnostic when running extra linters
 * Goldsmith can completely configure everything for you, if you want (see the [Configurations](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Configurations) wiki for more)
