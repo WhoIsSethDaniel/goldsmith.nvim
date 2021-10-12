@@ -6,10 +6,6 @@ local M = {}
 
 _G.goldsmith_test_complete = function(...)
   local _, c = ...
-  return M.test_complete(c)
-end
-
-function M.test_complete(c)
   local cp = fs.relative_to_cwd(vim.fn.expand '%')
   local ok, list = go.list(false, { cp })
   if not ok then
