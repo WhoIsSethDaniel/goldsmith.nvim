@@ -2537,11 +2537,19 @@ Picker that only lists Go files. Includes all test files and all code files.
 >
     require'goldsmith.telescope'.go_files()
 <
+or 
+>
+    :Telescope goldsmith go_files
+<
 
 *goldsmith-telescope-go-test-files*
 Picker that only lists Go test files.
 >
     require'goldsmith.telescope'.go_test_files()
+<
+or 
+>
+    :Telescope goldsmith go_test_files
 <
 
 *goldsmith-telescope-go-code-files*
@@ -2549,12 +2557,20 @@ Picker that only lists Go code files.
 >
     require'goldsmith.telescope'.go_code_files()
 <
+or 
+>
+    :Telescope goldsmith go_code_files
+<
 
 *goldsmith-telescope-go-covered-files*
 Picker that only lists Go files with coverage data. See |:GoCoverage| for more
 information.
 >
     require'goldsmith.telescope'.go_covered_files()
+<
+or 
+>
+    :Telescope goldsmith go_covered_files
 <
 
 ================================================================================

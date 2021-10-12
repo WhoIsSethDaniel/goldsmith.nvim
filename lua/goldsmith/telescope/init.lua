@@ -1,4 +1,4 @@
-local has_telescope, _ = pcall(require, "telescope")
+local has_telescope, telescope = pcall(require, "telescope")
 
 if not has_telescope then
   error("This plugin requires telescope.nvim (https://github.com/nvim-telescope/telescope.nvim)")
@@ -22,6 +22,7 @@ local go_pickers = {
   { name = 'go_covered_files', f = coverage.files, title = 'Go Covered Files' },
 }
 
+local exports = {}
 for _, p in ipairs(go_pickers) do
   M[p.name] = function(opts)
     opts = opts or {}
@@ -39,6 +40,11 @@ for _, p in ipairs(go_pickers) do
       sorter = conf.file_sorter(opts),
     }):find()
   end
+  exports[p.name] = M[p.name]
+end
+
+function M.register()
+  return telescope.register_extension { exports = exports }
 end
 
 return M
