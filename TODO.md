@@ -9,4 +9,4 @@
   - [x] register
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
-- [ ] tests (using plenary?)
+- [ ] tests
