@@ -1,7 +1,7 @@
-local has_telescope, telescope = pcall(require, "telescope")
+local has_telescope, telescope = pcall(require, 'telescope')
 
 if not has_telescope then
-  error("This plugin requires telescope.nvim (https://github.com/nvim-telescope/telescope.nvim)")
+  error 'This plugin requires telescope.nvim (https://github.com/nvim-telescope/telescope.nvim)'
 end
 
 local pickers = require 'telescope.pickers'
@@ -34,7 +34,7 @@ for _, p in ipairs(go_pickers) do
       previewer = conf.file_previewer(opts),
       prompt_title = p.title,
       finder = finders.new_table {
-        results = p.f('./...'),
+        results = p.f './...',
         entry_maker = make_entry.gen_from_file(),
       },
       sorter = conf.file_sorter(opts),
