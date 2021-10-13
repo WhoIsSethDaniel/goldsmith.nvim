@@ -251,8 +251,10 @@ local SPEC = {
       template = { '....', 's' },
       test_files = { false, 'b' },
     },
-    goimports = { true, 'b' },
-    goimports_timeout = { 1000, 'n' },
+    goimports = {
+      enabled = { true, 'b' },
+      timeout = { 1000, 'n' },
+    },
   },
   highlight = {
     current_symbol = { true, 'b' },

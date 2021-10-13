@@ -5,7 +5,7 @@ local M = {}
 
 function M.format_go_file()
   fmt.lsp_format()
-  if config.get('format', 'goimports') then
+  if config.get('format', 'goimports', 'enabled') then
     fmt.organize_imports()
   end
   if config.get('format', 'comments', 'enabled') then

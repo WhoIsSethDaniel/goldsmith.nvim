@@ -37,7 +37,7 @@ end
 
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
 function M.organize_imports(wait_ms)
-  wait_ms = wait_ms or config.get('format', 'goimports_timeout')
+  wait_ms = wait_ms or config.get('format', 'goimports', 'timeout')
   local params = vim.lsp.util.make_range_params()
   params.context = { only = { 'source.organizeImports' } }
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)

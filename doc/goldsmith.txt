@@ -275,8 +275,10 @@ guaranteed to be entirely up-to-date):
           template = "....",
           test_files = false
         },
-        goimports = true,
-        goimports_timeout = 1000,
+        goimports = {
+          enabled = true,
+          timeout = 1000
+        },
         max_line_length = 120,
         run_on_save = true
       },
@@ -448,9 +450,11 @@ details on each mapping setting and its default key mapping.
 
 `mappings.enabled`                                  *goldsmith-mappings.enabled*
 
-Default: tru
-When set to true the default key mappings are used. When set to false no mapping
-defaults are used, and the user is expected to define all desired mappings.
+Default: true
+When set to true the default key mappings are used. The user can override these
+defaults, but, if no mapping is provided in the configuration, the default, if 
+any, will be used. When set to false no default mappings are used, and the user
+is expected to define all desired mappings.
 
 For more information about this setting and key mappings please see 
 |goldsmith-mappings|.
@@ -509,7 +513,7 @@ affect |:GoComments|, only |:GoFormat| and formatting-on-save.
 
 See |:GoComments| for more information on commenting.
 
-`format.goimports`                                  *goldsmith-format.goimports*
+`format.goimports.enabled`                  *goldsmith-format.goimports.enabled*
 
 Default: true
 When set to true |:GoFormat| will request, from gopls, that the imports section of 
@@ -517,7 +521,7 @@ the code be organized and that any missing imports should be inserted. When fals
 |:GoFormat| will not do this. You can manually request this at any time using
 |:GoImports|.
 
-`format.goimports_timeout`                  *goldsmith-format.goimports_timeout*
+`format.goimports.timeout`                  *goldsmith-format.goimports.timeout*
 
 Default: 1000
 How long to wait for a response from gopls when requesting that it organizes the
@@ -638,7 +642,7 @@ COMPLETION                                                *goldsmith-completion*
 Default: false
 Setup the Neovim omnicomplete function ('omnifunc'). By default this is turned 
 off as most people will want to setup an auto-completion plugin, such as 
-nvim-compe (https://github.com/hrsh7th/nvim-compe), instead of using this.
+nvim-cmp (https://github.com/hrsh7th/nvim-cmp), instead of using this.
 
 This simply sets 'omnifunc' to |vim.lsp.omnifunc()|.
 
@@ -650,8 +654,8 @@ STATUSLINE                                                *goldsmith-statusline*
 `status.max_length`                                *goldsmith-status.max_length*
 
 Default: 40
-The maximum length the Goldsmith statusline integration will use. The length is a
-bit fuzzy so the maximum may be exceeded by a small amount.
+The maximum length the Goldsmith statusline integration will use. The length is
+a bit fuzzy so the maximum may be exceeded by a small amount.
 
 JSON TO STRUCT                                        *goldsmith-json-to-struct*
 
@@ -820,7 +824,8 @@ e.g.:
 <
 The above instructs Goldsmith to not use the current window when jumping. Instead
 it should open a new window and that window should be on the left side of the
-screen. Every jump will open a new window.
+screen. Every jump will open a new window unless the jump is to somewhere in the
+current file.
 
 HIGHLIGHTING                                   *goldsmith-highlighting-settings*
 
