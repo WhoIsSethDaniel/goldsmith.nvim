@@ -32,10 +32,9 @@ function M.setup(user_args)
       command = cmd(),
       to_stdin = true,
       args = vim.list_extend(
-        { string.format('--max-len=%d', conf['max_line_length']), '--base-formatter=gofmt', '$FILENAME' },
+        { string.format('--max-len=%d', conf['max_line_length']), '--base-formatter=gofmt' },
         user_args
       ),
-      suppress_errors = false,
     },
   }
 end
