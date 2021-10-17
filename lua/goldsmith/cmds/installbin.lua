@@ -36,7 +36,7 @@ function M.run(args)
   end
   for _, name in ipairs(install) do
     local info = tools.info(name)
-    local cmd = string.format('go install %s@%s', info.location, info.tag)
+    local cmd = { 'go', 'install', string.format("%s@%s", info.location, info.tag)}
     log.info('GoInstallBinaries', string.format('starting retrieval of %s', name))
     job.run(cmd, {
       on_exit = function(jobid, code, event)
