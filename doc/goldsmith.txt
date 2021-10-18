@@ -286,7 +286,7 @@ guaranteed to be entirely up-to-date):
         use_current_window = false
       },
       gobuild = {
-        use_makefile = true
+        use_makefile = false
       },
       godoc = {},
       goget = {},
@@ -391,12 +391,6 @@ guaranteed to be entirely up-to-date):
         default_tag = "json",
         skip_unexported = false,
         transform = "snakecase"
-      },
-      terminal = {
-        focus = false,
-        height = 20,
-        pos = "right",
-        width = 80
       },
       testing = {
         arguments = {},
@@ -857,10 +851,10 @@ GO BUILD                                                    *goldsmith-go-build*
 
 `gobuild.use_makefile`                          *goldsmith-gobuild.use_makefile*
 
-Default: true
-By default Goldsmith will use any makefile in your project root directory when
-you use |:GoBuild|. If no makefile exists it will use `go build`. By setting
-this to false it will instead always use `go build`.
+Default: false
+If set to true Goldsmith will use any makefile in your project root directory
+when you use |:GoBuild|. If no makefile exists it will use `go build`. By default
+this command will always use `go build`.
 
 TAG MANIPULATION                                    *goldsmith-tag-manipulation*
 
@@ -881,50 +875,9 @@ Apply the named transformation to the tag name. The available transformations ar
 Default: false
 When applying tags skip any fields that are unexported.
 
-TERMINAL SETTINGS                                  *goldsmith-terminal-settings*
-
-Terminal settings are used by commands that have output that is displayed in a
-terminal window.  Commands that have such output are |:GoBuild|, |:GoRun|, 
-|:GoGet|, and |:GoInstall| (and possibly others).
-
-`terminal.pos`                                          *goldsmith-terminal.pos*
-
-Default: right
-Position the terminal window will be placed at when a command with output is run.
-An example of a command with output is :GoBuild. Valid values are "top", 
-"bottom", "left", "right".
-
-This sets this setting globally. You can also set it per-command.
-
-`terminal.focus`                                      *goldsmith-terminal.focus*
-
-Default: false
-Whether or not the terminal window will have focus when a command with output is
-run. If the window has focus at the time the command is run then this option has 
-no effect. An example of a command with terminal output is :GoBuild.
-
-This sets this setting globally. You can also set it per-command.
-
-`terminal.width`                                      *goldsmith-terminal.width*
-
-Default: 80
-When using a pos that requires a vertical split this value represents the width 
-of the terminal.
-
-This sets this setting globally. You can also set it per-command.
-
-`terminal.height`                                    *goldsmith-terminal.height*
-
-Default: 20
-When using a pos that requires a horizontal split this value represents the 
-height of the terminal.
-
-This sets this setting globally. You can also set it per-command.
-
 WINDOW SETTINGS                                      *goldsmith-window-settings*
 
-Window settings are used by commands that create a new non-terminal window.
-Commands that have such output are |:GoAlt|, and |:GoDoc| (and possibly others).
+Window settings are used by commands that create a new window or terminal.
 
 `window.pos`                                          *goldsmith-window.pos*
 
@@ -962,23 +915,19 @@ PER-COMMAND SETTINGS                            *goldsmith-settings-per-command*
 
 Some settings may be applied per-command. 
 
-For all commands that have terminal output (e.g. :GoBuild, :GoRun, etc...) you 
-can define terminal options that are specific to that command and override any
-global terminal options. The same applies to commands that use a non-terminal
-window (e.g. :GoDoc, :GoHelp, etc...)
+For all commands that create a new window or terminal (e.g. :GoBuild, :GoRun, 
+:GoHelp etc...) you can define options that are specific to that command and 
+override any global window options. 
 
-For example, if you want :GoBuild's terminal window to have the focus as it runs, 
-but otherwise want all terminal commands to run without focus:
+For example, if you want :GoBuild's terminal window to not have the focus as it
+runs, but otherwise want all window/terminal commands to run without focus:
 >
     {
         window  = {
             focus = true
         },
-        terminal = {
-            focus = false
-        },
         gobuild = {
-            focus = true
+            focus = false
         }
     }
 <
@@ -1983,7 +1932,7 @@ This command simply runs 'go test' with the arguments that are passed to it
 If you pass '!' it will run in the background. This command does not interact 
 with the quickfix or location list in any way and does not honor the 
 |goldsmith-testing-settings|. Instead it honors settings in the 'gotest' config 
-key, including |goldsmith-terminal-settings|. It is intended to be a (mostly) 
+key, including |goldsmith-window-settings|. It is intended to be a (mostly) 
 bare proxy to `go test` and is separate from any of the Goldsmith test runners.
 
 If no file/package arguments are passed to this command the package of the

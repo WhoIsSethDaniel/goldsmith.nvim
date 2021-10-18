@@ -11,7 +11,7 @@ function M.run(args)
   end
   local cmd = { 'go', 'install'}
   vim.list_extend(cmd, args)
-  job.run(cmd, config.terminal_opts('goinstall'))
+  job.run(cmd, config.window_opts('goinstall'))
 end
 
 return M

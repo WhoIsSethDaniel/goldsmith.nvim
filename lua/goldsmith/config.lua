@@ -138,7 +138,6 @@ local function window_validate(allow_nil, nil_default, focus)
 end
 
 local window_spec = window_validate(true, true, true)
-local terminal_spec = window_validate(true, true, false)
 local SPEC = {
   system = {
     debug = { false, 'b' },
@@ -207,16 +206,15 @@ local SPEC = {
     ['telescope-go-test-files'] = { {}, 't' },
     ['telescope-go-covered-files'] = { {}, 't' },
   },
-  gobuild = vim.tbl_deep_extend('error', terminal_spec, { use_makefile = { true, 'b' } }),
-  gorun = terminal_spec,
-  goget = terminal_spec,
-  goinstall = terminal_spec,
-  gotest = terminal_spec,
+  gobuild = vim.tbl_deep_extend('error', window_spec, { use_makefile = { false, 'b' } }),
+  gorun = window_spec,
+  goget = window_spec,
+  goinstall = window_spec,
+  gotest = window_spec,
   godoc = window_spec,
   goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
   jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
-  terminal = window_validate(false, false, false),
   window = window_validate(false, false, true),
   gotostruct = {
     fetch_register = { '+', 's' },
@@ -432,10 +430,6 @@ end
 
 function M.window_opts(grp, ...)
   return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, ...)
-end
-
-function M.terminal_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'terminal', grp and M.get(grp) or {}, { terminal = true }, ...)
 end
 
 function M.service_is_disabled(name)

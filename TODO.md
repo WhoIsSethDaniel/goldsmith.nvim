@@ -7,7 +7,7 @@
   - [x] non-code go files
   - [x] need previewer
   - [x] register
-- [ ] consider consolidating terminal/window settings to just window settings
+- [x] consider consolidating terminal/window settings to just window settings
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
 - [ ] tests
