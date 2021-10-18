@@ -29,7 +29,7 @@ function M.run(bang, args)
 
   local opts
   if bang == '' then
-    opts = config.window_opts 'gobuild'
+    opts = config.terminal_opts 'gobuild'
   else
     opts = {
       on_exit = function(id, code)

@@ -432,6 +432,10 @@ function M.window_opts(grp, ...)
   return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, ...)
 end
 
+function M.terminal_opts(grp, ...)
+  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, { terminal = true }, ...)
+end
+
 function M.service_is_disabled(name)
   return not M.get('null', name)
 end

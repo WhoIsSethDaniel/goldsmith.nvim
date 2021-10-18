@@ -15,7 +15,7 @@ function M.run(bang, args)
 
   local opts
   if bang == '' then
-    opts = config.window_opts 'gorun'
+    opts = config.terminal_opts 'gorun'
   else
     opts = {
       on_exit = function(id, code)
