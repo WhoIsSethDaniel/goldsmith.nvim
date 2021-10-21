@@ -1,6 +1,8 @@
 local log = require 'goldsmith.log'
 local wb = require 'goldsmith.winbuf'
 local go = require 'goldsmith.go'
+local qf = require 'goldsmith.qf'
+local config = require 'goldsmith.config'
 
 local M = {}
 
@@ -76,26 +78,7 @@ function M.check_for_errors(actions, output)
       end
     end
   end
-  -- sort and uniq
-  table.sort(qflist, function(a, b)
-    if a.filename == b.filename then
-      return a.lnum < b.lnum
-    end
-    return a.filename < b.filename
-  end)
-  local prev
-  return vim.tbl_filter(function(e)
-    if prev == nil then
-      prev = e
-      return true
-    end
-    if prev.filename == e.filename and prev.lnum == e.lnum and prev.text == e.text then
-      prev = e
-      return false
-    end
-    prev = e
-    return true
-  end, qflist)
+  return qflist
 end
 
 local function wrap(name, opts, f)
@@ -118,6 +101,7 @@ function M.run(cmd, ...)
     return 'opts: ' .. vim.inspect(opts)
   end)
 
+  local w = vim.api.nvim_get_current_win()
   local string_cmd = table.concat(cmd, ' ')
   if opts['check_for_errors'] then
     local stderr, stdout = { '' }, { '' }
@@ -144,13 +128,7 @@ function M.run(cmd, ...)
         end
       end
       local qflist = M.check_for_errors(process_acts, out)
-      if #qflist > 0 then
-        vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = string_cmd })
-        local w = vim.api.nvim_get_current_win()
-        vim.cmd [[ copen ]]
-        vim.api.nvim_set_current_win(w)
-        vim.api.nvim_command 'doautocmd QuickFixCmdPost'
-      end
+      qf.open(qflist, config.qf_opts(opts['cmd_name'], { win = w, title = string_cmd }))
     end)
   end
 
@@ -159,8 +137,6 @@ function M.run(cmd, ...)
     local winbuf = wb.create_winbuf(
       vim.tbl_deep_extend('force', opts, { reuse = 'job_terminal', destroy = true, keymap = 'terminal', create = true })
     )
-    local w = vim.api.nvim_get_current_win()
-
     vim.api.nvim_set_current_win(winbuf.win)
     job = vim.fn.termopen(string_cmd, opts)
     vim.api.nvim_set_current_win(w)

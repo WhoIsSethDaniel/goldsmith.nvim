@@ -109,6 +109,22 @@ function M.lsp_root_dir()
   return lrd
 end
 
+local function qf_validate(allow_nil, nil_default)
+  local function def(d)
+    if nil_default then
+      return nil
+    else
+      return d
+    end
+  end
+  return {
+    empty = { def(false), 'b' },
+    sort = { def(true), 'b' },
+    type = { def 'qf', in_set(allow_nil, 'qf', 'local'), 'valid qf types: qf, local' },
+    focus = { def(false), 'b' },
+  }
+end
+
 local function window_validate(allow_nil, nil_default, focus)
   local function def(d)
     if nil_default then
@@ -138,6 +154,7 @@ local function window_validate(allow_nil, nil_default, focus)
 end
 
 local window_spec = window_validate(true, true, true)
+local qf_spec = qf_validate(true, true)
 local SPEC = {
   system = {
     debug = { false, 'b' },
@@ -206,16 +223,30 @@ local SPEC = {
     ['telescope-go-test-files'] = { {}, 't' },
     ['telescope-go-covered-files'] = { {}, 't' },
   },
-  gobuild = vim.tbl_deep_extend('error', window_spec, { use_makefile = { false, 'b' } }),
-  gorun = window_spec,
-  goget = window_spec,
-  goinstall = window_spec,
-  gotest = window_spec,
-  godoc = window_spec,
-  goalt = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
-  gotestvisit = vim.tbl_deep_extend('error', window_spec, { use_current_window = { false, 'b' } }),
-  jump = vim.tbl_deep_extend('error', window_spec, { use_current_window = { true, 'b' } }),
+  gobuild = {
+    window = window_spec,
+    qf = qf_spec,
+    use_makefile = { false, 'b' },
+  },
+  gorun = { window = window_spec, qf = qf_spec },
+  goget = { window = window_spec },
+  goinstall = { window = window_spec },
+  gotest = { window = window_spec },
+  godoc = { window = window_spec },
+  goalt = {
+    window = window_spec,
+    use_current_window = { false, 'b' },
+  },
+  gotestvisit = {
+    window = window_spec,
+    use_current_window = { false, 'b' },
+  },
+  jump = {
+    window = window_spec,
+    use_current_window = { false, 'b' },
+  },
   window = window_validate(false, false, true),
+  qf = qf_validate(false, false),
   gotostruct = {
     fetch_register = { '+', 's' },
     store_register = { '*', 's' },
@@ -263,13 +294,15 @@ local SPEC = {
   revive = {
     config_file = { nil, 's' },
   },
-  testing = vim.tbl_deep_extend('error', window_spec, {
+  testing = {
+    window = window_spec,
+    qf = qf_spec,
     strategy = { 'display', in_set(false, 'display', 'background'), 'valid strategies: display, background' },
     arguments = { {}, 't' },
     template = { nil, 's' },
     template_dir = { nil, 's' },
     template_params_dir = { nil, 's' },
-  }),
+  },
   gopls = {
     options = { { '-remote=auto' }, 't' },
     config = { nil, is_type(true, 'table', 'function'), 'expected table or function' },
@@ -428,8 +461,12 @@ local function validate_config(user_config)
   return config_is_ok
 end
 
+function M.qf_opts(grp, ...)
+  return vim.tbl_deep_extend('force', M.get 'qf', grp and M.get(grp, 'qf') or {}, ...)
+end
+
 function M.window_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, ...)
+  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp, 'window') or {}, ...)
 end
 
 function M.terminal_opts(grp, ...)

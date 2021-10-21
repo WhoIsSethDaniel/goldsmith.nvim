@@ -38,7 +38,7 @@ function M.run(bang, args)
     }
   end
 
-  opts = vim.tbl_deep_extend('force', opts, { check_for_errors = true })
+  opts = vim.tbl_deep_extend('force', opts, { check_for_errors = true, cmd_name = 'gobuild' })
 
   last = { cmd, opts }
   job.run(unpack(last))

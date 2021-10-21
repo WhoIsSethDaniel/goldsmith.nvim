@@ -5,6 +5,7 @@ local log = require 'goldsmith.log'
 local ts = require 'goldsmith.treesitter'
 local job = require 'goldsmith.job'
 local cmds = require 'goldsmith.cmds'
+local qf = require 'goldsmith.qf'
 
 local M = {}
 
@@ -326,6 +327,7 @@ do
           wb.setup_follow_buffer(last_win.buf)
         end
         table.insert(cmd, 3, '-json')
+        local current_win = vim.api.nvim_get_current_win()
         local out = {}
         local decoded = {}
         local on_output = function(id, data, name)
@@ -377,12 +379,7 @@ do
               log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
             local qflist = job.check_for_errors(test_acts, decoded)
-            if #qflist > 0 then
-              vim.fn.setqflist({}, ' ', { nr = '$', items = qflist, title = table.concat(cmd, ' ') })
-              local w = vim.api.nvim_get_current_win()
-              vim.cmd [[ copen ]]
-              vim.api.nvim_set_current_win(w)
-            end
+            qf.open(qflist, config.qf_opts('testing', { win = current_win, title = table.concat(cmd, ' ') }))
           end,
         })
       end
