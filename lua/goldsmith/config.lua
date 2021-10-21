@@ -466,11 +466,13 @@ function M.qf_opts(grp, ...)
 end
 
 function M.window_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp, 'window') or {}, ...)
+  local window = vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp, 'window') or {})
+  return vim.tbl_deep_extend('force', { window = window }, {}, ...)
 end
 
 function M.terminal_opts(grp, ...)
-  return vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp) or {}, { terminal = true }, ...)
+  local window = vim.tbl_deep_extend('force', M.get 'window', grp and M.get(grp, 'window') or {}, { terminal = true })
+  return vim.tbl_deep_extend('force', { window = window }, {}, ...)
 end
 
 function M.service_is_disabled(name)

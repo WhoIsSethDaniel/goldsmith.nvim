@@ -3,9 +3,10 @@ local M = {}
 local winstash = {}
 
 function M.determine_window(opts)
-  local pos = opts['pos']
-  local width = opts['width']
-  local height = opts['height']
+  local window = opts['window']
+  local pos = window['pos']
+  local width = window['width']
+  local height = window['height']
   local orient = ''
   local n = height
   local place
@@ -71,7 +72,7 @@ function M.create_winbuf(opts)
     vim.api.nvim_buf_set_name(b, opts['title'])
   end
 
-  if opts['focus'] == false then
+  if not opts['window']['focus'] then
     vim.api.nvim_set_current_win(lw)
   end
 
@@ -237,7 +238,13 @@ function M.close_any_window(extra)
   end
   if extra then
     vim.cmd [[ cclose ]]
-    vim.cmd [[ lclose ]]
+    for _, w in ipairs(vim.api.nvim_list_wins()) do
+      if vim.api.nvim_win_is_valid(w) then
+        vim.api.nvim_win_call(w, function()
+          vim.cmd [[lclose]]
+        end)
+      end
+    end
   end
 end
 

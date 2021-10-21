@@ -378,8 +378,10 @@ do
             else
               log.info('Testing', string.format("Command '%s' did not run successfully.", table.concat(cmd, ' ')))
             end
-            local qflist = job.check_for_errors(test_acts, decoded)
-            qf.open(qflist, config.qf_opts('testing', { win = current_win, title = table.concat(cmd, ' ') }))
+            if code ~= 0 then
+              local qflist = job.check_for_errors(test_acts, decoded)
+              qf.open(qflist, config.qf_opts('testing', { win = current_win, title = table.concat(cmd, ' ') }))
+            end
           end,
         })
       end

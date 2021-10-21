@@ -120,26 +120,28 @@ function M.run(cmd, ...)
       vim.list_extend(stdout, data)
     end)
     wrap('on_exit', opts, function(id, code, type)
-      local out = {}
-      for _, v in ipairs { stdout, stderr } do
-        for _, line in ipairs(v) do
-          line = string.match(line, '^(.*)[%c%s]+$') or ''
-          table.insert(out, { Output = line, Action = 'stderr_output' })
+      if code ~= 0 then
+        local out = {}
+        for _, v in ipairs { stdout, stderr } do
+          for _, line in ipairs(v) do
+            line = string.match(line, '^(.*)[%c%s]+$') or ''
+            table.insert(out, { Output = line, Action = 'stderr_output' })
+          end
         end
+        local qflist = M.check_for_errors(process_acts, out)
+        qf.open(qflist, config.qf_opts(opts['cmd_name'], { win = w, title = string_cmd }))
       end
-      local qflist = M.check_for_errors(process_acts, out)
-      qf.open(qflist, config.qf_opts(opts['cmd_name'], { win = w, title = string_cmd }))
     end)
   end
 
   local job
-  if opts['terminal'] then
+  if opts['window']['terminal'] then
     local winbuf = wb.create_winbuf(
       vim.tbl_deep_extend('force', opts, { reuse = 'job_terminal', destroy = true, keymap = 'terminal', create = true })
     )
-    vim.api.nvim_set_current_win(winbuf.win)
-    job = vim.fn.termopen(string_cmd, opts)
-    vim.api.nvim_set_current_win(w)
+    job = vim.api.nvim_win_call(winbuf.win, function()
+      return vim.fn.termopen(string_cmd, opts)
+    end)
   else
     wrap('on_exit', opts, function(id, code, type)
       running_jobs[id] = nil

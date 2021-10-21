@@ -36,7 +36,6 @@ function M.open(list, opts)
   if not opts['empty'] and #list == 0 then
     return
   end
-  -- local w = opts['win'] or vim.api.nvim_get_current_win()
   local w = opts['win'] or vim.api.nvim_get_current_win()
   if opts['sort'] then
     list = sort(list)
