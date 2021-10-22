@@ -26,7 +26,7 @@ local function jump(m)
 
     local b = vim.uri_to_bufnr(r.uri)
     local c = config.window_opts 'jump'
-    if b ~= vim.fn.bufnr('%') and not c['use_current_window'] then
+    if b ~= vim.fn.bufnr '%' and not c['use_current_window'] then
       c['reuse'] = b
       wb.create_winbuf(c)
     end
@@ -83,7 +83,7 @@ end
 -- :GoDiagShow
 function M.show_diagnostics()
   -- takes many optional args
-  diagnostic.show_line_diagnostics()
+  diagnostic.open_float(0, { scope = 'line' })
 end
 
 -- :GoDiagList

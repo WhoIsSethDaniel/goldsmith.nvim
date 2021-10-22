@@ -35,7 +35,8 @@ do
       setloclist = { 'set_loclist' },
       get_virt_text_chunks = { 'get_virtual_text_chunks_for_line' },
       set = { 'save' },
-      setqflist = { 'set_qflist' }
+      setqflist = { 'set_qflist' },
+      open_float = { 'show_line_diagnostics' },
     },
   }
 
