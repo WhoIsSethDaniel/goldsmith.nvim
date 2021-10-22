@@ -904,11 +904,15 @@ QUICKFIX SETTINGS                                  *goldsmith-quickfix-settings*
 Quickfix settings are used by commands that interact with the quickfix or local
 list window.
 
+Quickfix settings may also be set per-command. |goldsmith-settings-per-command|
+
 `qf.empty`                                                  *goldsmith-qf.empty*
 
 Default: false
 If the quickfix or local list is empty (but something caused a failure) if set 
 to true will open the list anyway. Otherwise the list will not be opened.
+
+This sets this setting globally. You can also set it per-command.
 
 `qf.sort`                                                    *goldsmith-qf.sort*
 
@@ -916,11 +920,15 @@ Default: true
 If true, sort the quickfix or local list by filename and by line number.
 Otherwise do not sort.
 
+This sets this setting globally. You can also set it per-command.
+
 `qf.type`                                                    *goldsmith-qf.type*
 
 Default: qf
 If set to 'qf' will open the quickfix list. If set to 'local' will open the local
 list instead.
+
+This sets this setting globally. You can also set it per-command.
 
 `qf.focus`                                                  *goldsmith-qf.focus*
 
@@ -928,9 +936,13 @@ Default: false
 If set to 'true' the quickfix or local list will have the focus once opened. 
 Otherwise the focus will remain with the current window.
 
+This sets this setting globally. You can also set it per-command.
+
 WINDOW SETTINGS                                      *goldsmith-window-settings*
 
 Window settings are used by commands that create a new window or terminal.
+
+Window settings may also be set per-command |goldsmith-settings-per-command|.
 
 `window.pos`                                              *goldsmith-window.pos*
 
@@ -975,13 +987,13 @@ override any global window options.
 Quickfix / local list windows are also controlled in a similar manner. 
 
 For example, if you want :GoBuild's terminal window to not have the focus as it
-runs, but otherwise want all window/terminal commands to run without focus. Also,
+runs, but otherwise want all window/terminal commands to run with focus. Also,
 you want the quickfix window to have focus after a :GoBuild failure, but 
-do not want quickfix to have focus for other failures:
+do not want quickfix to have focus for other commands:
 >
     {
         window  = {
-            focus = true,
+          focus = true,
         },
         qf = {
           focus = false,

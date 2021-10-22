@@ -1,7 +1,6 @@
 - [x] more quickfix / loclist config
 	- [x] focus = false focuses on wrong window
 	- [x] when type = local super-close-any won't always close 
-- [ ] more diagnostics api breakage; check what changed
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
