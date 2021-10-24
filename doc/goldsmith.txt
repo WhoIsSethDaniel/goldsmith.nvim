@@ -300,7 +300,6 @@ guaranteed to be entirely up-to-date):
       goinstall = {
         window = {}
       },
-      ["golangci-lint"] = {},
       gopls = {
         options = { "-remote=auto" }
       },
@@ -324,7 +323,7 @@ guaranteed to be entirely up-to-date):
         current_symbol = true
       },
       jump = {
-        use_current_window = false,
+        use_current_window = true,
         window = {}
       },
       mappings = {
@@ -401,7 +400,6 @@ guaranteed to be entirely up-to-date):
         sort = true,
         type = "qf"
       },
-      revive = {},
       status = {
         max_length = 40
       },
