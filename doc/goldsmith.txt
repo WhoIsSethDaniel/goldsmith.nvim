@@ -1061,8 +1061,8 @@ Manually request that `gopls` arrange and fix the import section of your code.
 :GoBuild[!] [args]
 
 Run `go build` on the current working directory, or run `make`. It will use 
-`make` if the project root directory contains a Makefile (or makefile). See
-|goldsmith-gobuild.use_makefile| to change this behavior.
+`make` if the project root directory contains a Makefile (or makefile) contingent
+on the setting of |goldsmith-gobuild.use_makefile|.
 
 When running `go build` it takes the same arguments as `go build`. e.g.:
 >
@@ -1076,6 +1076,16 @@ current buffer will be inserted at the end of the command. e.g.:
 will translate to:
 >
     go build -n <current package>
+<
+If you place two dashes in the command-line the current package will replace the
+two dashes in the command line. Any arguments following the two dashes will be
+inserted after the current package. e.g.:
+>
+    :GoRun -n -- -z
+<
+will translate to:
+>
+    go run -n <current package> -z
 <
 If you place three dots in the command-line it is similar to two dashes except
 it is now the current package and all below it. e.g.:
