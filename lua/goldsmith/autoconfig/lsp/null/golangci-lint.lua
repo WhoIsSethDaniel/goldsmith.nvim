@@ -80,7 +80,6 @@ function M.has_requirements()
 end
 
 function M.setup(user_args)
-  local conf = M.get_config()
   return {
     name = M.service_name(),
     method = null.methods.DIAGNOSTICS,
@@ -91,7 +90,7 @@ function M.setup(user_args)
       to_stdin = false,
       args = function()
         local args
-        local cf = conf['config_file']
+        local cf = M['config_file'] and M.config_file()
         if cf ~= nil then
           args = {
             'run',
@@ -108,14 +107,6 @@ function M.setup(user_args)
       on_output = parse_messages(),
     },
   }
-end
-
-function M.get_config()
-  return config.get 'golangci-lint' or {}
-end
-
-function M.config_file()
-  return M.get_config()['config_file']
 end
 
 function M.config_file_contents()

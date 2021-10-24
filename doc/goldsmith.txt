@@ -628,31 +628,6 @@ The above instructs Goldsmith to use the current window when |:GoTestVisit| is
 run. It also instructs Goldsmith to place the window on the left side of the
 screen.
 
-LINTING                                             *goldsmith-linting-settings*
-
-`golangci-lint.config_file`                *goldsmith-golangci-lint.config_file*
-
-Default: nil
-The configuration file for `golangci-lint`. If golangci-lint has been configured 
-to run, and you explicitly specify a config file, then that file is required to 
-exist. Otherwise `golangci-lint` uses its normal means to find its configuration 
-file.
-
-See |goldsmith-resources| for where `golangci-lint` can be found.
-
-To install `golangci-lint` you can use |:GoInstallBinaries|.
-
-`revive.config_file`                              *goldsmith-revive.config_file*
-
-Default: nil
-The configuration file for `revive`. If this configuration variable is set to
-anything other than nil it means the given configuration file must exist. To 
-create the configuration file please see |:GoCreateConfigs|.
-
-See |goldsmith-resources| for where `revive` can be found.
-
-To install `revive` you can use |:GoInstallBinaries|.
-
 COMPLETION                                                *goldsmith-completion*
 
 `completion.omni`                                    *goldsmith-completion.omni*
@@ -705,14 +680,21 @@ by null-ls.
 `null.revive`                                            *goldsmith-null.revive*
 
 Default: true
-If `revive` is configured to run it will use a configuration file only if you 
-have specified one using |revive.config_file|. Otherwise it does not use a 
-configuration file. If you have specified a configuration file that file must
-exist in a location that revive will look for it, otherwise it will error. See 
-|:GoCreateConfigs| for a way to create an initial configuration file.
+If set to true `revive` will be run by null-ls. If false `revive` will not be 
+run.
 
-You can pass extra arguments to `revive` by setting this variable to a list where
-each element in the list is a valid argument to `revive`.
+You can pass extra arguments to `revive` by setting this variable to a table where
+the key 'args' is set to a list where each element in the list is a valid argument
+to `revive`. You can also set a key named 'config_file' to the name of a 
+configuration file for 'revive'. If you set 'config_file' this works with 
+|:GoCreateConfigs|. It also means that Goldsmith can check to see if the config 
+file exists and is in the root directory of the project. If the config file does 
+not exist Goldsmith will warn you.
+>
+    null = {
+      revive = { args = { ... }, config_file = 'revive.toml' }
+    }
+<
 
 See |goldsmith-resources| for where `revive` can be found.
 
@@ -721,14 +703,21 @@ To install `revive` you can use |:GoInstallBinaries|.
 `null.golangci-lint`                              *goldsmith-null.golangci-lint*
 
 Default: false
-If `golangci-lint` is configured to run it will use a configuration file if one
-exists, but will happily run without one. If you have specified a configuration
-file using |golangci-lint.config_file| this file must exist otherwise 
-golangci-lint will error. See |:GoCreateConfigs| for a way to create an initial 
-configuration file.
+If set to true `revive` will be run by null-ls. If false `revive` will not be 
+run.
 
-You can pass extra arguments to `golangci-lint` by setting this variable to a list 
-where each element in the list is a valid argument to `golangci-lint`.
+You can pass extra arguments to `golangci-lint` by setting this variable to a 
+table where the key 'args' is set to a list where each element in the list is a 
+valid argument to `golangci-lint`.  You can also set a key named 'config_file' 
+to the name of a configuration file for 'revive'. If you set 'config_file' this 
+works with |:GoCreateConfigs|. It also means that Goldsmith can check to see
+if the config file exists and is in the root directory of the project. If the
+config file does not exist Goldsmith will warn you.
+>
+    null = {
+      ['golangci-lint'] = { args = { ... }, config_file = '.golangci.yml' }
+    }
+<
 
 See |goldsmith-resources| for where `golangci-lint` can be found.
 
@@ -741,8 +730,9 @@ By default `staticcheck` does not run. `staticcheck` already runs as a service
 within `gopls` so having it also run as a separate linter seems redundant and it
 is not recommended. 
 
-You can pass extra arguments to `staticcheck` by setting this variable to a list 
-where each element in the list is a valid argument to `staticcheck`.
+You can pass extra arguments to `staticcheck` by setting this variable to a 
+table where the key 'args' is set to a list where each element in the list is a 
+valid argument to `staticcheck`.
 
 See |goldsmith-resources| for where `staticcheck` can be found.
 
@@ -754,8 +744,9 @@ Default: true
 By default `golines` is configured to run. It will determine at what point a 
 line is too long by using |format.max_line_length|.
 
-You can pass extra arguments to `golines` by setting this variable to a list 
-where each element in the list is a valid argument to `golines`.
+You can pass extra arguments to `golines` by setting this variable to a 
+table where the key 'args' is set to a list where each element in the list is a 
+valid argument to `golines`.
 
 See |goldsmith-resources| for where `golines` can be found.
 
@@ -768,8 +759,9 @@ By default `gofmt` is not run by null-ls. Instead formatting is done by `gopls`.
 If you set this to "true" the `gopls` formatting will be turned off (except for
 import organization) and null-ls will perform all formatting.
 
-You can pass extra arguments to `gofmt` by setting this variable to a list 
-where each element in the list is a valid argument to `gofmt`.
+You can pass extra arguments to `gofmt` by setting this variable to a 
+table where the key 'args' is set to a list where each element in the list is a 
+valid argument to `gofmt`.
 
 `gofmt` is installed as part of the Go distribution.
 
@@ -780,8 +772,9 @@ By default `gofumpt` is not run by null-ls. Instead formatting is done by `gopls
 If you set this to "true" the `gopls` formatting will be turned off (except for
 import organization) and null-ls will perform all formatting.
 
-You can pass extra arguments to `gofumpt` by setting this variable to a list 
-where each element in the list is a valid argument to `gofumpt`.
+You can pass extra arguments to `gofumpt` by setting this variable to a 
+table where the key 'args' is set to a list where each element in the list is a 
+valid argument to `gofumpt`.
 
 See |goldsmith-resources| for where `gofumpt` can be found.
 

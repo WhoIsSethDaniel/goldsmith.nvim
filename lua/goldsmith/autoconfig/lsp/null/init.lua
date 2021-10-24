@@ -66,7 +66,12 @@ function M.setup(cf)
         local setup
         local user_args = config.get('null', service)
         if type(user_args) == 'table' then
-          setup = m.setup(user_args)
+          setup = m.setup(user_args['args'] or {})
+          if user_args['config_file'] then
+            m.config_file = function()
+              return user_args['config_file']
+            end
+          end
         else
           setup = m.setup {}
         end
@@ -85,7 +90,9 @@ function M.setup(cf)
     end
   end
   if enabled_services == 0 then
-    M.is_disabled = function() return true end
+    M.is_disabled = function()
+      return true
+    end
   end
   null.config(cf)
   return cf

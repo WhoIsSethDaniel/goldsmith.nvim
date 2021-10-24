@@ -72,7 +72,6 @@ function M.has_requirements()
 end
 
 function M.setup(user_args)
-  local conf = M.get_config()
   return {
     name = M.service_name(),
     method = null.methods.DIAGNOSTICS,
@@ -83,10 +82,11 @@ function M.setup(user_args)
       to_stdin = false,
       args = function()
         local args
-        if conf['config_file'] == nil then
+        local cf = M['config_file'] and M.config_file()
+        if cf == nil then
           args = { '-formatter=json', '$FILENAME' }
         else
-          args = { string.format('-config=%s', conf['config_file']), '-formatter=json', '$FILENAME' }
+          args = { string.format('-config=%s', cf), '-formatter=json', '$FILENAME' }
         end
         return vim.list_extend(args, user_args)
       end,
@@ -94,14 +94,6 @@ function M.setup(user_args)
       on_output = parse_messages(),
     },
   }
-end
-
-function M.get_config()
-  return config.get 'revive' or {}
-end
-
-function M.config_file()
-  return M.get_config()['config_file']
 end
 
 function M.config_file_contents()

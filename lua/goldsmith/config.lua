@@ -261,9 +261,6 @@ local SPEC = {
     },
     skip_unexported = { false, 'b' },
   },
-  ['golangci-lint'] = {
-    config_file = { nil, 's' },
-  },
   status = {
     max_length = { 40, 'n' },
   },
@@ -290,9 +287,6 @@ local SPEC = {
   },
   codelens = {
     show = { true, 'b' },
-  },
-  revive = {
-    config_file = { nil, 's' },
   },
   testing = {
     window = window_spec,
