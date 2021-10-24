@@ -243,7 +243,7 @@ local SPEC = {
   },
   jump = {
     window = window_spec,
-    use_current_window = { false, 'b' },
+    use_current_window = { true, 'b' },
   },
   window = window_validate(false, false, true),
   qf = qf_validate(false, false),

@@ -16,7 +16,7 @@ function M.run(create)
 
   vim.cmd[[ silent! wall! ]]
 
-  if wo['use_current_window'] then
+  if config.get('goalt', 'use_current_window') then
     vim.cmd(string.format('silent! e! %s', alt))
     vim.cmd[[ silent! w! ]]
     return true

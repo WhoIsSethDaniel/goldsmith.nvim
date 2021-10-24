@@ -109,7 +109,7 @@ do
         end
 
         local window_cfg = config.window_opts('gotestvisit', { file = f })
-        if window_cfg['use_current_window'] then
+        if config.get('gotestvisit', 'use_current_window') then
           vim.cmd(string.format('silent! e! %s', f))
           vim.cmd [[ silent! w! ]]
           return true

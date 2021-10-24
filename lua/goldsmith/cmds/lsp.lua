@@ -25,10 +25,9 @@ local function jump(m)
     end
 
     local b = vim.uri_to_bufnr(r.uri)
-    local c = config.window_opts 'jump'
-    if b ~= vim.fn.bufnr '%' and not c['use_current_window'] then
-      c['reuse'] = b
-      wb.create_winbuf(c)
+    if b ~= vim.fn.bufnr '%' and not config.get('jump', 'use_current_window') then
+      local c = config.window_opts 'jump'
+      wb.create_winbuf(vim.tbl_deep_extend('force', c, { reuse = b }))
     end
 
     vim.lsp.util.jump_to_location(r)
