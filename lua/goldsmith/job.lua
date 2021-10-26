@@ -135,7 +135,7 @@ function M.run(cmd, ...)
   end
 
   local job
-  if opts['window']['terminal'] then
+  if opts['window'] and opts['window']['terminal'] then
     local winbuf = wb.create_winbuf(
       vim.tbl_deep_extend('force', opts, { reuse = 'job_terminal', destroy = true, keymap = 'terminal', create = true })
     )
