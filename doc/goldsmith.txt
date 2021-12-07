@@ -118,7 +118,7 @@ Features currently included:
   tests, or all your tests
 * all the great Neovim LSP functions are available as Vim commands
 * most commands are completely asynchronous
-* support for lspinstall and nvim-lsp-installer
+* support for nvim-lsp-installer
 
 ================================================================================
 SUPPORTED PLUGINS                                  *goldsmith-supported-plugins*
@@ -141,8 +141,6 @@ Optional
 * nvim-treesitter-textobjects
   Needed if you want treesitter textobjects and treesitter navigation. See
   |goldsmith-text-objects|.
-* nvim-lspinstall
-  For installing language servers. i.e. gopls
 * nvim-lsp-installer
   For installing language servers. i.e. gopls
 * null-ls
@@ -2644,7 +2642,6 @@ the plugins that can be utilized by Goldsmith.
 
 * supported plugins:
   `nvim-lspconfig`                https://github.com/neovim/nvim-lspconfig
-  `nvim-lspinstall`               https://github.com/kabouzeid/nvim-lspinstall
   `nvim-lsp-installer`            https://github.com/williamboman/nvim-lsp-installer
   `nvim-treesitter`               https://github.com/nvim-treesitter/nvim-treesitter
   `nvim-treesitter-textobjects`   https://github.com/nvim-treesitter/nvim-treesitter-textobjects
