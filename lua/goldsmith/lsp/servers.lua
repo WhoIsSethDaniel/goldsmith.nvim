@@ -37,18 +37,6 @@ function M.run_setup_function(server, config)
     end
   end
 
-  if plugins.is_installed 'lspinstall' then
-    local installed = require('lspinstall').installed_servers()
-    local sname = M.info(server).lspinstall_name
-    if vim.tbl_contains(installed, sname) then
-      log.debug(sname, function()
-        return 'lspinstall: ' .. vim.inspect(config)
-      end)
-      require('lspconfig')[sname].setup(config)
-      return true
-    end
-  end
-
   if plugins.is_installed 'lspconfig' then
     local sname = M.info(server).lspconfig_name
     log.debug(sname, function()

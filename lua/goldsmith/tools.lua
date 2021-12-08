@@ -168,20 +168,6 @@ local TOOLS = {
       return ok
     end,
   },
-  lspinstall = {
-    name = 'nvim-lspinstall',
-    required = false,
-    installed = false,
-    plugin = true,
-    location = 'https://github.com/kabouzeid/nvim-lspinstall',
-    not_found = {
-      'This plugin may be used to install the LSP servers such as gopls.',
-    },
-    check_installed = function()
-      local ok, _ = pcall(require, 'lspinstall')
-      return ok
-    end,
-  },
   null = {
     name = 'null-ls',
     required = false,
@@ -273,20 +259,6 @@ function M.find_bin(program, info)
 
   if info.server and info['exe'] ~= nil then
     TOOLS[program].installed = false
-    local li_installed = false
-    local li_util
-    if plugins.is_installed 'lspinstall' then
-      local li = require 'lspinstall'
-      li_util = require 'lspinstall.util'
-      li_installed = li.is_server_installed(info.lspinstall_name)
-    end
-    if li_installed then
-      local cmd = string.format('%s/%s', li_util.install_path(info.lspinstall_name), info.exe)
-      if vim.fn.filereadable(cmd) ~= 0 then
-        TOOLS[program].via = 'lspinstall'
-        return cmd
-      end
-    end
     if plugins.is_installed 'lspinstaller' then
       local _, s = require('nvim-lsp-installer').get_server(program)
       local cmd = s._default_options.cmd[1]
