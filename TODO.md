@@ -3,6 +3,7 @@
 - [ ] stats for null-ls
 - [ ] stats for gopls startup 
 - [ ] go doc shift immediately to -all or -all -src or back to basic
+- [ ] check multiple_file option for "project level" linters in null-ls (may be useful for golangci-lint, revive, others)
 - [ ] context sensitive help (for at least imports)
 - [ ] support functions for key mappings
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
