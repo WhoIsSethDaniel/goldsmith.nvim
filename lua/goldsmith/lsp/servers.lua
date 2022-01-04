@@ -42,7 +42,10 @@ function M.run_setup_function(server, config)
     log.debug(sname, function()
       return 'lspconfig: ' .. vim.inspect(config)
     end)
-    require('lspconfig')[sname].setup(config)
+    -- for now explicitly exclude null-ls from doing this since it no longer wants this to be done
+    if sname ~= 'null-ls' then
+      require('lspconfig')[sname].setup(config)
+    end
     return true
   end
 

@@ -94,7 +94,7 @@ function M.setup(cf)
       return true
     end
   end
-  null.config(cf)
+  null.setup(cf)
   return cf
 end
 
