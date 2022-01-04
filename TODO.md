@@ -1,4 +1,4 @@
-- [ ] should use null-ls setup() instead of lspconfig setup()
+- [x] should use null-ls setup() instead of lspconfig setup()
 - [ ] qf window often attached to wrong buffer
 - [ ] stats for null-ls
 - [ ] stats for gopls startup 
