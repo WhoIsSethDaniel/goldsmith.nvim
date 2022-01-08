@@ -261,7 +261,7 @@ function M.find_bin(program, info)
     TOOLS[program].installed = false
     if plugins.is_installed 'lspinstaller' then
       local _, s = require('nvim-lsp-installer').get_server(program)
-      local cmd = s._default_options.cmd[1]
+      local cmd = string.format("%s/%s", s.root_dir, s.name)
       if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
         TOOLS[program].via = 'lsp-installer'
         return cmd
