@@ -1,11 +1,11 @@
 - [x] should use null-ls setup() instead of lspconfig setup()
 - [x] context sensitive help (for at least imports)
 - [x] go doc shift immediately to -all or -all -src or back to basic
-- [ ] qf window often attached to wrong buffer
+- [x] compare null-ls builtins against custom goldsmith code
+- [ ] qf window often attached to wrong buffer (uncertain?)
 - [ ] stats for null-ls
 - [ ] stats for gopls startup 
-- [ ] compare null-ls builtins against custom goldsmith code
-- [ ] support functions for key mappings
+- [ ] support passing functions for key mappings
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] linter/fmt config
