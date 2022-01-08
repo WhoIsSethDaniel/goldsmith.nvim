@@ -1,12 +1,13 @@
 - [x] should use null-ls setup() instead of lspconfig setup()
 - [x] context sensitive help (for at least imports)
+- [x] go doc shift immediately to -all or -all -src or back to basic
 - [ ] qf window often attached to wrong buffer
 - [ ] stats for null-ls
 - [ ] stats for gopls startup 
-- [ ] go doc shift immediately to -all or -all -src or back to basic
-- [ ] check multiple_file option for "project level" linters in null-ls (may be useful for golangci-lint, revive, others)
+- [ ] compare null-ls builtins against custom goldsmith code
 - [ ] support functions for key mappings
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
+- [ ] perhaps rethink how linters etc... with config files are handled
 - [ ] tests

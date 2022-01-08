@@ -1028,6 +1028,13 @@ You can also use dot notation with the same result:
 via the godoc.* settings. See |goldsmith-settings-per-command| for more 
 information.
 
+Within the document window several keyboard shortcuts are available:
+a: convert the current document to 'go doc -all'
+s: convert the current document to 'go doc -all -src'
+p: convert the current document to 'go doc'
+q: quit the document window
+<esc>: quit the document window
+
                                                                         *:GoHelp*
 :GoHelp topic
 
@@ -1040,6 +1047,10 @@ Use tab-completion to see all available topics.
 :GoDoc and :GoHelp share the same window. Settings for that window are controlled
 via the godoc.* settings. See |goldsmith-settings-per-command| for more 
 information.
+
+Within the document window several keyboard shortcuts are available:
+q: quit the document window
+<esc>: quit the document window
 
                                                               *:GoContextualHelp*
 :GoContextualHelp

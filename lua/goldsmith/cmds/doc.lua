@@ -32,11 +32,10 @@ local function match_partial_item_name(pkg, part)
 
   local items = {}
   for _, lead in ipairs { 'type', 'func', 'var', 'const' } do
-    local pats =
-      {
-        string.format('^%%s*%s (%s%%w+)', lead, part),
-        string.format('^%%s*%s %%(.-%%) (%s%%w+)', lead, part),
-      }
+    local pats = {
+      string.format('^%%s*%s (%s%%w+)', lead, part),
+      string.format('^%%s*%s %%(.-%%) (%s%%w+)', lead, part),
+    }
     for _, line in ipairs(doc) do
       local m
       for _, pat in ipairs(pats) do
@@ -78,11 +77,17 @@ function M.doc_complete(arglead, cmdline, cursorPos)
   end
 end
 
+local function set_doc_transform_key(buf, key, target, args)
+  local cmdstr = string.format("<cmd>lua require'goldsmith.cmds.doc'.run('doc', { '%s', '%s' } )<cr>", args, target)
+  vim.api.nvim_buf_set_keymap(buf, '', key, cmdstr, { silent = true, noremap = true })
+end
+
 function M.run(type, args)
   local cfg = config.window_opts('godoc', { create = true, title = '[Go Documentation]', reuse = 'godoc' })
   local out = ''
   local cmd = { 'go', type }
   vim.list_extend(cmd, args)
+  local target = args[#args]
   job.run(cmd, cfg, {
     stderr_buffered = true,
     stdout_buffered = true,
@@ -108,6 +113,12 @@ function M.run(type, args)
       wb.set_close_keys(winbuf.buf)
       wb.clear_buffer(winbuf.buf)
       wb.append_to_buffer(winbuf.buf, out)
+
+      if type == 'doc' then
+        set_doc_transform_key(winbuf.buf, 'a', target, '-all')
+        set_doc_transform_key(winbuf.buf, 's', target, '-src -all')
+        set_doc_transform_key(winbuf.buf, 'p', target, '')
+      end
     end,
   })
 end
