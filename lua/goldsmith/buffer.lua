@@ -43,7 +43,10 @@ local default_action_map = {
   ['codelens-on'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_on_codelens()<cr>", ft = '*' },
   ['codelens-off'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_off_codelens()<cr>", ft = '*' },
   ['codelens-run'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.run_codelens()<cr>", ft = '*' },
-  ['sym-highlight-on'] = { act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_on_symbol_highlighting()<cr>", ft = { 'go' } },
+  ['sym-highlight-on'] = {
+    act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_on_symbol_highlighting()<cr>",
+    ft = { 'go' },
+  },
   ['sym-highlight-off'] = {
     act = "<cmd>lua require'goldsmith.cmds.lsp'.turn_off_symbol_highlighting()<cr>",
     ft = { 'go' },
@@ -58,7 +61,10 @@ local default_action_map = {
   ['run-last'] = { act = "<cmd>lua require'goldsmith.cmds.run'.last()<cr>", ft = '*' },
   ['close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window(false)<cr>", ft = '*' },
   ['super-close-any'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_any_window(true)<cr>", ft = '*' },
-  ['coverage'] = { act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='job'})<cr>", ft = { 'go' } },
+  ['coverage'] = {
+    act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='job'})<cr>",
+    ft = { 'go' },
+  },
   ['coverage-browser'] = {
     act = "<cmd>lua require'goldsmith.cmds.coverage'.run({bang='<bang>',type='web'})<cr>",
     ft = { 'go' },
@@ -70,6 +76,7 @@ local default_action_map = {
   ['telescope-go-test-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_test_files()<cr>", ft = '*' },
   ['telescope-go-code-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_code_files()<cr>", ft = '*' },
   ['telescope-go-covered-files'] = { act = "<cmd>lua require'goldsmith.telescope'.go_covered_files()<cr>", ft = '*' },
+  ['contextual-help'] = { act = "<cmd>lua require'goldsmith.cmds.contextualhelp'.run()<cr>", ft = { 'go' } },
 }
 
 function M.checkin(b)

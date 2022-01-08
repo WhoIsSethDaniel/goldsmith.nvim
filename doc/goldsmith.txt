@@ -1041,6 +1041,16 @@ Use tab-completion to see all available topics.
 via the godoc.* settings. See |goldsmith-settings-per-command| for more 
 information.
 
+                                                              *:GoContextualHelp*
+:GoContextualHelp
+
+Run |:GoDoc| for the keyword under the cursor. This will work for imports, 
+functions, and method calls. Simply place the cursor under what you want help 
+for and run the command.
+
+To make things easier there is also a keybinding you can define. See 
+|goldsmith-contextual-help| for more information about that.
+
                                                                     *:GoImports*
 :GoImports
 
@@ -2432,6 +2442,12 @@ Default: none
 
 Open Telescope with all of the currently covered files. See |:GoCoverage| for more 
 information on coverage.
+
+*(goldsmith-contextual-help)*
+Default: none
+
+Open |:GoDoc| for the import, function, or method under the cursor. See 
+|:GoContextualHelp| for more information on the related command.
 
 *(goldsmith-start-follow)*
 Default: F

@@ -40,6 +40,7 @@ function s:GoCreateConfigsComplete(A,C,P) abort
 endfunction
 
 " terminal/window commands
+command! -nargs=0 GoContextHelp lua require'goldsmith.cmds.contextualhelp'.run()
 command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.cmds.doc'.run('doc', {<f-args>})
 command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith.cmds.doc'.run('help', {<f-args>})
 command! -nargs=* -bang -complete=custom,v:lua.goldsmith_package_complete GoBuild lua require'goldsmith.cmds.build'.run('<bang>', {<f-args>})

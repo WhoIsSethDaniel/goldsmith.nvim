@@ -222,6 +222,7 @@ local SPEC = {
     ['telescope-go-code-files'] = { {}, 't' },
     ['telescope-go-test-files'] = { {}, 't' },
     ['telescope-go-covered-files'] = { {}, 't' },
+    ['contextual-help'] = { {}, 't' },
   },
   gobuild = {
     window = window_spec,
