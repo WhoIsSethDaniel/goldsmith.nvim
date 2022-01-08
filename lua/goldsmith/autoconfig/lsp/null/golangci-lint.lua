@@ -80,26 +80,22 @@ function M.has_requirements()
 end
 
 function M.setup(user_args)
+  local static_args = { 'run', '--out-format=json', '--fix=false', '--fast' }
   return {
     name = M.service_name(),
-    method = null.methods.DIAGNOSTICS,
+    method = null.methods.DIAGNOSTICS_ON_SAVE,
     filetypes = { 'go' },
     generator = help.generator_factory {
       diagnostics_format = '#{s}: #{m}',
       command = cmd(),
       to_stdin = false,
       args = function()
-        local args
+        local args = vim.deepcopy(static_args)
         local cf = M['config_file'] and M.config_file()
         if cf ~= nil then
-          args = {
-            'run',
-            '--out-format=json',
-            string.format('--config=%s', cf),
-            vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'),
-          }
+          vim.list_extend(args, string.format('--config=%s', cf), vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'))
         else
-          args = { 'run', '--out-format=json', vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') }
+          vim.list_extend(args, { vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') } )
         end
         return vim.list_extend(args, user_args)
       end,

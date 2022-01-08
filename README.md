@@ -12,6 +12,7 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * treesitter text objects utilizing the nvim-treesitter-textobjects plugin
 * convert JSON to Go structs directly in your code, or paste from outside the editor [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-5#convert-json-to-go-struct)
 * view Go documentation using the :GoDoc command and Go help with :GoHelp [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#documentation-and-help)
+* context sensitive help with either :GoContextHelp or via a keybinding
 * manually update imports using the :GoImports command [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#manual-goimports-support)
 * use :checkhealth to see if your Goldsmith setup should work correctly [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#use-checkhealth-to-check-goldsmith-setup)
 * format your code on demand using :GoFormat or have Goldsmith automatically format your code on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-3#manual-formatting-using-goformat)

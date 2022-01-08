@@ -74,7 +74,7 @@ end
 function M.setup(user_args)
   return {
     name = M.service_name(),
-    method = null.methods.DIAGNOSTICS,
+    method = null.methods.DIAGNOSTICS_ON_SAVE,
     filetypes = { 'go' },
     generator = help.generator_factory {
       diagnostics_format = 'revive: #{m}',
