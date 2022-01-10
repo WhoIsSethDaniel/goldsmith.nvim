@@ -7,7 +7,10 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if g:goldsmith_is_setup == v:false
-  echoerr 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+  echohl ErrorMsg
+  echomsg 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+  echohl None
+  echoerr ''
   finish
 endif
 

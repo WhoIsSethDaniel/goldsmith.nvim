@@ -1,6 +1,9 @@
 let g:goldsmith_is_setup = v:false
 if !has('nvim-0.5')
-    echoerr 'Goldsmith requires at least neovim 0.5.0.'
+    echohl ErrorMsg
+    echomsg 'Goldsmith requires at least neovim 0.5.0.'
+    echohl None
+    echoerr ''
     finish
 endif
 

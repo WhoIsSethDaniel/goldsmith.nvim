@@ -74,7 +74,7 @@ after installing Goldsmith by using `:h goldsmith`.
 
 # Minimal Requirements
 * Neovim >= 0.5.0
-* go >= 1.14
+* go >= 1.15
 * gopls >= 0.6.6[\*] 
 * [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
