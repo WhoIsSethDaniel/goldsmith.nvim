@@ -2,6 +2,7 @@
 - [x] context sensitive help (for at least imports)
 - [x] go doc shift immediately to -all or -all -src or back to basic
 - [x] compare null-ls builtins against custom goldsmith code
+- [ ] improve startup time
 - [ ] qf window often attached to wrong buffer (uncertain?)
 - [ ] stats for null-ls
 - [ ] stats for gopls startup 
