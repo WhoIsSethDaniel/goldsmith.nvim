@@ -9,6 +9,7 @@
 - [ ] support passing functions for key mappings
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
+- [ ] perhaps timeouts for jobs?
 - [ ] linter/fmt config
     - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
     - [ ] perhaps rethink how linters etc... with config files are handled
