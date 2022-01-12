@@ -2,11 +2,13 @@
 - [x] context sensitive help (for at least imports)
 - [x] go doc shift immediately to -all or -all -src or back to basic
 - [x] compare null-ls builtins against custom goldsmith code
-- [ ] improve startup time
-- [ ] qf window often attached to wrong buffer (uncertain?)
-- [ ] stats for null-ls
+- [ ] linting / formatting
+    - [ ] stats for all
+    - [ ] use builtin, if available, override using with()
 - [ ] stats for gopls startup 
+- [ ] improve startup time
 - [ ] support passing functions for key mappings
+- [ ] qf window often attached to wrong buffer (uncertain?)
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] perhaps timeouts for jobs?
