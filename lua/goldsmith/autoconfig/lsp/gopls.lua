@@ -5,6 +5,7 @@ local servers = require 'goldsmith.lsp.servers'
 local plugins = require 'goldsmith.plugins'
 local tools = require 'goldsmith.tools'
 local config = require 'goldsmith.config'
+local log = require 'goldsmith.log'
 
 local M = {}
 
@@ -64,6 +65,9 @@ end
 local function get_versioned_server_settings()
   local settings = {}
   local v = tools.info('gopls').version
+  if v == nil then
+    return { gopls = settings }
+  end
   for var, m in pairs(SETTINGS_DIFF) do
     local cmp1 = version_cmp(v, m[2])
     local cmp2 = version_cmp(v, m[3])
@@ -106,7 +110,7 @@ local function set_command(cmd)
   if cmd == nil then
     return vim.tbl_flatten { servers.info('gopls').cmd, config.get('gopls', 'options') }
   else
-    return vim.tbl_flatten{ cmd, config.get('gopls', 'options') }
+    return vim.tbl_flatten { cmd, config.get('gopls', 'options') }
   end
 end
 
@@ -126,6 +130,10 @@ end
 function M.is_minimum_version()
   local v = tools.info('gopls').version
   local m = tools.info('gopls').minimum_version
+  if v == nil then
+    log.warn('Gopls', 'Cannot determine gopls version. Settings will be system default.')
+    return false
+  end
   if version_cmp(v, m) == 1 then
     return false
   end

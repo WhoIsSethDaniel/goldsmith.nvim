@@ -25,7 +25,7 @@ local TOOLS = {
     not_found = { 'This is required to do many things. It should be installed.' },
     get_version = function(cmd)
       local out = vim.fn.system(cmd .. ' version')
-      return string.match(out, '@v([%d%.]+)')
+      return string.match(out, '%s+v([%d%.]+)%s+')
     end,
   },
   gomodifytags = {
