@@ -305,6 +305,7 @@ local SPEC = {
   null = vim.tbl_deep_extend(
     'error',
     { config = { nil, is_type(true, 'table', 'function'), 'expected table or function' } },
+    { run_setup = { true, 'b' }},
     { enabled = { true, 'b' } },
     services()
   ),

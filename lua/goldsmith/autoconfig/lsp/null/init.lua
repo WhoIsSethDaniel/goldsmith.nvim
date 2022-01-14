@@ -94,7 +94,9 @@ function M.setup(cf)
       return true
     end
   end
-  null.setup(cf)
+  if config.get('null', 'run_setup') then
+    null.setup(cf)
+  end
   return cf
 end
 

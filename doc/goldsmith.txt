@@ -252,8 +252,9 @@ configure those servers. Goldsmith will configure the servers and call lspconfig
 
 If you want null-ls to do non-Go things (such as in the example above where 
 null-ls will run stylua and shfmt), and you want Goldsmith to configure null-ls
-for Go-related things, you will need to pass the non-Go portion of your null-ls
-configuration to Goldsmith.
+for Go-related things, you can pass the non-Go portion of your null-ls
+configuration to Goldsmith and it will setup null for you. Or you can set 
+|goldsmith-null.run_setup| to false and run null's setup() yourself.
 
 *goldsmith-configuration-all-defaults*
 A configuration that sets settings to the defaults (this example is not
@@ -336,6 +337,7 @@ guaranteed to be entirely up-to-date):
         ["codelens-off"] = {},
         ["codelens-on"] = {},
         ["codelens-run"] = {},
+        ["contextual-help"] = {},
         coverage = {},
         ["coverage-browser"] = {},
         ["coverage-files"] = {},
@@ -390,6 +392,7 @@ guaranteed to be entirely up-to-date):
         ["golangci-lint"] = false,
         golines = true,
         revive = true,
+        run_setup = true,
         staticcheck = false
       },
       qf = {
@@ -672,6 +675,14 @@ LSP SERVERS                                              *goldsmith-lsp-servers*
 Default: true
 If this setting is set to "false" it means that no Go-related services will be run
 by null-ls.
+
+`null.run_setup`                                      *goldsmith-null.run_setup*
+
+Default: true
+When set to true Goldsmith will run null's setup() function on behalf of the user
+using the configuration given in null.config (see |goldsmith-null.config|). If
+set to false the user will need to call null's setup() function. If null's setup()
+is never called then none of null's services will be available during the session.
 
 `null.revive`                                            *goldsmith-null.revive*
 
