@@ -2,9 +2,6 @@
 - [x] context sensitive help (for at least imports)
 - [x] go doc shift immediately to -all or -all -src or back to basic
 - [x] compare null-ls builtins against custom goldsmith code
-- [ ] linting / formatting
-    - [ ] stats for all
-    - [ ] use builtin, if available, override using with()
 - [ ] stats for gopls startup 
 - [ ] improve startup time
 - [ ] support passing functions for key mappings
@@ -12,7 +9,10 @@
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
 - [ ] explain the template stuff for :GoAddTest\* (gotests docs are non-existent)
 - [ ] perhaps timeouts for jobs?
-- [ ] linter/fmt config
+- [ ] linter/fmt
+    - [x] use multiple_files where needed
+    - [ ] more ability to override
+    - [ ] stats for all
     - [ ] :GoCreateConfigs: ability to have templates? or other files instead of the builtin ones
     - [ ] perhaps rethink how linters etc... with config files are handled
 - [ ] tests

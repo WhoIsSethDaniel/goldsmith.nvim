@@ -14,7 +14,7 @@ local err_map = {
   },
   {
     pat = "Can't read config.*While parsing config",
-    msg = "'golangci-lint' is not able to parse its configuration file: %s"
+    msg = "'golangci-lint' is not able to parse its configuration file: %s",
   },
 }
 local max_errs = 10
@@ -50,18 +50,16 @@ local function parse_messages()
       done()
       return
     end
-    local fname = vim.fn.fnamemodify(params.bufname, ':p:.')
     local diags = {}
     for _, d in ipairs(msgs.Issues) do
-      if fname == d.Pos.Filename then
-        table.insert(diags, {
-          message = d.Text,
-          col = d.Pos.Column,
-          row = d.Pos.Line,
-          source = d.FromLinter,
-          severity = severities[d.Severity] or severities['warning'],
-        })
-      end
+      table.insert(diags, {
+        message = d.Text,
+        col = d.Pos.Column,
+        row = d.Pos.Line,
+        source = d.FromLinter,
+        severity = severities[d.Severity] or severities['warning'],
+        filename = d.Pos.Filename,
+      })
     end
     done(diags)
   end
@@ -95,10 +93,11 @@ function M.setup(user_args)
         if cf ~= nil then
           vim.list_extend(args, string.format('--config=%s', cf), vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'))
         else
-          vim.list_extend(args, { vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') } )
+          vim.list_extend(args, { vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') })
         end
         return vim.list_extend(args, user_args)
       end,
+      multiple_files = true,
       format = 'raw',
       on_output = parse_messages(),
     },

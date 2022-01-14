@@ -35,7 +35,7 @@ local function parse_messages()
       end
       unknown_errs = unknown_errs + 1
       if unknown_errs == max_errs then
-        log.error('Lint', string.format("'golangci-lint' unknown error: %s", params.err))
+        log.error('Lint', string.format("'revive' unknown error: %s", params.err))
       end
       return
     end
@@ -53,6 +53,8 @@ local function parse_messages()
         col = d.Position.Start.Column,
         row = d.Position.Start.Line,
         severity = severities[d.Severity],
+        source = 'revive',
+        filename = d.Position.Start.Filename
       })
     end
     done(diags)
@@ -80,6 +82,9 @@ function M.setup(user_args)
       diagnostics_format = 'revive: #{m}',
       command = cmd(),
       to_stdin = false,
+      check_exit_code = function(code)
+        return code == 0
+      end,
       args = function()
         local args
         local cf = M['config_file'] and M.config_file()
@@ -91,6 +96,7 @@ function M.setup(user_args)
         return vim.list_extend(args, user_args)
       end,
       format = 'raw',
+      multiple_files = true,
       on_output = parse_messages(),
     },
   }
