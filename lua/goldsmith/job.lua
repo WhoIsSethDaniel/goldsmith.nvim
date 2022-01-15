@@ -147,13 +147,23 @@ function M.run(cmd, ...)
       running_jobs[id] = nil
     end)
     job = vim.fn.jobstart(string_cmd, opts)
+    M.validate_running_jobs()
     running_jobs[job] = cmd
   end
 
   return job
 end
 
+function M.validate_running_jobs()
+  for _, id in ipairs(running_jobs) do
+    if vim.fn.jobwait({ id }, 0)[1] ~= -1 then
+      running_jobs[id] = nil
+    end
+  end
+end
+
 function M.running_jobs()
+  M.validate_running_jobs()
   return running_jobs
 end
 

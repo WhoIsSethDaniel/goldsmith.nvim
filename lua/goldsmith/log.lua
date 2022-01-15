@@ -35,7 +35,7 @@ local function log(debug, lvl)
     logger = function(msg)
       vim.api.nvim_echo({ { msg, 'WarningMsg' } }, true, {})
     end
-  elseif lvl == 'info' or lvl == 'debug' then
+  elseif lvl == 'info' then
     logger = print
   end
   if debug then
@@ -73,8 +73,12 @@ function M.setup()
   if d then
     debug_wb = wb.create_debug_buffer()
     wb.setup_follow_buffer(debug_wb.buf)
-    M.debug('Version', function() return vim.api.nvim_exec('version', true) end)
-    M.debug('Version', function() return vim.inspect(vim.version()) end)
+    M.debug('Version', function()
+      return vim.api.nvim_exec('version', true)
+    end)
+    M.debug('Version', function()
+      return vim.inspect(vim.version())
+    end)
     require('goldsmith.tools').dump()
     require('goldsmith.config').dump()
   end
