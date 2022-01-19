@@ -17,19 +17,19 @@ function M.setup()
         enable = true,
         lookahead = true,
         keymaps = {
-          ['af'] = { go = '@function.outer' },
-          ['if'] = { go = '@function.inner' },
-          ['ac'] = { go = '@comment.outer' },
+          ['af'] = '@function.outer',
+          ['if'] = '@function.inner',
+          ['ac'] = '@comment.outer',
         },
       },
       move = {
         enable = true,
         set_jumps = true,
         goto_next_start = {
-          [']]'] = { go = '@function.outer' },
+          [']]'] = '@function.outer',
         },
         goto_previous_start = {
-          ['[['] = { go = '@function.outer' },
+          ['[['] = '@function.outer',
         },
       },
     },
