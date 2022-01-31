@@ -37,9 +37,12 @@ local function parse_messages()
           return
         end
       end
-      unknown_errs = unknown_errs + 1
-      if unknown_errs == max_errs then
+      if unknown_errs == 0 then
         log.error('Lint', string.format("'golangci-lint' unknown error: %s", errmsg))
+      end
+      unknown_errs = unknown_errs + 1
+      if unknown_errs > max_errs then
+        unknown_errs = 0
       end
       return
     end
