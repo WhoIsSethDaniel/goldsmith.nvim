@@ -710,14 +710,14 @@ To install `revive` you can use |:GoInstallBinaries|.
 `null.golangci-lint`                              *goldsmith-null.golangci-lint*
 
 Default: false
-If set to true `revive` will be run by null-ls. If false `revive` will not be 
-run.
+If set to true `golangci-lint` will be run by null-ls. If false `golangci-lint` 
+will not be run.
 
 You can pass extra arguments to `golangci-lint` by setting this variable to a 
 table where the key 'args' is set to a list where each element in the list is a 
 valid argument to `golangci-lint`.  You can also set a key named 'config_file' 
-to the name of a configuration file for 'revive'. If you set 'config_file' this 
-works with |:GoCreateConfigs|. It also means that Goldsmith can check to see
+to the name of a configuration file for 'golangci-lint'. If you set 'config_file'
+this works with |:GoCreateConfigs|. It also means that Goldsmith can check to see
 if the config file exists and is in the root directory of the project. If the
 config file does not exist Goldsmith will warn you.
 >
