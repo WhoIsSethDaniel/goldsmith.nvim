@@ -72,6 +72,11 @@ function M.setup(cf)
               return user_args['config_file']
             end
           end
+          if user_args['suppress_errors'] then
+            m.suppress_errors = function()
+              return user_args['suppress_errors']
+            end
+          end
         else
           setup = m.setup {}
         end

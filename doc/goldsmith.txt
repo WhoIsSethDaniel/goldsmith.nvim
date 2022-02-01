@@ -702,6 +702,16 @@ not exist Goldsmith will warn you.
       revive = { args = { ... }, config_file = 'revive.toml' }
     }
 <
+You can also set a key named 'suppress_errors'. This should be set to a number. 
+The number represents the number of times errors should be suppressed before 
+the next error is displayed. In this context 'errors' means errors with running
+the linter, and not errors the linter finds. By default 'suppress_errors' is 10.
+If you set it to zero, whenever the linter throws an error it will be shown.
+>
+    null = {
+      revive = { args = { ... }, suppress_errors = 5 }
+    }
+<
 
 See |goldsmith-resources| for where `revive` can be found.
 
@@ -723,6 +733,16 @@ config file does not exist Goldsmith will warn you.
 >
     null = {
       ['golangci-lint'] = { args = { ... }, config_file = '.golangci.yml' }
+    }
+<
+You can also set a key named 'suppress_errors'. This should be set to a number. 
+The number represents the number of times errors should be suppressed before 
+the next error is displayed. In this context 'errors' means errors with running
+the linter, and not errors the linter finds. By default 'suppress_errors' is 10.
+If you set it to zero, whenever the linter throws an error it will be shown.
+>
+    null = {
+      revive = { args = { ... }, suppress_errors = 5 }
     }
 <
 

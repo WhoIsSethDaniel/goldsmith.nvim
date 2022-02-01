@@ -14,7 +14,6 @@ local err_map = {
   },
   { pat = 'cannot parse', msg = "'revive' is not able to parse its configuration file: %s" },
 }
-local max_errs = 10
 
 local function parse_messages()
   local severities = { error = 1, warning = 2, information = 3, hint = 4 }
@@ -37,6 +36,7 @@ local function parse_messages()
         log.error('Lint', string.format("'revive' unknown error: %s", params.err))
       end
       unknown_errs = unknown_errs + 1
+      local max_errs = M['suppress_errors'] ~= nil and M.suppress_errors() or 10
       if unknown_errs > max_errs then
         unknown_errs = 0
       end
