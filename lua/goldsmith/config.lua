@@ -95,8 +95,30 @@ end
 
 local function services()
   local svcs = {}
+  local valid_keys = { 'args', 'config_file', 'suppress_errors' }
   for _, s in ipairs(service_defaults()) do
-    svcs[s[1]] = { s[2], is_type(false, 'boolean', 'table'), 'either true/false or list of arguments' }
+    svcs[s[1]] = {
+      s[2],
+      function(val)
+        local ok_type = is_type(false, 'boolean', 'table')(val)
+        if not ok_type then
+          return false
+        end
+        if type(val) ~= 'table' then
+          return true
+        end
+        for _, k in ipairs(vim.tbl_keys(val)) do
+          if not vim.tbl_contains(valid_keys, k) then
+            return false
+          end
+        end
+        return true
+      end,
+      string.format(
+        'either true/false or list of arguments (list of arguments may only have keys: %s)',
+        table.concat(valid_keys, ', ')
+      ),
+    }
   end
   return svcs
 end
@@ -305,7 +327,7 @@ local SPEC = {
   null = vim.tbl_deep_extend(
     'error',
     { config = { nil, is_type(true, 'table', 'function'), 'expected table or function' } },
-    { run_setup = { true, 'b' }},
+    { run_setup = { true, 'b' } },
     { enabled = { true, 'b' } },
     services()
   ),

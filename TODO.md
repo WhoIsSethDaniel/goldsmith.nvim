@@ -2,8 +2,8 @@
 - [x] context sensitive help (for at least imports)
 - [x] go doc shift immediately to -all or -all -src or back to basic
 - [x] compare null-ls builtins against custom goldsmith code
-- [ ] 'max_errs' for linters (golangci-lint/revive) should be user configurable
-- [ ] stats for gopls startup 
+- [x] 'max_errs' for linters (golangci-lint/revive) should be user configurable
+- [x] extra keys for null items should be validated
 - [ ] improve startup time
 - [ ] support passing functions for key mappings
 - [ ] qf window often attached to wrong buffer (uncertain?)

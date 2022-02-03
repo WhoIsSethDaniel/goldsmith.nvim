@@ -94,7 +94,7 @@ function M.setup(user_args)
         local args = vim.deepcopy(static_args)
         local cf = M['config_file'] and M.config_file()
         if cf ~= nil then
-          vim.list_extend(args, string.format('--config=%s', cf), vim.fn.fnamemodify(vim.fn.expand '%', ':p:h'))
+          vim.list_extend(args, { string.format('--config=%s', cf), vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') })
         else
           vim.list_extend(args, { vim.fn.fnamemodify(vim.fn.expand '%', ':p:h') })
         end
