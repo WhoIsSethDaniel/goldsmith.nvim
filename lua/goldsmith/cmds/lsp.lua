@@ -30,7 +30,7 @@ local function jump(m)
       wb.create_winbuf(c)
     end
 
-    vim.lsp.util.jump_to_location(r)
+    vim.lsp.util.jump_to_location(r, 'utf-16')
 
     if #result > 1 then
       vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(result))
