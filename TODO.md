@@ -4,6 +4,7 @@
 - [x] compare null-ls builtins against custom goldsmith code
 - [x] 'max_errs' for linters (golangci-lint/revive) should be user configurable
 - [x] extra keys for null items should be validated
+- [ ] check why the 'only' key for organizeImports isn't working as expected
 - [ ] improve startup time
 - [ ] support passing functions for key mappings
 - [ ] qf window often attached to wrong buffer (uncertain?)
