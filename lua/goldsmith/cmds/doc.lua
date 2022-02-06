@@ -54,7 +54,7 @@ local function match_partial_item_name(pkg, part)
 end
 
 function M.doc_complete(arglead, cmdline, cursorPos)
-  local words = vim.split(cmdline, '%s+')
+  local words = vim.split(cmdline, '%s+', { trimempty = true })
   if #words > 1 and string.match(words[#words], '^[^-].+%..*') ~= nil then
     local pkg, item, method = unpack(vim.split(words[#words], '%.'))
     if method then

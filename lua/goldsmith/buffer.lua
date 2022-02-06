@@ -87,7 +87,7 @@ end
 -- return the most recent buffer if it is valid, otherwise just return any of the registered buffers
 -- assuming it is valid
 function M.get_valid_buffer()
-  if current ~= nil and vim.api.nvim_buf_is_valid(M.current) then
+  if current ~= nil and vim.api.nvim_buf_is_valid(current) then
     return current
   end
   for _, buf in pairs(all) do
