@@ -5,6 +5,9 @@
 - [x] 'max_errs' for linters (golangci-lint/revive) should be user configurable
 - [x] extra keys for null items should be validated
 - [ ] module_path() may break with 1.18 ('go list -m' will potentially return more than one module)
+- [ ] warn if ts parsers are not available for go/gomod
+- [ ] investigate richgo
+- [ ] investigate using tests without json middleman
 - [ ] check why the 'only' key for organizeImports isn't working as expected
 - [ ] improve startup time
 - [ ] support passing functions for key mappings
