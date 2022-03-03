@@ -7,6 +7,8 @@
 - 1.18
     - [ ] module_path() may break with 1.18 ('go list -m' will potentially return more than one module)
     - [ ] fuzzy testing
+- gopls 0.8
+    - look at release notes and see what can be used: https://github.com/golang/tools/releases/tag/gopls%2Fv0.8.0
 - [ ] warn if ts parsers are not available for go/gomod
 - [ ] revive reports a version
 - [ ] investigate richgo
