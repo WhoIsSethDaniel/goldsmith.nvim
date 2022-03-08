@@ -4,6 +4,7 @@
 - [x] compare null-ls builtins against custom goldsmith code
 - [x] 'max_errs' for linters (golangci-lint/revive) should be user configurable
 - [x] extra keys for null items should be validated
+- [ ] use vim.lsp.buf.server_ready
 - 1.18
     - [ ] module_path() may break with 1.18 ('go list -m' will potentially return more than one module)
     - [ ] fuzzy testing
