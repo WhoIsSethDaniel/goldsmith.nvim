@@ -16,7 +16,8 @@
 - [ ] investigate richgo
 - [ ] investigate using tests without json middleman
 - [ ] check why the 'only' key for organizeImports isn't working as expected
-- [ ] improve startup time
+- [ ] improve startup time -- unsurprisingly pretty much entirely located in tools.check() which does many fs checks and
+      runs some programs (to get the version). This will need to be done asynchronously to improve the startup time.
 - [ ] support passing functions for key mappings
 - [ ] qf window often attached to wrong buffer (uncertain?)
 - [ ] https://github.com/golang/vscode-go - steal ideas from here, if any
