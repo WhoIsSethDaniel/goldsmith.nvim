@@ -20,7 +20,7 @@ local TOOLS = {
     lspconfig_name = 'gopls',
     lspinstall_name = 'go',
     minimum_version = '0.6.6',
-    filetypes = { 'go', 'gomod' },
+    filetypes = { 'go', 'gomod', 'gotmpl' },
     module_name = 'gopls',
     not_found = { 'This is required to do many things. It should be installed.' },
     get_version = function(cmd)
@@ -261,7 +261,7 @@ function M.find_bin(program, info)
     TOOLS[program].installed = false
     if TOOLS['lspinstaller'].check_installed then
       local _, s = require('nvim-lsp-installer').get_server(program)
-      local cmd = string.format("%s/%s", s.root_dir, s.name)
+      local cmd = string.format('%s/%s', s.root_dir, s.name)
       if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
         TOOLS[program].via = 'lsp-installer'
         return cmd

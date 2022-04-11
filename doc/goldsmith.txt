@@ -182,7 +182,7 @@ something like the following (this example is with `gopls` 0.7.1):
 >
     capabilities = { ... }
     cmd = { "<discovered gopls executable>", "-remote=auto" },
-    filetypes = { "go", "gomod" },
+    filetypes = { "go", "gomod", "gotmpl" },
     flags = {
         debounce_text_changes = 500
     },
