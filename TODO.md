@@ -6,8 +6,8 @@
 - [x] extra keys for null items should be validated
 - [ ] use vim.notify
 - [ ] lspconfig now uses client.server_capabilities and not client.resolved_capabilities (check for diffs)
-- [ ] nvim-lsp-installer has breaking changes for setup()
-- [ ] treesitter api for get_node_text has moved to vim.treesitter.query.get_node_text
+- [x] nvim-lsp-installer has breaking changes for setup()
+- [x] treesitter api for get_node_text has moved to vim.treesitter.query.get_node_text
 - [ ] use vim.lsp.buf.server_ready
 - 1.18
     - [ ] module_path() may break with 1.18 ('go list -m' will potentially return more than one module)
