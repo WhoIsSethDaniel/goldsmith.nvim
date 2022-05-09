@@ -13,9 +13,9 @@ local function find_all_functions(root, funcs)
       local line, col = ts_utils.get_node_range(node)
       local name
       if ntype == 'method_declaration' then
-        name = ts_utils.get_node_text(node:child(2))[1]
+        name = vim.treesitter.query.get_node_text(node:child(2), 0)
       else
-        name = (ts_utils.get_node_text(node:child(1)))[1]
+        name = vim.treesitter.query.get_node_text(node:child(1), 0)
       end
       local f = {
         -- node = node,
@@ -45,7 +45,7 @@ local function find_all_modules(root, mods)
     local ntype = node:type()
     local ptype = node:parent():type()
     if ntype == 'module_path' and ptype == 'require_spec' then
-      table.insert(mods, (ts_utils.get_node_text(node))[1])
+      table.insert(mods, vim.treesitter.query.get_node_text(node, 0))
     end
     find_all_modules(node, mods)
   end
@@ -59,7 +59,7 @@ local function find_all_types(root, types)
     local ntype = node:type()
     if ntype == 'type_declaration' or ntype == 'var_declaration' then
       local line, col = ts_utils.get_node_range(node)
-      local name = (ts_utils.get_node_text(node:child(1)))[1]
+      local name = vim.treesitter.query.get_node_text(node:child(1), 0)
       name = string.match(name, '^([^%s]+)')
       local f = {
         -- node = node,
@@ -115,10 +115,10 @@ function M.get_module_at_cursor()
   end
   for node in mnode:iter_children() do
     if node:type() == 'module_path' then
-      mod = (ts_utils.get_node_text(node))[1]
+      mod = vim.treesitter.query.get_node_text(node, 0)
     end
     if node:type() == 'version' then
-      v = (ts_utils.get_node_text(node))[1]
+      v = vim.treesitter.query.get_node_text(node, 0)
     end
   end
   return { name = mod, version = v }
@@ -143,9 +143,9 @@ function M.get_current_function_name()
   end
 
   if expr:type() == 'function_declaration' then
-    return (ts_utils.get_node_text(expr:child(1)))[1]
+    return vim.treesitter.query.get_node_text(expr:child(1), 0)
   elseif expr:type() == 'method_declaration' then
-    return (ts_utils.get_node_text(expr:child(2)))[1]
+    return vim.treesitter.query.get_node_text(expr:child(2), 0)
   end
 end
 
