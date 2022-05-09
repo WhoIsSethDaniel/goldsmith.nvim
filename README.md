@@ -59,7 +59,8 @@ available for those who cannot afford to stay at the leading edge. If you checko
 the lastest version of Goldsmith for that minor version of Neovim. e.g. if you are using Neovim 0.X.Y you would want to
 checkout the `nvim-0.X` tag and/or the `stable-nvim-0.X` branch. The only exception to this rule is anything `0.6.1` or
 earlier (back to `0.5.0`). For those versions you will want to checkout either the `nvim-0.6` tag or the
-`stable-nvim-0.6` branch.
+`stable-nvim-0.6` branch. It cannot be guaranteed that the branch and/or tag will work with the lastest version of 
+various other dependencies (such as nvim-lspconfig, treesitter, null-ls, etc...).
 
 Goldsmith *will not work* with Vim or versions of Neovim prior to 0.5.0.
 
