@@ -22,21 +22,6 @@ function M.is_server(name)
 end
 
 function M.run_setup_function(server, config)
-  if plugins.is_installed 'lspinstaller' then
-    local installed = vim.tbl_map(function(v)
-      return v.name
-    end, require('nvim-lsp-installer').get_installed_servers())
-    local sname = M.info(server).lspconfig_name
-    if vim.tbl_contains(installed, sname) then
-      log.debug(sname, function()
-        return 'lsp-installer: ' .. vim.inspect(config)
-      end)
-      local ok, svr = require('nvim-lsp-installer').get_server(sname)
-      svr:setup(config)
-      return true
-    end
-  end
-
   if plugins.is_installed 'lspconfig' then
     local sname = M.info(server).lspconfig_name
     log.debug(sname, function()

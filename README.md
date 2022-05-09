@@ -34,6 +34,42 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * most commands are completely asynchronous
 * support for  [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer)
 
+# Releases / Minimal Versions of Dependencies
+
+The _main_ branch of Goldsmith should always work with the most recent stable version of Neovim. It may also work with
+nightly Neovim (with some delay). If you are always running nightly or always have the most recent stable version then
+you will probably want to use _main_ at all times.
+
+`go` versions should be either the most recent minor version or within one minor version of the most recent. So if the
+most recent `go` version is 1.18.3 this means Goldsmith should work with at least 1.17.0 and newer.
+
+`nvim-lspconfig` should always be at or near the latest. A good faith effort will be made to help transition to versions
+of `nvim-lspconfig` that have major breakage, but cannot be guaranteed. Please [ask a question](https://github.com/WhoIsSethDaniel/goldsmith.nvim/discussions) 
+or [report a problem](https://github.com/WhoIsSethDaniel/goldsmith.nvim/issues) if you think that we can do a better
+job or if you are having a problem.
+
+`gopls` should always be very recent if you wish to follow the _main_ branch. It does not necessarily need to be the
+most recent but should be within one minor version of the most recent.
+
+Other dependencies, such as `null-ls` or `nvim-lsp-installer`, will be handled as problems occur (which is rare).
+
+Starting with `Neovim 0.6.1`, for every new minor version of Neovim (i.e. 0.5, 0.6, 0.7, etc...), there will be a branch
+and a tag. The branch and tag are created _after_ an even newer minor version of Neovim is available, and are made
+available for those who cannot afford to stay at the leading edge. If you checkout the tag or the branch you will get
+the lastest version of Goldsmith for that minor version of Neovim. e.g. if you are using Neovim 0.X.Y you would want to
+checkout the `nvim-0.X` tag and/or the `stable-nvim-0.X` branch. The only exception to this rule is anything `0.6.1` or
+earlier (back to `0.5.0`). For those versions you will want to checkout either the `nvim-0.6` tag or the
+`stable-nvim-0.6` branch.
+
+Goldsmith *will not work* with Vim or versions of Neovim prior to 0.5.0.
+
+Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
+requirements.
+
+If you discover that any of the above is *not* the case, or you find it confusing, please consider [asking a
+question](https://github.com/WhoIsSethDaniel/goldsmith.nvim/discussions) or [reporting a
+problem](https://github.com/WhoIsSethDaniel/goldsmith.nvim/issues).
+
 # Installation
 Install using your favorite plugin manager. 
 
@@ -71,24 +107,6 @@ to configure Goldsmith.
 
 Also see the Goldsmith [:help documentation](https://github.com/WhoIsSethDaniel/goldsmith.nvim/blob/main/doc/goldsmith.txt) or 
 after installing Goldsmith by using `:h goldsmith`.
-
-# Minimal Requirements
-* Neovim >= 0.5.0
-* go >= 1.15
-* gopls >= 0.6.6[\*] 
-* [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-
-These 'minimal' requirements are not hard-and-fast. They are simply the minimal versions that the author has been able
-to test with. Goldsmith may work just fine with older versions of Go, gopls, etc.... Neovim, however, must be at least
-0.5.0 and nvim-lspconfig is also a hard requirement.
-
-Goldsmith *will not work* with Vim or versions of Neovim prior to 0.5.0.
-
-Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
-requirements.
-
-[\*] Goldsmith depends on package completion provided by gopls. Prior to 0.6.6 this did not exist. If you use a gopls
-earlier than 0.6.6 it means package completion will not work for those commands that require it.
 
 # Reporting Problems / Asking Questions
 Goldsmith is very new. It works for the author, but does it work for you? If not, please consider [asking a 
