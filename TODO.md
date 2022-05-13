@@ -17,6 +17,7 @@
 - [ ] support lsp-format.nvim
 - [ ] first use of GoDoc seems to take a very long time
 - [ ] warn if ts parsers are not available for go/gomod
+- [ ] consider integrating formattag (https://github.com/momaek/formattag)
 - [ ] revive reports a version
 - [ ] investigate richgo
 - [ ] investigate using tests without json middleman
