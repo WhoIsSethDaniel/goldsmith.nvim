@@ -113,6 +113,10 @@ local TOOLS = {
     null = true,
     required = false,
     not_found = { 'This is a linting tool. It can supplement the linting done by gopls.' },
+    get_version = function(cmd)
+      local out = vim.fn.system(cmd .. ' -version')
+      return string.match(out, 'version ([%d%.]+)')
+    end,
   },
   ['golangci-lint'] = {
     status = 'install',

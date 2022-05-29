@@ -4,7 +4,6 @@
 - [x] compare null-ls builtins against custom goldsmith code
 - [x] 'max_errs' for linters (golangci-lint/revive) should be user configurable
 - [x] extra keys for null items should be validated
-- [ ] use vim.notify
 - [ ] lspconfig now uses client.server_capabilities and not client.resolved_capabilities (check for diffs)
 - [x] nvim-lsp-installer has breaking changes for setup()
 - [x] treesitter api for get_node_text has moved to vim.treesitter.query.get_node_text
@@ -18,6 +17,7 @@
 - [ ] first use of GoDoc seems to take a very long time
 - [ ] warn if ts parsers are not available for go/gomod
 - [ ] consider integrating formattag (https://github.com/momaek/formattag)
+- [ ] use vim.notify
 - [ ] revive reports a version
 - [ ] investigate richgo
 - [ ] investigate using tests without json middleman
