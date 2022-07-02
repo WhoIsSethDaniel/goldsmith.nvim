@@ -52,14 +52,18 @@ function M.run(action, location, args)
     stderr_buffered = true,
     on_stderr = function(jobid, data)
       if data[1] ~= '' then
-        log.error('Tag', string.format('operation failed with: %s', data[1]))
+        vim.schedule(function()
+          log.error('Tag', string.format('operation failed with: %s', data[1]))
+        end)
       end
     end,
     on_stdout = function(jobid, data)
       if data[1] ~= '' then
-        local changes = vim.fn.json_decode(data)
-        vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
-        vim.cmd 'w!'
+        vim.schedule(function()
+          local changes = vim.fn.json_decode(data)
+          vim.api.nvim_buf_set_lines(b, changes.start - 1, changes['end'], true, changes.lines)
+          vim.cmd 'w!'
+        end)
       end
     end,
     on_exit = function(jobid, code, event)

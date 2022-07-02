@@ -31,7 +31,9 @@ function M.retract(args)
     stderr_buffered = true,
     on_stderr = function(id, data)
       if data[1] ~= '' then
-        log.error('Mod', data[1])
+        vim.schedule(function()
+          log.error('Mod', data[1])
+        end)
       end
     end,
     on_exit = function(id, code)
@@ -71,7 +73,9 @@ function M.exclude(args)
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
       if data[1] ~= '' then
-        log.error('Mod', data[1])
+        vim.schedule(function()
+          log.error('Mod', data[1])
+        end)
       end
     end,
     on_exit = function(jobid, code, event)
@@ -117,7 +121,9 @@ function M.replace(args)
     stderr_buffered = true,
     on_stderr = function(chan, data, name)
       if data[1] ~= '' then
-        log.error('Mod', data[1])
+        vim.schedule(function()
+          log.error('Mod', data[1])
+        end)
       end
     end,
     on_exit = function(jobid, code, event)
@@ -139,8 +145,10 @@ function M.format()
     stdout_buffered = true,
     stderr_buffered = true,
     on_stderr = function(id, data)
-      if data[1] ~= "" then
-        log.error('Mod', data[1])
+      if data[1] ~= '' then
+        vim.schedule(function()
+          log.error('Mod', data[1])
+        end)
       end
     end,
     on_exit = function(id, code)
