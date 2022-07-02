@@ -36,14 +36,26 @@ function M.run(args)
   end
   for _, name in ipairs(install) do
     local info = tools.info(name)
-    local cmd = { 'go', 'install', string.format("%s@%s", info.location, info.tag)}
+    local cmd = { 'go', 'install', string.format('%s@%s', info.location, info.tag) }
     log.info('GoInstallBinaries', string.format('starting retrieval of %s', name))
     job.run(cmd, {
+      stdout_buffered = true,
+      stderr_buffered = true,
+      on_stderr = function(jobid, data)
+        if data[1] ~= '' then
+          vim.schedule(function()
+            log.error(
+              'GoInstallBinaries',
+              string.format('FAILED in retrieval of %s failed with message: %s', name, table.concat(data, '\n'))
+            )
+          end)
+        end
+      end,
       on_exit = function(jobid, code, event)
         if code > 0 then
-          log.error('GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', info.exe, code))
+          log.error('GoInstallBinaries', string.format('FAILED in retrieval of %s, code %d', name, code))
         else
-          log.info('GoInstallBinaries', string.format('SUCCESS in retrieval of %s', info.exe, code))
+          log.info('GoInstallBinaries', string.format('SUCCESS in retrieval of %s', name))
         end
       end,
     })
