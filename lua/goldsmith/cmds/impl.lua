@@ -77,7 +77,9 @@ function M.run(args)
     on_stderr = function(id, data, name)
       if data[1] ~= '' then
         local err = table.concat(data, '\n')
-        log.error('Impl', err)
+        vim.schedule(function()
+          log.error('Impl', err)
+        end)
       end
     end,
     on_exit = function(id, code, event)

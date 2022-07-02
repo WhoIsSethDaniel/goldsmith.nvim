@@ -39,7 +39,9 @@ function M.open_browser(pf)
   current_job = job.run(cmd, {
     on_stderr = function(id, data)
       if data[1] ~= '' then
-        log.error('Coverage', data[1])
+        vim.schedule(function()
+          log.error('Coverage', data[1])
+        end)
       end
     end,
     on_exit = function(id, code)
@@ -72,7 +74,9 @@ function M.run(attr, args)
   current_job = job.run(cmd, opts, {
     on_stderr = function(id, data)
       if data[1] ~= '' then
-        log.error('Coverage', data[1])
+        vim.schedule(function()
+          log.error('Coverage', data[1])
+        end)
       end
     end,
     on_exit = function(id, code)
@@ -89,7 +93,10 @@ function M.run(attr, args)
         if fs.is_code_file(buf_name) then
           coverage.highlight_on(b)
         end
-        log.warn("Coverage", "Turn on coverage in code files using :GoCoverageOn. See all files with coverage data using :GoCoverageFiles.")
+        log.warn(
+          'Coverage',
+          'Turn on coverage in code files using :GoCoverageOn. See all files with coverage data using :GoCoverageFiles.'
+        )
       elseif attr.type == 'web' then
         M.open_browser(pf)
         coverage.add_coverage_file(pf)

@@ -28,7 +28,9 @@ function M.run(given, args)
     stdout_buffered = true,
     on_stderr = function(id, data)
       if data[1] ~= '' then
-        log.error('ToStruct', string.format('Failed to convert JSON to struct: %s', table.concat(data, '')))
+        vim.schedule(function()
+          log.error('ToStruct', string.format('Failed to convert JSON to struct: %s', table.concat(data, '')))
+        end)
       end
     end,
     on_stdout = function(id, data)
