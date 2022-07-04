@@ -84,6 +84,7 @@ FEATURES                                                    *goldsmith-features*
 
 Features currently included:
 * codelens support
+* inlay hints support
 * flag and update out-of-date dependencies in your current Go module
 * automatically run goimports on save
 * auto-highlight the current symbol under the cursor throughout the current buffer
