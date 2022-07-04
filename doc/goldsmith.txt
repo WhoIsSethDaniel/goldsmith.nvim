@@ -321,6 +321,10 @@ guaranteed to be entirely up-to-date):
       highlight = {
         current_symbol = true
       },
+      inlay_hints = {
+        enable = false,
+        highlight = "Comment"
+      },
       jump = {
         use_current_window = true,
         window = {}
@@ -425,7 +429,7 @@ guaranteed to be entirely up-to-date):
         pos = "right",
         width = 80
       }
-    }
+    })
 <
 ================================================================================
 SETTINGS                                                    *goldsmith-settings*
@@ -874,6 +878,22 @@ Highlight the current symbol the cursor is over throughout the current document.
 
 This setting can be changed from within Goldsmith by using |:GoSymHighlightOn|
 and |:GoSymHighlightOff|.
+
+INLAY HINTS                                     *goldsmith-inlay-hints-settings*
+
+`inlay_hints.enable`                              *goldsmith-inlay_hints.enable*
+
+Default: false
+By default inlay hints are off. If set to true inlay hints will be shown for all
+Go buffers.
+
+This setting can be changed, per buffer, from within Goldsmith by using
+|:GoInlayHintsOn| and |:GoInlayHintsOff|.
+
+`inlay_hints.highlight`                       *goldsmith-inlay_hints.hightlight*
+
+Default: Comment
+The highlight to use when displaying inlay hints.
 
 CODE LENS                                         *goldsmith-code-lens-settings*
 
@@ -1472,6 +1492,18 @@ This turns on symbol highlighting. It is the same as having the
 
 This turns off symbol highlighting. It is the same as having the
 |highlight.current_symbol| setting turned off.
+
+                                                               *:GoInlayHintsOn*
+:GoInlayHintsOn
+
+This turns on inlay hints for the current buffer. It is the same as having the 
+|inlay_hints.enable| setting set to true, but only for the current buffer.
+
+                                                              *:GoInlayHintsOff*
+:GoInlayHintsOff
+
+This turns off inlay hints. It is the same as having the |inlay_hints.enable| 
+setting set to false, but only for the current buffer.
 
                                                                  *:GoCodeLensOn*
 :GoCodeLensOn

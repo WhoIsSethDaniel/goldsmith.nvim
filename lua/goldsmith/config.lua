@@ -308,6 +308,10 @@ local SPEC = {
   highlight = {
     current_symbol = { true, 'b' },
   },
+  inlay_hints = {
+    enable = { false, 'b' },
+    highlight = { 'Comment', 's' },
+  },
   codelens = {
     show = { true, 'b' },
   },
