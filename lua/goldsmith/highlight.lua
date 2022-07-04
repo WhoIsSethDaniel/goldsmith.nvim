@@ -3,7 +3,7 @@ local ac = require 'goldsmith.autoconfig'
 
 local M = {}
 
-function M.current_symbol()
+function M.maybe_run()
   if ac.all_servers_are_running() then
     if config.get('highlight', 'current_symbol') == true then
       vim.lsp.buf.clear_references()

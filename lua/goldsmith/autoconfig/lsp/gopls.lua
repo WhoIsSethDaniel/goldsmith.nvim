@@ -25,6 +25,19 @@ local SETTINGS_DIFF = {
   diagnosticsDelay = { '500ms', '0.7.0', nil },
   experimentalPostfixCompletions = { true, '0.6.10', nil },
   experimentalUseInvalidMetadata = { true, '0.7.1', nil },
+  hints = {
+    {
+      assignVariableTypes = true,
+      compositeLiteralFields = true,
+      compositeLiteralTypes = true,
+      constantValues = true,
+      functionTypeParameters = true,
+      parameterNames = true,
+      rangeVariableTypes = true,
+    },
+    '0.9.0',
+    nil,
+  },
 }
 
 local FLAGS = {

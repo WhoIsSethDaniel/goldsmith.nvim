@@ -103,6 +103,10 @@ command! -nargs=0 GoCodeLensRun lua require'goldsmith.cmds.lsp'.run_codelens()
 command! -nargs=0 GoCodeLensOn lua require'goldsmith.cmds.lsp'.turn_on_codelens()
 command! -nargs=0 GoCodeLensOff lua require'goldsmith.cmds.lsp'.turn_off_codelens()
 
+" inlay hints
+command! -nargs=0 GoInlayHintsOn lua require'goldsmith.cmds.inlay_hints'.turn_on_inlay_hints()
+command! -nargs=0 GoInlayHintsOff lua require'goldsmith.cmds.inlay_hints'.turn_off_inlay_hints()
+
 " initial setup
 command! -nargs=* -bang -complete=custom,s:GoCreateConfigsComplete GoCreateConfigs lua require'goldsmith.cmds.setup'.create_configs('<bang>',{<f-args>})
 
@@ -110,10 +114,11 @@ command! -nargs=* -bang -complete=custom,s:GoCreateConfigsComplete GoCreateConfi
 command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
 
 augroup goldsmith_ft_go
-  autocmd! * <buffer>
-  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
-  autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.current_symbol()
-  autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
+    autocmd! * <buffer>
+    autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
+    autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.maybe_run()
+    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
+    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.inlay_hints'.maybe_run()
 augroup END
 
 lua require'goldsmith.buffer'.setup()
