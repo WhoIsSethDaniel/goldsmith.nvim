@@ -91,12 +91,14 @@ local function handler(err, result, ctx)
   for key, value in pairs(parsed) do
     local virt_text = ''
     local line = tonumber(key)
+    local column = 0
 
     local current_line = vim.api.nvim_buf_get_lines(bufnr, line, line + 1, false)[1]
 
     if current_line then
       local param_hints = {}
       local other_hints = {}
+      local unkind_hints = {}
 
       -- segregate parameter hints and other hints
       for _, value_inner in ipairs(value) do
@@ -106,6 +108,10 @@ local function handler(err, result, ctx)
 
         if value_inner.kind == 1 then
           table.insert(other_hints, value_inner)
+        end
+
+        if value_inner.kind == nil then
+          table.insert(unkind_hints, value_inner)
         end
       end
 
@@ -119,6 +125,7 @@ local function handler(err, result, ctx)
           end
         end
         virt_text = virt_text .. ') '
+        column = 0
       end
 
       -- show other hints with commas and a thicc arrow
@@ -141,10 +148,19 @@ local function handler(err, result, ctx)
             virt_text = virt_text .. ', '
           end
         end
+        column = 0
+      end
+
+      -- these, at least currently, seem to be for showing values of constants,
+      -- and can be passed unchanged
+      if not vim.tbl_isempty(unkind_hints) then
+        local vii = unkind_hints[1]
+        virt_text = vii.label
+        column = vii.column
       end
 
       if virt_text ~= '' then
-        vim.api.nvim_buf_set_extmark(bufnr, namespace, line, 0, {
+        vim.api.nvim_buf_set_extmark(bufnr, namespace, line, column, {
           virt_text_pos = 'eol',
           virt_text = {
             { virt_text, opts.highlight },
