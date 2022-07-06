@@ -309,7 +309,7 @@ local SPEC = {
     current_symbol = { true, 'b' },
   },
   inlay_hints = {
-    enable = { false, 'b' },
+    enabled = { false, 'b' },
     highlight = { 'Comment', 's' },
   },
   codelens = {

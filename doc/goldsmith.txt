@@ -84,7 +84,7 @@ FEATURES                                                    *goldsmith-features*
 
 Features currently included:
 * codelens support
-* inlay hints support
+* inlay hints support (requires gopls 0.9.0 or higher)
 * flag and update out-of-date dependencies in your current Go module
 * automatically run goimports on save
 * auto-highlight the current symbol under the cursor throughout the current buffer
@@ -323,7 +323,7 @@ guaranteed to be entirely up-to-date):
         current_symbol = true
       },
       inlay_hints = {
-        enable = false,
+        enabled = false,
         highlight = "Comment"
       },
       jump = {
@@ -882,7 +882,7 @@ and |:GoSymHighlightOff|.
 
 INLAY HINTS                                     *goldsmith-inlay-hints-settings*
 
-`inlay_hints.enable`                              *goldsmith-inlay_hints.enable*
+`inlay_hints.enabled`                            *goldsmith-inlay_hints.enabled*
 
 Default: false
 By default inlay hints are off. If set to true inlay hints will be shown for all
@@ -891,7 +891,7 @@ Go buffers.
 This setting can be changed, per buffer, from within Goldsmith by using
 |:GoInlayHintsOn| and |:GoInlayHintsOff|.
 
-`inlay_hints.highlight`                       *goldsmith-inlay_hints.hightlight*
+`inlay_hints.highlight`                        *goldsmith-inlay_hints.highlight*
 
 Default: Comment
 The highlight to use when displaying inlay hints.
@@ -1498,12 +1498,12 @@ This turns off symbol highlighting. It is the same as having the
 :GoInlayHintsOn
 
 This turns on inlay hints for the current buffer. It is the same as having the 
-|inlay_hints.enable| setting set to true, but only for the current buffer.
+|inlay_hints.enabled| setting set to true, but only for the current buffer.
 
                                                               *:GoInlayHintsOff*
 :GoInlayHintsOff
 
-This turns off inlay hints. It is the same as having the |inlay_hints.enable| 
+This turns off inlay hints. It is the same as having the |inlay_hints.enabled| 
 setting set to false, but only for the current buffer.
 
                                                                  *:GoCodeLensOn*

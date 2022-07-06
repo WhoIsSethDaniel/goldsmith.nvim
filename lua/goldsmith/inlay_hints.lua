@@ -7,7 +7,7 @@ local M = {}
 
 function M.maybe_run()
   if ac.all_servers_are_running() then
-    if config.get('inlay_hints', 'enable') == true then
+    if config.get('inlay_hints', 'enabled') == true then
       M.set_inlay_hints()
     end
   end
