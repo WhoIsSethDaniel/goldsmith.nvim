@@ -1,9 +1,9 @@
 let g:goldsmith_is_setup = v:false
-if !has('nvim-0.7')
+if !has('nvim-0.8')
     echohl ErrorMsg
-    echomsg 'Goldsmith requires at least neovim 0.7.0.'
-    echomsg 'If you are using a version of Neovim that is at least 0.5 please see'
-    echomsg 'https://github.com/WhoIsSethDaniel/goldsmith.nvim#releases--minimal-versions-of-dependencies'
+    echomsg 'Goldsmith requires at least neovim 0.8.0.'
+    echomsg 'If you are using a version of Neovim that is at least 0.5.0, but not at least 0.8.0, please see'
+    echomsg 'https://github.com/WhoIsSethDaniel/goldsmith.nvim/tree/prepare_for_0.8.0#keeping-up-to-date--releases'
     echohl None
     echoerr ''
     finish
