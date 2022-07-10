@@ -5,7 +5,7 @@ Go development environment for Neovim utilizing the builtin LSP and other featur
 view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1)
 
 * codelens support [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#codelens-support)
-* inlay hints support (screencast coming soon) - *you need to have gopls 0.9.0 or greater for this to work*
+* inlay hints support [screenshots](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-6#inlay-hints) - *you need to have gopls 0.9.0 or greater for this to work*
 * flag and update out-of-date dependencies in your current Go module [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#go-module-check-for-updates)
 * automatically run goimports on save [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-1#run-goimports-on-save)
 * auto-highlight the current symbol under the cursor throughout the current buffer [screencast](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wiki/Features-2#symbol-highlighting)
