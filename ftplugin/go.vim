@@ -116,9 +116,9 @@ command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
 augroup goldsmith_ft_go
     autocmd! * <buffer>
     autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
-    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
-    autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.maybe_run()
-    autocmd CursorHold,CursorHoldI <buffer> lua require'goldsmith.inlay_hints'.maybe_run()
+    autocmd BufEnter,CursorHold,CursorHoldI <buffer> lua require'goldsmith.codelens'.maybe_run()
+    autocmd BufEnter,CursorHold,CursorHoldI <buffer> lua require'goldsmith.highlight'.maybe_run()
+    autocmd BufEnter,CursorHold,CursorHoldI <buffer> lua require'goldsmith.inlay_hints'.maybe_run()
 augroup END
 
 lua require'goldsmith.buffer'.setup()
