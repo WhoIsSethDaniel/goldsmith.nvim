@@ -263,7 +263,7 @@ function M.find_bin(program, info)
 
   if info.server and info['exe'] ~= nil then
     TOOLS[program].installed = false
-    if TOOLS['lspinstaller'].check_installed then
+    if TOOLS['lspinstaller'].check_installed() then
       local _, s = require('nvim-lsp-installer').get_server(program)
       local cmd = string.format('%s/%s', s.root_dir, s.name)
       if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
