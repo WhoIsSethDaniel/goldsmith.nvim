@@ -1,6 +1,12 @@
 local hints = require 'goldsmith.inlay_hints'
 
 return {
-  turn_off_inlay_hints = hints.disable_inlay_hints,
-  turn_on_inlay_hints = hints.set_inlay_hints,
+  turn_off_inlay_hints = function()
+    vim.b.inlay_hints = nil
+    hints.disable_inlay_hints()
+  end,
+  turn_on_inlay_hints = function()
+    vim.b.inlay_hints = true
+    hints.set_inlay_hints()
+  end,
 }

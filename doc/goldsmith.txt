@@ -896,6 +896,32 @@ This setting can be changed, per buffer, from within Goldsmith by using
 Default: Comment
 The highlight to use when displaying inlay hints.
 
+`inlay_hints.show_parameter_hints`  *goldsmith-inlay_hints.show_parameter_hints*
+
+Default: true
+Show parameter hints
+
+`inlay_hints.show_variable_name`      *goldsmith-inlay_hints.show_variable_name*
+
+Default: true
+Whether to show variable name before type hints
+
+`inlay_hints.only_current_line`        *goldsmith-inlay_hints.only_current_line*
+
+Default: false
+Only show parameter hints on the current line.
+
+`inlay_hints.parameter_hints_prefix` 
+                                  *goldsmith-inlay_hints.parameter_hints_prefix*
+
+Default: '<- '
+Text to prefix all parameter hints with.
+
+`inlay_hints.other_hints_prefix`      *goldsmith-inlay_hints.other_hints_prefix*
+
+Default: '=> '
+Text to prefix all non-parameter hints with.
+
 CODE LENS                                         *goldsmith-code-lens-settings*
 
 `codelens.show`                                        *goldsmith-codelens.show*
