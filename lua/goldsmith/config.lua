@@ -311,6 +311,11 @@ local SPEC = {
   inlay_hints = {
     enabled = { false, 'b' },
     highlight = { 'Comment', 's' },
+    parameter_hints_prefix = { '<- ', 's' },
+    other_hints_prefix = { '=> ', 's' },
+    show_parameter_hints = { true, 'b' },
+    show_variable_name = { true, 'b' },
+    only_current_line = { false, 'b' },
   },
   codelens = {
     show = { true, 'b' },

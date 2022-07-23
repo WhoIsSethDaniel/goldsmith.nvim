@@ -35,11 +35,11 @@ view all screencasts [here](https://github.com/WhoIsSethDaniel/goldsmith.nvim/wi
 * most commands are completely asynchronous
 * support for  [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer)
 
-# Releases / Minimal Versions of Dependencies
+# Keeping up-to-date / Releases
 
-The _main_ branch of Goldsmith should always work with the most recent stable version of Neovim. It may also work with
-nightly Neovim (with some delay). If you are always running nightly or always have the most recent stable version then
-you will probably want to use _main_ at all times.
+The _main_ branch of Goldsmith attempts to keep up with the nightly releases of Neovim. It should always work with the
+most recent nightly release soon after its release. If you are always running the nightly version then you will probably
+want to use _main_ at all times.
 
 `go` versions should be either the most recent minor version or within one minor version of the most recent. So if the
 most recent `go` version is 1.18.3 this means Goldsmith should work with at least 1.17.0 and newer.
@@ -54,23 +54,26 @@ most recent but should be within one minor version of the most recent.
 
 Other dependencies, such as `null-ls` or `nvim-lsp-installer`, will be handled as problems occur (which is rare).
 
-Starting with `Neovim 0.6.1`, for every new minor version of Neovim (i.e. 0.5, 0.6, 0.7, etc...), there will be a branch
-and a tag. The branch and tag are created _after_ an even newer minor version of Neovim is available, and are made
-available for those who cannot afford to stay at the leading edge. If you checkout the tag or the branch you will get
-the lastest version of Goldsmith for that minor version of Neovim. e.g. if you are using Neovim 0.X.Y you would want to
-checkout the `nvim-0.X` tag and/or the `stable-nvim-0.X` branch. The only exception to this rule is anything `0.6.1` or
-earlier (back to `0.5.0`). For those versions you will want to checkout either the `nvim-0.6` tag or the
-`stable-nvim-0.6` branch. It cannot be guaranteed that the branch and/or tag will work with the lastest version of 
-various other dependencies (such as nvim-lspconfig, treesitter, null-ls, etc...).
-
-Goldsmith *will not work* with Vim or versions of Neovim prior to 0.5.0.
-
-Run `:checkhealth goldsmith` after installing to see what is required and what needs to be done to meet the minimal 
-requirements.
+Starting with `Neovim 0.8.0`, for every stable release of Neovim, there will be a branch and tag that are created, named
+after that release (e.g. Neovim 0.8.0 will have a branch named `stable-nvim-0.8.0` and a tag named `stable-0.8.0`).
+This branch and tag will be known to work with that version of Neovim. Occasional updates may be made to this branch/tag 
+but will not have the churn of _main_.
 
 If you discover that any of the above is *not* the case, or you find it confusing, please consider [asking a
 question](https://github.com/WhoIsSethDaniel/goldsmith.nvim/discussions) or [reporting a
 problem](https://github.com/WhoIsSethDaniel/goldsmith.nvim/issues).
+
+# Requirements
+
+Goldsmith *will not work* with Vim or versions of Neovim prior to 0.5.0.
+
+There are a number of third-party programs required by Goldsmith:
+1. go - you must have this installed for Goldsmith to function as expected
+1. gopls - it is recommended to use `nvim-lsp-installer` to install and maintain `gopls`
+1. various - run `:GoInstallBinaries` to install needed third-party programs
+
+Run `:checkhealth goldsmith` after installing and running through the [Quickstart](#Quickstart) to see if anything has
+been missed and what needs to be done to meet the minimal requirements.
 
 # Installation
 Install using your favorite plugin manager. 

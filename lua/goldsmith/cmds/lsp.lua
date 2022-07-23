@@ -1,7 +1,6 @@
 local config = require 'goldsmith.config'
 local log = require 'goldsmith.log'
 local wb = require 'goldsmith.winbuf'
-local diagnostic = require 'goldsmith.diagnostic'
 
 local M = {}
 
@@ -33,7 +32,7 @@ local function jump(m)
     vim.lsp.util.jump_to_location(r, 'utf-16')
 
     if #result > 1 then
-      vim.lsp.util.set_qflist(vim.lsp.util.locations_to_items(result))
+      vim.fn.setqflist(vim.lsp.util.locations_to_items(result))
       vim.api.nvim_command 'copen'
     end
   end)
@@ -82,13 +81,13 @@ end
 -- :GoDiagShow
 function M.show_diagnostics()
   -- takes many optional args
-  diagnostic.open_float(0, { scope = 'line' })
+  vim.diagnostic.open_float(0, { scope = 'line' })
 end
 
 -- :GoDiagList
 function M.diag_set_loclist()
   -- takes optional args
-  diagnostic.setloclist()
+  vim.fn.setloclist()
 end
 
 -- :GoSymHighlight
@@ -150,11 +149,11 @@ function M.list_workspace_folders()
 end
 
 function M.goto_previous_diagnostic()
-  diagnostic.goto_prev()
+  vim.diagnostic.goto_prev()
 end
 
 function M.goto_next_diagnostic()
-  diagnostic.goto_next()
+  vim.diagnostic.goto_next()
 end
 
 return M

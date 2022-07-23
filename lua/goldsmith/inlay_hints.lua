@@ -7,7 +7,7 @@ local M = {}
 
 function M.maybe_run()
   if ac.all_servers_are_running() then
-    if config.get('inlay_hints', 'enabled') == true then
+    if vim.b.inlay_hints == true or config.get('inlay_hints', 'enabled') == true then
       M.set_inlay_hints()
     end
   end
@@ -25,6 +25,7 @@ local enabled = nil
 
 local function parseHints(result)
   local map = {}
+  local only_current_line = config.get('inlay_hints', 'only_current_line')
 
   if type(result) ~= 'table' then
     return {}
@@ -35,6 +36,7 @@ local function parseHints(result)
     local column = value.position.character
     local label = value.label[1]['value']
     local kind = value.kind
+    local current_line = vim.api.nvim_win_get_cursor(0)[1]
 
     local function add_line()
       if map[line] ~= nil then
@@ -44,7 +46,13 @@ local function parseHints(result)
       end
     end
 
-    add_line()
+    if only_current_line then
+      if line == current_line - 1 then
+        add_line()
+      end
+    else
+      add_line()
+    end
   end
   return map
 end
@@ -53,30 +61,12 @@ local function handler(err, result, ctx)
   if err then
     return
   end
-  local opts = {
-    -- prefix for parameter hints
-    -- default: "<-"
-    parameter_hints_prefix = '<- ',
 
-    -- prefix for all the other hints (type, chaining)
-    -- default: "=>"
-    other_hints_prefix = '=> ',
-
-    -- whether to align to the length of the longest line in the file
-    max_len_align = false,
-
-    -- padding from the left if max_len_align is true
-    max_len_align_padding = 1,
-
-    -- whether to align to the extreme right or not
-    right_align = false,
-
-    -- padding from the right if right_align is true
-    right_align_padding = 7,
-
-    -- The color of the hints
-    highlight = 'Comment',
-  }
+  local show_parameter_hints = config.get('inlay_hints', 'show_parameter_hints')
+  local show_variable_name = config.get('inlay_hints', 'show_variable_name')
+  local parameter_hints_prefix = config.get('inlay_hints', 'parameter_hints_prefix')
+  local other_hints_prefix = config.get('inlay_hints', 'other_hints_prefix')
+  local highlight = config.get('inlay_hints', 'highlight')
 
   local bufnr = ctx.bufnr
 
@@ -116,8 +106,8 @@ local function handler(err, result, ctx)
       end
 
       -- show parameter hints inside brackets with commas and a thin arrow
-      if not vim.tbl_isempty(param_hints) and opts.show_parameter_hints then
-        virt_text = virt_text .. opts.parameter_hints_prefix .. '('
+      if not vim.tbl_isempty(param_hints) and show_parameter_hints then
+        virt_text = virt_text .. parameter_hints_prefix .. '('
         for i, value_inner_inner in ipairs(param_hints) do
           virt_text = virt_text .. value_inner_inner:sub(1, -2)
           if i ~= #param_hints then
@@ -130,18 +120,19 @@ local function handler(err, result, ctx)
 
       -- show other hints with commas and a thicc arrow
       if not vim.tbl_isempty(other_hints) then
-        virt_text = virt_text .. opts.other_hints_prefix
+        virt_text = virt_text .. other_hints_prefix
         for i, value_inner_inner in ipairs(other_hints) do
-          if value_inner_inner.kind == 2 and opts.show_variable_name then
+          if value_inner_inner.kind == 2 and show_variable_name then
             local char_start = value_inner_inner.range.start.character
             local char_end = value_inner_inner.range['end'].character
             local variable_name = string.sub(current_line, char_start + 1, char_end)
             virt_text = virt_text .. variable_name .. ': ' .. value_inner_inner.label
           else
-            if string.sub(value_inner_inner.label, 1, 2) == ': ' then
-              virt_text = virt_text .. value_inner_inner.label:sub(3)
+            local label = value_inner_inner.label
+            if string.sub(label, 1, 2) == ': ' then
+              virt_text = virt_text .. label:sub(3)
             else
-              virt_text = virt_text .. value_inner_inner.label
+              virt_text = virt_text .. label
             end
           end
           if i ~= #other_hints then
@@ -163,7 +154,7 @@ local function handler(err, result, ctx)
         vim.api.nvim_buf_set_extmark(bufnr, namespace, line, column, {
           virt_text_pos = 'eol',
           virt_text = {
-            { virt_text, opts.highlight },
+            { virt_text, highlight },
           },
           hl_mode = 'combine',
         })
@@ -200,8 +191,8 @@ function M.mk_handler(fn)
       local result = select(3, ...)
       local client_id = select(4, ...)
       local bufnr = select(5, ...)
-      local config = select(6, ...)
-      fn(err, result, { method = method, client_id = client_id, bufnr = bufnr }, config)
+      local conf = select(6, ...)
+      fn(err, result, { method = method, client_id = client_id, bufnr = bufnr }, conf)
     end
   end
 end

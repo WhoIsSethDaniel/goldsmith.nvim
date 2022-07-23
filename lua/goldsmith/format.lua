@@ -6,7 +6,7 @@ local fs = require 'goldsmith.fs'
 local M = {}
 
 function M.configure(client)
-  local caps = client.resolved_capabilities
+  local caps = client.server_capabilities
   local gofmt = not config.service_is_disabled 'gofmt'
   local gofumpt = not config.service_is_disabled 'gofumpt'
 
@@ -14,9 +14,11 @@ function M.configure(client)
     if client.name == 'gopls' then
       -- turn off gopls doc formatting
       log.debug('Format', 'Turning off gopls formatting')
-      caps.document_formatting = false
+      caps.documentFormattingProvider = false
+      caps.documentRangeFormattingProvider = false
     elseif client.name == 'null-ls' then
-      caps.document_formatting = true
+      caps.documentFormattingProvider = true
+      caps.documentRangeFormattingProvider = true
     end
   end
 end
@@ -32,7 +34,7 @@ M.make_comments = function()
 end
 
 function M.lsp_format()
-  vim.lsp.buf.formatting_seq_sync()
+  vim.lsp.buf.format()
 end
 
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
