@@ -1,5 +1,5 @@
 if exists('g:current_compiler')
-  finish
+    finish
 endif
 let g:current_compiler = 'go'
 
@@ -7,15 +7,15 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if exists(':CompilerSet') != 2
-  command -nargs=* CompilerSet setlocal <args>
+    command -nargs=* CompilerSet setlocal <args>
 endif
 
 let s:save_cpo = &cpo
 set cpo-=C
 if filereadable('makefile') || filereadable('Makefile')
-  CompilerSet makeprg=make
+    CompilerSet makeprg=make
 else
-  CompilerSet makeprg=go\ build
+    CompilerSet makeprg=go\ build
 endif
 
 CompilerSet errorformat=%-G#\ %.%#
