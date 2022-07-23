@@ -1,5 +1,5 @@
 if exists('b:did_ftplugin')
-  finish
+    finish
 endif
 let b:did_ftplugin = 1
 
@@ -7,8 +7,8 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if g:goldsmith_is_setup == v:false
-  echoerr 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
-  finish
+    echoerr 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+    finish
 endif
 
 setlocal textwidth=0
@@ -18,11 +18,11 @@ setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
 function s:GoDocComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoHelpComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 command! -nargs=0 GoModCheck lua require'goldsmith.cmds.mod'.check_for_upgrades()
@@ -43,9 +43,9 @@ command! -nargs=+ -complete=custom,s:GoDocComplete GoDoc lua require'goldsmith.c
 command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith.cmds.doc'.run('help', {<f-args>})
 
 augroup goldsmith_ft_gomod
-  autocmd! * <buffer>
-  autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
-  autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
+    autocmd! * <buffer>
+    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
+    autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
 augroup END
 
 lua require'goldsmith.buffer'.setup()

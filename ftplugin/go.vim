@@ -1,5 +1,5 @@
 if exists('b:did_ftplugin')
-  finish
+    finish
 endif
 let b:did_ftplugin = 1
 
@@ -7,11 +7,11 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if g:goldsmith_is_setup == v:false
-  echohl ErrorMsg
-  echomsg 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
-  echohl None
-  echoerr ''
-  finish
+    echohl ErrorMsg
+    echomsg 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+    echohl None
+    echoerr ''
+    finish
 endif
 
 compiler go
@@ -23,23 +23,23 @@ setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 
 function s:GoDocComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.doc'.doc_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoHelpComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.doc'.help_complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoAddTestComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.tests'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.tests'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoImplComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.impl'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.impl'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 function s:GoCreateConfigsComplete(A,C,P) abort
-	return luaeval("require'goldsmith.cmds.setup'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
+    return luaeval("require'goldsmith.cmds.setup'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
 endfunction
 
 " terminal/window commands
