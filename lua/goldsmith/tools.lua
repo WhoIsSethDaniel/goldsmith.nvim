@@ -166,9 +166,27 @@ local TOOLS = {
     location = 'https://github.com/williamboman/nvim-lsp-installer',
     not_found = {
       'This plugin may be used to install the LSP servers such as gopls.',
+      'It is superseded by Mason. If you have Mason installed you do not',
+      'need this module to be installed.',
     },
     check_installed = function()
       local ok, _ = pcall(require, 'nvim-lsp-installer')
+      return ok
+    end,
+  },
+  mason = {
+    name = 'mason',
+    required = false,
+    installed = false,
+    plugin = true,
+    location = 'https://github.com/williamboman/mason.nvim',
+    not_found = {
+      'This plugin may be used to install the LSP servers such as gopls.',
+      'This module superseded nvim-lsp-installer. If you have nvim-lsp-installer',
+      'installed you do not need Mason to be installed. But Mason is preferred.',
+    },
+    check_installed = function()
+      local ok, _ = pcall(require, 'mason')
       return ok
     end,
   },
@@ -259,10 +277,18 @@ local TOOLS = {
 }
 
 function M.find_bin(program, info)
-  local plugins = require 'goldsmith.plugins'
-
   if info.server and info['exe'] ~= nil then
     TOOLS[program].installed = false
+    if TOOLS['mason'].check_installed() then
+      local p = require('mason-registry').get_package(program)
+      if p:is_installed() then
+        local cmd = string.format('%s/%s', p:get_install_path(), program)
+        if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
+          TOOLS[program].via = 'mason'
+          return cmd
+        end
+      end
+    end
     if TOOLS['lspinstaller'].check_installed() then
       local _, s = require('nvim-lsp-installer').get_server(program)
       local cmd = string.format('%s/%s', s.root_dir, s.name)
