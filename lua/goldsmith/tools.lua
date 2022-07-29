@@ -290,6 +290,12 @@ function M.find_bin(program, info)
       end
     end
     if TOOLS['lspinstaller'].check_installed() then
+      vim.api.nvim_echo({
+        {
+          'Support for nvim-lsp-installer is deprecated. Please use Mason instead: https://github.com/williamboman/mason.nvim',
+          'WarningMsg',
+        },
+      }, true, {})
       local _, s = require('nvim-lsp-installer').get_server(program)
       local cmd = string.format('%s/%s', s.root_dir, s.name)
       if cmd ~= nil and vim.fn.filereadable(cmd) ~= 0 then
