@@ -44,10 +44,10 @@ function M.organize_imports(wait_ms)
   params.context = { only = { 'source.organizeImports' } }
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)
   for client_id, res in pairs(result or {}) do
-    local client = vim.lsp.get_client_by_id(client_id)
     for _, r in pairs(res.result or {}) do
       if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, client.offset_encoding)
+        local enc = (vim.lsp.get_client_by_id(client_id) or {}).offset_encoding or 'utf-8'
+        vim.lsp.util.apply_workspace_edit(r.edit, enc)
       end
     end
   end
