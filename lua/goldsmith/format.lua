@@ -46,7 +46,7 @@ function M.organize_imports(wait_ms)
   for client_id, res in pairs(result or {}) do
     for _, r in pairs(res.result or {}) do
       if r.edit then
-        local enc = (vim.lsp.get_client_by_id(client_id) or {}).offset_encoding or 'utf-8'
+        local enc = (vim.lsp.get_client_by_id(client_id) or {}).offset_encoding or 'utf-16'
         vim.lsp.util.apply_workspace_edit(r.edit, enc)
       end
     end
