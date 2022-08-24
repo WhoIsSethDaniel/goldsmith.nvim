@@ -44,7 +44,7 @@ command! -nargs=1 -complete=custom,s:GoHelpComplete GoHelp lua require'goldsmith
 
 augroup goldsmith_ft_gomod
     autocmd! * <buffer>
-    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.update()
+    autocmd CursorHold,InsertLeave <buffer> lua require'goldsmith.codelens'.maybe_run()
     autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)
 augroup END
 
