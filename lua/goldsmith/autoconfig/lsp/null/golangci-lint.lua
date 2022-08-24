@@ -161,7 +161,6 @@ linters:
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
 
 run:
