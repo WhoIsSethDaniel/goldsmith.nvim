@@ -134,7 +134,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -153,7 +152,6 @@ linters:
     - nakedret
     - prealloc
     - predeclared
-    - structcheck
     - stylecheck
     - thelper
     - tparallel
