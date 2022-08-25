@@ -87,7 +87,7 @@ command! -nargs=0 GoInfo  lua require'goldsmith.cmds.lsp'.hover()
 command! -nargs=0 GoSigHelp lua require'goldsmith.cmds.lsp'.signature_help()
 command! -nargs=0 GoDefType lua require'goldsmith.cmds.lsp'.type_definition()
 cabbrev GoTypeDef GoDefType
-command! -nargs=0 GoCodeAction lua require'goldsmith.cmds.lsp'.code_action()
+command! -nargs=0 -range GoCodeAction lua require'goldsmith.cmds.lsp'.code_action({line1=<line1>, line2=<line2>, count=<count>})
 command! -nargs=0 GoRef lua require'goldsmith.cmds.lsp'.references()
 command! -nargs=0 GoShowDiag lua require'goldsmith.cmds.lsp'.show_diagnostics()
 command! -nargs=0 GoListDiag lua require'goldsmith.cmds.lsp'.diag_set_loclist()

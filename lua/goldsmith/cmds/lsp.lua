@@ -68,8 +68,12 @@ function M.rename(new)
 end
 
 -- :GoCodeAction
-function M.code_action()
-  vim.lsp.buf.code_action()
+function M.code_action(args)
+  if args.count > -1 then
+    vim.lsp.buf.code_action { range = { start = { args.line1, 0 }, ['end'] = { args.line2 + 1, 0 } } }
+  else
+    vim.lsp.buf.code_action()
+  end
 end
 
 -- :GoRef
