@@ -1481,7 +1481,9 @@ your |goldsmith-window-settings|.
                                                                  *:GoCodeAction*
 :GoCodeAction
 
-Perform the code action for any code actions available on the current line.
+Perform the code action for any code actions available on the current line. Can
+also work on a visual selection and will return all code actions available within
+that selection.
 
                                                                         *:GoRef*
 :GoRef
