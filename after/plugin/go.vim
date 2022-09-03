@@ -1,4 +1,5 @@
 let g:goldsmith_is_setup = v:false
+let g:goldsmith_config_ok = v:false
 if !has('nvim-0.8')
     echohl ErrorMsg
     echomsg 'Goldsmith requires at least neovim 0.8.0.'
@@ -9,8 +10,8 @@ if !has('nvim-0.8')
     finish
 endif
 
-" do the actual configuring for LSP servers and other items that require a late setup/init
-if !luaeval("require'goldsmith'.init()")
+" check the configuration early
+if !luaeval("require'goldsmith'.pre()")
     finish
 endif
-let g:goldsmith_is_setup = v:true
+let g:goldsmith_config_ok = v:true

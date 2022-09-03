@@ -56,7 +56,7 @@ function M.is_disabled(service)
   return false
 end
 
-function M.setup(cf)
+function M.setup()
   local null = require 'null-ls'
   local enabled_services = 0
   for _, service in ipairs(M.services()) do
@@ -99,6 +99,11 @@ function M.setup(cf)
       return true
     end
   end
+end
+
+-- basic setup
+function M.pre(cf)
+  local null = require 'null-ls'
   if config.get('null', 'run_setup') then
     null.setup(cf)
   end

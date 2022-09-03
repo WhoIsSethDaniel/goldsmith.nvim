@@ -35,6 +35,7 @@ end
 return {
   config = config.setup,
   setup = ac.register_server,
+  pre = ac.pre,
   init = ac.init,
   needed = ac.needed,
   status = statusline.status,

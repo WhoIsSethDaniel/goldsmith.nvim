@@ -3,15 +3,26 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-let s:cpo_save = &cpo
-set cpo&vim
+let s:cpo_save = &cpoptions
+set cpoptions&vim
 
-if g:goldsmith_is_setup == v:false
+if g:goldsmith_config_ok == v:false
     echohl ErrorMsg
-    echomsg 'Goldsmith: Cannot setup current buffer. Goldsmith failed to initialize.'
+    echomsg 'Goldsmith: Errors with configuration. Goldsmith failed to initialize.'
     echohl None
     echoerr ''
     finish
+endif
+
+if g:goldsmith_is_setup == v:false
+    if !luaeval("require'goldsmith'.init()")
+        echohl ErrorMsg
+        echomsg 'Goldsmith: Failed to initialize'
+        echohl None
+        echoerr ''
+        finish
+    endif
+    let g:goldsmith_is_setup = v:true
 endif
 
 compiler go
@@ -123,5 +134,5 @@ augroup END
 
 lua require'goldsmith.buffer'.setup()
 
-let &cpo = s:cpo_save
+let &cpoptions = s:cpo_save
 unlet s:cpo_save

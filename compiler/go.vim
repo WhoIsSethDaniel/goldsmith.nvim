@@ -3,15 +3,15 @@ if exists('g:current_compiler')
 endif
 let g:current_compiler = 'go'
 
-let s:cpo_save = &cpo
-set cpo&vim
+let s:cpo_save = &cpoptions
+set cpoptions&vim
 
 if exists(':CompilerSet') != 2
     command -nargs=* CompilerSet setlocal <args>
 endif
 
-let s:save_cpo = &cpo
-set cpo-=C
+let s:save_cpo = &cpoptions
+set cpoptions-=C
 if filereadable('makefile') || filereadable('Makefile')
     CompilerSet makeprg=make
 else
@@ -26,5 +26,5 @@ CompilerSet errorformat+=%A%\\%%(%[%^:]%\\+:\ %\\)%\\?%f:%l:\ %m
 CompilerSet errorformat+=%C%*\\s%m
 CompilerSet errorformat+=%-G%.%#
 
-let &cpo = s:cpo_save
+let &cpoptions = s:cpo_save
 unlet s:cpo_save

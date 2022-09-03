@@ -3,8 +3,8 @@ if exists('g:goldsmith_loaded_install')
 endif
 let g:goldsmith_loaded_install = 1
 
-let s:cpo_save = &cpo
-set cpo&vim
+let s:cpo_save = &cpoptions
+set cpoptions&vim
 
 function s:GoInstallComplete(A,C,P) abort
     return luaeval("require'goldsmith.cmds.installbin'.complete(_A[1], _A[2], _A[3])", [a:A, a:C, a:P])
@@ -17,5 +17,5 @@ hi def link goCoverageNormal Comment
 hi def link goCoverageCovered MoreMsg
 hi def link goCoverageNotCovered ErrorMsg
 
-let &cpo = s:cpo_save
+let &cpoptions = s:cpo_save
 unlet s:cpo_save
