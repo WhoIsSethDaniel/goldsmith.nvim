@@ -50,18 +50,15 @@ local function has_requirements()
   for _, p in ipairs(plugins.names()) do
     local info = plugins.info(p)
     if plugins.is_required(p) and not plugins.is_installed(p) then
-      log.error(
-        'Config',
-        string.format(
-          "Goldsmith will not work without '%s' installed.",
-          info.name
-        )
-      )
+      log.error('Config', string.format("Goldsmith will not work without '%s' installed.", info.name))
       ok = false
     end
   end
-  if not tools.is_installed('go') then
-    log.error('Config', "go is not installed, or cannot be found in your PATH. Goldsmith will not work without 'go' installed.")
+  if not tools.is_installed 'go' then
+    log.error(
+      'Config',
+      "go is not installed, or cannot be found in your PATH. Goldsmith will not work without 'go' installed."
+    )
     ok = false
   end
   return ok
@@ -171,10 +168,16 @@ function M.all_servers_are_running()
   return true
 end
 
-function M.init()
+function M.pre()
   if not config.setup() then
     return false
   end
+  -- hack :-(
+  require'goldsmith.autoconfig.lsp.null'.pre(get_server_conf('null'))
+  return true
+end
+
+function M.init()
   require('goldsmith.tools').check()
   setup_logging()
   if not has_requirements() then
@@ -186,6 +189,9 @@ function M.init()
   for _, p in ipairs(get_plugins_to_configure()) do
     M.setup_plugin(p)
   end
+  -- redo FileType plugin since this is happening late, i.e. after
+  -- the FileType event has occurred
+  vim.api.nvim_exec_autocmds('FileType', {})
   return true
 end
 
