@@ -285,6 +285,7 @@ local SPEC = {
     skip_unexported = { false, 'b' },
   },
   status = {
+    use_event = { false, 'b' },
     max_length = { 40, 'n' },
   },
   format = {

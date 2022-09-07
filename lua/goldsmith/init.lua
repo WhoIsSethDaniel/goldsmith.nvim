@@ -32,6 +32,15 @@ _G.goldsmith_package_complete = function()
   return table.concat(pkgs, '\n')
 end
 
+local gid = vim.api.nvim_create_augroup('GoldsmithLspProgressEvent', { clear = true })
+vim.api.nvim_create_autocmd('User', {
+  group = gid,
+  pattern = 'LspProgressUpdate',
+  callback = function()
+    require('goldsmith.ready').check_for_ready(vim.lsp.util.get_progress_messages())
+  end,
+})
+
 return {
   config = config.setup,
   setup = ac.register_server,

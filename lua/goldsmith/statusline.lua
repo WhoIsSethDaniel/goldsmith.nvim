@@ -2,7 +2,7 @@ local coverage = require 'goldsmith.coverage'
 local job = require 'goldsmith.job'
 local buffer = require 'goldsmith.buffer'
 local config = require 'goldsmith.config'
-local ac = require 'goldsmith.autoconfig'
+local gtg = require 'goldsmith.gtg'
 
 local M = {}
 
@@ -35,7 +35,7 @@ function M.status()
   end
   local max_length = config.get('status', 'max_length')
   local line = prefix
-  if ac.all_servers_are_running() then
+  if gtg.is_ready() then
     line = line .. service_indicators[1]
   else
     line = line .. service_indicators[2]
