@@ -139,6 +139,7 @@ function M.run(cmd, ...)
     local winbuf = wb.create_winbuf(
       vim.tbl_deep_extend('force', opts, { reuse = 'job_terminal', destroy = true, keymap = 'terminal', create = true })
     )
+    wb.make_buffer_plain(winbuf.buf, winbuf.win, {})
     job = vim.api.nvim_win_call(winbuf.win, function()
       return vim.fn.termopen(string_cmd, opts)
     end)
