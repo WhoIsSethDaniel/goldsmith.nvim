@@ -208,7 +208,6 @@ local SPEC = {
     ['build'] = { {}, 't' },
     ['run-last'] = { {}, 't' },
     ['build-last'] = { {}, 't' },
-    ['toggle-debug-console'] = { {}, 't' },
     ['test-close-window'] = { {}, 't' },
     ['test-last'] = { {}, 't' },
     ['test-visit'] = { {}, 't' },

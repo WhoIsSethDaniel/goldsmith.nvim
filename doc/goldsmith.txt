@@ -388,7 +388,6 @@ guaranteed to be entirely up-to-date):
         ["test-pkg"] = {},
         ["test-suite"] = {},
         ["test-visit"] = {},
-        ["toggle-debug-console"] = {},
         typedef = { "<leader>D" }
       },
       null = {
@@ -456,15 +455,18 @@ project for each LSP server that Goldsmith manages. If it is not set then
 `system.debug`                                          *goldsmith-system.debug*
 
 Default: false
-Experts only, please. This is mostly intended as a way to help others debug 
-problems as well as for Goldsmith developers to debug their code.
+This setting is mostly intended as a way to help others debug problems as well 
+as for Goldsmith developers to debug the plugin.
 
-When set to true Goldsmith will log all activity to an initially hidden buffer.
-To see the contents of the buffer you can use |:GoDebugConsole|.
+When set to true Goldsmith will log all activity to a debug log. This log is 
+located in Neovim's cache directory and has the name `goldsmith.log`. 
 
-The debug console will honor your |goldsmith-window-settings|.
-
-See the documentation for |:GoDebugConsole| for more information.
+To find out where your Neovim's cache directory is you can use:
+>
+    :echo stdpath('cache')
+< 
+Mason logs some activity to this log regardless of this setting, but if you set
+this to true it will log a lot more information.
 
 MAPPINGS                                           *goldsmith-mappings-settings*
 
@@ -1757,22 +1759,6 @@ written. Names of services that are not recognized will be ignored.
 Currently there are two configuration files that are created, one for `revive` 
 and one for `golangci-lint`.
 
-                                                               *:GoDebugConsole*
-:GoDebugConsole
-
-If |goldsmith-debug.enable| is set to true this command will toggle the 
-visibility of the debug console. By default the console is hidden.
-
-The debug console displays the output of all Goldsmith logging. Some output may 
-be very large. Turning on debugging can impose a performance cost on Goldsmith.
-
-If the buffer associated with the debug console is wiped, deleted, or unloaded
-the console becomes useless and all logging is lost.
-
-When you are using the debug console the output shows up in a window. If you are 
-in this window you can use 'f' to 'follow' the output of the debug logging. To 
-stop following you can press 's'. By default the debug console is in follow mode.
-
                                                      *goldsmith-module-commands*
 MODULE RELATED COMMANDS
 
@@ -2314,16 +2300,6 @@ Default: <leader>f
 
 The same as |:GoFormat|. Tell gopls and null-ls to format the current Go buffer
 immediately.
-
-*(goldsmith-toggle-debug-console)*
-Default: none
-
-The same as |:GoDebugConsole|. Toggle the debugging console used by Goldsmith when 
-in debug mode. 
-
-See |goldsmith-debug-settings| for more information on debug mode.
-
-See the documentation for |:GoDebugConsole| for more information about it.
 
 *(goldsmith-close-terminal)*
 Default: none
