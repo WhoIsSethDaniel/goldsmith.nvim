@@ -121,32 +121,6 @@ function M.create_test_file_buffer(f)
   return b
 end
 
-function M.create_debug_buffer()
-  local b = vim.api.nvim_create_buf(false, true)
-  M.make_buffer_plain(b, nil, { ft = 'goldsmith-debug', bufhidden = 'hide' })
-  vim.api.nvim_buf_set_name(b, '[Goldsmith Debug Console]')
-  require('goldsmith.buffer').set_buffer_map(b, '', 'toggle-debug-console', '<cmd>hide<cr>', { silent = true })
-  return { buf = b, win = -1 }
-end
-
-function M.toggle_debug_console(wb, opts)
-  if wb ~= nil then
-    if wb.win >= 0 and vim.api.nvim_win_is_valid(wb.win) then
-      vim.api.nvim_win_hide(wb.win)
-      wb.win = -1
-      return wb
-    else
-      if vim.api.nvim_buf_is_loaded(wb.buf) then
-        local nwb = M.create_winbuf(vim.tbl_deep_extend('force', opts, { reuse = wb.buf }))
-        M.make_buffer_plain(nil, nwb.win)
-        return nwb
-      end
-    end
-  end
-  require('goldsmith.log').error('Debug', 'Cannot find Debug Console. The buffer may have been destroyed.')
-  return nil
-end
-
 function M.append_to_buffer(b, output)
   if vim.api.nvim_buf_is_loaded(b) then
     vim.api.nvim_buf_set_option(b, 'modifiable', true)

@@ -1,27 +1,24 @@
-local wb = require 'goldsmith.winbuf'
 local config = require 'goldsmith.config'
 
 local M = {}
-local debug_wb = {}
+
+local logfile = string.format('%s/%s', vim.fn.stdpath 'cache', 'goldsmith.log')
 
 local function log_string(label, msg)
   if type(msg) == 'function' then
     msg = msg()
   end
   if label then
-    return string.format('Goldsmith: %s: %s', label, msg)
+    return string.format('Goldsmith: %s: %s\n', label, msg)
   else
-    return string.format('Goldsmith: %s', msg)
+    return string.format('Goldsmith: %s\n', msg)
   end
 end
 
-local function debug_log(lvl, cat, msg)
-  if debug_wb ~= nil then
-    if type(msg) == 'function' then
-      msg = msg()
-    end
-    wb.append_to_buffer(debug_wb.buf, vim.split(string.format('%s: %s: %s', lvl, cat, msg), '\n'))
-  end
+local function log_to_file(msg)
+  local l = assert(io.open(logfile, 'a'))
+  l:write(msg)
+  l:close()
 end
 
 local function log(debug, lvl)
@@ -40,24 +37,19 @@ local function log(debug, lvl)
   end
   if debug then
     return function(label, msg)
+      local lstr = log_string(label, msg)
       if lvl ~= 'debug' then
-        logger(log_string(label, msg))
+        logger(lstr)
       end
-      debug_log(lvl, label, msg)
+      log_to_file(lstr)
     end
   else
     return function(label, msg)
-      logger(log_string(label, msg))
+      local lstr = log_string(label, msg)
+      logger(log_string(lstr))
+      log_to_file(lstr)
     end
   end
-end
-
-function M.toggle_debug_console()
-  if not M.is_debug() then
-    M.warn('Debug', 'Debugging is not turned on. To turn on debugging set system.debug to true and restart nvim.')
-    return
-  end
-  debug_wb = wb.toggle_debug_console(debug_wb, config.window_opts())
 end
 
 function M.setup()
@@ -71,8 +63,6 @@ function M.setup()
   end
 
   if d then
-    debug_wb = wb.create_debug_buffer()
-    wb.setup_follow_buffer(debug_wb.buf)
     M.debug('Version', function()
       return vim.api.nvim_exec('version', true)
     end)

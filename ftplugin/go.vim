@@ -121,9 +121,6 @@ command! -nargs=0 GoInlayHintsOff lua require'goldsmith.cmds.inlay_hints'.turn_o
 " initial setup
 command! -nargs=* -bang -complete=custom,s:GoCreateConfigsComplete GoCreateConfigs lua require'goldsmith.cmds.setup'.create_configs('<bang>',{<f-args>})
 
-" debug
-command! -nargs=0 GoDebugConsole lua require'goldsmith.cmds.debug'.run()
-
 augroup goldsmith_ft_go
     autocmd! * <buffer>
     autocmd BufWritePre <buffer> lua require'goldsmith.cmds.format'.run(false)

@@ -24,7 +24,6 @@ local default_action_map = {
   nextdiag = { act = "<cmd>lua require'goldsmith.cmds.lsp'.goto_next_diagnostic()<cr>", ft = '*' },
   setloclist = { act = "<cmd>lua require'goldsmith.cmds.lsp'.diag_set_loclist()<cr>", ft = '*' },
   format = { act = "<cmd>lua require'goldsmith.cmds.format'.run(1)<cr>", ft = '*' },
-  ['toggle-debug-console'] = { act = "<cmd>lua require'goldsmith.log'.toggle_debug_console()<cr>", ft = '*' },
   ['test-close-window'] = { act = "<cmd>lua require'goldsmith.winbuf'.close_window('test')<cr>", ft = { 'go' } },
   ['test-last'] = { act = "<cmd>lua require'goldsmith.testing'.last()<cr>", ft = { 'go' } },
   ['test-visit'] = { act = "<cmd>lua require'goldsmith.testing'.visit()<cr>", ft = { 'go' } },
