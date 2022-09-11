@@ -40,6 +40,25 @@ function M.plugin_check()
   end
 end
 
+function M.treesitter_parser_check()
+  health.report_start 'Treesitter Parser Check'
+  if not plugins.is_installed 'treesitter' then
+    health.report_error 'treesitter is not installed, so cannot check for treesitter parsers'
+  else
+    local installed = require('nvim-treesitter.info').installed_parsers()
+    for _, parser in ipairs { 'go', 'gomod', 'gowork' } do
+      if vim.tbl_contains(installed, parser) then
+        health.report_ok(string.format('Treesitter parser for "%s" is installed', parser))
+      else
+        health.report_error(
+          string.format('Treesitter parser for "%s" is NOT INSTALLED', parser),
+          string.format('Run :TSInstall %s', parser)
+        )
+      end
+    end
+  end
+end
+
 function M.lsp_server_check()
   health.report_start 'LSP Server Check'
 
@@ -106,6 +125,7 @@ end
 function M.check()
   M.go_check()
   M.plugin_check()
+  M.treesitter_parser_check()
   M.lsp_server_check()
   M.lsp_server_config_check()
   M.tool_check()
