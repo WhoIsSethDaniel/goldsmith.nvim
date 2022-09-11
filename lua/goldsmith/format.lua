@@ -40,7 +40,7 @@ end
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
 function M.organize_imports(wait_ms)
   wait_ms = wait_ms or config.get('format', 'goimports', 'timeout')
-  local params = vim.lsp.util.make_range_params()
+  local params = vim.lsp.util.make_range_params(nil, 'utf-16')
   params.context = { only = { 'source.organizeImports' } }
   local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, wait_ms)
   for client_id, res in pairs(result or {}) do
@@ -48,6 +48,8 @@ function M.organize_imports(wait_ms)
       if r.edit then
         local enc = (vim.lsp.get_client_by_id(client_id) or {}).offset_encoding or 'utf-16'
         vim.lsp.util.apply_workspace_edit(r.edit, enc)
+      else
+        vim.lsp.buf.execute_command(r.command)
       end
     end
   end
