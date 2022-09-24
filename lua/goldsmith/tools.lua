@@ -245,21 +245,6 @@ local TOOLS = {
       end
     end,
   },
-  FixCursorHold = {
-    name = 'FixCursorHold',
-    required = false,
-    installed = false,
-    plugin = true,
-    location = 'https://github.com/antoinemadec/FixCursorHold.nvim',
-    not_found = {
-      'Much of Goldsmith may fail to work without this plugin.',
-      'It is required to fix a bug with the CursorHold event in Neovim.',
-      'This bug may not affect everyone.',
-    },
-    check_installed = function()
-      return vim.fn.exists 'g:loaded_fix_cursorhold_nvim' > 0
-    end,
-  },
   telescope = {
     name = 'telescope.nvim',
     required = false,

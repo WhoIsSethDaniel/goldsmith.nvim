@@ -54,12 +54,6 @@ You can run `:checkhealth goldsmith` to see if you meet all the requirements and
 to see if you have anything missing. See |goldsmith-healthcheck| and 
 |goldsmith-supported-plugins| for more information.
 
-Many of the automated features of Goldsmith utilize the |CursorHold| and 
-|CursorHoldI| events. Neovim currently has a bug relating to these events. See: 
-https://github.com/neovim/neovim/issues/12587
-To work around this issue you may need to install the FixCursorHold plugin.
-This plugin can be found at https://github.com/antoinemadec/FixCursorHold.nvim
-
 MINIMAL VERSIONS                                    *goldsmith-minimal-versions*
 
 The following are the minimal versions known to work with Goldsmith. It does not
@@ -135,8 +129,6 @@ Required
 * nvim-lspconfig Configure gopls and null-ls
 * nvim-treesitter
   For syntax highlighting, folding, and indentation
-* FixCursorHold
-  Currently required to fix a bug with Neovim and the CursorHold event
 
 Optional
 * nvim-treesitter-textobjects
