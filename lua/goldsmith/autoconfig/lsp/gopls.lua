@@ -24,7 +24,7 @@ local SETTINGS_DIFF = {
   experimentalDiagnosticsDelay = { '500ms', '0.6.0', '0.6.11' },
   diagnosticsDelay = { '500ms', '0.7.0', nil },
   experimentalPostfixCompletions = { true, '0.6.10', nil },
-  experimentalUseInvalidMetadata = { true, '0.7.1', nil },
+  experimentalUseInvalidMetadata = { true, '0.7.1', '0.10.0' },
   hints = {
     {
       assignVariableTypes = true,
