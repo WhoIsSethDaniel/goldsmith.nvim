@@ -90,6 +90,9 @@ function M.setup(user_args)
       diagnostics_format = '#{s}: #{m}',
       command = cmd(),
       to_stdin = false,
+      cwd = function()
+        return vim.fn.getcwd()
+      end,
       args = function()
         local args = vim.deepcopy(static_args)
         local cf = M['config_file'] and M.config_file()

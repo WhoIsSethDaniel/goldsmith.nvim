@@ -31,6 +31,9 @@ function M.setup(user_args)
     generator = help.formatter_factory {
       command = cmd(),
       to_stdin = true,
+      cwd = function()
+        return vim.fn.getcwd()
+      end,
       args = vim.list_extend(
         { string.format('--max-len=%d', conf['max_line_length']), '--base-formatter=gofmt' },
         user_args

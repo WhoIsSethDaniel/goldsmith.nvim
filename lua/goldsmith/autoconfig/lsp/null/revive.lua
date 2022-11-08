@@ -57,7 +57,7 @@ local function parse_messages()
         row = d.Position.Start.Line,
         severity = severities[d.Severity],
         source = 'revive',
-        filename = d.Position.Start.Filename
+        filename = d.Position.Start.Filename,
       })
     end
     done(diags)
@@ -85,6 +85,9 @@ function M.setup(user_args)
       diagnostics_format = 'revive: #{m}',
       command = cmd(),
       to_stdin = false,
+      cwd = function()
+        return vim.fn.getcwd()
+      end,
       check_exit_code = function(code)
         return code == 0
       end,

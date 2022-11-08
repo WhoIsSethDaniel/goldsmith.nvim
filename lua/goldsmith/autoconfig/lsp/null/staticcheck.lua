@@ -45,6 +45,9 @@ function M.setup(user_args)
       command = cmd(),
       to_stdin = false,
       to_stderr = true,
+      cwd = function()
+        return vim.fn.getcwd()
+      end,
       check_exit_code = function(code)
         return code <= 1
       end,
