@@ -59,17 +59,17 @@ local function version_cmp(lhs, rhs)
   end
   local lmajor, lminor, lpatch = string.match(lhs, '^(%d+)%.(%d+)%.(%d+)')
   local rmajor, rminor, rpatch = string.match(rhs, '^(%d+)%.(%d+)%.(%d+)')
-  if lmajor > rmajor then
+  if tonumber(lmajor) > tonumber(rmajor) then
     return -1
-  elseif lmajor < rmajor then
+  elseif tonumber(lmajor) < tonumber(rmajor) then
     return 1
-  elseif lminor > rminor then
+  elseif tonumber(lminor) > tonumber(rminor) then
     return -1
-  elseif lminor < rminor then
+  elseif tonumber(lminor) < tonumber(rminor) then
     return 1
-  elseif lpatch > rpatch then
+  elseif tonumber(lpatch) > tonumber(rpatch) then
     return -1
-  elseif lpatch < rpatch then
+  elseif tonumber(lpatch) < tonumber(rpatch) then
     return 1
   end
   return nil
