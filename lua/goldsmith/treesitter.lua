@@ -1,5 +1,5 @@
 local parsers = require 'nvim-treesitter.parsers'
-local ts_utils = require 'nvim-treesitter.ts_utils'
+local ts = vim.treesitter
 
 local M = {}
 
@@ -10,12 +10,12 @@ local function find_all_functions(root, funcs)
   for node in root:iter_children() do
     local ntype = node:type()
     if ntype == 'function_declaration' or ntype == 'method_declaration' then
-      local line, col = ts_utils.get_node_range(node)
+      local line, col = ts.get_node_range(node)
       local name
       if ntype == 'method_declaration' then
-        name = vim.treesitter.query.get_node_text(node:child(2), 0)
+        name = ts.get_node_text(node:child(2), 0)
       else
-        name = vim.treesitter.query.get_node_text(node:child(1), 0)
+        name = ts.get_node_text(node:child(1), 0)
       end
       local f = {
         -- node = node,
@@ -45,7 +45,7 @@ local function find_all_modules(root, mods)
     local ntype = node:type()
     local ptype = node:parent():type()
     if ntype == 'module_path' and ptype == 'require_spec' then
-      table.insert(mods, vim.treesitter.query.get_node_text(node, 0))
+      table.insert(mods, ts.get_node_text(node, 0))
     end
     find_all_modules(node, mods)
   end
@@ -58,8 +58,8 @@ local function find_all_types(root, types)
   for node in root:iter_children() do
     local ntype = node:type()
     if ntype == 'type_declaration' or ntype == 'var_declaration' then
-      local line, col = ts_utils.get_node_range(node)
-      local name = vim.treesitter.query.get_node_text(node:child(1), 0)
+      local line, col = ts.get_node_range(node)
+      local name = ts.get_node_text(node:child(1), 0)
       name = string.match(name, '^([^%s]+)')
       local f = {
         -- node = node,
@@ -95,7 +95,7 @@ function M.get_module_at_cursor()
     elseif cnode ~= nil and cnode:type() == 'require_directive' then
       local l = unpack(vim.api.nvim_win_get_cursor(0))
       for node in cnode:iter_children() do
-        local nl = ts_utils.get_node_range(node)
+        local nl = ts.get_node_range(node)
         if node:type() == 'require_spec' and l == nl + 1 then
           return node
         end
@@ -103,7 +103,7 @@ function M.get_module_at_cursor()
     end
   end
 
-  local cnode = ts_utils.get_node_at_cursor()
+  local cnode = ts.get_node()
   if not cnode then
     return
   end
@@ -115,17 +115,17 @@ function M.get_module_at_cursor()
   end
   for node in mnode:iter_children() do
     if node:type() == 'module_path' then
-      mod = vim.treesitter.query.get_node_text(node, 0)
+      mod = ts.get_node_text(node, 0)
     end
     if node:type() == 'version' then
-      v = vim.treesitter.query.get_node_text(node, 0)
+      v = ts.get_node_text(node, 0)
     end
   end
   return { name = mod, version = v }
 end
 
 function M.get_current_function_name()
-  local current_node = ts_utils.get_node_at_cursor()
+  local current_node = ts.get_node()
   if not current_node then
     return
   end
@@ -143,9 +143,9 @@ function M.get_current_function_name()
   end
 
   if expr:type() == 'function_declaration' then
-    return vim.treesitter.query.get_node_text(expr:child(1), 0)
+    return ts.get_node_text(expr:child(1), 0)
   elseif expr:type() == 'method_declaration' then
-    return vim.treesitter.query.get_node_text(expr:child(2), 0)
+    return ts.get_node_text(expr:child(2), 0)
   end
 end
 
