@@ -349,7 +349,7 @@ local function defaults(spec)
   for grp, val in pairs(spec) do
     d[grp] = {}
     for k, v in pairs(val) do
-      if not vim.tbl_islist(v) then
+      if not vim.tbl_isarray(v) then
         d[grp] = vim.tbl_deep_extend('force', d[grp] or {}, defaults { [k] = v })
       else
         d[grp][k] = v[1]
@@ -380,7 +380,7 @@ local function build_validation(spec, uc)
       return true
     end
     for k, v in pairs(val) do
-      if not vim.tbl_islist(v) then
+      if not vim.tbl_isarray(v) then
         local key = grp .. '.' .. k
         if type(uc[grp][k]) ~= 'table' then
           log_error('Config', string.format("Config key '%s' must be a table", key))
